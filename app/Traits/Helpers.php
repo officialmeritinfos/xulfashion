@@ -103,13 +103,8 @@ trait Helpers
         //based-off on the account type, lets redirect to the proper dashboard
         switch ($user->accountType){
             case 1:
-                $url = route('user.dashboard');
-                break;
-            case 3:
-                $url = route('school.dashboard');
-                break;
             default:
-                $url = route('parent.dashboard');
+            $url = route('user.dashboard');
                 break;
         }
         return $url;
@@ -153,13 +148,10 @@ trait Helpers
         //based-off on the account type, lets redirect to the proper dashboard
         switch ($user->accountType){
             case 1:
-                $name = 'Tutor';
-                break;
-            case 3:
-                $name = 'Recruiter';
+                $name = 'Merchant';
                 break;
             default:
-                $name = 'Parent';
+                $name = 'User';
                 break;
         }
         return $name;

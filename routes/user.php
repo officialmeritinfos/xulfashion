@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\Dashboard\Account;
 use App\Http\Controllers\Dashboard\Home;
-use App\Http\Controllers\Dashboard\Tutor\Applications;
-use App\Http\Controllers\Dashboard\Tutor\Jobs;
-use App\Http\Controllers\Dashboard\Tutor\Payments;
-use App\Http\Controllers\Dashboard\Tutor\Portfolios;
-use App\Http\Controllers\Dashboard\Tutor\Settings;
-use App\Http\Controllers\Dashboard\Tutor\Transactions;
+use App\Http\Controllers\Dashboard\User\Applications;
+use App\Http\Controllers\Dashboard\User\Jobs;
+use App\Http\Controllers\Dashboard\User\Payments;
+use App\Http\Controllers\Dashboard\User\Portfolios;
+use App\Http\Controllers\Dashboard\User\Settings;
+use App\Http\Controllers\Dashboard\User\Transactions;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('completedProfile')->group(function (){

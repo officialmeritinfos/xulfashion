@@ -51,11 +51,9 @@ Route::middleware(['web','auth'])->group(function (){
     //Complete Profile
     Route::get('complete-account-setup',[CompleteProfile::class,'landingPage'])
         ->name('complete-account-setup')->middleware('twoFactor');
-    Route::post('complete-account-setup/process/tutor',[CompleteProfile::class,'processAccountCompletionTutor'])
-        ->name('complete-account-setup.process.tutor');
-    Route::post('complete-account-setup/process/school',[CompleteProfile::class,'processAccountCompletionSchool'])
-        ->name('complete-account-setup.process.school');
-    Route::post('complete-account-setup/process/parent',[CompleteProfile::class,'processAccountCompletionParent'])
-        ->name('complete-account-setup.process.parent');
+    Route::post('complete-account-setup/process/seller',[CompleteProfile::class,'processAccountCompletionSeller'])
+        ->name('complete-account-setup.process.seller');
+    Route::post('complete-account-setup/process/user',[CompleteProfile::class,'processAccountCompletionUser'])
+        ->name('complete-account-setup.process.user');
 
 });
