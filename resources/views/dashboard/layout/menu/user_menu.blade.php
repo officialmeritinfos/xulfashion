@@ -5,33 +5,27 @@
     </a>
 </li>
 <li>
-    <a href="{{route('user.jobs.index')}}" class="box-style">
-        <i class="ri-book-mark-line"></i>
-        <span class="menu-title">Jobs</span>
-    </a>
-</li>
-<li>
-    <a href="{{route('user.applications.index')}}" class="box-style">
-        <i class="ri-send-plane-fill"></i>
-        <span class="menu-title">Applications</span>
-    </a>
-</li>
-<li>
-    <a href="{{route('user.payments.index')}}" class="box-style">
-        <i class="ri-file-history-fill"></i>
-        <span class="menu-title">Payments</span>
-    </a>
-</li>
-<li>
-    <a href="{{route('user.transactions.index')}}" class="box-style">
+    <a href="#" class="box-style">
         <i class="ri-table-alt-line"></i>
-        <span class="menu-title">Transactions</span>
+        <span class="menu-title">ADs</span>
     </a>
 </li>
 <li>
-    <a href="{{route('user.portfolios.index')}}" class="box-style">
+    <a href="#" class="box-style">
+        <i class="ri-store-2-fill"></i>
+        <span class="menu-title">Business Profile</span>
+    </a>
+</li>
+<li>
+    <a href="#" class="box-style">
+        <i class="bx bxs-t-shirt"></i>
+        <span class="menu-title">Model Profile</span>
+    </a>
+</li>
+<li>
+    <a href="#" class="box-style">
         <i class="ri-user-settings-fill"></i>
-        <span class="menu-title">Portfolio</span>
+        <span class="menu-title">Marketplace</span>
     </a>
 </li>
 <li>

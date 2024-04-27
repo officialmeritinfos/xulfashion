@@ -48,7 +48,7 @@
                 </div>
             </div>
         @else
-            <div class="row mt-5">
+            <div class="row mt-5 mb-24">
                 <div class="col-md-10 mx-auto">
                     <div class="card">
                         <div class="card-body">

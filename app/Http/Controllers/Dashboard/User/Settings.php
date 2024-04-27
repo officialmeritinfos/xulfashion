@@ -10,11 +10,11 @@ use App\Models\Country;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\RateType;
-use App\Models\TutorVerification;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserBank;
 use App\Models\UserSetting;
+use App\Models\UserVerification;
 use App\Models\UserVerificationDocumentType;
 use App\Notifications\CustomNotification;
 use App\Notifications\SendPushNotification;
@@ -89,7 +89,7 @@ class Settings extends BaseController
             $input = $validator->validated();
 
 
-            $reference = $this->generateUniqueReference('tutor_verifications','reference',16);
+            $reference = $this->generateUniqueReference('user_verifications','reference',16);
 
             $directorDocRequirement = UserVerificationDocumentType::where('slug',$input['docType'])->first();
             $google = new GoogleUpload();
@@ -127,7 +127,7 @@ class Settings extends BaseController
             ];
 
             //we create the document
-            $verification = TutorVerification::create($directorData);
+            $verification = UserVerification::create($directorData);
             if (!empty($verification)){
                 $user->isVerified=4;
                 $user->state=$input['state'];
@@ -390,61 +390,7 @@ class Settings extends BaseController
         }
     }
 
-    //CV settings
-    public function cvSetting()
-    {
-        $user = Auth::user();
-        $web = GeneralSetting::find(1);
 
-        return view('dashboard.users.settings.cv')->with([
-            'web'           =>$web,
-            'siteName'      =>$web->name,
-            'pageName'      =>'CV Settings',
-            'user'          =>$user,
-            'accountType'   =>$this->userAccountType($user),
-            'setting'       =>UserSetting::where('user',$user->id)->first()
-        ]);
-    }
-    //update cv
-    public function updateCVSetting(Request $request)
-    {
-        try {
-            $user = Auth::user();
-            $web = GeneralSetting::find(1);
-
-            $validator = Validator::make($request->all(),[
-                'cv'               =>['nullable','mimes:pdf,doc','max:10240'],
-                'coverLetter'      =>['nullable','string'],
-
-            ])->stopOnFirstFailure();
-            if ($validator->fails()){
-                return $this->sendError('validation.error',['error'=>$validator->errors()->all()],422);
-            }
-            $input = $validator->validated();
-            //upload file
-            if ($request->hasFile('cv')){
-                //upload image
-                $google = new GoogleUpload();
-                $imageResult = $google->uploadGoogle($request->file('cv'));
-                $cv  = $imageResult['link'];
-            }else{
-                $cv=$user->tutorCv;
-            }
-
-            if (User::where('id',$user->id)->update([
-                'coverLetter' =>$input['coverLetter'],
-                'tutorCv' => $cv
-            ])){
-                return $this->sendResponse([
-                    'redirectTo'=>url()->previous()
-                ],'CV updated');
-            }
-            return $this->sendError('error',['error'=>'Something went wrong']);
-        }catch (\Exception $exception){
-            Log::alert($exception->getMessage());
-            return $this->sendError('basic.settings.error',['error'=>'Internal Server Error']);
-        }
-    }
 
     //send otp
     public function sendOtp()
@@ -513,7 +459,6 @@ class Settings extends BaseController
             'user'          =>$user,
             'accountType'   =>$this->userAccountType($user),
             'setting'       =>UserSetting::where('user',$user->id)->first(),
-            'rateTypes'     =>RateType::where('status',1)->get(),
             'fiats'         =>Fiat::where('status',1)->get(),
             'countries'     =>Country::where('status',1)->get()
         ]);
@@ -531,27 +476,15 @@ class Settings extends BaseController
                 'gender'                =>['required','string','in:male,female,others'],
                 'dob'                   =>['required','date'],
                 'address'               =>['required','string'],
-                'workRate'              =>['required','numeric'],
-                'salaryType'            =>['required',Rule::exists('rate_types','id')],
-                'workPreference'        =>['required','string','in:1,2,3,4'],
-                'currentlyEmployed'     =>['nullable','numeric','integer'],
-                'currentEmployer'       =>['required_with:currentlyEmployed','string'],
-                'employerCountry'       =>['required_with:currentlyEmployed','string','exists:countries,iso3'],
-                'currentEmployerAddress'=>['required_with:employerCountry','string'],
-                'currentSalary'         =>['required_with:currentlyEmployed','numeric'],
-                'localized'             =>['nullable','numeric'],
                 'activeForJob'          =>['nullable','numeric'],
                 'tutorKeywords'         =>['nullable'],
                 'tutorKeywords.*'       =>['nullable','string'],
-                'minWorkHour'           =>['required','numeric'],
-                'maxWorkHour'           =>['required','numeric'],
                 'image'                 => ['nullable', 'image','max:1024'],
 
             ])->stopOnFirstFailure();
             if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
             $input = $validator->validated();
 
-            $salaryType = RateType::find($input['salaryType']);
 
             if ($request->hasFile('image')){
                 //upload image
@@ -565,20 +498,14 @@ class Settings extends BaseController
             //update the user's profile
             if (User::where('id',$user->id)->update([
                 'bio'=>$input['bio'], 'gender'=>$input['gender'],
-                'workRate'=>$input['workRate'], 'rateType'=>$salaryType->duration,'rateTypeId'=>$salaryType->id,
-                'currentlyEmployed'=>$request->filled('currentlyEmployed')?1:2,
-                'tutorKeywords'=>implode(',',$input['tutorKeywords']),
-                'currentEmployer'=>$input['currentEmployer'], 'currentEmployerCountry'=>$input['employerCountry'],
-                'currentEmployerAddress'=>$input['currentEmployerAddress'], 'currentSalary'=>$input['currentSalary'],
-                'localized'=>$request->filled('localized')?1:2, 'activelyLookingForJob'=>$request->filled('activeForJob')?1:2,
-                'typeOfJob'=>$input['workPreference'], 'completedProfile'=>1, 'dob'=>$input['dob'],
-                'displayName'=>$input['displayName'], 'address'=>$input['address'], 'tutorMinHour'=>$input['minWorkHour'],
-                'tutorMaxHour'=>$input['maxWorkHour'],'photo'=>$image
+                'activelyLookingForJob'=>$request->filled('activeForJob')?1:2,
+                 'dob'=>$input['dob'],'displayName'=>$input['displayName'], 'address'=>$input['address'],
+                'photo'=>$image
             ])){
-                $this->userNotification($user,'Portfolio updated','Your portfolio data has been updated.',$request->ip());
+                $this->userNotification($user,'Profile updated','Your profile data has been updated.',$request->ip());
                 return $this->sendResponse([
                     'redirectTo'=>route('user.portfolios.index')
-                ],'Portfolio update successful. Redirecting soon ...');
+                ],'profile update successful. Redirecting soon ...');
             }
             return $this->sendError('setup.error',['error'=>'Something went wrong. Please try again']);
         }catch (\Exception $exception){

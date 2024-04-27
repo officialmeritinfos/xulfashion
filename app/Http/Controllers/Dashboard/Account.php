@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AccountFunding;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
-use App\Models\TutorTransaction;
+use App\Models\Transaction;
 use App\Models\UserActivity;
 use App\Models\UserBank;
 use App\Models\UserDeposit;
@@ -32,11 +32,8 @@ class Account extends BaseController
     {
         $user = Auth::user();
         $web = GeneralSetting::find(1);
-        if ($user->accountType==1){
-            $transactions = TutorTransaction::where('user',$user->id)->limit(10)->get();
-        }else{
-            $transactions = AccountFunding::where('user',$user->id)->limit(10)->get();
-        }
+        $trans= Transaction::where('user',$user->id)->limit(10)->get();
+        $transactions = AccountFunding::where('user',$user->id)->limit(10)->get();
 
         return view('dashboard.common.account')->with([
             'web'           =>$web,
@@ -45,6 +42,7 @@ class Account extends BaseController
             'user'          =>$user,
             'accountType'   =>$this->userAccountType($user),
             'transactions'  =>$transactions,
+            'trans'  =>$trans,
             'banks'         =>UserBank::where([
                 'user' => $user->id,
                 'status' => 1
@@ -83,7 +81,7 @@ class Account extends BaseController
             $account = 'account';
 
 
-            $transaction = TutorTransaction::create([
+            $transaction = Transaction::create([
                 'user'=>$user->id,'reference'=>$this->generateUniqueReference('tutor_transactions','reference',20),
                 'amount'=>$input['amount'],'transactionType'=>2,'currency'=>$user->mainCurrency,
                 'newBalance'=>$balanceAfter,'status' => 1
@@ -226,7 +224,7 @@ class Account extends BaseController
             if (!empty($withdrawal)){
                 $user->refresh();
 
-                TutorTransaction::create([
+                Transaction::create([
                     'user'=>$user->id,
                     'reference'=>$this->generateUniqueReference('tutor_transactions','reference',20),
                     'currency'=>$withdrawal->currency,
