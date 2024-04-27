@@ -13,13 +13,13 @@
 <li>
     <a href="#" class="box-style">
         <i class="ri-store-2-fill"></i>
-        <span class="menu-title">Business Profile</span>
+        <span class="menu-title">Store</span>
     </a>
 </li>
 <li>
     <a href="#" class="box-style">
         <i class="bx bxs-t-shirt"></i>
-        <span class="menu-title">Model Profile</span>
+        <span class="menu-title">Model</span>
     </a>
 </li>
 <li>
