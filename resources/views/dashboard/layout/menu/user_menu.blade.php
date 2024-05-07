@@ -5,7 +5,7 @@
     </a>
 </li>
 <li>
-    <a href="#" class="box-style">
+    <a href="{{route('user.ads.index')}}" class="box-style">
         <i class="ri-table-alt-line"></i>
         <span class="menu-title">ADs</span>
     </a>
