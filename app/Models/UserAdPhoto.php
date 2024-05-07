@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserAdPhoto extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
     protected $guarded=[];
     protected $table='user_ads_photos';
 }

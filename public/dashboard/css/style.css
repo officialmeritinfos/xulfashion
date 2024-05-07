@@ -6422,7 +6422,7 @@ Product Details Area Style
 
 .product-details-image {
   border-radius: 10px;
-  background-image: url(../images/products/product-2.jpg);
+  /*background-image: url(../images/products/product-2.jpg);*/
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;

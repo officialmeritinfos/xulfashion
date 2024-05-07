@@ -76,7 +76,7 @@
                         <label class="form-check-label" for="negotiate2">No</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input boxed-check-success" type="radio" name="negotiate" id="negotiate3" value="2">
+                        <input class="form-check-input boxed-check-success" type="radio" name="negotiate" id="negotiate3" value="3">
                         <label class="form-check-label" for="negotiate3">Not Sure</label>
                     </div>
                 </div>

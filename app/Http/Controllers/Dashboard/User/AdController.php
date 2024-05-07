@@ -105,7 +105,7 @@ class AdController extends BaseController
                 'amount'=>$input['price'],'serviceType'=>$input['serviceType'],
                 'state'=>$input['location'],'tags'=>implode(',',$input['category']),
                 'openToNegotiation'=>$input['negotiate'],'status'=>2,
-                'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency
+                'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2
             ]);
             if (!empty($ad)){
                 //check if photos were uploaded
@@ -154,9 +154,68 @@ class AdController extends BaseController
         ]);
     }
     //process edit ad
-    public function processAdEdit(Request $request)
+    public function processAdEdit(Request $request,$id)
     {
+        try {
+            $user = Auth::user();
+            $web = GeneralSetting::find(1);
+            $country = Country::where('iso3',$user->countryCode)->first();
+            $ad = UserAd::where([
+                'reference'=>$id,'user'=>$user->id
+            ])->first();
+            if (empty($ad)){
+                return $this->sendError('ad.error',['error'=>'Ad not found']);
+            }
 
+            $validator = Validator::make($request->all(),[
+                'location'=>['required','alpha',Rule::exists('states','iso2')->where('country_code',$country->iso2)],
+                'featuredPhoto'=>['nullable','image','max:2048'],
+                'title'=>['required','string','max:200'],
+                'companyName'=>['nullable','string','max:150'],
+                'serviceType'=>['required','integer','exists:service_types,id'],
+                'description'=>['required','string'],
+                'priceType'=>['required','integer','in:1,2'],
+                'price'=>['nullable','numeric'],
+                'negotiate'=>['nullable','numeric','in:1,2,3'],
+                'category'=>['nullable'],
+                'category.*'=>['nullable','string'],
+            ],[],[
+                'negotiate'=>'Open to Negotiation',
+            ])->stopOnFirstFailure();
+
+            if ($validator->fails()) {
+                return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
+            }
+            $input = $validator->validated();
+
+            //let us try to upload the image
+            if ($request->hasFile('featuredPhoto')) {
+                //lets upload the featured image
+                $result = $this->google->uploadGoogle($request->file('featuredPhoto'));
+                $featuredPhoto  = $result['link'];
+            }else{
+                $featuredPhoto = $ad->featuredImage;
+            }
+
+            $ad = UserAd::where('id',$ad->id)->update([
+                'title'=>$input['title'],'description'=>$input['description'],
+                'companyName'=>$input['companyName'],'priceType'=>$input['priceType'],
+                'amount'=>$input['price'],'serviceType'=>$input['serviceType'],
+                'state'=>$input['location'],'tags'=>implode(',',$input['category']),
+                'openToNegotiation'=>$input['negotiate'],'status'=>2,
+                'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2
+            ]);
+            if (!empty($ad)){
+                return $this->sendResponse([
+                    'redirectTo'=>route('user.ads.index')
+                ],'Ad successfully updated. Redirecting soon ...');
+            }
+        }catch (\Exception $exception){
+            Log::info('Error in  ' . __METHOD__ . ' while updating ad: ' . $exception->getMessage());
+            return $this->sendError('server.error',[
+                'error'=>'A server error occurred while processing your request.'
+            ]);
+        }
     }
     //delete ad
     public function deleteAd($id)
@@ -192,7 +251,66 @@ class AdController extends BaseController
             'accountType'   =>$this->userAccountType($user),
             'states'        =>State::where('country_code',$country->iso2)->where('iso2',$ad->state)->orderBy('name','asc')->first(),
             'service'       =>ServiceType::where('status',1)->where('id',$ad->serviceType)->first(),
-            'ad'            =>$ad
+            'ad'            =>$ad,
+            'photos'        =>UserAdPhoto::where('ad',$ad->id)->get()
         ]);
+    }
+    //delete ad
+    public function deleteAdPhoto($ads,$id)
+    {
+        $user = Auth::user();
+
+        $ad = UserAd::where([
+            'reference'=>$ads,'user'=>$user->id
+        ])->firstOrFail();
+
+        UserAdPhoto::where([
+            'ad'=>$ad->id,'id'=>$id
+        ])->delete();
+
+        return back()->with('success','Photo successfully deleted');
+    }
+    //add ad photos
+    public function processAdPhotoUpload(Request $request, $id)
+    {
+        try {
+            $user = Auth::user();
+            $ad = UserAd::where([
+                'reference'=>$id,'user'=>$user->id
+            ])->first();
+            if (empty($ad)){
+                return $this->sendError('ad.error',['error'=>'Ad not found']);
+            }
+
+            $validator = Validator::make($request->all(),[
+                'photos'=>['nullable'],
+                'photos.*'=>['nullable','image','max:2048'],
+            ])->stopOnFirstFailure();
+
+            if ($validator->fails()) {
+                return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
+            }
+
+            //check if photos were uploaded
+            if ($request->file('photos')){
+                foreach ($request->file('photos') as $index => $item) {
+                    $result = $this->google->uploadGoogle($item);
+                    $fileName = $result['link'];
+
+                    UserAdPhoto::create([
+                        'ad'=>$ad->id,'photo'=>$fileName
+                    ]);
+                }
+            }
+            return $this->sendResponse([
+                'redirectTo'=>url()->previous()
+            ],'Image upload successful');
+
+        }catch (\Exception $exception){
+            Log::info('Error in  ' . __METHOD__ . ' while adding ad photo: ' . $exception->getMessage());
+            return $this->sendError('server.error',[
+                'error'=>'A server error occurred while processing your request.'
+            ]);
+        }
     }
 }

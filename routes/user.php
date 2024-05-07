@@ -70,9 +70,15 @@ Route::middleware('completedProfile')->group(function (){
         ->name('ads.edit');
     Route::get('ads/{id}/delete',[AdController::class,'deleteAd'])
         ->name('ads.delete');
+    Route::get('ads/photo/{ad}/{id}/delete',[AdController::class,'deleteAdPhoto'])
+        ->name('ads.photo.delete');
 
     //POST
     Route::post('ads/new/process',[AdController::class,'processAdCreation'])
         ->name('ads.new.process');
+    Route::post('ads/edit/{id}/process',[AdController::class,'processAdEdit'])
+        ->name('ads.edit.process');
+    Route::post('ads/photo/add/{id}/process',[AdController::class,'processAdPhotoUpload'])
+        ->name('ads.photo.add.process');
 
 });

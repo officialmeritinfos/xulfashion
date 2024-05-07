@@ -2,11 +2,11 @@
 
 namespace App\Custom;
 
+use App\Models\Country;
 use App\Models\Job;
 use App\Models\JobType;
 use App\Models\RateType;
-use App\Models\TutorApplication;
-use App\Models\TutorEmployment;
+use App\Models\State;
 use App\Models\User;
 use App\Models\UserBank;
 use App\Traits\Helpers;
@@ -41,12 +41,6 @@ class Regular
     public function userById($id): User
     {
         return User::where('id',$id)->first();
-    }
-    //fetch job by employment reference
-    public function fetchJobByEmploymentRef($ref): Job
-    {
-        $employment = TutorEmployment::where('reference',$ref)->first();
-        return Job::where('reference',$employment->jobReference)->first();
     }
     //fetch job by Id
     public function fetchJobById($id): Job
@@ -105,9 +99,38 @@ class Regular
     {
         return RateType::where('id',$id)->first();
     }
-    //number of interviews sent
-    public function numberOfInterviewsSent($jobId)
+    //fetch country by ISO3
+    public function fetchCountryIso3($iso3)
     {
-        return TutorApplication::where('jobId',$jobId)->where('invitedForInterview',1)->count();
+        return Country::where('iso3',$iso3)->first();
+    }
+    //fetch country by ISO2
+    public function fetchCountryIso2($iso2)
+    {
+        return Country::where('iso2',$iso2)->first();
+    }
+    //fetch state
+    public function fetchState($country,$state)
+    {
+        return State::where([
+            'country_code'=>$country,
+            'iso2'=>$state
+        ])->first();
+    }
+
+    public function openToNegotiation($state)
+    {
+        switch ($state){
+            case 1:
+                $text='Yes';
+                break;
+            case 2:
+                $text='No';
+                break;
+            default:
+                $text='Not Sure';
+                break;
+        }
+        return $text;
     }
 }
