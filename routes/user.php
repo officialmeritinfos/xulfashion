@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\Account;
 use App\Http\Controllers\Dashboard\Home;
 use App\Http\Controllers\Dashboard\User\AdController;
 use App\Http\Controllers\Dashboard\User\Settings;
+use App\Http\Controllers\Dashboard\User\Stores;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('completedProfile')->group(function (){
@@ -81,4 +82,17 @@ Route::middleware('completedProfile')->group(function (){
     Route::post('ads/photo/add/{id}/process',[AdController::class,'processAdPhotoUpload'])
         ->name('ads.photo.add.process');
 
+    /*========================= STORES CONTROLLER ==========================*/
+    Route::get('stores/index',[Stores::class,'landingPage'])
+        ->name('stores.index');
+    //GET
+    Route::get('stores/new',[Stores::class,'initializeStore'])
+        ->name('stores.new');
+    Route::get('stores/verify',[Stores::class,'initializeStore'])
+        ->name('stores.verify');
+
+
+    //POST
+    Route::post('stores/initialize/process',[Stores::class,'processStoreInitialization'])
+        ->name('stores.initialize.process');
 });

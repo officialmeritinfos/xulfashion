@@ -240,4 +240,18 @@ trait Helpers
 
         return str_replace($defaultDum,$dataReplace,$words);
     }
+    public function generateUniqueSlug($table ,$title, $separator = '-')
+    {
+        $slug = Str::slug($title, $separator);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (DB::table($table)->where('slug', $slug)->exists()) {
+            $slug = $originalSlug . $separator . $count;
+            $count++;
+        }
+        return $slug;
+
+    }
+
 }

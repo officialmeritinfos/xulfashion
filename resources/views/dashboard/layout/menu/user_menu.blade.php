@@ -11,7 +11,7 @@
     </a>
 </li>
 <li>
-    <a href="#" class="box-style">
+    <a href="{{route('user.stores.index')}}" class="box-style">
         <i class="ri-store-2-fill"></i>
         <span class="menu-title">Store</span>
     </a>
