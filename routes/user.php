@@ -88,11 +88,13 @@ Route::middleware('completedProfile')->group(function (){
     //GET
     Route::get('stores/new',[Stores::class,'initializeStore'])
         ->name('stores.new');
-    Route::get('stores/verify',[Stores::class,'initializeStore'])
+    Route::get('stores/verify',[Stores::class,'verifyStore'])
         ->name('stores.verify');
 
 
     //POST
     Route::post('stores/initialize/process',[Stores::class,'processStoreInitialization'])
         ->name('stores.initialize.process');
+    Route::post('stores/kyc/process',[Stores::class,'processKybSubmission'])
+        ->name('stores.kyc.process');
 });
