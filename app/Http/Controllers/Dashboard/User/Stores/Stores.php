@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\User;
+namespace App\Http\Controllers\Dashboard\User\Stores;
 
 use App\Custom\GoogleUpload;
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\GeneralSetting;
 use App\Models\ServiceType;
@@ -14,12 +13,11 @@ use App\Models\UserStore;
 use App\Models\UserStoreCatalogCategory;
 use App\Models\UserStoreSetting;
 use App\Models\UserStoreVerification;
-use App\Models\UserVerification;
-use App\Models\UserVerificationDocumentType;
 use App\Traits\Helpers;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -145,8 +143,9 @@ class Stores extends BaseController
             ]);
         }
     }
-    //verify store
-    public function verifyStore()
+
+    //edit store
+    public function editStoreInfo(): View|Application|Factory|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $user = Auth::user();
         $web = GeneralSetting::find(1);
@@ -158,35 +157,42 @@ class Stores extends BaseController
         }
         $country = Country::where('iso3',$user->countryCode)->first();
 
-        return view('dashboard.users.stores.kyc')->with([
+        return view('dashboard.users.stores.edit_store')->with([
             'web'           =>$web,
             'siteName'      =>$web->name,
-            'pageName'      =>'Store KYC',
+            'pageName'      =>'Edit Store Info',
             'user'          =>$user,
             'accountType'   =>$this->userAccountType($user),
             'states'        =>State::where('country_code',$country->iso2)->orderBy('name','asc')->get(),
+            'services'      =>ServiceType::where('status',1)->get(),
             'store'         =>$store
         ]);
     }
-    //process kyb submission
-    public function processKybSubmission(Request $request)
+    //process store edit
+    public function processStoreEdit(Request $request,$id)
     {
         try {
             $web = GeneralSetting::find(1);
             $user = Auth::user();
-            $store = UserStore::where('user',$user->id)->first();
+            $country = Country::where('iso3',$user->countryCode)->first();
+
+            $store = UserStore::where([
+                'user'=>$user->id,'reference'=>$id
+            ])->first();
             if (empty($store)){
                 return $this->sendError('store.error',['error'=>'Store not initialized.']);
             }
+
             $validator = Validator::make($request->all(),[
-                'legalName'=>['required','string','max:200'],
-                'regNumber'=>['required','string','max:50'],
-                'regCert'=>['required','mimes:jpg,jpeg,png,pdf','max:2048'],
-                'addressProof'=>['required','mimes:jpg,jpeg,png,pdf','max:1024'],
-                'doingBusinessAs'=>['required','string','max:150'],
-                'address'=>['required','string','max:200'],
-            ],[],[
-                'addressProof'=>'Proof of Address',
+                'name'=>['required','string','max:200'],
+                'serviceType'=>['required','integer','exists:service_types,id'],
+                'description'=>['required','string'],
+                'state'=>['required','alpha',Rule::exists('states','iso2')->where('country_code',$country->iso2)],
+                'city'=>['required','string','max:150'],
+                'address'=>['required','string'],
+                'phone'=>['required','string'],
+                'email'=>['required','email'],
+                'file'=>['nullable','image','max:2048'],
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -194,65 +200,36 @@ class Stores extends BaseController
             }
             $input = $validator->validated();
 
-
-            $reference = $this->generateUniqueReference('user_store_verifications','reference',16);
-
-
-
-            //let us upload the director's proof of address
-            if ($request->hasFile('addressProof')) {
+            //let us try to upload the image
+            if ($request->hasFile('file')) {
                 //lets upload the address proof
-                $result = $this->google->uploadGoogle($request->file('addressProof'));
-                $addressProof  = $result['link'];
-            }
-
-            //let us upload the business certificate
-            if ($request->hasFile('regCert')) {
-                $results = $this->google->uploadGoogle($request->file('regCert'));
-                $certificate  = $results['link'];
+                $result = $this->google->uploadGoogle($request->file('file'));
+                $logo  = $result['link'];
+            }else{
+                $logo=$store->logo;
             }
 
 
-            //collate business's data
-            $businessData = [
-                'store'=>$store->id,
-                'reference'=>$reference,
-                'certificate'=>$certificate,
-                'addressProof'=>$addressProof,
-                'status'=>4,
-                'address'=>$input['address'],'regNumber'=>$input['regNumber'],
-                'dba'=>$input['doingBusinessAs'],'legalName'=>$input['legalName']
-            ];
+            if (UserStore::where('id',$store->id)->update([
+                'user'=>$user->id,
+                'name'=>$input['name'],'description'=>$input['description'],
+                'service'=>$input['serviceType'],
+                'state'=>$input['state'],'city'=>$input['city'],
+                'logo'=>$logo,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
+                'address'=>$input['address'],'email'=>$input['email'],'phone'=>$input['phone'],
+            ])){
 
-            //we create the document
-            $verification = UserStoreVerification::create($businessData);
-            if (!empty($verification)){
-                $store->isVerified=4;
-                $store->legalName=$input['legalName'];
-                $store->address=$input['address'];
-                $store->save();
-
-                //send notification
-                $message = "The KYC for your store ".$store->name." has been submitted and is currently under review.";
-                $this->userNotification($user,'KYC for Store submitted',$message,$request->ip());
-
-                //send message to admin
-                $adminMessage = "A new KYC for business account has been received from ".$user->name.". The required
-                documents have been uploaded and is awaiting your review. KYC Reference ID is ".$reference;
-                $this->sendAdminMail($adminMessage,'New KYB for Store Submitted.');
-
+                $this->userNotification($user,'Store Information Updated','Your store information was successfully updated',$request->ip());
                 return $this->sendResponse([
-                    'redirectTo'=>url()->previous()
-                ],'Your Store KYC has been received and will be reviewed shortly. ');
+                    'redirectTo'=>route('user.stores.index')
+                ],'Store successfully updated. Redirecting soon ...');
             }
-            return $this->sendError('document.error',[
-                'error'=>'Something went wrong while processing your documents'
-            ]);
         }catch (\Exception $exception){
-            Log::info('Error in  ' . __METHOD__ . ' updating verification documents: ' . $exception->getMessage());
+            Log::info('Error in  ' . __METHOD__ . ' while edit store info: ' . $exception->getMessage());
             return $this->sendError('server.error',[
                 'error'=>'A server error occurred while processing your request.'
             ]);
         }
     }
+
 }

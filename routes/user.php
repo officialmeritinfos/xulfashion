@@ -4,7 +4,15 @@ use App\Http\Controllers\Dashboard\Account;
 use App\Http\Controllers\Dashboard\Home;
 use App\Http\Controllers\Dashboard\User\AdController;
 use App\Http\Controllers\Dashboard\User\Settings;
-use App\Http\Controllers\Dashboard\User\Stores;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\CatalogController;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Coupons;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Customers;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\KYB;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\NewsLetter;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Orders;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Teams;
+use App\Http\Controllers\Dashboard\User\Stores\Stores;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Settings as StoreSettings;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('completedProfile')->group(function (){
@@ -88,13 +96,59 @@ Route::middleware('completedProfile')->group(function (){
     //GET
     Route::get('stores/new',[Stores::class,'initializeStore'])
         ->name('stores.new');
-    Route::get('stores/verify',[Stores::class,'verifyStore'])
-        ->name('stores.verify');
-
-
+    Route::get('stores/edit/info',[Stores::class,'editStoreInfo'])
+        ->name('stores.edit.info');//edit store info
     //POST
     Route::post('stores/initialize/process',[Stores::class,'processStoreInitialization'])
         ->name('stores.initialize.process');
-    Route::post('stores/kyc/process',[Stores::class,'processKybSubmission'])
+    Route::post('stores/edit/{id}/process',[Stores::class,'processStoreEdit'])
+        ->name('stores.edit.process');
+    /*===============================STORE ACTIONS ===============================*/
+    //KYB
+    Route::get('stores/verify',[KYB::class,'verifyStore'])
+        ->name('stores.verify');//store kyb
+    Route::post('stores/kyc/process',[KYB::class,'processKybSubmission'])
         ->name('stores.kyc.process');
+    //Settings
+    Route::get('stores/edit/settings',[StoreSettings::class,'editStoreSettings'])
+        ->name('stores.edit.settings');//edit store settings
+    Route::post('stores/edit/settings/{id}/process',[StoreSettings::class,'processStoreSettingsEdit'])
+        ->name('stores.edit.settings.process');
+    //Products
+    Route::get('stores/catalog',[CatalogController::class,'landingPage'])
+        ->name('stores.catalog');//store catalog
+    //Newsletter
+    Route::get('stores/newsletter',[NewsLetter::class,'landingPage'])
+        ->name('stores.newsletter');//store newsletter
+    //Coupons
+    Route::get('stores/coupons',[Coupons::class,'landingPage'])
+        ->name('stores.coupons');//store coupons
+    Route::get('stores/coupons/new',[Coupons::class,'addNew'])
+        ->name('stores.coupons.new');//new store coupon landing page
+    Route::post('stores/coupons/new/process',[Coupons::class,'processNewCoupon'])
+        ->name('stores.coupons.new.process');//new store coupon process
+    Route::get('stores/coupons/{id}/delete',[Coupons::class,'deleteCoupon'])
+        ->name('stores.coupons.delete');//delete
+    Route::get('stores/coupons/{id}/edit',[Coupons::class,'editCouponPage'])
+        ->name('stores.coupons.edit');//edit coupon page
+    Route::post('stores/coupons/edit/{id}/process',[Coupons::class,'processEditCoupon'])
+        ->name('stores.coupons.edit.process');//edit store coupon process
+
+    //Orders
+    Route::get('stores/orders',[Orders::class,'landingPage'])
+        ->name('stores.orders');//store orders
+    Route::get('stores/orders/{id}/details',[Orders::class,'landingPage'])
+        ->name('stores.orders.details');//store orders details
+    //Teams
+    Route::get('stores/teams',[Teams::class,'landingPage'])
+        ->name('stores.teams');//store teams
+    //Customers
+    Route::get('stores/customers',[Customers::class,'landingPage'])
+        ->name('stores.customers');//store customers
+    Route::get('stores/customers/export',[Customers::class,'exportSubscribers'])
+        ->name('stores.customers.export');//export store customers who are subscribed to newsletter
+    Route::get('stores/customers/{id}/detail',[Customers::class,'customerDetails'])
+        ->name('stores.customers.detail');//store customers detail
+
+
 });
