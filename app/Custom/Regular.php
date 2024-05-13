@@ -9,6 +9,8 @@ use App\Models\RateType;
 use App\Models\State;
 use App\Models\User;
 use App\Models\UserBank;
+use App\Models\UserStoreCatalogCategory;
+use App\Models\UserStoreProduct;
 use App\Traits\Helpers;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -132,5 +134,12 @@ class Regular
                 break;
         }
         return $text;
+    }
+    //number of products in a category in a store
+    public function numberOfProductInStoreCategory($store,$category)
+    {
+        return UserStoreProduct::where([
+            'store'=>$store,'category'=>$category
+        ])->count();
     }
 }

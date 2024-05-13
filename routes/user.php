@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\Home;
 use App\Http\Controllers\Dashboard\User\AdController;
 use App\Http\Controllers\Dashboard\User\Settings;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\CatalogController;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Categories;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Coupons;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Customers;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\KYB;
@@ -114,9 +115,23 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.edit.settings');//edit store settings
     Route::post('stores/edit/settings/{id}/process',[StoreSettings::class,'processStoreSettingsEdit'])
         ->name('stores.edit.settings.process');
-    //Products
+    //CATALOG
     Route::get('stores/catalog',[CatalogController::class,'landingPage'])
         ->name('stores.catalog');//store catalog
+    //Product
+    Route::get('stores/catalog/products',[CatalogController::class,'products'])
+        ->name('stores.catalog.products');//store product catalog
+    Route::get('stores/catalog/products/new',[CatalogController::class,'newProducts'])
+        ->name('stores.catalog.products.new');//new store product catalog
+    //Categories
+    Route::get('stores/catalog/category',[Categories::class,'landingPage'])
+        ->name('stores.catalog.category');//store catalog category
+    Route::post('stores/catalog/category/new/process',[Categories::class,'processNewCategory'])
+        ->name('stores.catalog.category.new.process');
+    Route::get('stores/catalog/category/{id}/edit',[Categories::class,'editCategory'])
+        ->name('stores.catalog.category.edit');//edit store catalog category
+    Route::post('stores/catalog/category/edit/process',[Categories::class,'processCategoryEdit'])
+        ->name('stores.catalog.category.edit.process');//process category edit
     //Newsletter
     Route::get('stores/newsletter',[NewsLetter::class,'landingPage'])
         ->name('stores.newsletter');//store newsletter
