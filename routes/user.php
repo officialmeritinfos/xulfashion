@@ -123,6 +123,8 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.catalog.products');//store product catalog
     Route::get('stores/catalog/products/new',[CatalogController::class,'newProducts'])
         ->name('stores.catalog.products.new');//new store product catalog
+    Route::post('stores/catalog/products/new/process',[CatalogController::class,'processNewProduct'])
+        ->name('stores.catalog.products.new.process');//process new store product catalog
     //Categories
     Route::get('stores/catalog/category',[Categories::class,'landingPage'])
         ->name('stores.catalog.category');//store catalog category
@@ -130,8 +132,10 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.catalog.category.new.process');
     Route::get('stores/catalog/category/{id}/edit',[Categories::class,'editCategory'])
         ->name('stores.catalog.category.edit');//edit store catalog category
-    Route::post('stores/catalog/category/edit/process',[Categories::class,'processCategoryEdit'])
+    Route::post('stores/catalog/category/{id}/edit/process',[Categories::class,'processCategoryEdit'])
         ->name('stores.catalog.category.edit.process');//process category edit
+    Route::get('stores/catalog/category/{id}/delete',[Categories::class,'deleteCategory'])
+        ->name('stores.catalog.category.delete');//delete store catalog category
     //Newsletter
     Route::get('stores/newsletter',[NewsLetter::class,'landingPage'])
         ->name('stores.newsletter');//store newsletter

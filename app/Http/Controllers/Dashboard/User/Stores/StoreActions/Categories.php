@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
 use App\Models\UserStore;
 use App\Models\UserStoreCatalogCategory;
+use App\Models\UserStoreProduct;
 use App\Traits\Helpers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -97,7 +99,7 @@ class Categories extends BaseController
         return view('dashboard.users.stores.components.catalog.category.edit')->with([
             'web'           =>$web,
             'siteName'      =>$web->name,
-            'pageName'      =>'New Store Category',
+            'pageName'      =>'Edit Store Category',
             'user'          =>$user,
             'accountType'   =>$this->userAccountType($user),
             'store'         =>$store,
@@ -108,7 +110,77 @@ class Categories extends BaseController
     }
 
     //process edit category
-    public function processCategoryEdit(){
+    public function processCategoryEdit(Request $request,$id){
+        try {
+            $web = GeneralSetting::find(1);
+            $user = Auth::user();
+            $store = UserStore::where('user',$user->id)->first();
+            if (empty($store)){
+                return $this->sendError('store.error',['error'=>'Store not initialized.']);
+            }
+            $validator = Validator::make($request->all(),[
+                'name'=>['required','string','max:200'],
+                'status'=>['required','numeric','integer'],
+            ])->stopOnFirstFailure();
 
+            if ($validator->fails()) {
+                return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
+            }
+            $input = $validator->validated();
+
+            //check that the category does not exists already
+            $categoryExists = UserStoreCatalogCategory::where([
+                'store'=>$store->id,'categoryName'=>$input['name']
+            ])->whereNot('id',$id)->first();
+            if (!empty($categoryExists)){
+                return $this->sendError('category.error',['error'=>'Category already exists in store']);
+            }
+
+            $category=UserStoreCatalogCategory::where([
+                'store'=>$store->id,'id'=>$id
+            ])->first();
+            if (empty($category)){
+                return $this->sendError('category.error',['error'=>'Category not found in store']);
+            }
+
+            if(UserStoreCatalogCategory::where('id',$category->id)->update([
+                'categoryName'=>$input['name'], 'status'=>$input['status']
+            ])){
+                return $this->sendResponse([
+                    'redirectTo'=>url()->previous()
+                ],'Category successfully updated. Redirecting soon ...');
+            }
+        }catch (\Exception $exception){
+            Log::info('Error in  ' . __METHOD__ . ' updating store category: ' . $exception->getMessage());
+            return $this->sendError('server.error',[
+                'error'=>'A server error occurred while processing your request.'
+            ]);
+        }
+    }
+
+    public function deleteCategory($id): RedirectResponse
+    {
+        $web = GeneralSetting::find(1);
+        $user = Auth::user();
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized');
+        }
+
+        $category = UserStoreCatalogCategory::where([
+            'store'=>$store->id,'id'=>$id
+        ])->first();
+        if (empty($category)){
+           return back()->with('error','Category not found in store');
+        }
+        //check if category is found in any product
+        $productWithCategory = UserStoreProduct::where('category',$category->id)->count();
+        if ($productWithCategory >0){
+            return back()->with('error','Unable to delete category because some products have this category in their details - update instead');
+        }
+
+        $category->delete();
+
+        return back()->with('success','Category successfully deleted.');
     }
 }

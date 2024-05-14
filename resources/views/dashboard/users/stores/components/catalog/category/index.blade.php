@@ -92,7 +92,7 @@
                                                 </li>
                                                 @if($category->isDefault!=1)
                                                     <li>
-                                                        <a class="dropdown-item" href="#">
+                                                        <a class="dropdown-item" href="{{route('user.stores.catalog.category.delete',['id'=>$category->id])}}">
                                                             Delete
                                                             <i class="ri-delete-bin-6-line"></i>
                                                         </a>
