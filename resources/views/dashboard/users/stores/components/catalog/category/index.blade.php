@@ -79,7 +79,9 @@
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                 <li>
-                                                    <a class="dropdown-item" href="#">
+                                                    <a class="dropdown-item cpy"
+                                                       data-clipboard-text="Hey guys,checkout my new catalog on {{$siteName}} for {{$category->categoryName}}
+                                                   {{route('merchant.store.category',['subdomain'=>$store->slug,'id'=>$category->id])}}">
                                                         Share
                                                         <i class="ri-share-forward-2-fill"></i>
                                                     </a>

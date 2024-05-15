@@ -13,6 +13,10 @@ use App\Models\UserStoreProductColorVariation;
 use App\Models\UserStoreProductImage;
 use App\Models\UserStoreProductSizeVariation;
 use App\Traits\Helpers;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +32,7 @@ class CatalogController extends BaseController
         $this->google = new GoogleUpload();
     }
     //landing page
-    public function landingPage()
+    public function landingPage(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
         $user = Auth::user();
         $web = GeneralSetting::find(1);
@@ -70,8 +74,30 @@ class CatalogController extends BaseController
             'products'      =>UserStoreProduct::where('store',$store->id)->paginate(15)
         ]);
     }
+    //products
+    public function deletedProducts()
+    {
+        $user = Auth::user();
+        $web = GeneralSetting::find(1);
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+
+        return view('dashboard.users.stores.components.catalog.products.deleted_products')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>'Deleted Store Products',
+            'user'          =>$user,
+            'accountType'   =>$this->userAccountType($user),
+            'store'         =>$store,
+            'products'      =>UserStoreProduct::onlyTrashed()->where('store',$store->id)->paginate(15)
+        ]);
+    }
     //new products
-    public function newProducts()
+    public function newProducts(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
         $user = Auth::user();
         $web = GeneralSetting::find(1);
@@ -160,7 +186,7 @@ class CatalogController extends BaseController
                 'featuredImage'=>$featuredPhoto,'amount'=>$input['price'],
                 'currency'=>$store->currency,'keyFeatures'=>$input['features'],
                 'specifications'=>$input['specifications'],'manufacturer'=>$input['manufacturer'],
-                'brand'=>$input['brand'],'category'=>$input['category']
+                'brand'=>$input['brand'],'category'=>$input['category'],'quantity'=>$input['qty']
             ]);
 
             if(!empty($product)){
@@ -204,5 +230,113 @@ class CatalogController extends BaseController
                 'error'=>'A server error occurred while processing your request.'
             ]);
         }
+    }
+    //edit product status
+    public function editProductStatus(Request $request, $id): RedirectResponse
+    {
+        $status = $request->get('status');
+        $user = Auth::user();
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$id
+        ])->firstOrFail();
+
+        $product->status=$status;
+        $product->save();
+
+        return back()->with('success','Product Status updated');
+    }
+    //delete product
+    public function deleteProduct($id): RedirectResponse
+    {
+        $user = Auth::user();
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$id
+        ])->firstOrFail();
+
+        $product->delete();
+
+        return back()->with('success','Product successfully deleted');
+    }
+    //restore product
+    public function restoreProduct($id): RedirectResponse
+    {
+        $user = Auth::user();
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::onlyTrashed()->where([
+            'store'=>$store->id,'reference'=>$id
+        ])->firstOrFail();
+
+        $product->restore();
+
+        return back()->with('success','Product successfully restored');
+    }
+    //restore product
+    public function permanentlyDeleteProduct($id): RedirectResponse
+    {
+        $user = Auth::user();
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::onlyTrashed()->where([
+            'store'=>$store->id,'reference'=>$id
+        ])->firstOrFail();
+
+        UserStoreProductImage::where('product',$product->id)->delete();
+        UserStoreProductColorVariation::where('product',$product->id)->delete();
+        UserStoreProductSizeVariation::where('product',$product->id)->delete();
+
+        $product->forceDelete();
+
+        return redirect()->to(route('user.stores.catalog.products'))->with('success','Product successfully permanently trashed.');
+    }
+    //edit product page
+    public function editProducts($id): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    {
+        $user = Auth::user();
+        $web = GeneralSetting::find(1);
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+
+        return view('dashboard.users.stores.components.catalog.products.edit')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>'Edit Store Products',
+            'user'          =>$user,
+            'accountType'   =>$this->userAccountType($user),
+            'store'         =>$store,
+            'categories'    =>UserStoreCatalogCategory::where([
+                'store'     =>$store->id,
+                'status'    =>1
+            ])->get(),
+            'product'       =>UserStoreProduct::where(['store'=>$store->id,'reference'=>$id])->firstOrFail()
+        ]);
     }
 }

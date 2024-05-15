@@ -2,3 +2,4 @@
       integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ=="
       crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="{{asset('dashboard/css/selectize.bootstrap5.css')}}">
+<link rel="stylesheet" href="{{asset('dashboard/vendors/lightboxed/lightboxed.css')}}">

@@ -125,6 +125,18 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.catalog.products.new');//new store product catalog
     Route::post('stores/catalog/products/new/process',[CatalogController::class,'processNewProduct'])
         ->name('stores.catalog.products.new.process');//process new store product catalog
+    Route::get('stores/catalog/product/{id}/edit-status',[CatalogController::class,'editProductStatus'])
+        ->name('stores.catalog.product.edit.status');//edit store catalog product status
+    Route::get('stores/catalog/product/{id}/delete',[CatalogController::class,'deleteProduct'])
+        ->name('stores.catalog.product.delete');//delete store catalog product
+    Route::get('stores/catalog/products/deleted',[CatalogController::class,'deletedProducts'])
+        ->name('stores.catalog.products.deleted');//delete store product catalog
+    Route::get('stores/catalog/product/{id}/restore',[CatalogController::class,'restoreProduct'])
+        ->name('stores.catalog.product.restore');//restore deleted store catalog product
+    Route::get('stores/catalog/product/{id}/p-delete',[CatalogController::class,'permanentlyDeleteProduct'])
+        ->name('stores.catalog.product.p.delete');//permanently delete store catalog product
+    Route::get('stores/catalog/product/{id}/edit',[CatalogController::class,'editProducts'])
+        ->name('stores.catalog.product.edit');//edit store catalog product
     //Categories
     Route::get('stores/catalog/category',[Categories::class,'landingPage'])
         ->name('stores.catalog.category');//store catalog category

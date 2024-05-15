@@ -10,6 +10,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Models\UserBank;
 use App\Models\UserStoreCatalogCategory;
+use App\Models\UserStoreOrder;
 use App\Models\UserStoreProduct;
 use App\Traits\Helpers;
 use Carbon\Carbon;
@@ -142,4 +143,14 @@ class Regular
             'store'=>$store,'category'=>$category
         ])->count();
     }
+    //fetch category by id
+    public function fetchCategoryById($id)
+    {
+        return UserStoreCatalogCategory::where('id',$id)->first();
+    }
+    // total product purchase amount
+    public function totalProductPurchasedAmount()
+    {
+    }
+
 }
