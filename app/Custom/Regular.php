@@ -3,6 +3,7 @@
 namespace App\Custom;
 
 use App\Models\Country;
+use App\Models\Fiat;
 use App\Models\Job;
 use App\Models\JobType;
 use App\Models\RateType;
@@ -36,15 +37,17 @@ class Regular
         }
         return $url;
     }
-    //fetch employer id
-    public function employerById($id): User
-    {
-        return $this->userById($id);
-    }
+
     //fetch employer id
     public function userById($id): User
     {
         return User::where('id',$id)->first();
+    }
+
+    //fetch customer id
+    public function customerById($id): UserStoreCustomer
+    {
+        return UserStoreCustomer::where('id',$id)->first();
     }
     //fetch job by Id
     public function fetchJobById($id): Job
@@ -203,5 +206,19 @@ class Regular
             'status'=>1,
             'completedOnWhatsapp'=>2,
         ])->sum('amountToCredit');
+    }
+    //calculate charge
+    public function calculateChargeOnAmount($amount,$currency)
+    {
+        $fiat = Fiat::where('code',$currency)->orWhere('code','USD')->first();
+
+        $charge = ($fiat->charge/100)*$amount;
+
+        if ($charge > $fiat->maxCharge){
+            $charge = $fiat->maxCharge;
+        }
+
+        return $charge;
+
     }
 }

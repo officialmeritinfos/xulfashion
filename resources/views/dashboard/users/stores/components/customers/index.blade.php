@@ -12,14 +12,6 @@
                     </form>
                 </div>
 
-                <div class="col-lg-6 col-sm-6">
-                    <div class="add-new-orders">
-                        <a href="{{route('user.stores.customers.export')}}" class="new-orders">
-                            Export Subscribers
-                            <i class="ri-file-excel-2-fill"></i>
-                        </a>
-                    </div>
-                </div>
             </div>
 
             <div class="latest-transaction-area">

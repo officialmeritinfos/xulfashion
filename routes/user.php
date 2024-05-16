@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\User\Stores\StoreActions\CatalogController;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Categories;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Coupons;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Customers;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\InvoiceController;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\KYB;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\NewsLetter;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Orders;
@@ -183,11 +184,10 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.coupons.edit');//edit coupon page
     Route::post('stores/coupons/edit/{id}/process',[Coupons::class,'processEditCoupon'])
         ->name('stores.coupons.edit.process');//edit store coupon process
-
     //Orders
     Route::get('stores/orders',[Orders::class,'landingPage'])
         ->name('stores.orders');//store orders
-    Route::get('stores/orders/{id}/details',[Orders::class,'landingPage'])
+    Route::get('stores/orders/{id}/details',[Orders::class,'orderDetails'])
         ->name('stores.orders.details');//store orders details
     //Teams
     Route::get('stores/teams',[Teams::class,'landingPage'])
@@ -199,6 +199,16 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.customers.export');//export store customers who are subscribed to newsletter
     Route::get('stores/customers/{id}/detail',[Customers::class,'customerDetails'])
         ->name('stores.customers.detail');//store customers detail
-
+    //Invoices
+    Route::get('stores/invoices',[InvoiceController::class,'landingPage'])
+        ->name('stores.invoices');//store invoices
+    Route::post('stores/invoices/new/process',[InvoiceController::class,'processNewInvoice'])
+        ->name('stores.invoice.new.process');//new store invoice process
+    Route::get('stores/invoices/{id}/edit',[InvoiceController::class,'editInvoice'])
+        ->name('stores.invoices.edit');//edit invoice page
+    Route::post('stores/invoices/edit/{id}/process',[InvoiceController::class,'processEditInvoice'])
+        ->name('stores.invoice.edit.process');//edit store invoice process
+    Route::get('stores/invoices/{id}/details',[InvoiceController::class,'invoiceDetail'])
+        ->name('stores.invoices.details');//view invoice page
 
 });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
 use App\Models\UserStore;
 use App\Models\UserStoreCustomer;
+use App\Models\UserStoreInvoice;
 use App\Models\UserStoreOrder;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
@@ -60,7 +61,8 @@ class Customers extends BaseController
             'accountType'   =>$this->userAccountType($user),
             'store'         =>$store,
             'customer'      =>$customer,
-            'orders'        =>UserStoreOrder::where(['store'=>$store,'customer'=>$customer->id])->paginate(20)
+            'orders'        =>UserStoreOrder::where(['store'=>$store->id,'customer'=>$customer->id])->paginate(20),
+            'invoices'      =>UserStoreInvoice::where(['store'=>$store->id,'customer'=>$customer->id])->paginate(20,'*','invoice'),
         ]);
     }
     //export subscribers

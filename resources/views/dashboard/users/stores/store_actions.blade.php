@@ -31,6 +31,23 @@
             </a>
         </div>
     </div>
+
+    <div class="card shadow mb-3">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+            <div class="flex-grow-1 mb-3 mb-md-0">
+                <h5 class="card-title">
+                    <i class="ri-file-pdf-line"></i> Store Invoices
+                </h5>
+                <p class="card-text" style="word-break: break-word;">
+                    Create and manage Invoices for your clients
+                </p>
+            </div>
+            <a href="{{route('user.stores.invoices')}}" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                Manage
+            </a>
+        </div>
+    </div>
+
     <div class="card shadow mb-3">
         <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
             <div class="flex-grow-1 mb-3 mb-md-0">

@@ -40,4 +40,9 @@ Route::domain('{subdomain}.localhost')->group(function () {
         return;
     })->name('merchant.store.product.detail');//category page
 
+    Route::get('/invoice/{id}/detail', function (){
+        echo  "Hello";
+        return;
+    })->name('merchant.store.invoice.detail');//category page
+
 });
