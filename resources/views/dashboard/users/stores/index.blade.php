@@ -1,5 +1,6 @@
 @extends('dashboard.layout.base')
 @section('content')
+    @inject('injected','App\Custom\Regular')
 
     @empty($store)
         <div class="product-area">
@@ -19,7 +20,7 @@
             </div>
         </div>
     @else
-        @include('dashboard.users.stores.store_data')
+        @include('dashboard.users.stores.store_data',['injected'=>$injected])
         @include('dashboard.users.stores.store_actions')
     @endempty
 

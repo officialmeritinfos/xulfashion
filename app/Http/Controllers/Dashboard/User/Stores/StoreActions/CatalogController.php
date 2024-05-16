@@ -182,10 +182,10 @@ class CatalogController extends BaseController
 
             $product = UserStoreProduct::create([
                 'store'=>$store->id,'name'=>$input['name'],
-                'reference'=>$reference,'description'=>$input['description'],
+                'reference'=>$reference,'description'=>clean($input['description']),
                 'featuredImage'=>$featuredPhoto,'amount'=>$input['price'],
-                'currency'=>$store->currency,'keyFeatures'=>$input['features'],
-                'specifications'=>$input['specifications'],'manufacturer'=>$input['manufacturer'],
+                'currency'=>$store->currency,'keyFeatures'=>clean($input['features']),
+                'specifications'=>clean($input['specifications']),'manufacturer'=>$input['manufacturer'],
                 'brand'=>$input['brand'],'category'=>$input['category'],'quantity'=>$input['qty']
             ]);
 
@@ -338,5 +338,321 @@ class CatalogController extends BaseController
             ])->get(),
             'product'       =>UserStoreProduct::where(['store'=>$store->id,'reference'=>$id])->firstOrFail()
         ]);
+    }
+    //process product edit
+    public function processProductEdit(Request $request,$id)
+    {
+        try {
+            $web = GeneralSetting::find(1);
+            $user = Auth::user();
+            $store = UserStore::where('user',$user->id)->first();
+            if (empty($store)){
+                return $this->sendError('store.error',['error'=>'Store not initialized.']);
+            }
+            $product = UserStoreProduct::where([
+                'store'=>$store->id,'reference'=>$id
+            ])->first();
+            if (empty($product)){
+                return $this->sendError('product.error',['error'=>'Product not found.']);
+            }
+            $validator = Validator::make($request->all(),[
+                'featuredPhoto'=>['nullable','image','max:2048'],
+                'name'=>['required','string','max:200'],
+                'manufacturer'=>['nullable','string','max:150'],
+                'category'=>['required','numeric',Rule::exists('user_store_catalog_categories','id')->where('store',$store->id)],
+                'brand'=>['nullable','string','max:150'],
+                'price'=>['required','numeric'],
+                'qty'=>['required','numeric'],
+                'description'=>['required','string'],
+                'specifications'=>['required','string'],
+                'features'=>['required','string'],
+            ])->stopOnFirstFailure();
+
+            if ($validator->fails()) {
+                return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
+            }
+            $input = $validator->validated();
+
+            //check that the category does not exists already
+            $category = UserStoreCatalogCategory::where([
+                'store'=>$store->id,'id'=>$input['category']
+            ])->first();
+
+            if (empty($category)){
+                return $this->sendError('category.error',['error'=>'Category does not exist in store']);
+            }
+            //upload featured image
+            if ($request->hasFile('featuredPhoto')) {
+                //lets upload the address proof
+                $result = $this->google->uploadGoogle($request->file('featuredPhoto'));
+                $featuredPhoto  = $result['link'];
+            }else{
+                $featuredPhoto=$product->featuredImage;
+            }
+
+
+            if(UserStoreProduct::where('id',$product->id)->update([
+                'name'=>$input['name'],'description'=>clean($input['description']),
+                'featuredImage'=>$featuredPhoto,'amount'=>$input['price'],
+                'currency'=>$store->currency,'keyFeatures'=>clean($input['features']),
+                'specifications'=>clean($input['specifications']),'manufacturer'=>$input['manufacturer'],
+                'brand'=>$input['brand'],'category'=>$input['category'],'quantity'=>$input['qty']
+            ])){
+
+                return $this->sendResponse([
+                    'redirectTo'=>($request->has('addAnother'))?route('user.stores.catalog.products.new'):route('user.stores.catalog.products')
+                ],'Product successfully updated. Redirecting soon ...');
+            }
+        }catch (\Exception $exception){
+            Log::info('Error in  ' . __METHOD__ . ' updating store product: ' . $exception->getMessage());
+            return $this->sendError('server.error',[
+                'error'=>'A server error occurred while processing your request.'
+            ]);
+        }
+    }
+    //edit product page
+    public function editProductsImages($id): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    {
+        $user = Auth::user();
+        $web = GeneralSetting::find(1);
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        $product = UserStoreProduct::where(['store'=>$store->id,'reference'=>$id])->firstOrFail();
+
+        return view('dashboard.users.stores.components.catalog.products.product_images')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>'Edit Store Products Images',
+            'user'          =>$user,
+            'accountType'   =>$this->userAccountType($user),
+            'store'         =>$store,
+            'categories'    =>UserStoreCatalogCategory::where([
+                'store'     =>$store->id,
+                'status'    =>1
+            ])->get(),
+            'product'       =>$product,
+            'images'        =>UserStoreProductImage::where('product',$product->id)->paginate()
+        ]);
+    }
+    //edit product page
+    public function editProductsSpecs($id): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    {
+        $user = Auth::user();
+        $web = GeneralSetting::find(1);
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        $product = UserStoreProduct::where(['store'=>$store->id,'reference'=>$id])->firstOrFail();
+        return view('dashboard.users.stores.components.catalog.products.product_specs')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>'Edit Store Products Specifications',
+            'user'          =>$user,
+            'accountType'   =>$this->userAccountType($user),
+            'store'         =>$store,
+            'categories'    =>UserStoreCatalogCategory::where([
+                'store'     =>$store->id,
+                'status'    =>1
+            ])->get(),
+            'product'       =>$product,
+            'colors'        =>UserStoreProductColorVariation::where('product',$product->id)->paginate(),
+            'sizes'         =>UserStoreProductSizeVariation::where('product',$product->id)->paginate()
+        ]);
+    }
+    //delete product image
+    public function deleteProductImage($ref,$id): RedirectResponse
+    {
+        $user = Auth::user();
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$ref
+        ])->firstOrFail();
+
+        $image = UserStoreProductImage::where([
+            'product'=>$product->id,'id'=>$id
+        ])->firstOrFail();
+
+        $image->delete();
+
+        return back()->with('success','Product Image successfully deleted');
+    }
+
+    //delete product sizes
+    public function deleteProductSize($ref,$id): RedirectResponse
+    {
+        $user = Auth::user();
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$ref
+        ])->firstOrFail();
+
+        $size = UserStoreProductSizeVariation::where([
+            'product'=>$product->id,'id'=>$id
+        ])->firstOrFail();
+
+        $size->delete();
+
+        return back()->with('success','Product Size Variant successfully deleted');
+    }
+    //delete product color
+    public function deleteProductColor($ref,$id): RedirectResponse
+    {
+        $user = Auth::user();
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$ref
+        ])->firstOrFail();
+
+        $color = UserStoreProductColorVariation::where([
+            'product'=>$product->id,'id'=>$id
+        ])->firstOrFail();
+
+        $color->delete();
+
+        return back()->with('success','Product Color Variant successfully deleted');
+    }
+    //process new product addition
+    public function processNewProductImage(Request $request,$id)
+    {
+        try {
+            $web = GeneralSetting::find(1);
+            $user = Auth::user();
+            $store = UserStore::where('user',$user->id)->first();
+            if (empty($store)){
+                return $this->sendError('store.error',['error'=>'Store not initialized.']);
+            }
+            $product = UserStoreProduct::where([
+                'store'=>$store->id,'reference'=>$id
+            ])->first();
+            if (empty($product)){
+                return $this->sendError('product.error',['error'=>'Product not found.']);
+            }
+
+            $validator = Validator::make($request->all(),[
+                'file'=>['required'],
+                'file.*'=>['required','image','max:2048'],
+            ])->stopOnFirstFailure();
+
+            if ($validator->fails()) {
+                return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
+            }
+
+            if(!empty($product)){
+
+                //let us upload the product images
+                if ($request->file('file')){
+                    foreach ($request->file('file') as $index => $item) {
+                        $result = $this->google->uploadGoogle($item);
+                        $fileName = $result['link'];
+
+                        UserStoreProductImage::create([
+                            'product'=>$product->id,'image'=>$fileName
+                        ]);
+                    }
+                }
+
+                return $this->sendResponse([
+                    'redirectTo'=>url()->previous()
+                ],'Product Image successfully added. Redirecting soon ...');
+            }
+        }catch (\Exception $exception){
+            Log::info('Error in  ' . __METHOD__ . ' adding store product images: ' . $exception->getMessage());
+            return $this->sendError('server.error',[
+                'error'=>'A server error occurred while processing your request.'
+            ]);
+        }
+    }
+    //process new product addition
+    public function processNewProductVariant(Request $request,$id)
+    {
+        try {
+            $web = GeneralSetting::find(1);
+            $user = Auth::user();
+            $store = UserStore::where('user',$user->id)->first();
+            if (empty($store)){
+                return $this->sendError('store.error',['error'=>'Store not initialized.']);
+            }
+            $product = UserStoreProduct::where([
+                'store'=>$store->id,'reference'=>$id
+            ])->first();
+            if (empty($product)){
+                return $this->sendError('product.error',['error'=>'Product not found.']);
+            }
+
+            $validator = Validator::make($request->all(),[
+                'sizeName'=>['sometimes', 'required'],
+                'sizeName.*'=>['sometimes','required','string','max:200'],
+                'sizePrice'=>['sometimes','required'],
+                'sizePrice.*'=>['sometimes','required','numeric'],
+                'sizeQuantity'=>['sometimes','required'],
+                'sizeQuantity.*'=>['sometimes','required','numeric'],
+                'colorName'=>['sometimes','required'],
+                'colorName.*'=>['sometimes','required','string','max:200'],
+                'colorPrice'=>['sometimes','required'],
+                'colorPrice.*'=>['sometimes','required','numeric'],
+                'colorQuantity'=>['sometimes','required'],
+                'colorQuantity.*'=>['sometimes','required','numeric'],
+            ])->stopOnFirstFailure();
+
+            if ($validator->fails()) {
+                return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
+            }
+
+            if(!empty($product)){
+
+                //add the product specifications
+                if ($request->has('sizeName')){
+                    foreach ($request->input('sizeName') as $indexs =>$items ) {
+                        UserStoreProductSizeVariation::create([
+                            'product'=>$product->id,'name'=>$request->input('sizeName')[$indexs],
+                            'price'=>$request->input('sizePrice')[$indexs],'quantity'=>$request->input('sizeQuantity')[$indexs],
+                        ]);
+                    }
+                }
+                //add the product specifications
+                if ($request->has('colorName')){
+                    foreach ($request->input('colorName') as $indexs =>$items ) {
+                        UserStoreProductColorVariation::create([
+                            'product'=>$product->id,'name'=>$request->input('colorName')[$indexs],
+                            'price'=>$request->input('colorPrice')[$indexs],'quantity'=>$request->input('colorQuantity')[$indexs],
+                        ]);
+                    }
+                }
+
+                return $this->sendResponse([
+                    'redirectTo'=>url()->previous()
+                ],'Product Variants successfully added. Redirecting soon ...');
+            }
+        }catch (\Exception $exception){
+            Log::info('Error in  ' . __METHOD__ . ' adding store product variants: ' . $exception->getMessage());
+            return $this->sendError('server.error',[
+                'error'=>'A server error occurred while processing your request.'
+            ]);
+        }
     }
 }

@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard\User\Stores\StoreActions;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class Orders extends Controller
+class Orders extends BaseController
 {
-    //
+    //landing page
+    public function landingPage()
+    {
+
+    }
 }

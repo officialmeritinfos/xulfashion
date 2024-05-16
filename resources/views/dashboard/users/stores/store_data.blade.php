@@ -4,6 +4,14 @@
         <div class="card h-auto">
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="card-title mb-0">Statistics</h5>
+                <h5 class="card-title mb-0">
+                    <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank"><i class="ri-eye-line" data-bs-toggle="tooltip" title="View Store"></i> </a>
+                </h5>
+                <h5 class="card-title mb-0">
+                    <a class="cpy"
+                       data-clipboard-text="Hey guys,checkout my new store: {{$store->name}} on {{$siteName}}  {{route('merchant.store',['subdomain'=>$store->slug])}}"
+                    ><i class="ri-share-forward-2-fill" data-bs-toggle="tooltip" title="Share Store Link"></i> </a>
+                </h5>
             </div>
             <hr style="margin-top: -0.5rem;"/>
             <div class="card-body g-5">
@@ -12,17 +20,21 @@
                         <div class="d-flex align-items-center">
                             <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-chart-pie-2 ti-sm"></i></div>
                             <div class="card-info">
-                                <h5 class="mb-0">0</h5>
-                                <small>Branches</small>
+                                <h5 class="mb-0">{{$injected->formatNumber($injected->numberOfSalesInStore($store->id))}}</h5>
+                                <small>Total Sales<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                    title="Total number of orders received - which includes ony successfully processed orders where the status
+                                    has updated to completed."></i> </small>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="d-flex align-items-center">
-                            <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-chart-pie-2 ti-sm"></i></div>
+                            <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
                             <div class="card-info">
-                                <h5 class="mb-0">230k</h5>
-                                <small>Sales</small>
+                                <h5 class="mb-0">{{$injected->fetchCurrencySign($store->currency)->currency_symbol}}{{$injected->formatNumber($injected->revenueInStore($store->id))}} </h5>
+                                <small>Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                 title="Total sum of money earned through your stores. This only accounts for sales which was marked as completed.
+                                                 This is not the order amount but the amount after deducting charges."></i></small>
                             </div>
                         </div>
                     </div>
@@ -30,7 +42,7 @@
                         <div class="d-flex align-items-center">
                             <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
                             <div class="card-info">
-                                <h5 class="mb-0">8.549k</h5>
+                                <h5 class="mb-0">{{$injected->formatNumber($injected->numberOfCustomersInStore($store->id))}}</h5>
                                 <small>Customers</small>
                             </div>
                         </div>
@@ -39,17 +51,8 @@
                         <div class="d-flex align-items-center">
                             <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-shopping-cart ti-sm"></i></div>
                             <div class="card-info">
-                                <h5 class="mb-0">0</h5>
+                                <h5 class="mb-0">{{$injected->numberOfProductInStore($store->id)}}</h5>
                                 <small>Products</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
-                            <div class="card-info">
-                                <h5 class="mb-0">$9745</h5>
-                                <small>Revenue</small>
                             </div>
                         </div>
                     </div>

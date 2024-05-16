@@ -137,6 +137,25 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.catalog.product.p.delete');//permanently delete store catalog product
     Route::get('stores/catalog/product/{id}/edit',[CatalogController::class,'editProducts'])
         ->name('stores.catalog.product.edit');//edit store catalog product
+    Route::post('stores/catalog/product/{id}/edit.process',[CatalogController::class,'processProductEdit'])
+        ->name('stores.catalog.product.edit.process');//edit store catalog product
+    Route::get('stores/catalog/product/{id}/edit-image',[CatalogController::class,'editProductsImages'])
+        ->name('stores.catalog.product.edit.image');//edit store catalog product image
+    Route::get('stores/catalog/product/{id}/edit-specs',[CatalogController::class,'editProductsSpecs'])
+        ->name('stores.catalog.product.edit.specs');//edit store catalog product image
+
+    Route::get('stores/catalog/product/{ref}/image/{id}/delete',[CatalogController::class,'deleteProductImage'])
+        ->name('stores.catalog.product.image.delete');//delete store catalog product image
+    Route::post('stores/catalog/product/{id}/image/new/process',[CatalogController::class,'processNewProductImage'])
+        ->name('stores.catalog.product.image.new.process');//add store catalog product image
+
+
+    Route::get('stores/catalog/product/{ref}/size/{id}/delete',[CatalogController::class,'deleteProductSize'])
+        ->name('stores.catalog.product.size.delete');//delete store catalog product size
+    Route::get('stores/catalog/product/{ref}/color/{id}/delete',[CatalogController::class,'deleteProductColor'])
+        ->name('stores.catalog.product.color.delete');//delete store catalog product color
+    Route::post('stores/catalog/product/{id}/variant/new/process',[CatalogController::class,'processNewProductVariant'])
+        ->name('stores.catalog.product.variant.new.process');//add store catalog product image
     //Categories
     Route::get('stores/catalog/category',[Categories::class,'landingPage'])
         ->name('stores.catalog.category');//store catalog category

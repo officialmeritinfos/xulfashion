@@ -5,29 +5,29 @@
     <div class="submit-property-area">
         <div class="container-fluid">
             <form class="submit-property-form product-upload" enctype="multipart/form-data" id="processForm"
-                  method="post" action="{{route('user.stores.catalog.products.new.process')}}">
+                  method="post" action="{{route('user.stores.catalog.product.edit.process',['id'=>$product->reference])}}">
                 <h3>Product Information</h3>
                 <div class="row">
                     <div class="col-md-12">
-                        <label for="inputAddress" class="form-label">Featured Photo<sup class="text-danger">*</sup></label>
+                        <label for="inputAddress" class="form-label">Featured Photo</label>
                         <div class="input-group mb-3">
                             <input type="file" class="form-control" id="inputGroupFile02" name="featuredPhoto" accept="image/*">
                             <label class="input-group-text" for="inputGroupFile02">Upload</label>
                         </div>
                     </div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Product Name<sup class="text-danger">*</sup> </label>
-                                    <input type="text" class="form-control" name="name">
+                                    <input type="text" class="form-control" name="name" value="{{$product->name}}">
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Manufacturer Name</label>
-                                    <input type="text" class="form-control" name="manufacturer">
+                                    <input type="text" class="form-control" name="manufacturer" value="{{$product->manufacturer}}">
                                 </div>
                             </div>
 
@@ -37,7 +37,7 @@
                                     <select class="form-select form-control selectize" aria-label="Default select example" name="category">
                                         <option value="">Select an oOption</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->categoryName}}</option>
+                                            <option value="{{$category->id}}" {{($product->category==$category->id)?'selected':''}}>{{$category->categoryName}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -46,14 +46,14 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Manufacturer Brand</label>
-                                    <input type="text" class="form-control" name="brand">
+                                    <input type="text" class="form-control" name="brand" value="{{$product->brand}}">
                                 </div>
                             </div>
 
                             <div class="col-lg-8">
                                 <div class="form-group">
                                     <label>Price<sup class="text-danger">*</sup></label>
-                                    <input type="number" step="0.01" class="form-control" name="price">
+                                    <input type="number" step="0.01" class="form-control" name="price" value="{{$product->amount}}">
                                 </div>
                             </div>
 
@@ -63,7 +63,7 @@
                                         Quantity Available<sup class="text-danger">*</sup>
                                     </label>
                                     <input type="number" placeholder="Enter product quantity" class="form-control"
-                                           name="qty" value="0">
+                                           name="qty" value="{{$product->quantity}}">
                                     <span style="font-size: 11px;">
                                     Leave at 0 for infinite quantity
                                 </span>
@@ -73,52 +73,25 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>Product Description<sup class="text-danger">*</sup></label>
-                                    <textarea name="description" class="form-control summernote" cols="30" rows="5" ></textarea>
+                                    <textarea name="description" class="form-control summernote" cols="30" rows="5" >{!! $product->description !!}</textarea>
                                 </div>
                             </div>
 
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>Product Specifications<sup class="text-danger">*</sup></label>
-                                    <textarea name="specifications" class="form-control summernote" cols="30" rows="5"></textarea>
+                                    <textarea name="specifications" class="form-control summernote" cols="30" rows="5">{!! $product->specifications !!}</textarea>
                                 </div>
                             </div>
 
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>Product Features<sup class="text-danger">*</sup></label>
-                                    <textarea name="features" class="form-control summernote" cols="30" rows="5"></textarea>
+                                    <textarea name="features" class="form-control summernote" cols="30" rows="5">{!! $product->keyFeatures !!}</textarea>
                                 </div>
                             </div>
-
-                            <div class="col-lg-12 row mb-5">
-                                <label class="mb-3">Product Size Variations</label>
-                                <div class="sizeVariations"></div>
-                                <button type="button" class="btn btn-secondary addSizeVariation">Add Variation</button>
-                            </div>
-
-
-                            <div class="col-lg-12 row mb-5">
-                                <label class="mb-3">Product Color Variations</label>
-                                <div class="colorVariations"></div>
-                                <button type="button" class="btn btn-primary addColorVariation">Add Variation</button>
-                            </div>
                         </div>
 
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label>Product Images<sup class="text-danger">*</sup> <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                                                                     title="A maximum of {{$web->fileUploadAllowed}} photos are allowed."></i> </label>
-                            <div class="file-upload">
-                                <input type="file" name="file[]" id="file" class="inputfile" multiple accept="image/*">
-                                <label class="upload" for="file">
-                                    <i class="ri-image-2-fill"></i>
-                                    Upload Photo
-                                </label>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="col-md-12 mt-3">
@@ -132,7 +105,7 @@
                     </div>
                     <div class="col-lg-12 text-center">
                         <button type="submit" class="default-btn me-3 submit">
-                            Upload
+                            Edit Product
                         </button>
                     </div>
                 </div>

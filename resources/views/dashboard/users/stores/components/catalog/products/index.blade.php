@@ -32,7 +32,7 @@
 
         </div>
         <div class="latest-transaction-area">
-            <div class="table-responsive h-auto" data-simplebar>
+            <div class="table-responsive" data-simplebar>
                 <table class="table align-middle mb-0">
                     <thead>
                     <tr>
@@ -102,6 +102,18 @@
                                                 <a class="dropdown-item" href="{{route('user.stores.catalog.product.edit',['id'=>$product->reference])}}">
                                                     Edit
                                                     <i class="ri-pencil-line"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{route('user.stores.catalog.product.edit.image',['id'=>$product->reference])}}">
+                                                    Edit Product Images
+                                                    <i class="ri-image-edit-line"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{route('user.stores.catalog.product.edit.specs',['id'=>$product->reference])}}">
+                                                    Edit Product Variants
+                                                    <i class="ri-edit-circle-line"></i>
                                                 </a>
                                             </li>
                                             @if($product->status!=1)

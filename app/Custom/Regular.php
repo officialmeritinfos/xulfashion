@@ -10,6 +10,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Models\UserBank;
 use App\Models\UserStoreCatalogCategory;
+use App\Models\UserStoreCustomer;
 use App\Models\UserStoreOrder;
 use App\Models\UserStoreProduct;
 use App\Traits\Helpers;
@@ -151,6 +152,56 @@ class Regular
     // total product purchase amount
     public function totalProductPurchasedAmount()
     {
+
+    }
+    public function formatNumber($number, $decimals = 2)
+    {
+        $abbreviations = array('', 'K', 'M', 'B', 'T', 'Q', 'Qn', 'Sx', 'Sp', 'Oc', 'Nn');
+
+        if ($number <1000){
+            $decimals = 0;
+        }
+
+        $absNumber = abs($number);
+
+        $index = 0;
+        while ($absNumber >= 1000 && $index < count($abbreviations) - 1) {
+            $absNumber /= 1000;
+            $index++;
+        }
+
+        $formattedNumber = number_format($number >= 0 ? $absNumber : -$absNumber, $decimals) . $abbreviations[$index];
+
+        return $formattedNumber;
+    }
+    //number of products in store
+    public function numberOfProductInStore($store)
+    {
+        return UserStoreProduct::where('store',$store)->count();
+    }
+    //number of customers in store
+    public function numberOfCustomersInStore($store)
+    {
+        return UserStoreCustomer::where('store',$store)->count();
+    }
+    //number of sales in store
+    public function numberOfSalesInStore($store)
+    {
+        return UserStoreOrder::where('store',$store)->where('status',1)->count();
+    }
+    //fetch currency sign from currency
+    public function fetchCurrencySign($currency)
+    {
+        return Country::select(['currency_symbol'])->where('currency',$currency)->first();
     }
 
+    //revenue in store
+    public function revenueInStore($store)
+    {
+        return UserStoreOrder::where([
+            'store'=>$store,
+            'status'=>1,
+            'completedOnWhatsapp'=>2,
+        ])->sum('amountToCredit');
+    }
 }
