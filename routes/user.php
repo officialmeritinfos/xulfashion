@@ -210,5 +210,9 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.invoice.edit.process');//edit store invoice process
     Route::get('stores/invoices/{id}/details',[InvoiceController::class,'invoiceDetail'])
         ->name('stores.invoices.details');//view invoice page
+    Route::post('stores/invoices/notify/{id}/process',[InvoiceController::class,'processNotifyPayer'])
+        ->name('stores.invoice.notify.process');//edit store invoice process
+    Route::get('stores/invoices/{id}/print',[InvoiceController::class,'printInvoice'])
+        ->name('stores.invoices.print');//print invoice page
 
 });
