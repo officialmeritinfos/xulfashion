@@ -20,7 +20,13 @@ class CreateUserStoreSettingsTable extends Migration
             $table->integer('allowOnlineCheckout')->default(2);
             $table->integer('allowEscrowPayments')->default(2);
             $table->string('whatsappContact', 150)->nullable();
-            $table->text('whatsappMessage')->nullable();
+            $table->integer('allowNotifications')->default(2);
+            $table->integer('allowNewLetters')->default(2);
+            $table->integer('allowSignups')->default(2);
+            $table->integer('collectPhone')->default(2);
+            $table->string('defaultBuyText', 150)->default('Buy Now');
+            $table->integer('whatsappSupport')->default(2);
+            $table->string('whatsappSupportNumber', 150)->nullable();
             $table->timestamps(, 150);
         });
     }

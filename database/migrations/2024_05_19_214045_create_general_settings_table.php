@@ -25,6 +25,8 @@ class CreateGeneralSettingsTable extends Migration
             $table->integer('emailVerification')->default(1);
             $table->text('description')->nullable();
             $table->string('keywords', 200)->nullable();
+            $table->integer('fileUploadAllowed')->default(5);
+            $table->string('onlinePaymentFee', 100)->default('2.5');
             $table->timestamps(, 150);
         });
     }

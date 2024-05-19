@@ -32,6 +32,8 @@ class CreateUserStoresTable extends Migration
             $table->string('phone2', 150)->nullable();
             $table->string('email', 150)->nullable();
             $table->string('legalName', 200)->nullable();
+            $table->mediumText('returnPolicy')->nullable();
+            $table->mediumText('refundPolicy')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps(, 150);
             $table->string('deleted_at', 150)->nullable();
