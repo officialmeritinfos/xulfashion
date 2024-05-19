@@ -93,6 +93,8 @@ class Stores extends BaseController
                 'phone'=>['required','string'],
                 'email'=>['required','email'],
                 'file'=>['nullable','image','max:2048'],
+                'returnPolicy'=>['nullable','string'],
+                'refundPolicy'=>['nullable','string']
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -119,7 +121,7 @@ class Stores extends BaseController
                 'state'=>$input['state'],'city'=>$input['city'],
                 'logo'=>$logo,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
                 'address'=>$input['address'],'email'=>$input['email'],'phone'=>$input['phone'],
-                'status'=>1
+                'status'=>1,'refundPolicy'=>clean($input['refundPolicy']),'returnPolicy'=>clean($input['returnPolicy'])
             ]);
             if (!empty($store)){
 
@@ -193,6 +195,8 @@ class Stores extends BaseController
                 'phone'=>['required','string'],
                 'email'=>['required','email'],
                 'file'=>['nullable','image','max:2048'],
+                'returnPolicy'=>['nullable','string'],
+                'refundPolicy'=>['nullable','string']
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -217,6 +221,7 @@ class Stores extends BaseController
                 'state'=>$input['state'],'city'=>$input['city'],
                 'logo'=>$logo,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
                 'address'=>$input['address'],'email'=>$input['email'],'phone'=>$input['phone'],
+                'refundPolicy'=>clean($input['refundPolicy']),'returnPolicy'=>clean($input['returnPolicy'])
             ])){
 
                 $this->userNotification($user,'Store Information Updated','Your store information was successfully updated',$request->ip());

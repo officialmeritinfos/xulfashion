@@ -84,3 +84,81 @@
             background-position: 208px; } }
 
 </style>
+<style>
+    @media (max-width: 767.98px) {
+        .sidebar-nav{
+            display: none;
+        }
+        #mobile-collapse{
+            display: none;
+        }
+        /* Style for mobile devices */
+        .footer-bottom {
+            position: fixed;
+            width: 100%;
+            z-index: 9;
+            bottom: 0;
+            left: 0;
+            background: #fff;
+            border-top: 1px solid #DCDCE9;
+        }
+        .footer-bottom ul {
+            margin: 0;
+            padding: 0;
+        }
+        .footer-bottom ul li {
+            list-style: none;
+            display: inline-block;
+            margin: 0 8px;
+            padding: 10px 0 8px 0;
+            position: relative; /* Added */
+        }
+        .footer-bottom ul li p {
+            margin-bottom: 0;
+            font-size: 10px;
+            -webkit-transition: 0.4s;
+            -o-transition: 0.4s;
+            transition: 0.4s;
+        }
+        .footer-bottom ul li a {
+            -webkit-transition: 0.4s;
+            -o-transition: 0.4s;
+            transition: 0.4s;
+        }
+        .footer-bottom ul li a:hover {
+            color: #6236ff;
+        }
+        .footer-bottom ul li a:hover p {
+            color: #6236ff;
+        }
+        /* Added */
+        .footer-bottom .submenu {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            width: 100%;
+        }
+        .footer-bottom .submenu li {
+            display: block;
+        }
+        .footer-bottom .submenu li a {
+            display: block;
+            padding: 10px;
+            color: #333;
+            text-decoration: none;
+        }
+        .footer-bottom .submenu li a:hover {
+            background-color: #f5f5f5;
+        }
+    }
+
+    @media (min-width: 768px) {
+        /* Hide navbar on larger screens */
+        .footer-bottom {
+            display: none;
+        }
+    }
+</style>

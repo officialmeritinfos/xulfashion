@@ -65,15 +65,58 @@
             </ul>
         @endif
 
-        <div class="dark-bar">
-            <a href="#" class="d-flex align-items-center">
-                <span class="dark-title">Enable Dark Theme</span>
-            </a>
-
-            <div class="form-check form-switch">
-                <input type="checkbox" class="checkbox" id="darkSwitch">
-            </div>
-        </div>
     </nav>
+
+    <div class="dark-bar">
+        <a href="#" class="d-flex align-items-center">
+            <span class="dark-title">Enable Dark Theme</span>
+        </a>
+
+        <div class="form-check form-switch">
+            <input type="checkbox" class="checkbox" id="darkSwitch">
+        </div>
+    </div>
 </div>
 <!-- End Sidebar Area -->
+
+
+<div class="footer-bottom text-center">
+    <ul>
+        <li>
+            <a href="{{$injected->userDashboard($user)}}">
+                <i class="fa fa-home"></i>
+                <p>Overview</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('user.account.index')}}">
+                <i class="bx bx-money"></i>
+                <p>Account</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('user.ads.index')}}">
+                <i class="ri-table-alt-line"></i>
+                <p>ADs</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('user.stores.index')}}">
+                <i class="ri-store-2-line"></i>
+                <p>Stores</p>
+            </a>
+        </li>
+        <li>
+            <a class="menu-bar" href="{{route('marketplace.index')}}">
+                <i class="bx bxs-business"></i>
+                <p>Marketplace</p>
+            </a>
+        </li>
+        <li>
+            <a class="menu-bar" href="{{route('user.settings.index')}}">
+                <i class="ri-settings-2-line"></i>
+                <p>Settings</p>
+            </a>
+        </li>
+    </ul>
+</div>

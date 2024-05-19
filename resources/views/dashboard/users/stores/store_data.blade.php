@@ -1,4 +1,4 @@
-<div class="mt-3 row" id="statistics">
+<div class="mt-3 row wallet-chart-area with-exchange" id="statistics">
     <!-- Statistics -->
     <div class="col-xl-12 mb-4 col-lg-12 col-12">
         <div class="card h-auto">
@@ -62,134 +62,66 @@
     </div>
     <!--/ Statistics -->
 
-    <!-- Earning Reports -->
-    <div class="col-xl-4 col-md-6 mb-4">
-        <div class="card h-auto">
-            <div class="card-title mb-0">
-                <h5 class="m-0 me-2">Earning Reports</h5>
-                <small class="text-muted">Weekly Earnings Overview</small>
-            </div>
-            <hr/>
-            <div class="card-body pb-0">
-                <ul class="p-0 m-0">
-                    <li class="d-flex mb-3">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-primary"><i class='ti ti-chart-pie-2 ti-sm'></i></span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">Net Profit</h6>
-                                <small class="text-muted">12.4k Sales</small>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-3">
-                                <small>$1,619</small>
-                                <div class="d-flex align-items-center gap-1">
-                                    <i class='ti ti-chevron-up text-success'></i>
-                                    <small class="text-muted">18.6%</small>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex mb-3">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-success"><i class='ti ti-currency-dollar ti-sm'></i></span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">Total Income</h6>
-                                <small class="text-muted">Sales, Affiliation</small>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-3">
-                                <small>$3,571</small>
-                                <div class="d-flex align-items-center gap-1">
-                                    <i class='ti ti-chevron-up text-success'></i>
-                                    <small class="text-muted">39.6%</small>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex mb-3">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-secondary"><i class='ti ti-credit-card ti-sm'></i></span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">Total Expenses</h6>
-                                <small class="text-muted">ADVT, Marketing</small>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-3">
-                                <small>$430</small>
-                                <div class="d-flex align-items-center gap-1">
-                                    <i class='ti ti-chevron-up text-success'></i>
-                                    <small class="text-muted">52.8%</small>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                <div id="reportBarChart"></div>
-            </div>
-        </div>
-    </div>
-    <!--/ Earning Reports -->
+
 
     <!-- Popular Product -->
-    <div class="col-md-6 col-xl-4 mb-4">
+    <div class="col-md-6 col-xl-6 mb-4">
         <div class="card h-auto">
             <div class="card-title m-0 me-2">
                 <h5 class="m-0 me-2">Popular Products</h5>
-                <small class="text-muted">Total 10.4k Visitors</small>
             </div>
             <hr/>
             <div class="card-body">
                 <ul class="p-0 m-0">
-                    <li class="d-flex mb-4 pb-1">
-                        <div class="me-3">
-                            <img src="../../assets/img/products/iphone.png" alt="User" class="rounded" width="46">
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">Apple iPhone 13</h6>
-                                <small class="text-muted d-block">Item: #FXZ-4567</small>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                                <p class="mb-0 fw-medium">$999.29</p>
-                            </div>
-                        </div>
-                    </li>
+                    @if(count($injected->mostOrderProducts($store->id)) >0)
+                        @foreach($injected->mostOrderProducts($store->id) as $productData)
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="me-3">
+                                    <img src="{{$productData['photo']}}" alt="User" class="rounded" width="46">
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">{{$productData['product']}}</h6>
+                                        <small class="text-muted d-block">Quantity: {{$productData['quantity']}}</small>
+                                    </div>
+                                    <div class="user-progress d-flex align-items-center gap-1">
+                                        <p class="mb-0 fw-medium">{{$productData['currency']}}{{number_format($productData['amount'])}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    @endif
                 </ul>
             </div>
         </div>
     </div>
     <!--/ Popular Product -->
 
-    <!-- Transactions -->
-    <div class="col-md-6 col-xl-4 mb-4">
-        <div class="card h-auto">
-            <div class="card-title m-0 me-2">
-                <h5 class="m-0 me-2">Transactions</h5>
-                <small class="text-muted">Total 58 Transactions done in this Month</small>
-            </div>
-            <hr/>
-            <div class="card-body">
-                <ul class="p-0 m-0">
-                    <li class="d-flex mb-3 pb-1 align-items-center">
-                        <div class="badge bg-label-primary me-3 rounded p-2">
-                            <i class="ti ti-wallet ti-sm"></i>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">Wallet</h6>
-                                <small class="text-muted d-block">Starbucks</small>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0 text-danger">-$75</h6>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+    <div class="col-xl-6">
+        <div class="available-cards-wrap mb-5">
+
+            <div class="recent-transaction-wrap">
+                <div class="recent-title">
+                    <h3>Recent Orders</h3>
+                </div>
+
+                <div class="shorting" data-simplebar>
+                    <ul>
+                        @if(count($injected->topSales($store->id))>0)
+                            @foreach($injected->topSales($store->id) as $order)
+                                <li class="mix buy">
+                                    <h6>{{$order->reference}} <span class="buy"></span></h6>
+                                    <p>{{$injected->customerById($order->customer)->name}}</p>
+                                    <div class="balance">
+                                        <h5>{{$injected->fetchCurrencySign($order->currency)->currency_symbol}} {{number_format($order->amount,2)}}</h5>
+                                        <p>{{date('d M, Y - h:i A', strtotime($order->created_at))}}</p>
+                                    </div>
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    <!--/ Transactions -->
 </div>

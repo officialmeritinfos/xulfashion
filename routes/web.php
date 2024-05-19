@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\Account;
+use App\Http\Controllers\Marketplace\MarketplaceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,20 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-/*===============================ACCOUNT PROCESSING================================*/
-Route::post('account/fund',[Account::class,'fundAccount'])
-    ->name('account.fund');
-Route::post('account/withdraw',[Account::class,'withdrawFromAccount'])
-    ->name('account.withdraw');
-
-
 /*==============================MERCHANT STORE =====================================*/
 Route::domain('{subdomain}.localhost')->group(function () {
     //landing page
     Route::get('/', function (){
-      echo  "Hello";
-      return ;
+        echo  "Hello";
+        return ;
     })->name('merchant.store');//landing page
 
     Route::get('/category/{id}', function (){
@@ -44,5 +37,15 @@ Route::domain('{subdomain}.localhost')->group(function () {
         echo  "Hello";
         return;
     })->name('merchant.store.invoice.detail');//category page
-
 });
+
+/*===============================ACCOUNT PROCESSING================================*/
+Route::post('account/fund',[Account::class,'fundAccount'])
+    ->name('account.fund');
+Route::post('account/withdraw',[Account::class,'withdrawFromAccount'])
+    ->name('account.withdraw');
+
+
+/*================================ MARKETPLACE CONTROLLER ==============================*/
+Route::get('marketplace',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.index');

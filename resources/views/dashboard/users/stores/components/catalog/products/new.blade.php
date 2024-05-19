@@ -103,6 +103,24 @@
                                 <div class="colorVariations"></div>
                                 <button type="button" class="btn btn-primary addColorVariation">Add Variation</button>
                             </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Return Policy<i class="ri-information-fill" datat-bs-toggle="tooltip"
+                                        title="This is a necessary protection for your product order"></i> </label>
+                                    <textarea name="returnPolicy" class="form-control summernote" cols="30" rows="5"></textarea>
+                                    <small>Leave blank to apply store-level Refund policy to product</small>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Refund Policy<i class="ri-information-fill" datat-bs-toggle="tooltip"
+                                        title="This is a necessary protection for your product order"></i> </label>
+                                    <textarea name="refundPolicy" class="form-control summernote" cols="30" rows="5"></textarea>
+                                    <small>Leave blank to apply store-level Refund policy to product</small>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

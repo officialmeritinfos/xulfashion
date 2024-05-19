@@ -49,6 +49,21 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
+                            <label>Return Policy<i class="ri-information-fill" datat-bs-toggle="tooltip"
+                                                   title="This is a necessary protection for your product order"></i> </label>
+                            <textarea name="returnPolicy" class="form-control summernote" cols="30" rows="5">{!! $store->returnPolicy !!}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Refund Policy<i class="ri-information-fill" datat-bs-toggle="tooltip"
+                                                   title="This is a necessary protection for your product order"></i> </label>
+                            <textarea name="refundPolicy" class="form-control summernote" cols="30" rows="5">{!! $store->refundPolicy !!}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
                             <label>Your Store Logo</label>
                             <div class="file-upload">
                                 <input type="file" name="file" id="file" class="inputfile" accept="image/*">

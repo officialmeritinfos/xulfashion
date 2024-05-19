@@ -13,9 +13,11 @@ use App\Models\UserBank;
 use App\Models\UserStoreCatalogCategory;
 use App\Models\UserStoreCustomer;
 use App\Models\UserStoreOrder;
+use App\Models\UserStoreOrderBreakdown;
 use App\Models\UserStoreProduct;
 use App\Traits\Helpers;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Regular
@@ -220,5 +222,37 @@ class Regular
 
         return $charge;
 
+    }
+    //most ordered products in a store
+    public function mostOrderProducts($store)
+    {
+        $mostPurchasedProducts = UserStoreOrderBreakdown::select('product', DB::raw('SUM(quantity) as total_quantity'))
+            ->where('store', $store)
+            ->groupBy('product')
+            ->orderBy('total_quantity', 'desc')
+            ->take(10)
+            ->get();
+
+        // Retrieve the product details
+        $products = [];
+        foreach ($mostPurchasedProducts as $item) {
+            $product = UserStoreProduct::find($item->product);
+            $products[] = [
+                'product' => $product->name,
+                'quantity' => $item->total_quantity,
+                'amount'=>$product->amount,
+                'photo'=>$product->featuredImage,
+                'currency'=>$product->currency,
+            ];
+        }
+
+        return $products;
+    }
+    //top ten sales
+    public function topSales($store)
+    {
+        return UserStoreOrder::where([
+            'store'=>$store,
+        ])->orderBy('id','desc')->take(10)->get();
     }
 }

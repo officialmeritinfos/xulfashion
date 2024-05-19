@@ -156,6 +156,8 @@ class CatalogController extends BaseController
                 'colorPrice.*'=>['sometimes','required','numeric'],
                 'colorQuantity'=>['sometimes','required'],
                 'colorQuantity.*'=>['sometimes','required','numeric'],
+                'returnPolicy'=>['nullable','string'],
+                'refundPolicy'=>['nullable','string']
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -186,7 +188,8 @@ class CatalogController extends BaseController
                 'featuredImage'=>$featuredPhoto,'amount'=>$input['price'],
                 'currency'=>$store->currency,'keyFeatures'=>clean($input['features']),
                 'specifications'=>clean($input['specifications']),'manufacturer'=>$input['manufacturer'],
-                'brand'=>$input['brand'],'category'=>$input['category'],'quantity'=>$input['qty']
+                'brand'=>$input['brand'],'category'=>$input['category'],'quantity'=>$input['qty'],
+                'refundPolicy'=>clean($input['refundPolicy']),'returnPolicy'=>clean($input['returnPolicy'])
             ]);
 
             if(!empty($product)){
@@ -366,6 +369,8 @@ class CatalogController extends BaseController
                 'description'=>['required','string'],
                 'specifications'=>['required','string'],
                 'features'=>['required','string'],
+                'returnPolicy'=>['nullable','string'],
+                'refundPolicy'=>['nullable','string']
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -396,7 +401,8 @@ class CatalogController extends BaseController
                 'featuredImage'=>$featuredPhoto,'amount'=>$input['price'],
                 'currency'=>$store->currency,'keyFeatures'=>clean($input['features']),
                 'specifications'=>clean($input['specifications']),'manufacturer'=>$input['manufacturer'],
-                'brand'=>$input['brand'],'category'=>$input['category'],'quantity'=>$input['qty']
+                'brand'=>$input['brand'],'category'=>$input['category'],'quantity'=>$input['qty'],
+                'refundPolicy'=>clean($input['refundPolicy']),'returnPolicy'=>clean($input['returnPolicy'])
             ])){
 
                 return $this->sendResponse([
