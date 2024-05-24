@@ -1,15 +1,7 @@
-/*-----------------------------------------------------------
-    Theme Name: Talon
-    Theme URI: 
-    Description: Talon - Car Dealer & Automotive Listing HTML Template
-    Author: HiBootstrap
-    Author URI: https://themeforest.net/user/hibootstrap/portfolio
-    Version: 1.0
--------------------------------------------------------------*/
 /*--------------------------------
      =====Table Of Contents====
 
-1.  General Styles 
+1.  General Styles
 2.  Mixins CSS
 3.  Back To Top Button CSS
 4.  Preloader CSS
@@ -67,7 +59,7 @@
         Variables
 -----------------------------------*/
 /*---------------------------------
-            General Styles 
+            General Styles
 -----------------------------------*/
 * {
   -webkit-box-sizing: border-box;
@@ -549,7 +541,7 @@ select {
 }
 
 .preloader img {
-  max-width: 150px;
+
 }
 
 @-webkit-keyframes loading {
@@ -1635,7 +1627,7 @@ select {
 }
 
 /*---------------------------------
-       Breadcrumb CSS 
+       Breadcrumb CSS
 -----------------------------------*/
 .br-bg-1 {
   background-image: url(../img/breadcrumb/breadcrumb-1.jpg);
@@ -2789,7 +2781,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Header CSS 
+        Header CSS
 -----------------------------------*/
 .header-wrap {
   position: fixed;
@@ -3173,14 +3165,14 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Hero CSS 
+        Hero CSS
 -----------------------------------*/
 .hero-bg-1 {
-  background-image: url(../img/hero/hero-1.jpg);
+  background-image: url(../img/hero/fashion.jpg);
 }
 
 .hero-bg-2 {
-  background-image: url(../img/hero/hero-2.jpg);
+  background-image: url(../img/hero/fashion.jpg);
 }
 
 .hero-wrap {
@@ -3331,6 +3323,14 @@ select.select_dropdown {
   font-size: 14px;
   padding: 10px 15px;
 }
+.filter-box-wrap .filter-box input {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid #eee;
+  height: 50px;
+  font-size: 14px;
+  padding: 10px 15px;
+}
 
 .filter-box-wrap .filter-box .filter-btn {
   background: -webkit-gradient(linear, left top, right top, from(#f33e3e), color-stop(35%, #fb4d11), to(#f85515));
@@ -3364,7 +3364,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-       About  CSS 
+       About  CSS
 -----------------------------------*/
 .about-bg-1 {
   background-image: url(../img/about/about-bg-1.jpg);
@@ -3484,7 +3484,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-       Team  CSS 
+       Team  CSS
 -----------------------------------*/
 .team-member-card {
   margin: 0 0 25px;
@@ -3550,7 +3550,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Why Choose Us CSS 
+        Why Choose Us CSS
 -----------------------------------*/
 .why-choose-wrap {
   position: relative;
@@ -3562,7 +3562,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Testimonials CSS 
+        Testimonials CSS
 -----------------------------------*/
 .testimonial-wrap {
   position: relative;
@@ -3635,7 +3635,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Blog CSS 
+        Blog CSS
 -----------------------------------*/
 .blog-slider-wrap {
   position: relative;
@@ -3766,7 +3766,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Deals CSS 
+        Deals CSS
 -----------------------------------*/
 .deals-slider-wrap {
   position: relative;
@@ -3947,7 +3947,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Top Deals CSS 
+        Top Deals CSS
 -----------------------------------*/
 .top-deal-card {
   background-color: #fff;
@@ -4095,7 +4095,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Counter CSS 
+        Counter CSS
 -----------------------------------*/
 .counter-item-wrap {
   display: -ms-grid;
@@ -4136,7 +4136,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Promo CSS 
+        Promo CSS
 -----------------------------------*/
 .promo-bg-1 {
   background-image: url(../img/promo/promo-bg-1.jpg);
@@ -4371,7 +4371,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Footer CSS 
+        Footer CSS
 -----------------------------------*/
 .footer-bg-1 {
   background-image: url(../img/footer/footer-1.jpg);
@@ -4814,7 +4814,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Product CSS 
+        Product CSS
 -----------------------------------*/
 .product-filter-list {
   display: -webkit-box;
@@ -4979,7 +4979,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Product Filter CSS 
+        Product Filter CSS
 -----------------------------------*/
 .profuct-result p {
   color: #01040F;
@@ -5001,7 +5001,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        Product Details CSS 
+        Product Details CSS
 -----------------------------------*/
 .product-gallery.swiper-container.gallery-top {
   height: auto !important;
@@ -5146,7 +5146,7 @@ select.select_dropdown {
 }
 
 /*---------------------------------
-        New Arrival Product CSS 
+        New Arrival Product CSS
 -----------------------------------*/
 .new-product-item {
   display: -webkit-box;
@@ -5909,14 +5909,14 @@ form.checkout textarea {
 }
 
 /*---------------------------------
-        Car Listing CSS 
+        Car Listing CSS
 -----------------------------------*/
 .car-bg-1 {
-  background-image: url(../img/cars/car-1.jpg);
+
 }
 
 .car-bg-2 {
-  background-image: url(../img/cars/car-2.jpg);
+
 }
 
 .car-bg-3 {
@@ -5931,9 +5931,7 @@ form.checkout textarea {
   background-image: url(../img/cars/car-5.jpg);
 }
 
-.car-bg-6 {
-  background-image: url(../img/cars/car-6.jpg);
-}
+
 
 .car-bg-7 {
   background-image: url(../img/cars/car-7.jpg);
@@ -5943,9 +5941,7 @@ form.checkout textarea {
   background-image: url(../img/cars/car-8.jpg);
 }
 
-.car-bg-10 {
-  background-image: url(../img/cars/car-10.jpg);
-}
+
 
 .car-bg-11 {
   background-image: url(../img/cars/car-11.jpg);
@@ -6095,7 +6091,7 @@ form.checkout textarea {
 }
 
 /*---------------------------------
-        Car Details CSS 
+        Car Details CSS
 -----------------------------------*/
 .car-desc-box h1 {
   font-size: 24px;

@@ -7,6 +7,7 @@ use App\Models\Fiat;
 use App\Models\Job;
 use App\Models\JobType;
 use App\Models\RateType;
+use App\Models\ServiceType;
 use App\Models\State;
 use App\Models\User;
 use App\Models\UserBank;
@@ -254,5 +255,10 @@ class Regular
         return UserStoreOrder::where([
             'store'=>$store,
         ])->orderBy('id','desc')->take(10)->get();
+    }
+
+    public function serviceTypeById($id)
+    {
+        return ServiceType::where('id',$id)->first();
     }
 }

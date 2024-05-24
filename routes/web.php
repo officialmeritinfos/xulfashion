@@ -47,5 +47,17 @@ Route::post('account/withdraw',[Account::class,'withdrawFromAccount'])
 
 
 /*================================ MARKETPLACE CONTROLLER ==============================*/
-Route::get('marketplace',[MarketplaceController::class,'landingPage'])
+Route::get('/ads/{country?}',[MarketplaceController::class,'landingPage'])
     ->name('marketplace.index');
+Route::get('/ads/{slug}/{id}/detail',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.detail');
+Route::get('/ads/{id}/merchant',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.merchant');
+Route::get('/ads/{id}/state',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.state');
+Route::get('/ads/{id}/service',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.service');
+
+/*================================ COMPANY CONTROLLER ==============================*/
+Route::get('about',[MarketplaceController::class,'landingPage'])
+    ->name('company.about');

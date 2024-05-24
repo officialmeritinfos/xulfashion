@@ -79,7 +79,7 @@ input:checked + .slider:before {
 }
 
 /*---------------------------------
-    Color CSS For Elements 
+    Color CSS For Elements
 -----------------------------------*/
 .theme-light .logo .logo-dark {
   display: none !important;
@@ -256,6 +256,12 @@ input:checked + .slider:before {
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
   background-image: url(../img/down-arrow-white.png);
+}
+.theme-dark .filter-box input {
+    background-color: #0E1C1F;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    background-image: url(../img/down-arrow-white.png);
 }
 
 .theme-dark article,
