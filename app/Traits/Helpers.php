@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserSetting;
 use App\Models\UserSkill;
+use App\Models\UserStoreThemeSetting;
 use App\Notifications\CustomNotificationMail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -253,5 +254,18 @@ trait Helpers
         return $slug;
 
     }
-
+    //update user store theme settings
+    public function updateStoreThemeSettting($store,$theme)
+    {
+        UserStoreThemeSetting::updateOrCreate([
+            'store'=>$store->id
+        ],[
+            'textFont'=>$theme->textFont,'textColor'=>$theme->textColor,
+            'primaryColor'=>$theme->primaryColor,'footerText'=>$theme->footerText,
+            'footerScript'=>$theme->footerScript,'headerTextColor'=>$theme->headerTextColor,
+            'tracking'=>$theme->tracking,'perkSection'=>$theme->perkSection,
+            'perkTitle'=>$theme->perkTitle,'perkContent'=>$theme->perkContent,
+            'perkIcon'=>$theme->perkIcon,'workingDay'=>$theme->workingDay
+        ]);
+    }
 }

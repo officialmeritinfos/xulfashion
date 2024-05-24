@@ -9,6 +9,7 @@ use App\Models\GeneralSetting;
 use App\Models\State;
 use App\Models\UserStore;
 use App\Models\UserStoreVerification;
+use App\Traits\Helpers;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Validator;
 
 class KYB extends BaseController
 {
+    use Helpers;
     //verify store
     public function verifyStore(): View|Application|Factory|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {

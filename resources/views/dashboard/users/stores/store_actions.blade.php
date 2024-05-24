@@ -4,6 +4,21 @@
         <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
             <div class="flex-grow-1 mb-3 mb-md-0">
                 <h5 class="card-title">
+                    <i class="ri-palette-line"></i> Store-front Theme
+                </h5>
+                <p class="card-text" style="word-break: break-word;">
+                    Manage your store-front theme
+                </p>
+            </div>
+            <a href="{{route('user.stores.themes')}}" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                Manage
+            </a>
+        </div>
+    </div>
+    <div class="card shadow mb-3">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+            <div class="flex-grow-1 mb-3 mb-md-0">
+                <h5 class="card-title">
                     <i class="ri-shopping-basket-fill"></i> Store Catalog
                 </h5>
                 <p class="card-text" style="word-break: break-word;">

@@ -3,3 +3,4 @@
       crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="{{asset('dashboard/css/selectize.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('dashboard/vendors/lightboxed/lightboxed.css')}}">
+{{--<link rel="stylesheet" href="{{asset('dashboard/vendors/iconpicker/fontawesome-browser.css')}}">--}}

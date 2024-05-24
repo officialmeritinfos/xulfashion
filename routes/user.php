@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\User\Stores\StoreActions\KYB;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\NewsLetter;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Orders;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Teams;
+use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Themes;
 use App\Http\Controllers\Dashboard\User\Stores\Stores;
 use App\Http\Controllers\Dashboard\User\Stores\StoreActions\Settings as StoreSettings;
 use Illuminate\Support\Facades\Route;
@@ -214,5 +215,14 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.invoice.notify.process');//edit store invoice process
     Route::get('stores/invoices/{id}/print',[InvoiceController::class,'printInvoice'])
         ->name('stores.invoices.print');//print invoice page
+    //Themes
+    Route::get('stores/themes',[Themes::class,'landingPage'])
+        ->name('stores.themes');//store themes
+    Route::post('stores/themes/{id}/activate',[Themes::class,'landingPage'])
+        ->name('stores.theme.activate');//store themes
+    Route::get('stores/themes/customize',[Themes::class,'customizeDesign'])
+        ->name('stores.theme.customize');//store themes
+    Route::post('stores/themes/customize/process',[Themes::class,'saveCustomization'])
+        ->name('stores.theme.customize.process');//store themes
 
 });

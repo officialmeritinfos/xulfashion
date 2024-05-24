@@ -3,7 +3,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
 <script src="https://kit.fontawesome.com/6b3c5ea29e.js" crossorigin="anonymous"></script>
 <script src="{{asset('dashboard/vendors/lightboxed/lightboxed.js')}}"></script>
-
 @include('noti_js')
 
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
@@ -45,3 +44,4 @@
         });
     });
 </script>
+

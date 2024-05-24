@@ -9,6 +9,7 @@ use App\Models\GeneralSetting;
 use App\Models\State;
 use App\Models\UserStore;
 use App\Models\UserStoreSetting;
+use App\Traits\Helpers;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Validator;
 
 class Settings extends BaseController
 {
+    use Helpers;
     //edit store settings
     public function editStoreSettings(): View|Application|Factory|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {

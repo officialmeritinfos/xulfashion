@@ -8,6 +8,7 @@ use App\Models\Country;
 use App\Models\GeneralSetting;
 use App\Models\ServiceType;
 use App\Models\State;
+use App\Models\StoreTheme;
 use App\Models\UserAd;
 use App\Models\UserStore;
 use App\Models\UserStoreCatalogCategory;
@@ -27,8 +28,8 @@ use Illuminate\Validation\Rule;
 
 class Stores extends BaseController
 {
-    public $google;
     use Helpers;
+    public $google;
     //landing page
     public function __construct()
     {
@@ -114,6 +115,8 @@ class Stores extends BaseController
 
             $slug = $this->generateUniqueSlug('user_stores',$input['name']);
 
+            $theme = StoreTheme::where('isDefault',1)->first();
+
             $store = UserStore::create([
                 'user'=>$user->id,'reference'=>$reference,
                 'name'=>$input['name'],'description'=>$input['description'],
@@ -121,7 +124,8 @@ class Stores extends BaseController
                 'state'=>$input['state'],'city'=>$input['city'],
                 'logo'=>$logo,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
                 'address'=>$input['address'],'email'=>$input['email'],'phone'=>$input['phone'],
-                'status'=>1,'refundPolicy'=>clean($input['refundPolicy']),'returnPolicy'=>clean($input['returnPolicy'])
+                'status'=>1,'refundPolicy'=>clean($input['refundPolicy']),'returnPolicy'=>clean($input['returnPolicy']),
+                'theme'=>$theme->id
             ]);
             if (!empty($store)){
 
@@ -132,6 +136,7 @@ class Stores extends BaseController
                     'store'=>$store->id,'categoryName'=>'default',
                     'isDefault'=>1,'status'=>1
                 ]);
+                $this->updateStoreThemeSettting($store,$theme);
 
                 $this->userNotification($user,'Store Initialized','Your store was successfully initialized',$request->ip());
                 return $this->sendResponse([
