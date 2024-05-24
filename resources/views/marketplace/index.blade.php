@@ -22,39 +22,41 @@
                         </ul>
                         <div class="tab-content filter-tab-content">
                             <div class="tab-pane fade show active" id="tab_10" role="tabpanel">
-                                <div class="filter-box-wrap">
-                                    <div class="filter-box">
-                                        <label>State/Region</label>
-                                        <select>
-                                            <option>Select State</option>
-                                            @if($hasCountry==1)
-                                                @foreach($states as $state)
-                                                    <option value="{{$state->iso2}}">{{$state->name}}</option>
+                                <form action="{{route('marketplace.search')}}">
+                                    <div class="filter-box-wrap">
+                                        <div class="filter-box">
+                                            <label>State/Region</label>
+                                            <select name="state">
+                                                <option>Select State</option>
+                                                @if($hasCountry==1)
+                                                    @foreach($states as $state)
+                                                        <option value="{{$state->iso2}}">{{$state->name}}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                        <div class="filter-box">
+                                            <label>Min Price</label>
+                                            <input name="minPrice" type="number"/>
+                                        </div>
+                                        <div class="filter-box">
+                                            <label>Max Price</label>
+                                            <input name="maxPrice" type="number"/>
+                                        </div>
+                                        <div class="filter-box">
+                                            <label>Type</label>
+                                            <select name="serviceType">
+                                                <option>Select Service Type</option>
+                                                @foreach($serviceTypes as $type)
+                                                    <option value="{{$type->id}}">{{$type->name}}</option>
                                                 @endforeach
-                                            @endif
-                                        </select>
+                                            </select>
+                                        </div>
+                                        <div class="filter-box">
+                                            <button class="filter-btn" type="submit">Search Listings</button>
+                                        </div>
                                     </div>
-                                    <div class="filter-box">
-                                        <label>Min Price</label>
-                                        <input name="minPrice" type="number"/>
-                                    </div>
-                                    <div class="filter-box">
-                                        <label>Max Price</label>
-                                        <input name="maxPrice" type="number"/>
-                                    </div>
-                                    <div class="filter-box">
-                                        <label>Type</label>
-                                        <select name="serviceType">
-                                            <option>Select Service Type</option>
-                                            @foreach($serviceTypes as $type)
-                                                <option value="{{$type->id}}">{{$type->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="filter-box">
-                                        <button class="filter-btn" type="submit">Search Listings</button>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                             <div class="tab-pane fade" id="tab_20" role="tabpanel">
                                 <div class="filter-box-wrap">
@@ -317,278 +319,87 @@
     <section class="team-wrap pt-100 pb-75">
         <div class="container">
             <div class="section-title style1 mb-40 text-center">
-                <span>Our Team </span>
-                <h2>Our Selling Agent</h2>
+                <span>Fashion Designers </span>
+                <h2>Best Selling Designers</h2>
             </div>
             <div class="row justify-content-center">
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="team-member-card style1">
-                        <div class="member-img">
-                            <img src="{{asset('marketplace/img/team/agent-2.png')}}" alt="Image">
-                        </div>
-                        <div class="member-info">
-                            <h4><a href="agent-details">Nora Fateh</a></h4>
-                            <p>Sales Manager</p>
-                            <ul class="social-profile style1 list-style">
-                                <li><a target="_blank" href="https://facebook.com/"><i class="lab la-facebook-f"></i> </a></li>
-                                <li><a target="_blank" href="https://linkedin.com/"> <i class="lab la-linkedin-in"></i> </a></li>
-                                <li><a target="_blank" href="https://twitter.com/"> <i class="lab la-twitter"></i> </a></li>
-                                <li><a target="_blank" href="https://instagram.com/"> <i class="lab la-instagram"></i> </a></li>
-                            </ul>
+                @foreach($injected->topUsersByView() as $topUser)
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="team-member-card style1">
+                            <div class="member-img">
+                                <img src="{{$topUser->photo}}" alt="Image">
+                            </div>
+                            <div class="member-info">
+                                <h4><a href="{{route('marketplace.merchant',['id'=>$topUser->reference])}}">{{$topUser->name}}</a></h4>
+                                <p>{{$topUser->displayName}}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="team-member-card style1">
-                        <div class="member-img">
-                            <img src="{{asset('marketplace/img/team/agent-3.png')}}" alt="Image">
-                        </div>
-                        <div class="member-info">
-                            <h4><a href="agent-details">Doich Karla</a></h4>
-                            <p>Account Manager</p>
-                            <ul class="social-profile style1 list-style">
-                                <li><a target="_blank" href="https://facebook.com/"><i class="lab la-facebook-f"></i> </a></li>
-                                <li><a target="_blank" href="https://linkedin.com/"> <i class="lab la-linkedin-in"></i> </a></li>
-                                <li><a target="_blank" href="https://twitter.com/"> <i class="lab la-twitter"></i> </a></li>
-                                <li><a target="_blank" href="https://instagram.com/"> <i class="lab la-instagram"></i> </a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="team-member-card style1">
-                        <div class="member-img">
-                            <img src="{{asset('marketplace/img/team/agent-4.png')}}" alt="Image">
-                        </div>
-                        <div class="member-info">
-                            <h4><a href="agent-details">Tonu Stark</a></h4>
-                            <p>Sales Executive</p>
-                            <ul class="social-profile style1 list-style">
-                                <li><a target="_blank" href="https://facebook.com/"><i class="lab la-facebook-f"></i> </a></li>
-                                <li><a target="_blank" href="https://linkedin.com/"> <i class="lab la-linkedin-in"></i> </a></li>
-                                <li><a target="_blank" href="https://twitter.com/"> <i class="lab la-twitter"></i> </a></li>
-                                <li><a target="_blank" href="https://instagram.com/"> <i class="lab la-instagram"></i> </a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="team-member-card style1">
-                        <div class="member-img">
-                            <img src="{{asset('marketplace/img/team/agent-5.png')}}" alt="Image">
-                        </div>
-                        <div class="member-info">
-                            <h4><a href="agent-details">Shon Polok</a></h4>
-                            <p>Sales Executive</p>
-                            <ul class="social-profile style1 list-style">
-                                <li><a target="_blank" href="https://facebook.com/"><i class="lab la-facebook-f"></i> </a></li>
-                                <li><a target="_blank" href="https://linkedin.com/"> <i class="lab la-linkedin-in"></i> </a></li>
-                                <li><a target="_blank" href="https://twitter.com/"> <i class="lab la-twitter"></i> </a></li>
-                                <li><a target="_blank" href="https://instagram.com/"> <i class="lab la-instagram"></i> </a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
     </section>
     <!-- Team section end -->
 
-    <!-- Testimonial section start -->
-    <section class="testimonial-wrap ptb-100 bg-wood">
-        <div class="container pos-rel">
-            <div class="section-title style1 text-center mb-30">
-                <span>Testimonials</span>
-                <h2>Trust From Our Clients</h2>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="testimonial-slider-one swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="testimonial-item style1">
-                                    <ul class="ratings   style1 list-style">
-                                        <li><i class="flaticon-star"></i></li>
-                                        <li><i class="flaticon-star"></i></li>
-                                        <li><i class="flaticon-star"></i></li>
-                                        <li><i class="flaticon-star"></i></li>
-                                        <li><i class="flaticon-star"></i></li>
-                                    </ul>
-                                    <div class="client-quote">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra </p>
-                                    </div>
-                                    <div class="client-info-wrap">
-                                        <div class="client-info">
-                                            <div class="client-img">
-                                                <img src="{{asset('marketplace/img/testimonials/client-1.jpg')}}" alt="Image">
-                                            </div>
-                                            <div class="client-name">
-                                                <h6>Jack Jones</h6>
-                                                <p>Doctor</p>
-                                            </div>
-                                        </div>
-                                        <div class="quote-icon">
-                                            <i class="flaticon-straight-quotes"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="testimonial-item style1">
-                                    <ul class="ratings  style1 list-style">
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                    </ul>
-                                    <div class="client-quote">
-                                        <p>Quis ipsum suspendisse ultrices gravida. Risus commodo viverra Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                    </div>
-                                    <div class="client-info-wrap">
-                                        <div class="client-info">
-                                            <div class="client-img">
-                                                <img src="{{asset('marketplace/img/testimonials/client-2.jpg')}}" alt="Image">
-                                            </div>
-                                            <div class="client-name">
-                                                <h6>Moris Jacker</h6>
-                                                <p>Enterpreneur</p>
-                                            </div>
-                                        </div>
-                                        <div class="quote-icon">
-                                            <i class="flaticon-straight-quotes"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="testimonial-item style1">
-                                    <ul class="ratings  style1 list-style">
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                    </ul>
-                                    <div class="client-quote">
-                                        <p>Incididunt ut labore et dolore magna aliqua Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis gravida.</p>
-                                    </div>
-                                    <div class="client-info-wrap">
-                                        <div class="client-info">
-                                            <div class="client-img">
-                                                <img src="{{asset('marketplace/img/testimonials/client-3.jpg')}}" alt="Image">
-                                            </div>
-                                            <div class="client-name">
-                                                <h6>Moris Jacker</h6>
-                                                <p>Mechanical Engineer</p>
-                                            </div>
-                                        </div>
-                                        <div class="quote-icon">
-                                            <i class="flaticon-straight-quotes"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="testimonial-item style1">
-                                    <ul class="ratings  style1 list-style">
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                        <li><i class="las la-star"></i></li>
-                                    </ul>
-                                    <div class="client-quote">
-                                        <p>Ekusho Lorem ipsum dolor, sit amet consectetur adipisicing elit.Eiusmod tempor incididunt ut labore et dolore magna aliqua incididunt ut labore et dolore magna aliqua.</p>
-                                    </div>
-                                    <div class="client-info-wrap">
-                                        <div class="client-info">
-                                            <div class="client-img">
-                                                <img src="{{asset('marketplace/img/testimonials/client-4.jpg')}}" alt="Image">
-                                            </div>
-                                            <div class="client-name">
-                                                <h6>Tony Stark</h6>
-                                                <p>Enterpreneur</p>
-                                            </div>
-                                        </div>
-                                        <div class="quote-icon">
-                                            <i class="flaticon-straight-quotes"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-one-pagination slider-pagination style1"></div>
-                    </div>
+    @if($testimonials->count()>0)
+        <!-- Testimonial section start -->
+        <section class="testimonial-wrap ptb-100 bg-wood">
+            <div class="container pos-rel">
+                <div class="section-title style1 text-center mb-30">
+                    <span>Testimonials</span>
+                    <h2>Trust From Our Clients</h2>
                 </div>
-            </div>
-        </div>
-    </section>
-    <!-- Testimonial section end -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="testimonial-slider-one swiper-container">
+                            <div class="swiper-wrapper">
+                                @foreach($testimonials as $testimony)
+                                    <div class="swiper-slide">
+                                        <div class="testimonial-item style1">
+                                            <ul class="ratings   style1 list-style">
+                                                <li><i class="flaticon-star"></i></li>
+                                                <li><i class="flaticon-star"></i></li>
+                                                <li><i class="flaticon-star"></i></li>
+                                                <li><i class="flaticon-star"></i></li>
+                                                <li><i class="flaticon-star"></i></li>
+                                            </ul>
+                                            <div class="client-quote">
+                                                <p>{{$testimony->comment}}</p>
+                                            </div>
+                                            <div class="client-info-wrap">
+                                                <div class="client-info">
+                                                    <div class="client-img">
+                                                        <img src="{{$testimony->photo}}" alt="Image">
+                                                    </div>
+                                                    <div class="client-name">
+                                                        <h6>{{$testimony->name}}</h6>
+                                                        <p>{{$testimony->position}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="quote-icon">
+                                                    <i class="flaticon-straight-quotes"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
 
-    <!-- Blog section start -->
-    <section class="blog-wrap pos-rel pt-100 pb-75">
-        <div class="container">
-            <div class="section-title style1 text-center mb-40">
-                <span>Blog</span>
-                <h2>News Update From Blog</h2>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-4 col-md-6">
-                    <div class="blog-card  style1">
-                        <a href="blog-left-sidebar" class="blog-img">
-                            <img src="{{asset('marketplace/img/blog/blog-4.jpg')}}" alt="Image">
-                        </a>
-                        <div class="blog-info">
-                            <a href="blog-left-sidebar" class="blog-cat">Auto Dealling</a>
-                            <h3 class="blog-title"><a href="blog-details-left-sidebar">Ignota Convenire Theop Hrastus Vis Cue Amet Consec</a></h3>
+                            </div>
+                            <div class="testimonial-one-pagination slider-pagination style1"></div>
                         </div>
-                        <ul class="blog-metainfo list-style">
-                            <li><i class="las la-user-alt"></i><a href="blog-right-sidebar">Steven Smith</a></li>
-                            <li><i class="las la-calendar-week"></i><a href="blog-right-sidebar">Jan 5, 2021</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="blog-card  style1">
-                        <a href="blog-left-sidebar" class="blog-img">
-                            <img src="{{asset('marketplace/img/blog/blog-3.jpg')}}" alt="Image">
-                        </a>
-                        <div class="blog-info">
-                            <a href="blog-left-sidebar" class="blog-cat">Car Dealer</a>
-                            <h3 class="blog-title"><a href="blog-details-left-sidebar">Automaker Employee Sell Their Vehicles Ipsum Dollor</a></h3>
-                        </div>
-                        <ul class="blog-metainfo list-style">
-                            <li><i class="las la-user-alt"></i><a href="blog-right-sidebar">Mark Henry</a></li>
-                            <li><i class="las la-calendar-week"></i><a href="blog-right-sidebar">Mar 25, 2021</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="blog-card  style1">
-                        <a href="blog-left-sidebar" class="blog-img">
-                            <img src="{{asset('marketplace/img/blog/blog-2.jpg')}}" alt="Image">
-                        </a>
-                        <div class="blog-info">
-                            <a href="blog-left-sidebar" class="blog-cat">Financing</a>
-                            <h3 class="blog-title"><a href="blog-details-left-sidebar">Best Dealership Contract With An Automaker Lorem Ipsum.</a></h3>
-                        </div>
-                        <ul class="blog-metainfo list-style">
-                            <li><i class="las la-user-alt"></i><a href="blog-right-sidebar">Tony Stark</a></li>
-                            <li><i class="las la-calendar-week"></i><a href="blog-right-sidebar">Apr 12, 2021</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Blog section end -->
+        </section>
+        <!-- Testimonial section end -->
+    @endif
 
     <!-- Partner section start -->
     <section class="partner-wrap bg-hint ptb-100">
         <div class="container pos-rel">
             <div class="section-title style1 text-center mb-40">
-                <h2>Powered By Our Branding Author</h2>
+                <h2>Powered By Amazing Partners</h2>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -596,27 +407,8 @@
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
                                 <div class="partner-img">
-                                    <img src="{{asset('marketplace/img/partner/partner-1.png')}}" alt="Image">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="partner-img">
-                                    <img src="{{asset('marketplace/img/partner/partner-2.png')}}" alt="Image">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="partner-img">
-                                    <img src="{{asset('marketplace/img/partner/partner-3.png')}}" alt="Image">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="partner-img">
-                                    <img src="{{asset('marketplace/img/partner/partner-4.png')}}" alt="Image">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="partner-img">
-                                    <img src="{{asset('marketplace/img/partner/partner-1.png')}}" alt="Image">
+                                    <img src="{{asset('partners/favicon.png')}}" alt="Image" data-bs-toggle="tooltip"
+                                    title="Kopium-Net">
                                 </div>
                             </div>
                         </div>
@@ -626,6 +418,43 @@
         </div>
     </section>
     <!-- Partner section end -->
+
+    @if($hasCountry!=1)
+        @push('js')
+            <!-- Modal -->
+            <div class="modal fade" id="selectCountry" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Select Country</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                @foreach($country as $county)
+                                    <div class="col-md-2 mt-1">
+                                       <a href="{{route('marketplace.index',['country'=>$county->iso3])}}">
+                                           <div class="card">
+                                                <div class="card-body">
+                                                    <img src="{{asset('country/'.strtolower($county->iso2).'.png')}}" style="width: 40px;"/>
+                                                </div>
+                                            </div>
+                                       </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function(){
+                    $("#selectCountry").modal('show');
+                });
+            </script>
+        @endpush
+    @endif
 
 
 @endsection

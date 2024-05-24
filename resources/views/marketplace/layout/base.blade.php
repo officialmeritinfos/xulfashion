@@ -30,6 +30,7 @@
     <!--====== Style css ======-->
     <link href="{{asset('marketplace/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('marketplace/css/dark-theme.css')}}" rel="stylesheet">
+    @stack('css')
 </head>
 
 <body>
@@ -188,7 +189,7 @@
         <div class="footer-top pt-100 pb-70">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-12">
                         <div class="footer-widget">
                             <h5 class="footer-widget-title">
                                 Information
@@ -199,7 +200,7 @@
                                 </div>
                                 <div class="contact-info">
                                     <p>Phone Number</p>
-                                    <a href="tel:8245678924">+8245678924</a>
+                                    <a href="tel:{{$web->phone}}">{{$web->phone}}</a>
                                 </div>
                             </div>
                             <div class="contact-item style2">
@@ -208,64 +209,41 @@
                                 </div>
                                 <div class="contact-info">
                                     <p>Email</p>
-                                    <a href="https://templates.envytheme.com/cdn-cgi/l/email-protection#224a474e4e4d6256434e4d4c0c414d4f"><span class="__cf_email__" data-cfemail="79111c151516390d18151617571a1614">[email&#160;protected]</span></a>
+                                    <a href="{{$web->email}}">{{$web->email}}</a>
                                 </div>
                             </div>
                             <div class="contact-item style2">
                                 <div class="contact-icon">
-                                    <i class="las la-phone-volume"></i>
+                                    <i class="las la-map"></i>
                                 </div>
                                 <div class="contact-info">
-                                    <p>Address</p>
-                                    <span>50 Binary, stamford south, Northambia</span>
+                                    <p>Addresses</p>
+                                    <span>{!! $web->address !!}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-2 col-lg-2 col-md-6">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-6">
                         <div class="footer-widget">
                             <h5 class="footer-widget-title  sm-title">
                                 Useful Links
                             </h5>
                             <ul class="footer-menu  list-style">
-                                <li><a href="about">About Us</a></li>
-                                <li><a href="faq">FAQ's</a></li>
-                                <li><a href="shop-left-sidebar">Our Shop</a></li>
-                                <li><a href="blog-left-sidebar">Blog</a></li>
-                                <li><a href="contact">Contact</a></li>
+                                <li><a href="{{route('company.about')}}">About Us</a></li>
+                                <li><a href="{{route('marketplace.faq')}}">FAQ's</a></li>
+                                <li><a href="{{route('marketplace.stores')}}">Stores</a></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-xl-2 offset-xl-1 col-lg-3 col-md-6">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-6">
                         <div class="footer-widget ">
                             <h5 class="footer-widget-title sm-title">
                                 Our Info
                             </h5>
                             <ul class="footer-menu list-style">
-                                <li><a href="car-listings-grid">Car Gallery</a></li>
-                                <li><a href="car-listings-list">Best Dealers</a></li>
-                                <li><a href="car-listings-list">Top Dealers</a></li>
-                                <li><a href="privacy-policy">Privacy Policy</a></li>
-                                <li><a href="terms-conditions">Terms &amp; Conditions</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h5 class="footer-widget-title">
-                                Subscribe Us
-                            </h5>
-                            <form action="#" class="newsletter-form">
-                                <div class="form-group">
-                                    <input type="email" placeholder="Your mail">
-                                    <button type="submit" class="btn style1">Subscribe</button>
-                                </div>
-                            </form>
-                            <ul class="social-profile style1 list-style">
-                                <li><a target="_blank" href="https://facebook.com/"><i class="lab la-facebook-f"></i> </a></li>
-                                <li><a target="_blank" href="https://linkedin.com/"> <i class="lab la-linkedin-in"></i> </a></li>
-                                <li><a target="_blank" href="https://twitter.com/"> <i class="lab la-twitter"></i> </a></li>
-                                <li><a target="_blank" href="https://instagram.com/"> <i class="lab la-instagram"></i> </a></li>
+                                <li><a href="{{route('marketplace.privacy')}}">Privacy Policy</a></li>
+                                <li><a href="{{route('marketplace.terms')}}">Terms &amp; Conditions</a></li>
+                                <li><a href="{{route('marketplace.aml')}}">Anti-money Laundering</a></li>
                             </ul>
                         </div>
                     </div>
@@ -277,7 +255,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="copyright">
-                            <p><span class="las la-copyright"></span><script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js')}}"></script><script>document.write(new Date().getFullYear())</script> Talon. All Rights Reserved By <a href="https://envytheme.com/">EnvyTheme</a></p>
+                            <p><span class="las la-copyright"></span> <script>document.write(new Date().getFullYear())</script>
+                                {{$siteName}}. All Rights Reserved By <a href="https://kopiumnet.com" target="_blank">Kopium LLC</a></p>
                         </div>
                     </div>
                 </div>
@@ -311,5 +290,6 @@
 <!--====== Main js ======-->
 <script src="{{asset('marketplace/js/main.js')}}"></script>
 @include('basicInclude')
+@stack('js')
 </body>
 </html>

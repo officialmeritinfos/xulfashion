@@ -49,14 +49,27 @@ Route::post('account/withdraw',[Account::class,'withdrawFromAccount'])
 /*================================ MARKETPLACE CONTROLLER ==============================*/
 Route::get('/ads/{country?}',[MarketplaceController::class,'landingPage'])
     ->name('marketplace.index');
-Route::get('/ads/{slug}/{id}/detail',[MarketplaceController::class,'landingPage'])
+Route::get('/ads/{slug}/{id}/detail',[MarketplaceController::class,'adDetails'])
     ->name('marketplace.detail');
-Route::get('/ads/{id}/merchant',[MarketplaceController::class,'landingPage'])
+Route::get('/ads/{id}/merchant',[MarketplaceController::class,'merchantDetail'])
     ->name('marketplace.merchant');
-Route::get('/ads/{id}/state',[MarketplaceController::class,'landingPage'])
+Route::get('/ads/{id}/state',[MarketplaceController::class,'adsByState'])
     ->name('marketplace.state');
-Route::get('/ads/{id}/service',[MarketplaceController::class,'landingPage'])
+Route::get('/ads/{id}/service',[MarketplaceController::class,'adsByService'])
     ->name('marketplace.service');
+Route::get('/ads/search',[MarketplaceController::class,'adsByService'])
+    ->name('marketplace.search');
+//Other pages
+Route::get('/ads/faqs',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.faq');
+Route::get('/ads/stores',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.stores');
+Route::get('/ads/terms',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.privacy');
+Route::get('/ads/privacy',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.terms');
+Route::get('/ads/aml',[MarketplaceController::class,'landingPage'])
+    ->name('marketplace.aml');
 
 /*================================ COMPANY CONTROLLER ==============================*/
 Route::get('about',[MarketplaceController::class,'landingPage'])

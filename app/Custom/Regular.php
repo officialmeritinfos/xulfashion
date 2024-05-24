@@ -10,6 +10,7 @@ use App\Models\RateType;
 use App\Models\ServiceType;
 use App\Models\State;
 use App\Models\User;
+use App\Models\UserAd;
 use App\Models\UserBank;
 use App\Models\UserStoreCatalogCategory;
 use App\Models\UserStoreCustomer;
@@ -260,5 +261,24 @@ class Regular
     public function serviceTypeById($id)
     {
         return ServiceType::where('id',$id)->first();
+    }
+    //top performing Ads by user
+    public function topUsersByView($number=12)
+    {
+        $topUserViews = UserAd::select('user', DB::raw('SUM(numberOfViews) as totalViews'))
+            ->groupBy('user')
+            ->orderByDesc('totalViews')
+            ->take($number)
+            ->get();
+
+        $userIds = $topUserViews->pluck('user');
+        $users = User::whereIn('id', $userIds)->get();
+
+        $usersWithViews = $users->map(function ($user) use ($topUserViews) {
+            $user->totalViews = $topUserViews->firstWhere('user', $user->id)->totalViews;
+            return $user;
+        });
+
+        return$usersWithViews;
     }
 }

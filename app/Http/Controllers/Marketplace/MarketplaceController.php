@@ -8,9 +8,14 @@ use App\Models\Country;
 use App\Models\GeneralSetting;
 use App\Models\ServiceType;
 use App\Models\State;
+use App\Models\Testimonial;
+use App\Models\User;
 use App\Models\UserAd;
+use App\Models\UserAdPhoto;
+use App\Models\UserStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class MarketplaceController extends BaseController
 {
@@ -24,6 +29,11 @@ class MarketplaceController extends BaseController
         }else{
             $hasCountry=1;
             $country = Country::where('iso3',strtoupper($country))->first();
+            //let us store the country variable
+            Session::put([
+                'country'=>$country->iso2,
+                'iso3'  =>$country->iso3
+            ]);
         }
 
         return view('marketplace.index')->with([
@@ -39,7 +49,114 @@ class MarketplaceController extends BaseController
                 ->inRandomOrder()->take(30)->get(),
             'recentAds'     =>($hasCountry==1)?UserAd::where(['status'=>1, 'country'=>$country->iso2])
                 ->orderBy('id','desc')->take(30)->get():UserAd::where(['status'=>1])
-                ->orderBy('id','desc')->take(30)->get()
+                ->orderBy('id','desc')->take(30)->get(),
+            'testimonials'  =>Testimonial::where('status',1)->get(),
+        ]);
+    }
+    //ad details
+    public function adDetails(Request $request,$slug, $id)
+    {
+        $web = GeneralSetting::find(1);
+        //check if the user has a country session and if not, return them back to the main page to choose a country
+        if (!$request->session()->has('country')){
+            return to_route('marketplace.index');
+        }
+        $country = $request->session()->get('country');
+
+        $ads = UserAd::where('reference',$id)->where('status',1)->firstOrFail();
+
+        $merchant = User::where('id',$ads->user)->first();
+        $store = UserStore::where('id',$merchant->id)->first();
+
+        $tagsArray = explode(',', $ads->tags);
+
+        $relatedAds = UserAd::where('user',$merchant->id)->orderBy('id','desc')->take(10)->get();
+        if ($relatedAds->count()<1){
+            $query = UserAd::where('serviceType', $ads->serviceType)
+                ->orWhere(function($query) use ($tagsArray) {
+                    foreach ($tagsArray as $tag) {
+                        $query->orWhereRaw('FIND_IN_SET(?, tags)', [$tag]);
+                    }
+                });
+            $relatedAds = $query->get();
+        }
+
+        return view('marketplace.ad_details')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>$ads->name,
+            'serviceTypes'  =>ServiceType::where('status',1)->get(),
+            'country'       =>$country,
+            'hasCountry'    =>$hasCountry=1,
+            'ad'            =>$ads,
+            'ads'           =>$relatedAds,
+            'store'         =>$store,
+            'photos'        =>UserAdPhoto::where('ad',$ads->id)->get(),
+            'iso3'          =>$request->session()->get('iso3'),
+            'merchant'      =>$merchant,
+        ]);
+    }
+    //ad merchant
+    public function merchantDetail($id)
+    {
+
+    }
+    //ad by state
+    public function adsByState(Request $request,$state)
+    {
+        $web = GeneralSetting::find(1);
+        //check if the user has a country session and if not, return them back to the main page to choose a country
+        if (!$request->session()->has('country')){
+            return to_route('marketplace.index');
+        }
+        $country = $request->session()->get('country');
+        $state = State::where('country_code',strtolower($country))->where('iso2',strtoupper($state))->firstOrFail();
+
+        $ads = UserAd::where([
+            'state'=>$state->iso2,'country'=>$country,
+            'status'=>1
+        ])->inRandomOrder()->paginate(30);
+
+
+        return view('marketplace.ads_state')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>"Fashion Designers In ".$state->name,
+            'serviceTypes'  =>ServiceType::where('status',1)->get(),
+            'country'       =>$country,
+            'hasCountry'    =>$hasCountry=1,
+            'ads'           =>$ads,
+            'iso3'          =>$request->session()->get('iso3'),
+            'states'        =>State::where('country_code',$country)->orderBy('name','asc')->get(),
+        ]);
+    }
+    //ad by service
+    public function adsByService(Request $request,$id)
+    {
+        $web = GeneralSetting::find(1);
+        //check if the user has a country session and if not, return them back to the main page to choose a country
+        if (!$request->session()->has('country')){
+            return to_route('marketplace.index');
+        }
+        $country = $request->session()->get('country');
+        $service = ServiceType::where('id',$id)->firstOrFail();
+
+        $ads = UserAd::where([
+            'country'=>$country,
+            'status'=>1,'serviceType'=>$service->id
+        ])->inRandomOrder()->paginate(30);
+
+
+        return view('marketplace.ads_service')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>"Fashion Designers In ".$service->name,
+            'serviceTypes'  =>ServiceType::where('status',1)->get(),
+            'country'       =>$country,
+            'hasCountry'    =>$hasCountry=1,
+            'ads'           =>$ads,
+            'iso3'          =>$request->session()->get('iso3'),
+            'states'        =>State::where('country_code',$country)->orderBy('name','asc')->get(),
         ]);
     }
 }
