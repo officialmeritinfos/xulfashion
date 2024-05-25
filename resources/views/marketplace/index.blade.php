@@ -434,7 +434,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 @foreach($country as $county)
-                                    <div class="col-md-2 mt-1">
+                                    <div class="col-md-2 mt-1 col-4">
                                        <a href="{{route('marketplace.index',['country'=>$county->iso3])}}">
                                            <div class="card">
                                                 <div class="card-body">
