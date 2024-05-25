@@ -438,7 +438,8 @@
                                        <a href="{{route('marketplace.index',['country'=>$county->iso3])}}">
                                            <div class="card">
                                                 <div class="card-body">
-                                                    <img src="{{asset('country/'.strtolower($county->iso2).'.png')}}" style="width: 40px;"/>
+                                                    <img src="{{asset('country/'.strtolower($county->iso2).'.png')}}" style="width: 40px;"/><br/>
+                                                    <p>{{$county->name}}</p>
                                                 </div>
                                             </div>
                                        </a>
