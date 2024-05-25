@@ -76,7 +76,7 @@
         <span class="section_subtext style1">TOP DEALS</span>
         <div class="container">
             <div class="section-title style1 text-center mb-40">
-                <span>Top Dealer</span>
+                <span>Top Dealers</span>
                 <h2>Explore Our Top Designers</h2>
             </div>
             <div class="tab-content deals-tab-content">
@@ -85,7 +85,8 @@
                         @foreach($ads as  $index => $ad)
                             <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4">
                                 <div class="top-deal-card style4">
-                                    <a href="{{route('marketplace.detail',['slug'=>\Illuminate\Support\Str::slug($ad->title),'id'=>$ad->reference])}}" class="top-deal-img bg-f car-bg-6"
+                                    <a href="{{route('marketplace.detail',['slug'=>\Illuminate\Support\Str::slug($ad->title),'id'=>$ad->reference])}}"
+                                       class="top-deal-img bg-f car-bg-6"
                                        style="background-image:url('{{$ad->featuredImage}}');">
                                     </a>
                                     <div class="top-deal-info">
@@ -100,7 +101,8 @@
                                         </div>
                                         <h4 class="top-deal-title"><a href="{{route('marketplace.detail',['slug'=>\Illuminate\Support\Str::slug($ad->title),'id'=>$ad->reference])}}">{{$ad->title}}</a></h4>
                                         <div class="top-dealer-info">
-                                            <p><i class="flaticon-user-4"></i><a href="{{route('marketplace.merchant',['id'=>$injected->userById($ad->user)->reference])}}">{{$injected->userById($ad->user)->name}}</a></p>
+                                            <p><i class="flaticon-user-4"></i><a href="{{route('marketplace.merchant',['id'=>$injected->userById($ad->user)->reference])}}">
+                                                    {{$injected->userById($ad->user)->name}}</a></p>
                                             <p>Published: {{$injected->getTimeAgo($ad->updated_at)}}</p>
                                         </div>
                                     </div>

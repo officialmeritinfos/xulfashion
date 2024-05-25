@@ -166,6 +166,15 @@
                                                         <a>{{$store->address}}</a>
                                                     </div>
                                                 </div>
+                                                <div class="contact-item">
+                                                    <div class="contact-icon">
+                                                        <i class="fa fa-link"></i>
+                                                    </div>
+                                                    <div class="contact-info">
+                                                        <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}"
+                                                           target="_blank">Visit Store</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -51,6 +51,7 @@ class MarketplaceController extends BaseController
                 ->orderBy('id','desc')->take(30)->get():UserAd::where(['status'=>1])
                 ->orderBy('id','desc')->take(30)->get(),
             'testimonials'  =>Testimonial::where('status',1)->get(),
+            'iso3'          =>($hasCountry==1)?$country->iso3:''
         ]);
     }
     //ad details
@@ -64,6 +65,9 @@ class MarketplaceController extends BaseController
         $country = $request->session()->get('country');
 
         $ads = UserAd::where('reference',$id)->where('status',1)->firstOrFail();
+        $ads->numberOfViews = $ads->numberOfViews+1;
+        $ads->save();
+        $ads->refresh();
 
         $merchant = User::where('id',$ads->user)->first();
         $store = UserStore::where('id',$merchant->id)->first();
@@ -97,9 +101,34 @@ class MarketplaceController extends BaseController
         ]);
     }
     //ad merchant
-    public function merchantDetail($id)
+    public function merchantDetail(Request $request, $id)
     {
+        $web = GeneralSetting::find(1);
+        //check if the user has a country session and if not, return them back to the main page to choose a country
+        if (!$request->session()->has('country')){
+            return to_route('marketplace.index');
+        }
+        $country = $request->session()->get('country');
 
+        $user = User::where('reference',$id)->firstOrFail();
+
+        $ads = UserAd::where([
+            'country'=>$country,
+            'status'=>1,'user'=>$user->id
+        ])->orderBy('id','desc')->paginate(30);
+
+        return view('marketplace.merchant_detail')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>"Listings By ".$user->displayName,
+            'serviceTypes'  =>ServiceType::where('status',1)->get(),
+            'country'       =>$country,
+            'hasCountry'    =>$hasCountry=1,
+            'ads'           =>$ads,
+            'iso3'          =>$request->session()->get('iso3'),
+            'store'         =>UserStore::where('user',$user->id)->first(),
+            'merchant'      =>$user
+        ]);
     }
     //ad by state
     public function adsByState(Request $request,$state)

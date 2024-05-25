@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\Account;
 use App\Http\Controllers\Marketplace\MarketplaceController;
+use App\Http\Controllers\Marketplace\StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,11 +60,15 @@ Route::get('/ads/{id}/service',[MarketplaceController::class,'adsByService'])
     ->name('marketplace.service');
 Route::get('/ads/search',[MarketplaceController::class,'adsByService'])
     ->name('marketplace.search');
+
+//Store
+Route::get('ads/stores/list',[StoreController::class,'landingPage'])
+    ->name('marketplace.stores');
+Route::get('/ads/store/search',[StoreController::class,'filterStores'])
+    ->name('marketplace.store.search');
 //Other pages
 Route::get('/ads/faqs',[MarketplaceController::class,'landingPage'])
     ->name('marketplace.faq');
-Route::get('/ads/stores',[MarketplaceController::class,'landingPage'])
-    ->name('marketplace.stores');
 Route::get('/ads/terms',[MarketplaceController::class,'landingPage'])
     ->name('marketplace.privacy');
 Route::get('/ads/privacy',[MarketplaceController::class,'landingPage'])

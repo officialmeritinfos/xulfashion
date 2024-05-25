@@ -148,9 +148,12 @@
                             </div>
                             <div id="menu">
                                 <ul class="main-menu list-style">
-                                    <li><a href="{{route('marketplace.index')}}">HOME</a></li>
-                                    <li><a href="#">SHOPS</a></li>
-                                    <li><a href="#">MODELS</a></li>
+                                    @if($hasCountry==1)
+                                        <li><a href="{{route('marketplace.index',['country'=>$iso3])}}">HOME</a></li>
+                                    @else
+                                        <li><a href="{{route('marketplace.index')}}">HOME</a></li>
+                                    @endif
+                                    <li><a href="{{route('marketplace.stores')}}">SHOPS</a></li>
                                     <li><a href="#">CONTACT</a></li>
                                 </ul>
                             </div>
