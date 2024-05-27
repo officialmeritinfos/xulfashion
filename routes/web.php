@@ -4,6 +4,8 @@ use App\Http\Controllers\Dashboard\Account;
 use App\Http\Controllers\Marketplace\MarketplaceController;
 use App\Http\Controllers\Marketplace\PageController;
 use App\Http\Controllers\Marketplace\StoreController;
+use App\Http\Controllers\Storefront\Home;
+use App\Http\Controllers\Storefront\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,26 +21,35 @@ use Illuminate\Support\Facades\Route;
 
 /*==============================MERCHANT STORE =====================================*/
 Route::domain('{subdomain}.localhost')->group(function () {
-    //landing page
-    Route::get('/', function (){
-        echo  "Hello";
-        return ;
-    })->name('merchant.store');//landing page
+    Route::middleware(['applyTheme'])->group(function (){
+        //landing page
+        Route::get('/', [Home::class,'landingPage'])
+            ->name('merchant.store');//landing page
 
-    Route::get('/category/{id}', function (){
-        echo  "Hello";
-        return;
-    })->name('merchant.store.category');//category page
+        Route::get('/category/{id}', function (){
+            echo  "Hello";
+            return;
+        })->name('merchant.store.category');//category page
 
-    Route::get('/product/{id}/detail', function (){
-        echo  "Hello";
-        return;
-    })->name('merchant.store.product.detail');//category page
+        Route::get('/product/{id}/detail', function (){
+            echo  "Hello";
+            return;
+        })->name('merchant.store.product.detail');//category page
 
-    Route::get('/invoice/{id}/detail', function (){
-        echo  "Hello";
-        return;
-    })->name('merchant.store.invoice.detail');//category page
+        Route::get('/invoice/{id}/detail', function (){
+            echo  "Hello";
+            return;
+        })->name('merchant.store.invoice.detail');//category page
+
+        Route::get('/shop', function (){
+            echo  "Hello";
+            return;
+        })->name('merchant.store.shop');//category page
+
+
+        Route::get('product/{id}/quick-view',[ProductController::class,'quickView'])
+            ->name('merchant.store.product.quick-view');
+    });
 });
 
 /*===============================ACCOUNT PROCESSING================================*/

@@ -1,227 +1,148 @@
+
+
 $(function() {
-    "use strict";
+	"use strict";
 
 
-	$('.banner-slider').owlCarousel({
-		loop:true,
-		margin:0,
-		responsiveClass:true,
-		nav:true,
-		navText: [
-			"<i class='bx bx-chevron-left'></i>",
-		    "<i class='bx bx-chevron-right' ></i>"
-		 ],
-		dots: false,
-		responsive:{
-			0:{
-				nav:false,
-				margin:0,
-				items:1
-			},
-			576:{
-				nav:false,
-				items:1
-			},
-			768:{
-				nav:false,
-				items:1
-			},
-			1024:{
-				nav:false,
-				items:1
-			},
-			1366:{
-				items:1
-			},
-			1400:{
-				items:1
-			}
-	     },
-    	})
+// slider
+
+$(document).ready(function(){
+ $('.product-thumbs').slick({
+    dots: false,
+    arrows: true,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    prevArrow: "<button type='button' class='slick-prev pull-left'><i class='bi bi-chevron-left'></i></button>",
+    nextArrow: "<button type='button' class='slick-next pull-right'><i class='bi bi-chevron-right'></i></button>",
+    responsive: [
+      {
+        breakpoint: 1025,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          infinite: true,
+        }
+      },
+      {
+        breakpoint: 769,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          arrows: false,
+        }
+      },
+      {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          arrows: false,
+        }
+      }
+    ]
+  });
 
 
-	
-	$('.new-arrivals').owlCarousel({
-		loop:false,
-		margin:24,
-		responsiveClass:true,
-		nav:true,
-		navText: [
-			"<i class='bx bx-chevron-left'></i>",
-		    "<i class='bx bx-chevron-right' ></i>"
-		 ],
-		dots: false,
-		responsive:{
-			0:{
-				nav:false,
-				margin:16,
-				items:2
-			},
-			576:{
-				nav:false,
-				items:2
-			},
-			768:{
-				nav:false,
-				items:3
-			},
-			1024:{
-				nav:false,
-				items:4
-			},
-			1366:{
-				items:4
-			},
-			1400:{
-				items:5
-			}
-	     },
-    	})
+});
 
 
 
 
-		$('.browse-category').owlCarousel({
-			loop:true,
-			margin:24,
-			responsiveClass:true,
-			nav:true,
-			navText: [
-				"<i class='bx bx-chevron-left'></i>",
-				"<i class='bx bx-chevron-right' ></i>"
-			],
-			dots: false,
-			responsive:{
-				0:{
-					nav:false,
-					margin:16,
-					items:2
-				},
-				576:{
-					nav:false,
-					items:2
-				},
-				768:{
-					nav:false,
-					items:3
-				},
-				1024:{
-					nav:false,
-					items:4
-				},
-				1366:{
-					items:5
-				},
-				1400:{
-					items:5
-				}
-			 },
-			})
 
 
-			$('.latest-news').owlCarousel({
-				loop:true,
-				margin:24,
-				responsiveClass:true,
-				nav:true,
-				navText: [
-					"<i class='bx bx-chevron-left'></i>",
-					"<i class='bx bx-chevron-right' ></i>"
-				],
-				dots: false,
-				responsive:{
-					0:{
-						nav:false,
-						margin:16,
-						items:2
-					},
-					576:{
-						nav:false,
-						items:2
-					},
-					768:{
-						nav:false,
-						items:3
-					},
-					1024:{
-						nav:false,
-						items:4
-					},
-					1366:{
-						items:4
-					},
-					1400:{
-						items:4
-					}
-				 },
-				})
+$(document).ready(function(){
+  $('.cartegory-box').slick({
+     dots: false,
+     arrows: true,
+     infinite: true,
+     speed: 300,
+     slidesToShow: 5,
+     slidesToScroll: 1,
+     autoplay: true,
+     prevArrow: "<button type='button' class='slick-prev pull-left'><i class='bi bi-chevron-left'></i></button>",
+     nextArrow: "<button type='button' class='slick-next pull-right'><i class='bi bi-chevron-right'></i></button>",
+     responsive: [
+       {
+         breakpoint: 1025,
+         settings: {
+           slidesToShow: 4,
+           slidesToScroll: 1,
+           infinite: true,
+         }
+       },
+       {
+         breakpoint: 769,
+         settings: {
+           slidesToShow: 3,
+           slidesToScroll: 1,
+           arrows: false,
+         }
+       },
+       {
+         breakpoint: 500,
+         settings: {
+           slidesToShow: 2,
+           slidesToScroll: 2,
+           arrows: false,
+         }
+       }
+     ]
+   });
+ 
+ 
+ });
+  
 
 
 
 
-				$('.brands-shops').owlCarousel({
-					loop:true,
-					margin:0,
-					responsiveClass:true,
-					nav:true,
-					navText: [
-						"<i class='bx bx-chevron-left'></i>",
-						"<i class='bx bx-chevron-right' ></i>"
-					],
-					autoplay:true,
-					autoplayTimeout:5000,
-					dots: false,
-					responsive:{
-						0:{
-							nav:false,
-							items:2
-						},
-						576:{
-							nav:false,
-							items:3
-						},
-						768:{
-							nav:false,
-							items:4
-						},
-						1024:{
-							nav:false,
-							items:5
-						},
-						1366:{
-							items:5
-						},
-						1400:{
-							items:6
-						}
-					 },
-					})
-
-
-					$('.product-gallery').owlCarousel({
-						loop:true,
-						margin:10,
-						responsiveClass:true,
-						nav:false,
-						dots: false,
-						thumbs: true,
-						thumbsPrerendered: true,
-						responsive:{
-							0:{
-								items:1
-							},
-							600:{
-								items:1
-							},
-							1000:{
-								items:1
-							 }
-						  }
-						})
+});
 
 
 
-		
-		
-   });	 
-   
+
+
+
+
+
+
+$(document).ready(function(){
+  $('.slider-for').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: false,
+    arrows: false,
+    fade: true,
+	centerMode: false,
+    focusOnSelect: true,
+    asNavFor: '.slider-nav',
+    prevArrow: "<button type='button' class='slick-prev pull-left'><i class='bi bi-chevron-left'></i></button>",
+    nextArrow: "<button type='button' class='slick-next pull-right'><i class='bi bi-chevron-right'></i></button>",
+  })
+  
+  $('.slider-nav').slick({
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    asNavFor: '.slider-for',
+    dots: false,
+    arrows: false,
+    centerMode: false,
+    focusOnSelect: true,
+    prevArrow: "<button type='button' class='slick-prev pull-left'><i class='bi bi-chevron-left'></i></button>",
+    nextArrow: "<button type='button' class='slick-next pull-right'><i class='bi bi-chevron-right'></i></button>",
+  })
+});
+
+$('.modal').on('shown.bs.modal', function (e) {
+  $('.slider-for').slick('setPosition');
+  $('.slider-nav').slick('setPosition');
+  $('.wrap-modal-slider').addClass('open');
+})
+
+
+
+
+

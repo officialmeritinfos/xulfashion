@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\User\Stores\StoreActions;
 
+use App\Custom\GoogleUpload;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
@@ -17,7 +18,12 @@ use Illuminate\Support\Facades\Validator;
 
 class Categories extends BaseController
 {
+    public $google;
     use Helpers;
+    public function __construct()
+    {
+        $this->google = new GoogleUpload();
+    }
     //landing page
     public function landingPage()
     {
@@ -51,6 +57,7 @@ class Categories extends BaseController
             }
             $validator = Validator::make($request->all(),[
                 'name'=>['required','string','max:200'],
+                'photo'=>['required','image','max:2048'],
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -65,10 +72,16 @@ class Categories extends BaseController
             if (!empty($categoryExists)){
                 return $this->sendError('category.error',['error'=>'Category already exists in store']);
             }
+            //upload featured image
+            if ($request->hasFile('photo')) {
+                //lets upload the address proof
+                $result = $this->google->uploadGoogle($request->file('photo'));
+                $featuredPhoto  = $result['link'];
+            }
 
             $category = UserStoreCatalogCategory::create([
                 'store'=>$store->id,'categoryName'=>$input['name'],
-                'isDefault'=>2, 'status'=>1
+                'isDefault'=>2, 'status'=>1,'photo'=>$featuredPhoto
             ]);
 
             if(!empty($category)){
@@ -121,6 +134,7 @@ class Categories extends BaseController
             $validator = Validator::make($request->all(),[
                 'name'=>['required','string','max:200'],
                 'status'=>['required','numeric','integer'],
+                'photo'=>['nullable','image','max:2048'],
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -143,8 +157,16 @@ class Categories extends BaseController
                 return $this->sendError('category.error',['error'=>'Category not found in store']);
             }
 
+            if ($request->hasFile('photo')) {
+                //lets upload the address proof
+                $result = $this->google->uploadGoogle($request->file('photo'));
+                $featuredPhoto  = $result['link'];
+            }else{
+                $featuredPhoto = $category->photo;
+            }
+
             if(UserStoreCatalogCategory::where('id',$category->id)->update([
-                'categoryName'=>$input['name'], 'status'=>$input['status']
+                'categoryName'=>$input['name'], 'status'=>$input['status'],'photo'=>$featuredPhoto
             ])){
                 return $this->sendResponse([
                     'redirectTo'=>url()->previous()

@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AccountNotLocked;
+use App\Http\Middleware\ApplyTheme;
 use App\Http\Middleware\UserCompletedProfile;
 use App\Http\Middleware\UserLoggedIn;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -70,5 +71,6 @@ class Kernel extends HttpKernel
         'lockedOut'=>AccountNotLocked::class,
         'twoFactor'=>UserLoggedIn::class,
         'completedProfile'=>UserCompletedProfile::class,
+        'applyTheme'=>ApplyTheme::class,
     ];
 }

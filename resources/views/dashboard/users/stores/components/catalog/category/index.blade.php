@@ -28,6 +28,7 @@
                         <thead>
                         <tr>
                             <th scope="col">NAME</th>
+                            <th scope="col">PHOTO</th>
                             <th scope="col">IS DEFAULT</th>
                             <th scope="col">DATE</th>
                             <th scope="col">NUMBER OF PRODUCTS</th>
@@ -40,6 +41,9 @@
                                 <tr>
                                     <td>
                                         {{ucfirst($category->categoryName)}}
+                                    </td>
+                                    <td>
+                                        <img src="{{$category->photo??asset('customcategory.jpg')}}" style="width: 150px;">
                                     </td>
                                     <td>
                                         @if($category->isDefault==1)
@@ -128,6 +132,10 @@
                                 <div class="col-md-12">
                                     <label for="inputTitle" class="form-label">Category Name<sup class="text-danger">*</sup></label>
                                     <input type="text" class="form-control" id="inputTitle" name="name" >
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="inputTitle" class="form-label">Category Photo<sup class="text-danger">*</sup></label>
+                                    <input type="file" class="form-control" id="inputTitle" name="photo" >
                                 </div>
                                 <div class="col-12 text-center">
                                     <button type="submit" class="default-btn submit">Add Category</button>

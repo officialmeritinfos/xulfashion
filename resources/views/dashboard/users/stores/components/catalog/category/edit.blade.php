@@ -5,11 +5,15 @@
         <div class="container-fluid">
             <form class="submit-property-form" id="processForm" action="{{route('user.stores.catalog.category.edit.process',['id'=>$category->id])}}" method="post">
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for="inputTitle" class="form-label">Category Name<sup class="text-danger">*</sup></label>
                         <input type="text" class="form-control" id="inputTitle" name="name" value="{{$category->categoryName}}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
+                        <label for="inputTitle" class="form-label">Category Photo</label>
+                        <input type="file" class="form-control" id="inputTitle" name="photo" >
+                    </div>
+                    <div class="col-md-12">
                         <label for="inputTitle" class="form-label">Category Status<sup class="text-danger">*</sup></label>
                         <select class="form-control selectize" id="inputTitle" name="status">
                             <option value="">Select an option</option>
