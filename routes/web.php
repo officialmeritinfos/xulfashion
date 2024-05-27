@@ -58,7 +58,7 @@ Route::get('/ads/{id}/state',[MarketplaceController::class,'adsByState'])
     ->name('marketplace.state');
 Route::get('/ads/{id}/service',[MarketplaceController::class,'adsByService'])
     ->name('marketplace.service');
-Route::get('/ads/search',[MarketplaceController::class,'adsByService'])
+Route::get('ads/filter/search',[MarketplaceController::class,'filterAds'])
     ->name('marketplace.search');
 
 //Store

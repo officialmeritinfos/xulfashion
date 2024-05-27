@@ -27,7 +27,6 @@
                                         <div class="filter-box">
                                             <label>State/Region</label>
                                             <select name="state">
-                                                <option>Select State</option>
                                                 @if($hasCountry==1)
                                                     @foreach($states as $state)
                                                         <option value="{{$state->iso2}}">{{$state->name}}</option>
@@ -46,7 +45,6 @@
                                         <div class="filter-box">
                                             <label>Type</label>
                                             <select name="serviceType">
-                                                <option>Select Service Type</option>
                                                 @foreach($serviceTypes as $type)
                                                     <option value="{{$type->id}}">{{$type->name}}</option>
                                                 @endforeach
@@ -434,7 +432,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 @foreach($country as $county)
-                                    <div class="col-md-2 mt-1 col-4">
+                                    <div class="col-md-4 mt-1 col-4">
                                        <a href="{{route('marketplace.index',['country'=>$county->iso3])}}">
                                            <div class="card">
                                                 <div class="card-body">

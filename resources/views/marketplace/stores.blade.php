@@ -34,7 +34,7 @@
                                 <div class="filter-box">
                                     <label>State/Region</label>
                                     <select name="state">
-                                        @if($hasCountry==1)
+                                        @if($hasCountry==1)-
                                             @foreach($states as $state)
                                                 <option value="{{$state->iso2}}">{{$state->name}}</option>
                                             @endforeach

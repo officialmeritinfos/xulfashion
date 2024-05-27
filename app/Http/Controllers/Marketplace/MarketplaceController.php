@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Marketplace;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilterAdsRequest;
 use App\Models\Country;
 use App\Models\GeneralSetting;
 use App\Models\ServiceType;
@@ -186,6 +187,54 @@ class MarketplaceController extends BaseController
             'ads'           =>$ads,
             'iso3'          =>$request->session()->get('iso3'),
             'states'        =>State::where('country_code',$country)->orderBy('name','asc')->get(),
+        ]);
+    }
+    //filter results
+    public function filterAds(FilterAdsRequest $request)
+    {
+        $country = Session::get('country');
+        if (!$country){
+            return to_route('marketplace.index');
+        }
+        $query = UserAd::query();
+
+        $query->where('country',$country);
+
+        if ($request->filled('state')) {
+            $query->where('state', $request->input('state'));
+        }
+
+        if ($request->filled('minPrice')) {
+            $query->where('amount', '>=', $request->input('minPrice'));
+        }
+
+        if ($request->filled('maxPrice')) {
+            $query->where('amount', '<=', $request->input('maxPrice'));
+        }
+
+        if ($request->filled('serviceType')) {
+            $query->where('serviceType', $request->input('serviceType'));
+        }
+
+        $ads = $query->inRandomOrder()->paginate(30);
+
+        $otherAds = UserAd::where('country',$country)->where('status',1)->inRandomOrder()->paginate(9);
+        $web = GeneralSetting::find(1);
+
+        $params = $request->input();
+
+        return view('marketplace.ads_search_result')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>"Search Results",
+            'serviceTypes'  =>ServiceType::where('status',1)->get(),
+            'country'       =>$country,
+            'hasCountry'    =>$hasCountry=1,
+            'ads'           =>$ads,
+            'iso3'          =>Session::get('iso3'),
+            'states'        =>State::where('country_code',$country)->orderBy('name','asc')->get(),
+            'params'        =>$params,
+            'others'        =>$otherAds
         ]);
     }
 }
