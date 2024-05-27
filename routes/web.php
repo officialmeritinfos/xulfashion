@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\Account;
 use App\Http\Controllers\Marketplace\MarketplaceController;
+use App\Http\Controllers\Marketplace\PageController;
 use App\Http\Controllers\Marketplace\StoreController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,15 +68,15 @@ Route::get('ads/stores/list',[StoreController::class,'landingPage'])
 Route::get('/ads/store/search',[StoreController::class,'filterStores'])
     ->name('marketplace.store.search');
 //Other pages
-Route::get('/ads/faqs',[MarketplaceController::class,'landingPage'])
+Route::get('/ads/page/faqs',[PageController::class,'faq'])
     ->name('marketplace.faq');
-Route::get('/ads/terms',[MarketplaceController::class,'landingPage'])
-    ->name('marketplace.privacy');
-Route::get('/ads/privacy',[MarketplaceController::class,'landingPage'])
+Route::get('/ads/page/terms',[PageController::class,'terms'])
     ->name('marketplace.terms');
-Route::get('/ads/aml',[MarketplaceController::class,'landingPage'])
+Route::get('/ads/page/privacy',[PageController::class,'privacy'])
+    ->name('marketplace.privacy');
+Route::get('/ads/page/aml',[PageController::class,'aml'])
     ->name('marketplace.aml');
 
 /*================================ COMPANY CONTROLLER ==============================*/
-Route::get('about',[MarketplaceController::class,'landingPage'])
+Route::get('about',[PageController::class,'about'])
     ->name('company.about');
