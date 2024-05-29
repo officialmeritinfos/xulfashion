@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserStoreProductColorVariationsTable extends Migration
+class CreateUserStoreProductSizeVariationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateUserStoreProductColorVariationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_store_product_color_variations', function (Blueprint $table) {
+        Schema::create('user_store_product_size_variations', function (Blueprint $table) {
             $table->bigInteger('id')->primary();
-            $table->string('name', 150);
             $table->string('product', 100);
-            $table->string('price', 150);
-            $table->string('quantity', 150);
+            $table->string('name', 150);
             $table->timestamps(, 150);
         });
     }
@@ -30,6 +28,6 @@ class CreateUserStoreProductColorVariationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_store_product_color_variations');
+        Schema::dropIfExists('user_store_product_size_variations');
     }
 }

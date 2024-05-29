@@ -22,6 +22,7 @@ class CreateStoreThemesTable extends Migration
             $table->string('textFont', 150)->nullable();
             $table->string('textColor', 150)->nullable();
             $table->string('primaryColor', 150)->nullable();
+            $table->string('location', 150)->nullable();
             $table->string('footerText', 200);
             $table->text('footerScript');
             $table->string('headerTextColor', 150)->nullable();

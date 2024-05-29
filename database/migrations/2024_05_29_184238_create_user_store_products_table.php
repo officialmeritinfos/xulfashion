@@ -31,6 +31,10 @@ class CreateUserStoreProductsTable extends Migration
             $table->string('category', 150)->nullable();
             $table->mediumText('returnPolicy')->nullable();
             $table->mediumText('refundPolicy')->nullable();
+            $table->integer('featured')->default(2);
+            $table->integer('highlighted')->default(2);
+            $table->integer('numberOfOrder')->default(0);
+            $table->string('numberOfViews', 100)->default('0');
             $table->integer('status')->default(1);
             $table->timestamps(, 150);
             $table->string('deleted_at', 150)->nullable();
