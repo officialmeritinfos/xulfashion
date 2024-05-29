@@ -29,14 +29,16 @@
             <div class="h4 fw-bold">{{$product->currency}}{{$product->amount}}</div>
         </div>
         <p class="fw-bold mb-0 mt-1 text-success">exclusive of all taxes</p>
-        <form>
+        <form action="{{route('merchant.store.add.cart',['subdomain'=>$subdomain,'id'=>$product->reference])}}" method="post"
+              id="addToCartForms">
+            @csrf
             @if($sizes->count()>0)
                 <div class="size-chart mt-3">
                     <h6 class="fw-bold mb-3">Select Size</h6>
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         @foreach($sizes as $size)
                             <div class="">
-                                <input type="radio" name="size" class="rounded-0">{{$size->name}}
+                                <input type="radio" name="size" class="rounded-0" value="{{$size->id}}">{{$size->name}}
                             </div>
                         @endforeach
                     </div>
@@ -48,19 +50,27 @@
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                             @foreach($colors as $color)
                                 <div class="">
-                                    <input type="radio" name="color" class="rounded-0">{{$color->name}}
+                                    <input type="radio" name="color" class="rounded-0" value="{{$color->id}}">{{$color->name}}
                                 </div>
                             @endforeach
 
                         </div>
                     </div>
             @endif
+                <div class="quantity mt-3">
+                    <h6 class="fw-bold mb-3">Quantity</h6>
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="number" name="quantity" class="form-control" value="1" min="1">
+                    </div>
+                </div>
             <div class="cart-buttons mt-3">
                 <div class="buttons d-flex flex-column gap-3 mt-4">
-                    <a href="javascript:;" class="btn btn-lg btn-dark btn-ecomm px-5 py-3 flex-grow-1"><i
-                            class="bi bi-basket2 me-2"></i>Add to Bag</a>
+                    <button type="submit" class="btn btn-lg btn-dark btn-ecomm px-5 py-3 flex-grow-1 submit"><i
+                            class="bi bi-basket2 me-2"></i>Add to Bag</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
+

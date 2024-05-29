@@ -146,16 +146,8 @@ class CatalogController extends BaseController
                 'file.*'=>['nullable','image','max:2048'],
                 'sizeName'=>['sometimes', 'required'],
                 'sizeName.*'=>['sometimes','required','string','max:200'],
-                'sizePrice'=>['sometimes','required'],
-                'sizePrice.*'=>['sometimes','required','numeric'],
-                'sizeQuantity'=>['sometimes','required'],
-                'sizeQuantity.*'=>['sometimes','required','numeric'],
                 'colorName'=>['sometimes','required'],
                 'colorName.*'=>['sometimes','required','string','max:200'],
-                'colorPrice'=>['sometimes','required'],
-                'colorPrice.*'=>['sometimes','required','numeric'],
-                'colorQuantity'=>['sometimes','required'],
-                'colorQuantity.*'=>['sometimes','required','numeric'],
                 'returnPolicy'=>['nullable','string'],
                 'refundPolicy'=>['nullable','string']
             ])->stopOnFirstFailure();
@@ -198,7 +190,6 @@ class CatalogController extends BaseController
                     foreach ($request->input('sizeName') as $indexs =>$items ) {
                         UserStoreProductSizeVariation::create([
                             'product'=>$product->id,'name'=>$request->input('sizeName')[$indexs],
-                            'price'=>$request->input('sizePrice')[$indexs],'quantity'=>$request->input('sizeQuantity')[$indexs],
                         ]);
                     }
                 }
@@ -207,7 +198,6 @@ class CatalogController extends BaseController
                     foreach ($request->input('colorName') as $indexs =>$items ) {
                         UserStoreProductColorVariation::create([
                             'product'=>$product->id,'name'=>$request->input('colorName')[$indexs],
-                            'price'=>$request->input('colorPrice')[$indexs],'quantity'=>$request->input('colorQuantity')[$indexs],
                         ]);
                     }
                 }
@@ -613,16 +603,8 @@ class CatalogController extends BaseController
             $validator = Validator::make($request->all(),[
                 'sizeName'=>['sometimes', 'required'],
                 'sizeName.*'=>['sometimes','required','string','max:200'],
-                'sizePrice'=>['sometimes','required'],
-                'sizePrice.*'=>['sometimes','required','numeric'],
-                'sizeQuantity'=>['sometimes','required'],
-                'sizeQuantity.*'=>['sometimes','required','numeric'],
                 'colorName'=>['sometimes','required'],
                 'colorName.*'=>['sometimes','required','string','max:200'],
-                'colorPrice'=>['sometimes','required'],
-                'colorPrice.*'=>['sometimes','required','numeric'],
-                'colorQuantity'=>['sometimes','required'],
-                'colorQuantity.*'=>['sometimes','required','numeric'],
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -636,7 +618,6 @@ class CatalogController extends BaseController
                     foreach ($request->input('sizeName') as $indexs =>$items ) {
                         UserStoreProductSizeVariation::create([
                             'product'=>$product->id,'name'=>$request->input('sizeName')[$indexs],
-                            'price'=>$request->input('sizePrice')[$indexs],'quantity'=>$request->input('sizeQuantity')[$indexs],
                         ]);
                     }
                 }
@@ -645,7 +626,6 @@ class CatalogController extends BaseController
                     foreach ($request->input('colorName') as $indexs =>$items ) {
                         UserStoreProductColorVariation::create([
                             'product'=>$product->id,'name'=>$request->input('colorName')[$indexs],
-                            'price'=>$request->input('colorPrice')[$indexs],'quantity'=>$request->input('colorQuantity')[$indexs],
                         ]);
                     }
                 }

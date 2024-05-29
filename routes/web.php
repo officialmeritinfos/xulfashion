@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\Account;
 use App\Http\Controllers\Marketplace\MarketplaceController;
 use App\Http\Controllers\Marketplace\PageController;
 use App\Http\Controllers\Marketplace\StoreController;
+use App\Http\Controllers\Storefront\CartController;
 use App\Http\Controllers\Storefront\Home;
 use App\Http\Controllers\Storefront\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -21,34 +22,49 @@ use Illuminate\Support\Facades\Route;
 
 /*==============================MERCHANT STORE =====================================*/
 Route::domain('{subdomain}.localhost')->group(function () {
-    Route::middleware(['applyTheme'])->group(function (){
+    Route::middleware(['applyTheme','extend.session'])->group(function (){
         //landing page
-        Route::get('/', [Home::class,'landingPage'])
-            ->name('merchant.store');//landing page
+        Route::get('/', [Home::class,'landingPage'])->name('merchant.store');//landing page
 
-        Route::get('/category/{id}', function (){
-            echo  "Hello";
-            return;
-        })->name('merchant.store.category');//category page
+        Route::get('/category/{id}', [])->name('merchant.store.category');//category page
 
-        Route::get('/product/{id}/detail', function (){
-            echo  "Hello";
-            return;
-        })->name('merchant.store.product.detail');//category page
+        Route::get('/product/{id}/detail', [])->name('merchant.store.product.detail');//product page
 
-        Route::get('/invoice/{id}/detail', function (){
-            echo  "Hello";
-            return;
-        })->name('merchant.store.invoice.detail');//category page
+        Route::get('/invoice/{id}/detail',[])->name('merchant.store.invoice.detail');//invoice page
 
-        Route::get('/shop', function (){
-            echo  "Hello";
-            return;
-        })->name('merchant.store.shop');//category page
-
+        Route::get('/shop', [])->name('merchant.store.shop');//shop page
+        Route::get('/catalog', [])->name('merchant.store.catalog');//catalog page
 
         Route::get('product/{id}/quick-view',[ProductController::class,'quickView'])
             ->name('merchant.store.product.quick-view');
+
+        Route::post('product/{id}/add-cart',[ProductController::class,'addToCart'])
+            ->name('merchant.store.add.cart');//add to cart
+        Route::post('product/remove-cart',[ProductController::class,'removeFromCart'])
+            ->name('merchant.store.remove.cart');//remove from cart
+        Route::post('product/update-cart',[ProductController::class,'updateCart'])
+            ->name('merchant.store.update.cart');//update cart
+
+        Route::get('product/cart-preview',[ProductController::class,'getCartItems'])
+            ->name('merchant.store.cart.items');//preview cart items
+        Route::post('product/remove-carts/{product}/{size}/{color}',[ProductController::class,'removeFromCart'])
+            ->name('merchant.store.remove.carts');//remove from cart
+        Route::get('get-cart-item-count', [ProductController::class,'getCartItemCount'])
+            ->name('get.cart.item.count');
+        //Checkout page
+        Route::get('checkout', [Home::class,'checkoutPage'])
+            ->name('merchant.store.checkout');
+        //cart page
+        Route::get('cart', [CartController::class,'cart'])->name('merchant.store.cart');
+        Route::get('cart/cart-preview/cart',[CartController::class,'getCartItemCarts'])
+            ->name('merchant.store.cart.items.cart');//preview cart items on cart page
+        Route::get('cart/cart-preview/summary',[CartController::class,'getCartSummary'])
+            ->name('merchant.store.cart.summary.cart');//preview cart items on cart page
+        Route::post('cart/apply-coupon',[CartController::class,'addCoupon'])
+            ->name('merchant.store.add.coupon');//add coupon
+        Route::post('cart/remove-coupon',[CartController::class,'removeCoupon'])
+            ->name('merchant.store.remove.coupon');//add coupon
+
     });
 });
 

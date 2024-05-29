@@ -39,4 +39,23 @@ class Home extends BaseController
         ];
         return view('storefront.'.$themeLocation.'.home')->with($data);
     }
+    //checkout page
+    public function checkoutPage($store)
+    {
+        $userStore = UserStore::where('slug',$store)->firstOrFail();
+        $storeSettings = UserStoreSetting::where('store',$userStore->id)->first();
+        $themeLocation = $this->fetchThemeViewLocation($userStore->theme);
+
+        $web = GeneralSetting::find(1);
+
+        $data=[
+            'userStore'       =>$userStore,
+            'storeSetting'    =>$storeSettings,
+            'web'             =>$web,
+            'siteName'        =>$web->name,
+            'pageName'        =>'Checkout Page',
+        ];
+        return view('storefront.'.$themeLocation.'.checkout')->with($data);
+    }
+
 }

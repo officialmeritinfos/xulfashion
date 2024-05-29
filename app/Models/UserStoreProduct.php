@@ -26,4 +26,14 @@ class UserStoreProduct extends Model
         UserStoreProductColorVariation::where('product',$product->id)->delete();
         UserStoreProductSizeVariation::where('product',$product->id)->delete();
     }
+
+    public function sizes()
+    {
+        return $this->hasMany(UserStoreProductSizeVariation::class, 'product');
+    }
+
+    public function colors()
+    {
+        return $this->hasMany(UserStoreProductColorVariation::class, 'product');
+    }
 }

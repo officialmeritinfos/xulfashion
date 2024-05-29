@@ -20,7 +20,7 @@
     <style>
         {!! $setting->customCSS !!}
     </style>
-    <title>{{$store->name}} - Your one stop fashion store</title>
+    <title>{{$store->name}} - {{$pageName??'Your one stop fashion store'}}</title>
     @include('genericCss')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
           integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
@@ -60,116 +60,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('merchant.store',['subdomain'=>$subdomain])}}">Home</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="tv-shows"
-                           data-bs-toggle="dropdown">
-                            Categories
-                        </a>
-                        <div class="dropdown-menu dropdown-large-menu">
-                            <div class="row">
-                                <div class="col-12 col-xl-4">
-                                    <h6 class="large-menu-title">Fashion</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a href="javascript:;">Casual T-Shirts</a>
-                                        </li>
-                                        <li><a href="javascript:;">Formal Shirts</a>
-                                        </li>
-                                        <li><a href="javascript:;">Jackets</a>
-                                        </li>
-                                        <li><a href="javascript:;">Jeans</a>
-                                        </li>
-                                        <li><a href="javascript:;">Dresses</a>
-                                        </li>
-                                        <li><a href="javascript:;">Sneakers</a>
-                                        </li>
-                                        <li><a href="javascript:;">Belts</a>
-                                        </li>
-                                        <li><a href="javascript:;">Sports Shoes</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- end col-3 -->
-                                <div class="col-12 col-xl-4">
-                                    <h6 class="large-menu-title">Electronics</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a href="javascript:;">Mobiles</a>
-                                        </li>
-                                        <li><a href="javascript:;">Laptops</a>
-                                        </li>
-                                        <li><a href="javascript:;">Macbook</a>
-                                        </li>
-                                        <li><a href="javascript:;">Televisions</a>
-                                        </li>
-                                        <li><a href="javascript:;">Lighting</a>
-                                        </li>
-                                        <li><a href="javascript:;">Smart Watch</a>
-                                        </li>
-                                        <li><a href="javascript:;">Galaxy Phones</a>
-                                        </li>
-                                        <li><a href="javascript:;">PC Monitors</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- end col-3 -->
-                                <div class="col-12 col-xl-4 d-none d-xl-block">
-                                    <div class="pramotion-banner1">
-                                        <img src="{{ asset('templates/' . $theme . '/assets/images/menu-img.webp')}}" class="img-fluid" alt="" />
-                                    </div>
-                                </div>
-                                <!-- end col-3 -->
-                            </div>
-                            <!-- end row -->
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
-                            Shop
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="cart">Shop Cart</a></li>
-                            <li><a class="dropdown-item" href="wishlist">Wishlist</a></li>
-                            <li><a class="dropdown-item" href="product-details">Product Details</a></li>
-                            <li><a class="dropdown-item" href="payment-method">Payment Method</a></li>
-                            <li><a class="dropdown-item" href="billing-details">Billing Details</a></li>
-                            <li><a class="dropdown-item" href="address">Addresses</a></li>
-                            <li><a class="dropdown-item" href="shop-grid">Shop Grid</a></li>
-                            <li><a class="dropdown-item" href="shop-grid-type-4">Shop Grid 4</a></li>
-                            <li><a class="dropdown-item" href="shop-grid-type-5">Shop Grid 5</a></li>
-                            <li><a class="dropdown-item" href="search">Search</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('merchant.store.shop',['subdomain'=>$subdomain])}}">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about-us">About</a>
+                        <a class="nav-link" href="{{route('merchant.store.catalog',['subdomain'=>$subdomain])}}">Catalog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact-us">Contact</a>
+                        <a class="nav-link" href="{{route('merchant.store.catalog',['subdomain'=>$subdomain])}}">About</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
-                            Account
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="account-dashboard">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="account-orders">My Orders</a></li>
-                            <li><a class="dropdown-item" href="account-profile">My Profile</a></li>
-                            <li><a class="dropdown-item" href="account-edit-profile">Edit Profile</a></li>
-                            <li><a class="dropdown-item" href="account-saved-address">Addresses</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="authentication-login">Login</a></li>
-                            <li><a class="dropdown-item" href="authentication-register">Register</a></li>
-                            <li><a class="dropdown-item" href="authentication-reset-password">Password</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
-                            Blog
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="blog-post">Blog Post</a></li>
-                            <li><a class="dropdown-item" href="blog-read">Blog Read</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('merchant.store.catalog',['subdomain'=>$subdomain])}}">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -182,20 +83,11 @@
                     </div>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="search"><i class="bi bi-search"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="wishlist"><i class="bi bi-suit-heart"></i></a>
-            </li>
             <li class="nav-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
                 <a class="nav-link position-relative" href="javascript:;">
-                    <div class="cart-badge">8</div>
+                    <div class="cart-badge" id="cartBadge">0</div>
                     <i class="bi bi-basket2"></i>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="account-dashboard"><i class="bi bi-person-circle"></i></a>
             </li>
         </ul>
     </nav>
@@ -281,176 +173,18 @@
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasRight"
      aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header bg-section-2">
-        <h5 class="mb-0 fw-bold" id="offcanvasRightLabel">8 items in the cart</h5>
+        <h5 class="mb-0 fw-bold" id="offcanvasRightLabel">0 items in the cart</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="cart-list">
+        <div class="cart-list" id="cart-items-container">
 
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/01.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/02.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/03.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/04.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/05.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/06.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/07.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/08.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/09.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex align-items-center gap-3">
-                <div class="bottom-product-img">
-                    <a href="product-details">
-                        <img src="{{ asset('templates/' . $theme . '/assets/images/new-arrival/10.webp')}}" width="60" alt="">
-                    </a>
-                </div>
-                <div class="">
-                    <h6 class="mb-0 fw-light mb-1">Product Name</h6>
-                    <p class="mb-0"><strong>1 X $59.00</strong>
-                    </p>
-                </div>
-                <div class="ms-auto fs-5">
-                    <a href="javascript:" class="link-dark"><i class="bi bi-trash"></i></a>
-                </div>
-            </div>
+
         </div>
     </div>
     <div class="offcanvas-footer p-3 border-top">
         <div class="d-grid">
-            <button type="button" class="btn btn-lg btn-dark btn-ecomm px-5 py-3">Checkout</button>
+            <a href="{{route('merchant.store.cart',['subdomain'=>$subdomain])}}" class="btn btn-lg btn-dark btn-ecomm px-5 py-3">View Cart</a>
         </div>
     </div>
 
@@ -487,6 +221,7 @@
 <script src="{{ asset('templates/' . $theme . '/assets/js/main.js')}}"></script>
 <script src="{{ asset('templates/' . $theme . '/assets/js/index.js')}}"></script>
 <script src="{{ asset('templates/' . $theme . '/assets/js/loader.js')}}"></script>
+{{--<script src="{{ asset('templates/' . $theme . '/assets/js/requests/cart.js')}}"></script>--}}
 
 <script>
     $(document).ready(function() {
@@ -515,9 +250,195 @@
     });
 </script>
 
+<script>
+    $(document).ready(function() {
+        $(document).on('submit', '#addToCartForms', function(e) {
+            e.preventDefault();
+            var baseURL = $('#addToCartForms').attr('action');
+
+            var formData = new FormData(this);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type:'POST',
+                url:baseURL,
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                dataType:"json",
+                beforeSend:function(){
+                    $('.submit').attr('disabled', true);
+                    $("#addToCartForm :input").prop("readonly", true);
+                    $(".submit").LoadingOverlay("show",{
+                        text        : "processing...",
+                        size        : "20"
+                    });
+                },
+                success:function(data)
+                {
+                    if(data.error===true)
+                    {
+                        toastr.options = {
+                            "closeButton" : true,
+                            "progressBar" : true
+                        }
+                        toastr.error(data.data.error);
+
+                        //return to natural stage
+                        setTimeout(function(){
+                            $('.submit').attr('disabled', false);
+                            $(".submit").LoadingOverlay("hide");
+                            $("#addToCartForm :input").prop("readonly", false);
+                        }, 3000);
+                    }
+                    if(data.error === 'ok')
+                    {
+                        toastr.options = {
+                            "closeButton" : true,
+                            "progressBar" : true
+                        }
+                        toastr.info(data.message);
+
+                        loadCartItems();
+                        getCartItemCount();
+
+                        setTimeout(function(){
+                            $('.submit').attr('disabled', false);
+                            $(".submit").LoadingOverlay("hide");
+                            $("#addToCartForm :input").prop("readonly", false);
+                            // window.location.replace(data.data.redirectTo)
+                            //close modal
+                            $('#QuickViewModal').modal('hide');
+                        }, 5000);
+                    }
+                },
+                error:function (jqXHR, textStatus, errorThrown){
+                    toastr.options = {
+                        "closeButton" : true,
+                        "progressBar" : true
+                    }
+                    toastr.error(jqXHR.responseJSON.data.error);
+                    $("#addToCartForm :input").prop("readonly", false);
+                    $('.submit').attr('disabled', false);
+                    $(".submit").LoadingOverlay("hide");
+                },
+            });
+        });
+        // Function to load cart items
+        function loadCartItems() {
+            $.ajax({
+                url: '{{ route("merchant.store.cart.items", ["subdomain" => $subdomain]) }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if(response.success) {
+                        let cartItemsContainer = $('#cart-items-container');
+                        cartItemsContainer.html(response.html); // Load the HTML content
+                        $('#offcanvasRightLabel').text(response.itemCount + ' items in the cart');
+
+                    } else {
+                        toastr.error('Failed to load cart items.');
+                    }
+                },
+                error: function() {
+                    toastr.error('An error occurred while loading cart items.');
+                }
+            });
+        }
+
+        // Load cart items when the offcanvas is shown
+        $('#offcanvasRight').on('show.bs.offcanvas', function () {
+            loadCartItems();
+        });
+
+        // Event delegation for updating quantity
+        $(document).on('change', '.update-quantity', function() {
+            let productId = $(this).data('id');
+            let quantity = $(this).val();
+            $.ajax({
+                url: '{{ route("merchant.store.update.cart", ["subdomain" => $subdomain]) }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_id: productId,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    if(response.success) {
+                        loadCartItems();
+                        toastr.success('Cart updated.');
+                    } else {
+                        toastr.error('Failed to update cart.');
+                    }
+                },
+                error: function() {
+                    toastr.error('An error occurred while updating the cart.');
+                }
+            });
+        });
+
+        // Event delegation for removing cart items
+        $(document).on('click', '.remove-item', function() {
+            let url = $(this).data('url');
+            let productId = $(this).data('product-id');
+            let sizeId = $(this).data('size-id') || 'no-size';
+            let colorId = $(this).data('color-id') || 'no-color';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_id: productId,
+                    size_id: sizeId,
+                    color_id: colorId
+                },
+                success: function(response) {
+                    if(response.success) {
+                        loadCartItems();
+                        getCartItemCount();
+                        toastr.success('Item removed from cart.');
+                    } else {
+                        toastr.error('Failed to remove item from cart.');
+                    }
+                },
+                error: function() {
+                    toastr.error('An error occurred while removing the item.');
+                }
+            });
+        });
+        // Function to update the cart badge
+        function updateCartBadge(itemCount) {
+            $('.cart-badge').text(itemCount); // Update the text content of the cart badge
+        }
+
+        // Function to fetch the cart item count from the server
+        function getCartItemCount() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route("get.cart.item.count",['subdomain'=>$subdomain]) }}',
+                success: function(response) {
+                    // Update the cart badge with the fetched item count
+                    updateCartBadge(response.itemCount);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+        getCartItemCount();
+    });
+</script>
+
+
 @include('basicInclude')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
         integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@stack('js')
 </body>
 </html>

@@ -4,23 +4,37 @@ $(function() {
 
 
 
-// Theme switcher 
+// Theme switcher
+    // Check the localStorage for theme preference on page load and apply it
+    if (localStorage.getItem('theme') === 'dark') {
+        $("html").attr("class", "dark-theme");
+        $(".mode-icon i").removeClass("bi-brightness-high").addClass("bi-moon");
+    } else {
+        $("html").attr("class", "light-theme");
+        $(".mode-icon i").removeClass("bi-moon").addClass("bi-brightness-high");
+    }
 
-$("#LightTheme").on("click", function() {
-  $("html").attr("class", "light-theme")
-}),
+    // Light theme switcher
+    $("#LightTheme").on("click", function() {
+        $("html").attr("class", "light-theme");
+        localStorage.setItem('theme', 'light'); // Save preference to localStorage
+        $(".mode-icon i").removeClass("bi-moon").addClass("bi-brightness-high");
+    });
 
+    // Dark theme switcher
+    $("#DarkTheme").on("click", function() {
+        $("html").attr("class", "dark-theme");
+        localStorage.setItem('theme', 'dark'); // Save preference to localStorage
+        $(".mode-icon i").removeClass("bi-brightness-high").addClass("bi-moon");
+    });
 
-$("#DarkTheme").on("click", function() {
-$("html").attr("class", "dark-theme")
-}),
-
-
-$(".dark-mode-icon").on("click", function() {
-
-  $(".mode-icon i").toggleClass("bi bi-brightness-high bi bi-moon")
-  $("html").toggleClass("dark-theme")
-})
+    // Toggle theme switcher
+    $(".dark-mode-icon").on("click", function() {
+        $("html").toggleClass("dark-theme");
+        var currentTheme = $("html").hasClass("dark-theme") ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme); // Save preference to localStorage
+        $(".mode-icon i").toggleClass("bi-brightness-high bi-moon");
+    });
 
 
 

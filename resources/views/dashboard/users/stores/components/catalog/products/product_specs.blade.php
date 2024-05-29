@@ -22,8 +22,6 @@
                     <thead>
                     <tr>
                         <th scope="col">TITLE</th>
-                        <th scope="col">PRICE</th>
-                        <th scope="col">QUANTITY</th>
                         <th scope="col">DATE ADDED</th>
                         <th scope="col">ACTION</th>
                     </tr>
@@ -33,12 +31,6 @@
                         <tr>
                             <td>
                                 {{$size->name}}
-                            </td>
-                            <td>
-                                {{$product->currency}}{{number_format($size->price,2)}}
-                            </td>
-                            <td>
-                                {{$size->quantity}}
                             </td>
                             <td>
                                 {{date('d M, Y - h:i A')}}
@@ -75,8 +67,6 @@
                     <thead>
                     <tr>
                         <th scope="col">TITLE</th>
-                        <th scope="col">PRICE</th>
-                        <th scope="col">QUANTITY</th>
                         <th scope="col">DATE ADDED</th>
                         <th scope="col">ACTION</th>
                     </tr>
@@ -86,12 +76,6 @@
                         <tr>
                             <td>
                                 {{$color->name}}
-                            </td>
-                            <td>
-                                {{$product->currency}}{{number_format($color->price,2)}}
-                            </td>
-                            <td>
-                                {{$color->quantity}}
                             </td>
                             <td>
                                 {{date('d M, Y - h:i A')}}
@@ -163,10 +147,8 @@
             $(".addSizeVariation").click(function () {
                 newRowAdd =
                     '<div id="row" class="row"> ' +
-                    '<div class="col-lg-6"><div class="form-group"> <label>Name<sup class="text-danger">*</sup></label> <input type="text" class="form-control" name="sizeName[]"></div></div>' +
-                    '<div class="col-lg-6"><div class="form-group"> <label>Price<sup class="text-danger">*</sup></label> <input type="text" class="form-control" name="sizePrice[]"></div></div>' +
                     '<div class="col-lg-12 input-group mb-3">' +
-                    '<input type="text" class="form-control" placeholder="Quantity" name="sizeQuantity[]" value="0">' +
+                    '<input type="text" class="form-control" placeholder="Name" name="sizeName[]">' +
                     '<button class="btn btn-danger" id="DeleteRow" type="button">Delete</button> ' +
                     ' </div>';
 
@@ -180,10 +162,8 @@
             $(".addColorVariation").click(function () {
                 newRowsAdd =
                     '<div id="rows" class="row"> ' +
-                    '<div class="col-lg-6"><div class="form-group"> <label>Name<sup class="text-danger">*</sup></label> <input type="text" class="form-control" name="colorName[]"></div></div>' +
-                    '<div class="col-lg-6"><div class="form-group"> <label>Price<sup class="text-danger">*</sup></label> <input type="text" class="form-control" name="colorPrice[]"></div></div>' +
                     '<div class="col-lg-12 input-group mb-3">' +
-                    '<input type="text" class="form-control" placeholder="Quantity" name="colorQuantity[]" value="0">' +
+                    '<input type="text" class="form-control" placeholder="Name" name="colorName[]" >' +
                     '<button class="btn btn-danger" id="DeleteRows" type="button">Delete</button> ' +
                     ' </div>';
 

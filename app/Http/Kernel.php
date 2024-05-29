@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
         'twoFactor'=>UserLoggedIn::class,
         'completedProfile'=>UserCompletedProfile::class,
         'applyTheme'=>ApplyTheme::class,
+        'extend.session' => \App\Http\Middleware\ExtendSessionLifetime::class,
     ];
 }

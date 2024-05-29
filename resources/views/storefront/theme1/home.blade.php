@@ -106,7 +106,7 @@
                         <div class="position-relative overflow-hidden">
                             <div
                                 class="product-options d-flex align-items-center justify-content-center gap-2 mx-auto position-absolute bottom-0 start-0 end-0">
-                                <a href="javascript:;"><i class="bi bi-basket3"></i></a>
+
                                 <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#QuickViewModal"
                                    data-reference="{{$featured->reference}}"
                                    data-action="{{route('merchant.store.product.quick-view',['subdomain'=>$subdomain,'id'=>$featured->reference])}}"><i
@@ -177,7 +177,7 @@
                                     <div class="position-relative overflow-hidden">
                                         <div
                                             class="product-options d-flex align-items-center justify-content-center gap-2 mx-auto position-absolute bottom-0 start-0 end-0">
-                                            <a href="javascript:;"><i class="bi bi-basket3"></i></a>
+
                                             <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#QuickViewModal"
                                                data-reference="{{$latest->reference}}"
                                                data-action="{{route('merchant.store.product.quick-view',['subdomain'=>$subdomain,'id'=>$latest->reference])}}"><i
@@ -218,7 +218,7 @@
                                         <div class="position-relative overflow-hidden">
                                             <div
                                                 class="product-options d-flex align-items-center justify-content-center gap-2 mx-auto position-absolute bottom-0 start-0 end-0">
-                                                <a href="javascript:;"><i class="bi bi-basket3"></i></a>
+
                                                 <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#QuickViewModal"
                                                    data-reference="{{$best['reference']}}"
                                                    data-action="{{route('merchant.store.product.quick-view',['subdomain'=>$subdomain,'id'=>$best['reference']])}}"><i
@@ -257,7 +257,7 @@
                                     <div class="position-relative overflow-hidden">
                                         <div
                                             class="product-options d-flex align-items-center justify-content-center gap-2 mx-auto position-absolute bottom-0 start-0 end-0">
-                                            <a href="javascript:;"><i class="bi bi-basket3"></i></a>
+
                                             <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#QuickViewModal"
                                                data-reference="{{$trending->reference}}"
                                                data-action="{{route('merchant.store.product.quick-view',['subdomain'=>$subdomain,'id'=>$trending->reference])}}"><i
@@ -349,7 +349,6 @@
                                     {!! $highlighted->keyFeatures !!}
                                 </ul>
                                 <div class="buttons mt-4 d-flex flex-column flex-lg-row gap-3">
-                                    <a href="javascript:;" class="btn btn-lg btn-dark btn-ecomm px-5 py-3">Buy Now</a>
                                     <a href="{{route('merchant.store.product.detail',['subdomain'=>$subdomain,'id'=>$highlighted->reference])}}"
                                        class="btn btn-lg btn-outline-dark btn-ecomm px-5 py-3">View Details</a>
                                 </div>
@@ -377,7 +376,7 @@
                             <div class="card-body">
                                 <div class="overflow-hidden">
                                     <img src="{{$category->photo??asset('customcategory.jpg')}}" class="card-img-top rounded-0" alt="..."
-                                    style="height: 200px; ">
+                                    style=" height: 200px; ">
                                 </div>
                                 <div class="text-center">
                                     <h5 class="mb-1 cartegory-name mt-3 fw-bold">{{$category->phoyo}}</h5>
