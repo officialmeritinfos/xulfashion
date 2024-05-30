@@ -189,5 +189,4 @@ class CartController extends BaseController
             return $this->sendError('cart.error', ['error' => 'An error occurred while removing the coupon from the cart.']);
         }
     }
-    //process checkout but first check if there exists any order
 }

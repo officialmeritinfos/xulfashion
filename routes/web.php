@@ -5,6 +5,7 @@ use App\Http\Controllers\Marketplace\MarketplaceController;
 use App\Http\Controllers\Marketplace\PageController;
 use App\Http\Controllers\Marketplace\StoreController;
 use App\Http\Controllers\Storefront\CartController;
+use App\Http\Controllers\Storefront\CheckoutController;
 use App\Http\Controllers\Storefront\Home;
 use App\Http\Controllers\Storefront\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,7 @@ Route::domain('{subdomain}.localhost')->group(function () {
     Route::middleware(['applyTheme','extend.session'])->group(function (){
         //landing page
         Route::get('/', [Home::class,'landingPage'])->name('merchant.store');//landing page
+        Route::get('country/fetch-state/{id}',[Home::class,'fetchCountryStates'])->name('fetch.country.state');
 
         Route::get('/category/{id}', [])->name('merchant.store.category');//category page
 
@@ -52,8 +54,16 @@ Route::domain('{subdomain}.localhost')->group(function () {
         Route::get('get-cart-item-count', [ProductController::class,'getCartItemCount'])
             ->name('get.cart.item.count');
         //Checkout page
-        Route::get('checkout', [Home::class,'checkoutPage'])
+        Route::get('checkout', [CheckoutController::class,'landingPage'])
             ->name('merchant.store.checkout');
+        Route::get('checkout/checkout-preview/summary',[CheckoutController::class,'getCartSummary'])
+            ->name('merchant.store.checkout.summary.checkout');//preview cart items on cart page
+        Route::post('checkout/order/process',[CheckoutController::class,'processCheckout'])
+            ->name('merchant.store.checkout.process');
+
+
+        Route::get('checkout/checkout-order/{id}/invoice',[CheckoutController::class,'checkoutInvoice'])
+            ->name('merchant.store.checkout.order.invoice');//checkout invoice
         //cart page
         Route::get('cart', [CartController::class,'cart'])->name('merchant.store.cart');
         Route::get('cart/cart-preview/cart',[CartController::class,'getCartItemCarts'])
@@ -64,6 +74,7 @@ Route::domain('{subdomain}.localhost')->group(function () {
             ->name('merchant.store.add.coupon');//add coupon
         Route::post('cart/remove-coupon',[CartController::class,'removeCoupon'])
             ->name('merchant.store.remove.coupon');//add coupon
+
 
     });
 });
@@ -107,3 +118,6 @@ Route::get('/ads/page/aml',[PageController::class,'aml'])
 /*================================ COMPANY CONTROLLER ==============================*/
 Route::get('about',[PageController::class,'about'])
     ->name('company.about');
+
+
+

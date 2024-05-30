@@ -54,7 +54,7 @@
                     <tbody>
                     @foreach($invoice->items as $key=>$value)
                         <tr>
-                            <td>01</td>
+                            <td>{{$key}}</td>
                             <td>{{$value}}</td>
                             <td class="text-end">{{$invoice->itemQuantity[$key]}}</td>
                             <td class="text-end">{{$invoice->itemPrice[$key]}}</td>

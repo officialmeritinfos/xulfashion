@@ -4,8 +4,14 @@ namespace App\Http\Controllers\Storefront;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\GeneralSetting;
+use App\Models\State;
 use App\Models\UserStore;
+use App\Models\UserStoreCoupon;
+use App\Models\UserStoreCustomer;
+use App\Models\UserStoreOrder;
+use App\Models\UserStoreOrderBreakdown;
 use App\Models\UserStoreProduct;
 use App\Models\UserStoreSetting;
 use App\Traits\Helpers;
@@ -39,23 +45,12 @@ class Home extends BaseController
         ];
         return view('storefront.'.$themeLocation.'.home')->with($data);
     }
-    //checkout page
-    public function checkoutPage($store)
+    //fetch states in a country
+    public function fetchCountryStates($subdomain,$country)
     {
-        $userStore = UserStore::where('slug',$store)->firstOrFail();
-        $storeSettings = UserStoreSetting::where('store',$userStore->id)->first();
-        $themeLocation = $this->fetchThemeViewLocation($userStore->theme);
-
-        $web = GeneralSetting::find(1);
-
-        $data=[
-            'userStore'       =>$userStore,
-            'storeSetting'    =>$storeSettings,
-            'web'             =>$web,
-            'siteName'        =>$web->name,
-            'pageName'        =>'Checkout Page',
-        ];
-        return view('storefront.'.$themeLocation.'.checkout')->with($data);
+        $states = State::where('country_code', $country)->orderBy('name', 'asc')->get();
+        return response()->json($states);
     }
+
 
 }

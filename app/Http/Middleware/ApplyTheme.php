@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\StoreTheme;
 use App\Models\UserStore;
 use App\Models\UserStoreCatalogCategory;
+use App\Models\UserStoreSetting;
 use App\Models\UserStoreThemeSetting;
 use Closure;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class ApplyTheme
         $theme = StoreTheme::where('id',$store->theme)->firstOrFail();
         $setting = UserStoreThemeSetting::where('store',$store->id)->firstOrFail();
         $categories = UserStoreCatalogCategory::where('store',$store->id)->get();
+        $storeSetting = UserStoreSetting::where('store',$store->id)->first();
 
 
         View::share([
@@ -32,7 +34,8 @@ class ApplyTheme
             'setting'=>$setting,
             'store'=>$store,
             'categories'=>$categories,
-            'subdomain'=>$request->route('subdomain')
+            'subdomain'=>$request->route('subdomain'),
+            'userStoreSetting'=>$storeSetting
         ]);
 
         return $next($request);

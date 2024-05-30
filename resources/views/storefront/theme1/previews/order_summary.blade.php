@@ -16,7 +16,7 @@
             <p class="mb-0" id="total-amount">{{$sign}} {{ number_format($totalAmount,2) }}</p>
         </div>
         <div class="d-grid mt-4">
-            <button type="button" class="btn btn-dark btn-ecomm py-3 px-5 submit">Proceed To Checkout</button>
+            <a href="{{route('merchant.store.checkout',['subdomain'=>$subdomain])}}" type="button" class="btn btn-dark btn-ecomm py-3 px-5 submit">Proceed To Checkout</a>
         </div>
     </div>
 </div>

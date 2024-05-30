@@ -31,7 +31,7 @@ class Storefront
                 'product' => $product->name,
                 'quantity' => $item->total_quantity,
                 'amount'=>$product->amount,
-                'photo'=>$product->featuredImage,
+                'featuredImage'=>$product->featuredImage,
                 'currency'=>$product->currency,
                 'reference'=>$product->reference
             ];
@@ -68,5 +68,10 @@ class Storefront
     public function numberOfProductsInCategory($category)
     {
         return UserStoreProduct::where('category',$category)->count();
+    }
+    //fetch product by Id
+    public function fetchProductById($id)
+    {
+        return UserStoreProduct::where('id',$id)->first();
     }
 }
