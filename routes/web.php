@@ -75,6 +75,10 @@ Route::domain('{subdomain}.localhost')->group(function () {
         Route::post('cart/remove-coupon',[CartController::class,'removeCoupon'])
             ->name('merchant.store.remove.coupon');//add coupon
 
+        //Order Payment processing
+        Route::get('checkout/checkout-order/payment/{id}/process',[CheckoutController::class,'processCheckoutOrderPayment'])
+            ->name('merchant.store.checkout.order.payment.process');
+
 
     });
 });

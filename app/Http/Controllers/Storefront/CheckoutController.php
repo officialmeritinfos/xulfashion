@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Storefront;
 
+use App\Custom\PaymentProcessing;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Mail\SendMerchantOrderPurchase;
@@ -29,6 +30,13 @@ use Illuminate\Validation\Rule;
 class CheckoutController extends BaseController
 {
     use Helpers,Themes;
+    public $payment;
+
+    public function __construct()
+    {
+        $this->payment=new PaymentProcessing();
+    }
+
     //landing page
     public function landingPage($store)
     {
@@ -135,6 +143,7 @@ class CheckoutController extends BaseController
             );
 
             $orderRef = $this->generateUniqueReference('user_store_orders','reference');
+            $paymentReference = $this->generateUniqueReference('user_store_orders','paymentReference');
 
             $couponData = session()->get('coupon', ['coupon_discount' => 0]);
 
@@ -143,7 +152,7 @@ class CheckoutController extends BaseController
                 'store' => $store->id,'customer'=>$customer->id,'paymentStatus'=>2,
                 'amount' => 0,'coupon'=>session()->has('coupon')?$couponData['couponId']:'','currency'=>$store->currency,
                 'status'=>2,'reference'=>$orderRef,'checkoutType'=>$input['checkoutType'],
-                'completedOnWhatsapp'=>($input['checkoutType']==1)?1:2
+                'completedOnWhatsapp'=>($input['checkoutType']==1)?1:2,'paymentReference'=>$paymentReference
             ]);
 
             // Fetch cart and coupon details from session
@@ -239,15 +248,27 @@ class CheckoutController extends BaseController
                 $summaryText .= "*Invoice Url:* {$invoiceUrl}";
 
                 $url = "https://wa.me/".$settings->whatsappContact.'?text='.urlencode($summaryText);
-
+                $message = "Order processed. Redirecting to the appropriate page.";
                 session()->forget(['coupon','cart']);
 
             }else{
-
+                //process if payment method is Online; we determine the currency first and then begin the processing
+                $fetchedOrder = UserStoreOrder::where(['store'=>$store->id,'reference'=>$orderRef])->first();
+                $payment = $this->payment->initiateOrderPayment($fetchedOrder,$store,$web);
+                if ($payment['result']){
+                    $url=$payment['url'];
+                    $fetchedOrder->channelPaymentReference = $payment['reference'];
+                    $fetchedOrder->save();
+                    $message = "Order processed. Redirecting to the appropriate page.";
+                    session()->forget(['coupon','cart']);
+                }else{
+                    $url=$invoiceUrl;
+                    $message = $payment['message'];
+                }
             }
             return $this->sendResponse([
                 'redirectTo'=>$url
-            ],'Order processed. Redirecting to the appropriate page.');
+            ],$message);
         }catch (\Exception $exception) {
             DB::rollBack();
 
@@ -280,8 +301,8 @@ class CheckoutController extends BaseController
             'subdomain'=>$subdomain
         ]);
     }
-    //test process checkout
-    public function testProcessCheckout()
+    //process checkout order payment
+    public function processCheckoutOrderPayment(Request $request,$subdomain,$order)
     {
 
     }

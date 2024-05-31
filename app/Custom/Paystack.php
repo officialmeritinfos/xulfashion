@@ -11,10 +11,10 @@ class Paystack
     public $pubKey;
     public function __construct()
     {
-        switch (config('constant.paystack.isLive')){
-            case 1:
-                $pubKey=config('constant.paystack.pubKey');
-                $secKey=config('constant.paystack.secKey');
+        switch (config('constant.paystack.live')){
+            case true:
+                $pubKey=config('constant.paystack.livePubKey');
+                $secKey=config('constant.paystack.liveSecKey');
                 break;
             default:
                 $pubKey=config('constant.paystack.testPubKey');
@@ -90,5 +90,13 @@ class Paystack
         return Http::withHeaders([
             "Authorization" =>'Bearer '.$this->secKey
         ])->post($this->url.'transfer',$data);
+    }
+
+    //Initialize transaction
+    public function initializeTransaction($data)
+    {
+        return Http::withHeaders([
+            "Authorization" =>'Bearer '.$this->secKey
+        ])->post($this->url.'transaction/initialize',$data);
     }
 }
