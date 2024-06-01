@@ -38,7 +38,7 @@
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         @foreach($sizes as $size)
                             <div class="">
-                                <input type="radio" name="size" class="rounded-0" value="{{$size->id}}">{{$size->name}}
+                                <input type="radio" name="size" class="rounded-0" value="{{$size->id}}"> {{$size->name}}
                             </div>
                         @endforeach
                     </div>
@@ -50,7 +50,7 @@
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                             @foreach($colors as $color)
                                 <div class="">
-                                    <input type="radio" name="color" class="rounded-0" value="{{$color->id}}">{{$color->name}}
+                                    <input type="radio" name="color" class="rounded-0" value="{{$color->id}}"> {{$color->name}}
                                 </div>
                             @endforeach
 

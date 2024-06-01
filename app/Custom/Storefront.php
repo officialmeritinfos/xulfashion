@@ -3,6 +3,7 @@
 namespace App\Custom;
 
 use App\Models\UserStoreCatalogCategory;
+use App\Models\UserStoreCustomer;
 use App\Models\UserStoreOrderBreakdown;
 use App\Models\UserStoreProduct;
 use Illuminate\Support\Facades\DB;
@@ -73,5 +74,10 @@ class Storefront
     public function fetchProductById($id)
     {
         return UserStoreProduct::where('id',$id)->first();
+    }
+    //fetch customer by Id
+    public function fetchCustomerById($id)
+    {
+        return UserStoreCustomer::where('id',$id)->first();
     }
 }

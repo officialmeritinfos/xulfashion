@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Storefront;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\GeneralSetting;
 use App\Models\ProductRating;
 use App\Models\UserStore;
+use App\Models\UserStoreCustomer;
 use App\Models\UserStoreProduct;
 use App\Models\UserStoreProductColorVariation;
 use App\Models\UserStoreProductImage;
 use App\Models\UserStoreProductSizeVariation;
+use App\Models\UserStoreSetting;
+use App\Traits\Helpers;
+use App\Traits\Themes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -18,6 +23,8 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends BaseController
 {
+    use Themes,Helpers;
+
     public function quickView(Request $request,$subdomain,$reference)
     {
         $store = UserStore::where('slug',$subdomain)->first();
@@ -225,4 +232,73 @@ class ProductController extends BaseController
         $itemCount = count($cart);
         return response()->json(['itemCount' => $itemCount]);
     }
+    //product details
+    public function productDetail($subdomain,$ref)
+    {
+        $userStore = UserStore::where('slug',$subdomain)->firstOrFail();
+        $storeSettings = UserStoreSetting::where('store',$userStore->id)->first();
+        $themeLocation = $this->fetchThemeViewLocation($userStore->theme);
+        $product = UserStoreProduct::where('reference',$ref)->firstOrFail();
+
+        $web = GeneralSetting::find(1);
+        $images = UserStoreProductImage::where('product',$product->id)->get();
+        $colors = UserStoreProductColorVariation::where('product',$product->id)->get();
+        $sizes = UserStoreProductSizeVariation::where('product',$product->id)->get();
+
+        // Fetch average rating and total ratings
+        $ratingsData = ProductRating::where('product', $product->id)
+            ->selectRaw('AVG(rating) as average_rating, COUNT(*) as total_ratings')
+            ->first();
+
+        $averageRating = $ratingsData->average_rating ?? 0;
+        $totalRatings = $ratingsData->total_ratings;
+
+
+        $data=[
+            'userStore'       =>$userStore,
+            'storeSetting'    =>$storeSettings,
+            'web'             =>$web,
+            'siteName'        =>$web->name,
+            'pageName'        =>$product->name,
+            'store'           =>$userStore,
+            'product'         =>$product,
+            'images'          =>$images,
+            'colors'          =>$colors,
+            'sizes'           =>$sizes,
+            'averageRating'   =>$averageRating,
+            'totalRatings'    =>$totalRatings,
+            'customers'       =>UserStoreCustomer::where([
+                'store'       =>$userStore->id,'status'=>1
+            ])->get(),
+            'reviews'         =>ProductRating::where('product',$product->id)->orderBy('id','desc')->paginate(10),
+            'similars'        =>UserStoreProduct::where([
+                'store'       =>$userStore->id,'category'=>$product->category,'status'=>1
+            ])->whereNot('id',$product->id)->inRandomOrder()->take(10)->get(),
+            'subdomain'       =>$subdomain
+        ];
+        return view('storefront.'.$themeLocation.'.product_detail')->with($data);
+    }
+    //product reviews
+    public function getProductReviews($subdomain,$productRef)
+    {
+        $store = UserStore::where('slug',$subdomain)->firstOrFail();
+        // Fetch the product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$productRef
+        ])->first();
+
+        // Fetch the review counts for each rating level
+        $ratingCounts = ProductRating::selectRaw('rating, COUNT(*) as count')
+            ->where('product', $product->id)
+            ->groupBy('rating')
+            ->orderBy('rating', 'desc')
+            ->pluck('count', 'rating')
+            ->toArray();
+        // Calculate the total number of reviews
+        $totalReviews = array_sum($ratingCounts);
+
+        // Return the partial view with data
+        return view('storefront.theme1.previews.product_rating', compact('ratingCounts', 'totalReviews'))->render();
+    }
+
 }

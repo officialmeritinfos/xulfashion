@@ -5,6 +5,7 @@ use App\Http\Controllers\Marketplace\MarketplaceController;
 use App\Http\Controllers\Marketplace\PageController;
 use App\Http\Controllers\Marketplace\StoreController;
 use App\Http\Controllers\Storefront\CartController;
+use App\Http\Controllers\Storefront\CatalogController;
 use App\Http\Controllers\Storefront\CheckoutController;
 use App\Http\Controllers\Storefront\Home;
 use App\Http\Controllers\Storefront\InvoiceController;
@@ -28,11 +29,19 @@ Route::domain('{subdomain}.localhost')->group(function () {
     Route::middleware(['applyTheme','extend.session'])->group(function (){
         //landing page
         Route::get('/', [Home::class,'landingPage'])->name('merchant.store');//landing page
+        Route::get('about', [Home::class,'aboutPage'])->name('merchant.about');//about page
+        Route::get('contact', [Home::class,'contactPage'])->name('merchant.contact');//contact page
+        Route::get('refund-policy', [Home::class,'refundPolicy'])->name('merchant.refund');//refund policy page
+        Route::get('return-policy', [Home::class,'returnPolicy'])->name('merchant.return');//return policy page
         Route::get('country/fetch-state/{id}',[Home::class,'fetchCountryStates'])->name('fetch.country.state');
 
-        Route::get('/category/{id}', [])->name('merchant.store.category');//category page
+        Route::get('/category/{id}', [CatalogController::class,'category'])
+            ->name('merchant.store.category');//category page
 
-        Route::get('/product/{id}/detail', [])->name('merchant.store.product.detail');//product page
+        Route::get('/product/{id}/detail', [ProductController::class,'productDetail'])
+            ->name('merchant.store.product.detail');//product page
+        Route::get('/product/{id}/reviews', [ProductController::class,'getProductReviews'])
+            ->name('merchant.store.product.reviews');//product reviews
 
         //Invoice
         Route::get('/invoice/{id}/detail',[InvoiceController::class,'landingPage'])
@@ -42,8 +51,9 @@ Route::domain('{subdomain}.localhost')->group(function () {
         Route::get('invoice/payment/{id}/process',[InvoiceController::class,'processInvoiceOrderPayment'])
             ->name('merchant.store.invoice.payment.process');//callback for processing payment
 
-        Route::get('/shop', [])->name('merchant.store.shop');//shop page
-        Route::get('/catalog', [])->name('merchant.store.catalog');//catalog page
+        Route::get('/shop', [CatalogController::class,'shop'])->name('merchant.store.shop');//shop page
+        Route::get('shop/search', [CatalogController::class,'shopSearchPage'])->name('merchant.store.shop.search');//shop search page
+        Route::get('/catalog', [CatalogController::class,'catalog'])->name('merchant.store.catalog');//catalog page
 
         Route::get('product/{id}/quick-view',[ProductController::class,'quickView'])
             ->name('merchant.store.product.quick-view');

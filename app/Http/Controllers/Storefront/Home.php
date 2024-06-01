@@ -51,6 +51,25 @@ class Home extends BaseController
         $states = State::where('country_code', $country)->orderBy('name', 'asc')->get();
         return response()->json($states);
     }
+    //refund policy
+    public function refundPolicy($store)
+    {
 
+    }
+    //return policy
+    public function returnPolicy($store)
+    {
+
+    }
+    //contact page
+    public function contactPage($store)
+    {
+
+    }
+    //about
+    public function aboutPage($store)
+    {
+
+    }
 
 }

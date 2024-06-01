@@ -379,7 +379,7 @@
                                     style=" height: 200px; ">
                                 </div>
                                 <div class="text-center">
-                                    <h5 class="mb-1 cartegory-name mt-3 fw-bold">{{$category->phoyo}}</h5>
+                                    <h5 class="mb-1 cartegory-name mt-3 fw-bold">{{$category->categoryName}}</h5>
                                     <h6 class="mb-0 product-number fw-bold">{{$options->numberOfProductsInCategory($category->id)}} Products</h6>
                                 </div>
                             </div>
@@ -399,7 +399,7 @@
         <div class="row">
             <div class="col-12 col-lg-6 mx-auto">
                 <div class="text-center">
-                    <h3 class="mb-0 fw-bold text-white">Get Latest Update by <br> Subscribing to Our Newslater</h3>
+                    <h3 class="mb-0 fw-bold text-white">Get Latest Update by <br> Subscribing to Our Newsletter</h3>
                     <div class="mt-3">
                         <input type="text" class="form-control form-control-lg bubscribe-control rounded-0 px-5 py-3"
                                placeholder="Enter your email">

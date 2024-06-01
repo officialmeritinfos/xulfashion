@@ -67,10 +67,10 @@
                         <a class="nav-link" href="{{route('merchant.store.catalog',['subdomain'=>$subdomain])}}">Catalog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('merchant.store.catalog',['subdomain'=>$subdomain])}}">About</a>
+                        <a class="nav-link" href="{{route('merchant.about',['subdomain'=>$subdomain])}}">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('merchant.store.catalog',['subdomain'=>$subdomain])}}">Contact</a>
+                        <a class="nav-link" href="{{route('merchant.contact',['subdomain'=>$subdomain])}}">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -130,10 +130,10 @@
                 <div class="footer-widget-8">
                     <h5 class="mb-3 fw-bold">Company</h5>
                     <ul class="widget-link list-unstyled">
-                        <li><a href="javascript:;">Contact Us</a></li>
-                        <li><a href="javascript:;">Return Policy</a></li>
-                        <li><a href="javascript:;">Refund Policy</a></li>
-                        <li><a href="javascript:;">Complaints</a></li>
+                        <li><a href="{{route('merchant.contact',['subdomain'=>$subdomain])}}">Contact Us</a></li>
+                        <li><a href="{{route('merchant.return',['subdomain'=>$subdomain])}}">Return Policy</a></li>
+                        <li><a href="{{route('merchant.refund',['subdomain'=>$subdomain])}}">Refund Policy</a></li>
+                        <li><a href="{{route('merchant.store.ticket.new',['subdomain'=>$subdomain])}}">Complaints</a></li>
                     </ul>
                 </div>
             </div>
