@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Mockery\Exception;
 
 class CheckoutController extends BaseController
 {
@@ -302,8 +303,114 @@ class CheckoutController extends BaseController
         ]);
     }
     //process checkout order payment
-    public function processCheckoutOrderPayment(Request $request,$subdomain,$order)
+    public function processCheckoutOrderPayment(Request $request,$subdomain,$orderRef)
     {
+        $transRef = $request->get('trxref');
+        $store = UserStore::where('slug',$subdomain)->firstOrFail();
+        $order = UserStoreOrder::where([
+            'store'=>$store->id,'reference'=>$orderRef,
+            'paymentReference'=>$transRef
+        ])->first();
+        $customer = UserStoreCustomer::where('id',$order->customer)->first();
+        $web = GeneralSetting::find(1);
 
+        try {
+            $invoiceUrl = route('merchant.store.checkout.order.invoice',['subdomain'=>$subdomain,'id'=>$orderRef]);
+            $fiat = Fiat::where('code',$order->currency)->first();
+            $response = $this->payment->verifyOrderPayment($order,$transRef);
+            if ($response['result']){
+                $data = $response['data']['data'];
+                //if payment was successful
+                if ($data['status']=='success'){
+                    //payment was completed
+                    $transId = $data['id'];
+                    $channelPaymentReference=$data['reference'];
+                    $amountPaidSubUnit = $data['amount'];
+                    $feesUnit = $data['fees'];
+                    $amountPaid = $amountPaidSubUnit/$fiat->subUnit;
+                    $fees = $feesUnit/$fiat->subUnit;
+                    $totalCharge = $fees+$fiat->transactionCharge+$fees;
+                    $amountCredit = $amountPaid-$totalCharge;
+
+
+                    $dataOrder = [
+                        'paymentMethod'=>ucfirst($data['channel']),
+                        'paymentStatus'=>1,'status'=>4,'amountPaid'=>$amountPaid,
+                        'charge'=>$totalCharge,'amountToCredit'=>$amountCredit,
+                        'channelPaymentId'=>$transId,'channelPaymentReference'=>$channelPaymentReference
+                    ];
+                    $order->update($dataOrder);
+
+                    //Send mail to Merchant & customer
+                    $mailData=[
+                        'fromMail'=>$web->email,
+                        'title'=>"Payment For Order #".$order->reference." received.",
+                        'siteName'=>$web->name,
+                        'supportMail'=>$web->supportEmail,
+                        'order'=>$orderRef
+                    ];
+                    Mail::to($store->email)->send(new SendMerchantOrderPurchase($mailData,"Payment For Order #".$order->reference." received."));
+                    Mail::to($customer->email)->send(new SendMerchantOrderPurchase($mailData,"Payment For Order #".$order->reference." received."));
+
+                    return redirect()->to($invoiceUrl)->with('success', "Payment successful, order is being processed.");
+                }elseif($data['status']=='failed'||$data['status']=='abandoned'){
+                    $dataOrder = [
+                        'paymentStatus'=>3,'status'=>3,
+                    ];
+                    $order->update($dataOrder);
+                    //Send mail to Merchant & customer
+                    $mailData=[
+                        'fromMail'=>$web->email,
+                        'title'=>"Payment Failed for Order #".$order->reference,
+                        'siteName'=>$web->name,
+                        'supportMail'=>$web->supportEmail,
+                        'order'=>$orderRef
+                    ];
+                    Mail::to($store->email)->send(new SendMerchantOrderPurchase($mailData,"Payment Failed for Order #".$order->reference));
+                    Mail::to($customer->email)->send(new SendMerchantOrderPurchase($mailData,"Payment Failed for Order #".$order->reference));
+
+                    return redirect()->to($invoiceUrl)->with('error', "Payment failed/cancelled.");
+                }else{
+                    //the payment is either pending or ongoing so we return to the invoice page
+                    return redirect()->to($invoiceUrl)->with('info', "No actions detected. Please contact support or retry your payment attempt.");
+                }
+            }else{
+                $ticketUrl = route('merchant.store.ticket.new',['subdomain'=>$subdomain,'reference'=>$orderRef]);
+                return redirect()->to($ticketUrl)->with('error','An error occurred while we were processing your payment.
+                Fill up the form below to open a ticket and our support team will be on the way. Use this code in your error reporting
+                '.$response['message']);
+            }
+        }catch (Exception $exception){
+            $ticketUrl = route('merchant.store.ticket.new',['subdomain'=>$subdomain,'reference'=>$orderRef]);
+            Log::info('An error occurred while processing checkout order payment '.$exception->getMessage().' on line '.$exception->getLine().' in file '.$exception->getFile());
+
+            return redirect()->to($ticketUrl)->with('error','An error occurred while we were processing your payment. Fill up the form below to open a ticket and our support team will be on the way.');
+        }
+    }
+    //make payment for order
+    public function makePaymentForOrder(Request $request,$subdomain,$orderRef)
+    {
+        $web = GeneralSetting::find(1);
+        $store = UserStore::where('slug',$subdomain)->firstOrFail();
+        $order = UserStoreOrder::where([
+            'store'=>$store->id,'reference'=>$orderRef,
+        ])->first();
+
+        try {
+            $invoiceUrl = route('merchant.store.checkout.order.invoice',['subdomain'=>$subdomain,'id'=>$orderRef]);
+
+            $payment = $this->payment->initiateOrderPayment($order,$store,$web);
+            if ($payment['result']){
+                $url=$payment['url'];
+                $order->channelPaymentReference = $payment['reference'];
+                $order->save();
+                $message = "Order processed. Redirecting to the appropriate page.";
+            }else{
+                $url=$invoiceUrl;
+                $message = $payment['message'];
+            }
+        }catch (\Exception $exception){
+            Log::info('An error occurred while initiating payment for order '.$orderRef.' with error '.$exception->getMessage().' on line '.$exception->getLine().' in file '.$exception->getFile());
+        }
     }
 }

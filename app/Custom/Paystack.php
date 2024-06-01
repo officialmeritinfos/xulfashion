@@ -99,4 +99,12 @@ class Paystack
             "Authorization" =>'Bearer '.$this->secKey
         ])->post($this->url.'transaction/initialize',$data);
     }
+    //verify transaction
+    public function verifyTransaction($reference)
+    {
+        return Http::withHeaders([
+            "Authorization" =>'Bearer '.$this->secKey
+        ])->get($this->url.'transaction/verify/'.$reference);
+    }
+
 }

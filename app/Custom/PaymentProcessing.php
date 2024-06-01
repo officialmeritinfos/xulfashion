@@ -30,7 +30,6 @@ class PaymentProcessing
                 //check if response is okay
                 if ($response->ok()){
                     $res = $response->json();
-                    Log::info($res);
                     $result = [
                         'result'=>true,
                         'url'=>$res['data']['authorization_url'],
@@ -49,6 +48,34 @@ class PaymentProcessing
                 break;
             default:
                 //use stripe
+                break;
+        }
+
+        return $result;
+    }
+    //verify transactions
+    public function verifyOrderPayment($order,$reference)
+    {
+        switch ($order->currency) {
+            case 'NGN':
+                $gateWay = new Paystack();
+                $response = $gateWay->verifyTransaction($reference);
+                //check if response is okay
+                if ($response->ok()){
+                    $res = $response->json();
+                    $result = [
+                        'data'=>$res,
+                        'result'=>true
+                    ];
+                }else{
+                    Log::info($response->body());
+                    $result = [
+                        'result'=>false,
+                        'message'=>'PAYMENT.VERIFICATION.ERR'
+                    ];
+                }
+                break;
+            default:
                 break;
         }
 

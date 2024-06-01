@@ -19,6 +19,7 @@
 
     <!-- Custom Stylesheet -->
     <link type="text/css" rel="stylesheet" href="{{asset('dashboard/invoice/css/style.css')}}">
+    @include('genericCss')
 </head>
 <body>
 @inject('injected','App\CUstom\StoreFront')
@@ -82,8 +83,36 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6 mb-30">
+                            <div class="col-sm-4 mb-30">
                                 <h4 class="inv-title-1">Payment Status</h4>
+                                <p class="inv-from-1">
+                                    @switch($order->paymentStatus)
+                                        @case(1)
+                                            <span class="badge bg-success">Successful</span>
+                                            @break
+                                        @case(2)
+                                            <span class="badge bg-info">Pending Payment</span>
+                                            @break
+                                        @case(3)
+                                            <span class="badge bg-danger">Cancelled</span>
+                                            @break
+                                        @case(4)
+                                            <span class="badge bg-primary">Payment Received - Processing</span>
+                                            @break
+                                        @case(5)
+                                            <span class="badge bg-warning text-white">Incomplete Payment</span>
+                                            @break
+                                        @case(6)
+                                            <span class="badge bg-dark">Payment Received - Processing & In Escrow</span>
+                                            @break
+                                        @default
+                                            <span class="badge bg-dark">Payment Under Review - Please contact support</span>
+                                            @break
+                                    @endswitch
+                                </p>
+                            </div>
+                            <div class="col-sm-4 mb-30">
+                                <h4 class="inv-title-1">Order Status</h4>
                                 <p class="inv-from-1">
                                     @switch($order->status)
                                         @case(1)
@@ -101,13 +130,16 @@
                                         @case(5)
                                             <span class="badge bg-warning text-white">Incomplete Payment</span>
                                             @break
-                                        @default
+                                        @case(6)
                                             <span class="badge bg-dark">Payment Received - Processing & In Escrow</span>
+                                            @break
+                                        @default
+                                            <span class="badge bg-dark">Payment Under Review - Please contact support</span>
                                             @break
                                     @endswitch
                                 </p>
                             </div>
-                            <div class="col-sm-6 text-end mb-30">
+                            <div class="col-sm-4 text-end mb-30">
                                 @if($order->checkoutType==1)
                                     <h4 class="inv-title-1">Payment Method</h4>
                                     <p class="inv-from-1">
@@ -116,7 +148,11 @@
                                 @else
                                     <h4 class="inv-title-1">Payment Method</h4>
                                     <p class="inv-from-1">
-                                        <span class="badge bg-dark">Online</span>
+                                        @if(!empty($order->paymentMethod))
+                                            <span class="badge bg-dark">{{str_replace('_',' ',$order->paymentMethod)}}</span>
+                                        @else
+                                            <span class="badge bg-dark">Online</span>
+                                        @endif
                                     </p>
                                 @endif
                             </div>
@@ -196,9 +232,11 @@
                         <a href="javascript:window.print()" class="btn btn-lg btn-print">
                             <i class="fa fa-print"></i> Print
                         </a>
-                        <button type="button" class="btn btn-lg btn-primary">
-                            <i class="fa fa-credit-card"></i> Make Payment
-                        </button>
+                        @if($order->paymentStatus!=1)
+                            <button type="button" class="btn btn-lg btn-primary">
+                                <i class="fa fa-credit-card"></i> Make Payment
+                            </button>
+                        @endif
                     </div>
                 @endif
             </div>
@@ -211,5 +249,6 @@
 <script src="{{asset('dashboard/invoice/js/jspdf.min.js')}}"></script>
 <script src="{{asset('dashboard/invoice/js/html2canvas.js')}}"></script>
 <script src="{{asset('dashboard/invoice/js/app.js')}}"></script>
+@include('basicInclude')
 </body>
 </html>

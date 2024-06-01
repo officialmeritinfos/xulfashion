@@ -65,8 +65,11 @@
                                         @case(5)
                                             <span class="badge bg-warning text-white">Incomplete Payment</span>
                                         @break
-                                        @default
+                                        @case(6)
                                             <span class="badge bg-dark">Payment Received - Processing & In Escrow</span>
+                                        @break
+                                        @default
+                                            <span class="badge bg-dark">Payment Under Review - Please contact support</span>
                                         @break
                                     @endswitch
                                 </td>

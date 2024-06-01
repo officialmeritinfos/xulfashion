@@ -8,6 +8,7 @@ use App\Http\Controllers\Storefront\CartController;
 use App\Http\Controllers\Storefront\CheckoutController;
 use App\Http\Controllers\Storefront\Home;
 use App\Http\Controllers\Storefront\ProductController;
+use App\Http\Controllers\Storefront\TicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -79,6 +80,9 @@ Route::domain('{subdomain}.localhost')->group(function () {
         Route::get('checkout/checkout-order/payment/{id}/process',[CheckoutController::class,'processCheckoutOrderPayment'])
             ->name('merchant.store.checkout.order.payment.process');
 
+        //Store support Ticket
+        Route::get('ticket/new',[TicketController::class,'landingPage'])
+            ->name('merchant.store.ticket.new');
 
     });
 });
