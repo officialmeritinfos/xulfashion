@@ -79,9 +79,8 @@
                                             <span class="badge bg-dark">Completed On Whatsapp</span>
                                         </p>
                                     @else
-                                        <h4 class="inv-title-1">Payment Method</h4>
                                         <p class="inv-from-1">
-                                            <span class="badge bg-dark">{{$order->paymentMethod}}</span>
+                                            <span class="badge bg-dark">{{str_replace('_',' ',$order->paymentMethod)??'Online'}}</span>
                                         </p>
                                     @endif
                                 </td>

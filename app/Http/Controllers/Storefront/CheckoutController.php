@@ -309,7 +309,7 @@ class CheckoutController extends BaseController
         $store = UserStore::where('slug',$subdomain)->firstOrFail();
         $order = UserStoreOrder::where([
             'store'=>$store->id,'reference'=>$orderRef,
-            'paymentReference'=>$transRef
+            'channelPaymentReference'=>$transRef
         ])->first();
         $customer = UserStoreCustomer::where('id',$order->customer)->first();
         $web = GeneralSetting::find(1);
@@ -337,7 +337,8 @@ class CheckoutController extends BaseController
                         'paymentMethod'=>ucfirst($data['channel']),
                         'paymentStatus'=>1,'status'=>4,'amountPaid'=>$amountPaid,
                         'charge'=>$totalCharge,'amountToCredit'=>$amountCredit,
-                        'channelPaymentId'=>$transId,'channelPaymentReference'=>$channelPaymentReference
+                        'channelPaymentId'=>$transId,'channelPaymentReference'=>$channelPaymentReference,
+                        'datePaid'=>time()
                     ];
                     $order->update($dataOrder);
 
@@ -404,11 +405,14 @@ class CheckoutController extends BaseController
                 $url=$payment['url'];
                 $order->channelPaymentReference = $payment['reference'];
                 $order->save();
-                $message = "Order processed. Redirecting to the appropriate page.";
+                $message = "Redirecting to payment processor";
             }else{
                 $url=$invoiceUrl;
                 $message = $payment['message'];
             }
+            return $this->sendResponse([
+                'redirectTo'=>$url
+            ],$message);
         }catch (\Exception $exception){
             Log::info('An error occurred while initiating payment for order '.$orderRef.' with error '.$exception->getMessage().' on line '.$exception->getLine().' in file '.$exception->getFile());
         }
