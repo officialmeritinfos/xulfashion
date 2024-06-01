@@ -294,4 +294,39 @@ class InvoiceController extends BaseController
             'fiat'          =>Fiat::where('code',$invoice->currency)->orWhere('code','USD')->first()
         ]);
     }
+    //mark invoice payment status as paid
+    public function markInvoicePaymentStatus(Request $request,$id)
+    {
+        try {
+            $web = GeneralSetting::find(1);
+            $user = Auth::user();
+            $store = UserStore::where('user',$user->id)->first();
+            if (empty($store)){
+                return back()->with('error','Store not initialized.');
+            }
+            $invoice = UserStoreInvoice::where([
+                'store'=>$store->id,'reference'=>$id
+            ])->first();
+            if (empty($invoice)){
+                return back()->with('error','Invoice not found.');
+            }
+
+            //if already paid
+            if ($invoice->paymentStatus==1){
+                return back()->with('error','Invoice has been marked as paid already. Contact support');
+            }
+
+            $invoice->paymentStatus=1;
+            $invoice->paymentMethod='offline';
+            $invoice->datePaid=time();
+            $invoice->status=1;
+            $invoice->save();
+
+            return back()->with('success','Invoice marked as paid. This action is irreversible.');
+
+        }catch (\Exception $exception){
+            Log::info('Error in  ' . __METHOD__ . ' while marking invoice as paid: ' . $exception->getMessage());
+            return back()->with('error','A server error occurred while processing your request.');
+        }
+    }
 }

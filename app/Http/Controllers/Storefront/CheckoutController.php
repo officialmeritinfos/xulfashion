@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Storefront;
 
 use App\Custom\PaymentProcessing;
+use App\Custom\Regular;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Mail\SendMerchantOrderPurchase;
@@ -31,11 +32,12 @@ use Mockery\Exception;
 class CheckoutController extends BaseController
 {
     use Helpers,Themes;
-    public $payment;
+    public $payment,$regular;
 
     public function __construct()
     {
         $this->payment=new PaymentProcessing();
+        $this->regular = new Regular();
     }
 
     //landing page
@@ -329,7 +331,7 @@ class CheckoutController extends BaseController
                     $feesUnit = $data['fees'];
                     $amountPaid = $amountPaidSubUnit/$fiat->subUnit;
                     $fees = $feesUnit/$fiat->subUnit;
-                    $totalCharge = $fees+$fiat->transactionCharge+$fees;
+                    $totalCharge = $this->regular->calculateChargeOnAmount($amountPaid,$order->currency);
                     $amountCredit = $amountPaid-$totalCharge;
 
 
@@ -338,7 +340,7 @@ class CheckoutController extends BaseController
                         'paymentStatus'=>1,'status'=>4,'amountPaid'=>$amountPaid,
                         'charge'=>$totalCharge,'amountToCredit'=>$amountCredit,
                         'channelPaymentId'=>$transId,'channelPaymentReference'=>$channelPaymentReference,
-                        'datePaid'=>time()
+                        'datePaid'=>time(),'processorFee'=>$fees
                     ];
                     $order->update($dataOrder);
 
@@ -417,4 +419,5 @@ class CheckoutController extends BaseController
             Log::info('An error occurred while initiating payment for order '.$orderRef.' with error '.$exception->getMessage().' on line '.$exception->getLine().' in file '.$exception->getFile());
         }
     }
+
 }

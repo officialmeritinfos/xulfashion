@@ -215,6 +215,8 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.invoice.notify.process');//edit store invoice process
     Route::get('stores/invoices/{id}/print',[InvoiceController::class,'printInvoice'])
         ->name('stores.invoices.print');//print invoice page
+    Route::get('stores/invoices/mark-paid/{id}/process',[InvoiceController::class,'markInvoicePaymentStatus'])
+        ->name('stores.invoice.paid.process');//mark invoice as paid
     //Themes
     Route::get('stores/themes',[Themes::class,'landingPage'])
         ->name('stores.themes');//store themes

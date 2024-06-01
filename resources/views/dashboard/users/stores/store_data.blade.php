@@ -31,6 +31,17 @@
                         <div class="d-flex align-items-center">
                             <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
                             <div class="card-info">
+                                <h5 class="mb-0">{{$injected->fetchCurrencySign($store->currency)->currency_symbol}}{{$injected->formatNumber($injected->invoiceRevenueInStore($store->id))}} </h5>
+                                <small>Invoice Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                 title="Total sum of money earned through invoices. This only accounts for invoices whose payment was processed through
+                                                 this platform not offline payments."></i></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
+                            <div class="card-info">
                                 <h5 class="mb-0">{{$injected->fetchCurrencySign($store->currency)->currency_symbol}}{{$injected->formatNumber($injected->revenueInStore($store->id))}} </h5>
                                 <small>Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
                                                  title="Total sum of money earned through your stores. This only accounts for sales which was marked as completed.

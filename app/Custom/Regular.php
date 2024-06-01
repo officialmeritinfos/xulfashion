@@ -14,6 +14,7 @@ use App\Models\UserAd;
 use App\Models\UserBank;
 use App\Models\UserStoreCatalogCategory;
 use App\Models\UserStoreCustomer;
+use App\Models\UserStoreInvoice;
 use App\Models\UserStoreOrder;
 use App\Models\UserStoreOrderBreakdown;
 use App\Models\UserStoreProduct;
@@ -211,12 +212,21 @@ class Regular
             'completedOnWhatsapp'=>2,
         ])->sum('amountToCredit');
     }
+
+    //revenue in store
+    public function invoiceRevenueInStore($store)
+    {
+        return UserStoreInvoice::where([
+            'store'=>$store,
+            'paymentStatus'=>1,
+        ])->whereNot('paymentMethod','offline')->sum('amountCredit');
+    }
     //calculate charge
     public function calculateChargeOnAmount($amount,$currency)
     {
         $fiat = Fiat::where('code',$currency)->orWhere('code','USD')->first();
 
-        $charge = ($fiat->charge/100)*$amount;
+        $charge = (($fiat->charge/100)*$amount)+$fiat->transactionCharge;
 
         if ($charge > $fiat->maxCharge){
             $charge = $fiat->maxCharge;

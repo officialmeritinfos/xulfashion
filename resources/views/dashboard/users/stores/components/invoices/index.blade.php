@@ -23,7 +23,7 @@
             </div>
 
             <div class="latest-transaction-area">
-                <div class="table-responsive h-auto" data-simplebar>
+                <div class="table-responsive" data-simplebar>
                     <table class="table align-middle mb-0">
                         <thead>
                         <tr>
@@ -33,6 +33,7 @@
                             <th scope="col">AMOUNT</th>
                             <th scope="col">DATE</th>
                             <th scope="col">STATUS</th>
+                            <th scope="col">PAYMENT STATUS</th>
                             <th scope="col">ACTION</th>
                         </tr>
                         </thead>
@@ -65,6 +66,31 @@
                                             @break
                                         @default
                                             <span class="badge bg-danger">Payment Cancelled</span>
+                                            @break
+                                    @endswitch
+                                </td>
+                                <td class="bold">
+                                    @switch($invoice->paymentStatus)
+                                        @case(1)
+                                            <span class="badge bg-success">Successful</span>
+                                            @break
+                                        @case(2)
+                                            <span class="badge bg-info">Pending Payment</span>
+                                            @break
+                                        @case(3)
+                                            <span class="badge bg-danger">Cancelled</span>
+                                            @break
+                                        @case(4)
+                                            <span class="badge bg-primary">Payment Received - Processing</span>
+                                            @break
+                                        @case(5)
+                                            <span class="badge bg-warning text-white">Incomplete Payment</span>
+                                            @break
+                                        @case(6)
+                                            <span class="badge bg-dark">Payment Received - Processing & In Escrow</span>
+                                            @break
+                                        @default
+                                            <span class="badge bg-dark">Payment Under Review - Please contact support</span>
                                             @break
                                     @endswitch
                                 </td>

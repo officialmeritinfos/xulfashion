@@ -23,6 +23,7 @@
     <link rel="icon" type="image/png" href="{{asset($store->logo??$web->favicon)}}">
     <!-- Title -->
     <title>{{$pageName}} - {{$store->name}}</title>
+    @include('genericCss')
 </head>
 <body>
 @inject('injected','App\Custom\Regular')
@@ -83,7 +84,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-sm-4 mb-30">
                                     <h4 class="inv-title-1">Payment Status</h4>
@@ -191,9 +191,15 @@
                         <a href="javascript:window.print()" class="btn btn-lg btn-print">
                             <i class="fa fa-print"></i> Print Invoice
                         </a>
-                        <a id="invoice_download_btn" class="btn btn-lg btn-download btn-theme">
+                        <a id="invoice_download_btn" class="btn btn-lg btn-download btn-info">
                             <i class="fa fa-download"></i> Download Invoice
                         </a>
+                        @if($invoice->paymentStatus!=1)
+                            <button type="button" class="btn btn-lg btn-primary submit"
+                                    data-url="{{route('merchant.store.invoice.pay',['subdomain'=>$subdomain,'id'=>$invoice->reference])}}">
+                                <i class="fa fa-credit-card"></i> Make Payment
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -206,5 +212,69 @@
 <script src="{{asset('dashboard/invoice/js/jspdf.min.js')}}"></script>
 <script src="{{asset('dashboard/invoice/js/html2canvas.js')}}"></script>
 <script src="{{asset('dashboard/invoice/js/app.js')}}"></script>
+@include('basicInclude')
+<script>
+    $(function (){
+        $('.submit').on('click', function() {
+            var url = $(this).data('url');
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}' // Add CSRF token for security
+                },
+                beforeSend:function(){
+                    $('.submit').attr('disabled', true);
+                    $(".submit").LoadingOverlay("show",{
+                        text        : "processing...",
+                        size        : "20"
+                    });
+                },
+                success:function(data)
+                {
+                    if(data.error===true)
+                    {
+                        toastr.options = {
+                            "closeButton" : true,
+                            "progressBar" : true
+                        }
+                        toastr.error(data.data.error);
+
+                        //return to natural stage
+                        setTimeout(function(){
+                            $('.submit').attr('disabled', false);
+                            $(".submit").LoadingOverlay("hide");
+                        }, 3000);
+                    }
+                    if(data.error === 'ok')
+                    {
+                        toastr.options = {
+                            "closeButton" : true,
+                            "progressBar" : true
+                        }
+                        toastr.info(data.message);
+
+                        setTimeout(function(){
+                            $('.submit').attr('disabled', false);
+                            $(".submit").LoadingOverlay("hide");
+                            window.location.replace(data.data.redirectTo)
+                        }, 5000);
+                    }
+                },
+                error:function (jqXHR, textStatus, errorThrown){
+                    toastr.options = {
+                        "closeButton" : true,
+                        "progressBar" : true
+                    }
+                    toastr.error(jqXHR.responseJSON.data.error);
+                    $("#processCheckout :input").prop("readonly", false);
+                    $('.submit').attr('disabled', false);
+                    $(".submit").LoadingOverlay("hide");
+                },
+            });
+        });
+    });
+</script>
 </body>
 </html>

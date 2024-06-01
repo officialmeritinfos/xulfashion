@@ -229,6 +229,9 @@
                 @endif
                 @if($showButton==1)
                     <div class="invoice-btn-section clearfix d-print-none">
+                        <a href="{{route('merchant.store',['subdomain'=>$subdomain])}}" target="_blank" class="btn btn-lg btn-info">
+                            <i class="fa fa-arrow-left"></i> Back To Store
+                        </a>
                         <a href="javascript:window.print()" class="btn btn-lg btn-print">
                             <i class="fa fa-print"></i> Print
                         </a>

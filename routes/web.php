@@ -7,6 +7,7 @@ use App\Http\Controllers\Marketplace\StoreController;
 use App\Http\Controllers\Storefront\CartController;
 use App\Http\Controllers\Storefront\CheckoutController;
 use App\Http\Controllers\Storefront\Home;
+use App\Http\Controllers\Storefront\InvoiceController;
 use App\Http\Controllers\Storefront\ProductController;
 use App\Http\Controllers\Storefront\TicketController;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,13 @@ Route::domain('{subdomain}.localhost')->group(function () {
 
         Route::get('/product/{id}/detail', [])->name('merchant.store.product.detail');//product page
 
-        Route::get('/invoice/{id}/detail',[])->name('merchant.store.invoice.detail');//invoice page
+        //Invoice
+        Route::get('/invoice/{id}/detail',[InvoiceController::class,'landingPage'])
+            ->name('merchant.store.invoice.detail');//invoice page
+        Route::post('/invoice/{id}/pay',[InvoiceController::class,'makePayment'])
+            ->name('merchant.store.invoice.pay');//make payment for invoice
+        Route::get('invoice/payment/{id}/process',[InvoiceController::class,'processInvoiceOrderPayment'])
+            ->name('merchant.store.invoice.payment.process');//callback for processing payment
 
         Route::get('/shop', [])->name('merchant.store.shop');//shop page
         Route::get('/catalog', [])->name('merchant.store.catalog');//catalog page
@@ -80,7 +87,7 @@ Route::domain('{subdomain}.localhost')->group(function () {
 
         //Order Payment processing
         Route::get('checkout/checkout-order/payment/{id}/process',[CheckoutController::class,'processCheckoutOrderPayment'])
-            ->name('merchant.store.checkout.order.payment.process');
+            ->name('merchant.store.checkout.order.payment.process');//callback for processing payment
 
         //Store support Ticket
         Route::get('ticket/new',[TicketController::class,'landingPage'])
