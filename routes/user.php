@@ -198,6 +198,12 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.orders');//store orders
     Route::get('stores/orders/{id}/details',[Orders::class,'orderDetails'])
         ->name('stores.orders.details');//store orders details
+    Route::post('stores/orders/paid/{id}/process',[Orders::class,'markPaid'])
+        ->name('stores.orders.paid.process');//mark payment as paid
+    Route::post('stores/orders/complete/{id}/process',[Orders::class,'completeOrder'])
+        ->name('stores.orders.complete.process');//complete order
+    Route::post('stores/orders/cancel/{id}/process',[Orders::class,'cancelOrder'])
+        ->name('stores.orders.cancel.process');//complete order
     //Teams
     Route::get('stores/teams',[Teams::class,'landingPage'])
         ->name('stores.teams');//store teams

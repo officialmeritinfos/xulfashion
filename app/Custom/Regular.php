@@ -291,4 +291,10 @@ class Regular
 
         return$usersWithViews;
     }
+
+    //fetch product by Id
+    public function fetchProductById($id)
+    {
+        return UserStoreProduct::where('id',$id)->first();
+    }
 }
