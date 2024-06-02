@@ -24,6 +24,7 @@ class CreateUserStoreOrdersTable extends Migration
             $table->string('amountPaid', 150)->nullable();
             $table->string('coupon', 150)->nullable();
             $table->string('charge', 150)->nullable();
+            $table->string('processorFee', 150)->default('0');
             $table->string('affiliateAmount', 150)->nullable();
             $table->string('currency', 150)->nullable();
             $table->string('discount', 150)->nullable();
@@ -32,6 +33,11 @@ class CreateUserStoreOrdersTable extends Migration
             $table->string('checkoutType', 150)->nullable();
             $table->integer('completedOnWhatsapp')->default(2);
             $table->string('totalAmountToPay', 150)->nullable();
+            $table->string('channelPaymentReference', 150)->nullable();
+            $table->string('paymentReference', 150)->nullable();
+            $table->string('channelPaymentId', 150)->nullable();
+            $table->string('datePaid', 150)->nullable();
+            $table->longText('paymentLog')->nullable();
             $table->timestamps(, 150);
             $table->string('deleted_at', 150)->nullable();
         });

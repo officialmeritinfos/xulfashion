@@ -20,9 +20,9 @@ class CreateUserStoreOrderBreakdownsTable extends Migration
             $table->string('product', 150);
             $table->string('quantity', 150)->nullable();
             $table->string('sizeVariants', 150)->nullable();
-            $table->string('sizeVariantQuantity', 150)->nullable();
             $table->string('colorVariant', 150)->nullable();
-            $table->string('colorVariantQuantity', 150)->nullable();
+            $table->string('amount', 100)->default('0');
+            $table->string('totalAmount', 100)->default('0');
             $table->timestamps(, 150);
         });
     }

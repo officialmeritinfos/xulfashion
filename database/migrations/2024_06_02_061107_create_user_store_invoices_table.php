@@ -32,6 +32,11 @@ class CreateUserStoreInvoicesTable extends Migration
             $table->text('terms')->nullable();
             $table->integer('status')->default(2);
             $table->integer('paymentStatus')->default(2);
+            $table->string('channelPaymentReference', 150)->nullable();
+            $table->string('channelPaymentId', 150)->nullable();
+            $table->string('paymentMethod', 150)->nullable();
+            $table->string('processorFee', 150)->default('0');
+            $table->string('datePaid', 150)->nullable();
             $table->timestamps(, 150);
             $table->string('deleted_at', 150)->nullable();
         });

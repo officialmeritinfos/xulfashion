@@ -17,6 +17,7 @@ class CreateGeneralSettingsTable extends Migration
             $table->integer('id')->primary();
             $table->string('name', 150)->nullable();
             $table->string('email', 150)->nullable();
+            $table->string('supportEmail', 150)->nullable();
             $table->string('address', 150)->nullable();
             $table->string('phone', 150)->nullable();
             $table->string('logo', 150)->nullable();

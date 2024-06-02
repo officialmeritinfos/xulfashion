@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('accountType', 100)->nullable();
             $table->string('accountBalance', 150)->default('0');
             $table->string('referralBalance', 100)->default('0');
-            $table->string('pendingBalance', 150)->nullable();
+            $table->string('pendingBalance', 150)->default('0');
             $table->string('mainCurrency', 150)->nullable();
             $table->string('country', 150)->nullable();
             $table->string('countryCode', 150)->nullable();

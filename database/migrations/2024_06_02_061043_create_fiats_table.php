@@ -28,6 +28,8 @@ class CreateFiatsTable extends Migration
             $table->string('fixedPayoutFee', 150)->default('0');
             $table->integer('hasWithdrawalCap')->default(2);
             $table->string('withdrawalCap', 150)->default('0');
+            $table->string('transactionCharge', 100)->default('100');
+            $table->string('subUnit', 100)->default('100');
             $table->integer('status')->default(1);
             $table->timestamps();
         });
