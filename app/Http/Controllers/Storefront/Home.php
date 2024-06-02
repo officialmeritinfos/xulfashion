@@ -54,22 +54,74 @@ class Home extends BaseController
     //refund policy
     public function refundPolicy($store)
     {
+        $userStore = UserStore::where('slug',$store)->firstOrFail();
+        $storeSettings = UserStoreSetting::where('store',$userStore->id)->first();
+        $themeLocation = $this->fetchThemeViewLocation($userStore->theme);
 
+        $web = GeneralSetting::find(1);
+
+        $data=[
+            'userStore'       =>$userStore,
+            'storeSetting'    =>$storeSettings,
+            'web'             =>$web,
+            'siteName'        =>$web->name,
+            'pageName'        =>'Refund Policy ',
+        ];
+        return view('storefront.'.$themeLocation.'.refund')->with($data);
     }
     //return policy
     public function returnPolicy($store)
     {
+        $userStore = UserStore::where('slug',$store)->firstOrFail();
+        $storeSettings = UserStoreSetting::where('store',$userStore->id)->first();
+        $themeLocation = $this->fetchThemeViewLocation($userStore->theme);
 
+        $web = GeneralSetting::find(1);
+
+        $data=[
+            'userStore'       =>$userStore,
+            'storeSetting'    =>$storeSettings,
+            'web'             =>$web,
+            'siteName'        =>$web->name,
+            'pageName'        =>'Return Policy ',
+        ];
+        return view('storefront.'.$themeLocation.'.return')->with($data);
     }
     //contact page
     public function contactPage($store)
     {
+        $userStore = UserStore::where('slug',$store)->firstOrFail();
+        $storeSettings = UserStoreSetting::where('store',$userStore->id)->first();
+        $themeLocation = $this->fetchThemeViewLocation($userStore->theme);
 
+        $web = GeneralSetting::find(1);
+
+        $data=[
+            'userStore'       =>$userStore,
+            'storeSetting'    =>$storeSettings,
+            'web'             =>$web,
+            'siteName'        =>$web->name,
+            'pageName'        =>'Contact Page ',
+        ];
+        return view('storefront.'.$themeLocation.'.contact')->with($data);
     }
     //about
     public function aboutPage($store)
     {
+        $userStore = UserStore::where('slug',$store)->firstOrFail();
+        $storeSettings = UserStoreSetting::where('store',$userStore->id)->first();
+        $themeLocation = $this->fetchThemeViewLocation($userStore->theme);
 
+        $web = GeneralSetting::find(1);
+
+        $data=[
+            'userStore'       =>$userStore,
+            'storeSetting'    =>$storeSettings,
+            'web'             =>$web,
+            'siteName'        =>$web->name,
+            'pageName'        =>'About '.$userStore->name,
+        ];
+        return view('storefront.'.$themeLocation.'.about')->with($data);
     }
 
 }

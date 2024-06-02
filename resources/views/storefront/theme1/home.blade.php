@@ -366,7 +366,7 @@
     <section class="cartegory-slider section-padding bg-section-2">
         <div class="container">
             <div class="text-center pb-3">
-                <h3 class="mb-0 h3 fw-bold">Store Categories</h3>
+                <h3 class="mb-0 h3 fw-bold">Store Catalog</h3>
                 <p class="mb-0 text-capitalize">Select your favorite categories and purchase</p>
             </div>
             <div class="cartegory-box">
