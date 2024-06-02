@@ -41,6 +41,8 @@
                         <th scope="col">CATEGORY</th>
                         <th scope="col">PRICE</th>
                         <th scope="col">QUANTITY</th>
+                        <th scope="col">HIGHLIGHTED</th>
+                        <th scope="col">FEATURED</th>
                         <th scope="col">DATE ADDED</th>
                         <th scope="col">STATUS</th>
                         <th scope="col">ACTION</th>
@@ -71,6 +73,24 @@
                                 </td>
                                 <td class="bold">
                                     {{$product->quantity}}
+                                </td>
+                                <td class="status">
+                                    @if($product->highlighted==1)
+                                        <i class="ri-checkbox-circle-line"></i>
+                                        Highlighted
+                                    @else
+                                        <i class="ri-alert-line text-danger"></i>
+                                        Not highlighted
+                                    @endif
+                                </td>
+                                <td class="status">
+                                    @if($product->featured==1)
+                                        <i class="ri-checkbox-circle-line"></i>
+                                        Featured
+                                    @else
+                                        <i class="ri-alert-line text-danger"></i>
+                                        Not Featured
+                                    @endif
                                 </td>
                                 <td>
                                     {{date('d M, Y - h:i A')}}
@@ -127,6 +147,36 @@
                                                 <li>
                                                     <a class="dropdown-item" href="{{route('user.stores.catalog.product.edit.status',['id'=>$product->reference,'status'=>2])}}">
                                                         Deactivate
+                                                        <i class="ri-alert-line text-danger"></i>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if($product->featured!=1)
+                                                <li>
+                                                    <a class="dropdown-item" href="{{route('user.stores.catalog.product.featured',['id'=>$product->reference])}}">
+                                                        Mark Featured
+                                                        <i class="ri-checkbox-circle-fill text-success"></i>
+                                                    </a>
+                                                </li>
+                                            @else
+                                                <li>
+                                                    <a class="dropdown-item" href="{{route('user.stores.catalog.product.featured.remove',['id'=>$product->reference])}}">
+                                                        Remove Featuring
+                                                        <i class="ri-alert-line text-danger"></i>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if($product->highlighted!=1)
+                                                <li>
+                                                    <a class="dropdown-item" href="{{route('user.stores.catalog.product.highlight',['id'=>$product->reference])}}">
+                                                        Mark Highlighted
+                                                        <i class="ri-checkbox-circle-fill text-success"></i>
+                                                    </a>
+                                                </li>
+                                            @else
+                                                <li>
+                                                    <a class="dropdown-item" href="{{route('user.stores.catalog.product.highlight.remove',['id'=>$product->reference])}}">
+                                                        Remove Highlighting
                                                         <i class="ri-alert-line text-danger"></i>
                                                     </a>
                                                 </li>

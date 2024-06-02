@@ -145,6 +145,14 @@ Route::middleware('completedProfile')->group(function (){
         ->name('stores.catalog.product.edit.image');//edit store catalog product image
     Route::get('stores/catalog/product/{id}/edit-specs',[CatalogController::class,'editProductsSpecs'])
         ->name('stores.catalog.product.edit.specs');//edit store catalog product image
+    Route::get('stores/catalog/product/{id}/highlight',[CatalogController::class,'highlightProduct'])
+        ->name('stores.catalog.product.highlight');//highlight product
+    Route::get('stores/catalog/product/{id}/remove/highlight',[CatalogController::class,'removeHighlightProduct'])
+        ->name('stores.catalog.product.highlight.remove');//remove highlight product
+    Route::get('stores/catalog/product/{id}/featured',[CatalogController::class,'markFeatured'])
+        ->name('stores.catalog.product.featured');//feature product
+    Route::get('stores/catalog/product/{id}/remove/featured',[CatalogController::class,'removeFeatured'])
+        ->name('stores.catalog.product.featured.remove');//remove featured product
 
     Route::get('stores/catalog/product/{ref}/image/{id}/delete',[CatalogController::class,'deleteProductImage'])
         ->name('stores.catalog.product.image.delete');//delete store catalog product image

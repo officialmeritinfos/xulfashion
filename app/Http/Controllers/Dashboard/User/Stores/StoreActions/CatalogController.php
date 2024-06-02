@@ -181,7 +181,8 @@ class CatalogController extends BaseController
                 'currency'=>$store->currency,'keyFeatures'=>clean($input['features']),
                 'specifications'=>clean($input['specifications']),'manufacturer'=>$input['manufacturer'],
                 'brand'=>$input['brand'],'category'=>$input['category'],'quantity'=>$input['qty'],
-                'refundPolicy'=>clean($input['refundPolicy']),'returnPolicy'=>clean($input['returnPolicy'])
+                'refundPolicy'=>clean($input['refundPolicy']),'returnPolicy'=>clean($input['returnPolicy']),
+                'featured'=>($request->has('featured'))?1:2
             ]);
 
             if(!empty($product)){
@@ -640,5 +641,99 @@ class CatalogController extends BaseController
                 'error'=>'A server error occurred while processing your request.'
             ]);
         }
+    }
+    //mark product as featured
+    public function markFeatured($id)
+    {
+        $user = Auth::user();
+
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$id
+        ])->firstOrFail();
+
+        $product->featured=1;
+        $product->save();
+
+        return back()->with('success','Product Marked Featured');
+    }
+    //remove product as featured
+    public function removeFeatured($id)
+    {
+        $user = Auth::user();
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$id
+        ])->firstOrFail();
+
+        $product->featured=2;
+        $product->save();
+
+        return back()->with('success','Product Featured removed');
+    }
+    //mark product as highlighted
+    public function highlightProduct($id)
+    {
+        $user = Auth::user();
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$id
+        ])->firstOrFail();
+
+        if ($product->highlighted==1){
+            return back()->with('error','Product already highlighted');
+        }
+
+        //another is highlighted
+        $highlighted = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$id
+        ])->whereNot('id',$id)->first();
+
+        if (!empty($highlighted)){
+            $highlighted->highlighted=2;
+            $highlighted->save();
+        }
+        $product->highlighted=1;
+        $product->save();
+
+        return back()->with('success','Product Highlighted');
+    }
+    //remove product as highlighted
+    public function removeHighlightProduct($id)
+    {
+        $user = Auth::user();
+        //check if the store has already been initialized
+        $store = UserStore::where('user',$user->id)->first();
+        if (empty($store)){
+            return back()->with('error','Store not initialized - initialize store first.');
+        }
+        //find product
+        $product = UserStoreProduct::where([
+            'store'=>$store->id,'reference'=>$id
+        ])->firstOrFail();
+
+        if ($product->highlighted!=1){
+            return back()->with('error','Product not highlighted');
+        }
+
+        $product->highlighted=2;
+        $product->save();
+
+        return back()->with('success','Product Removed as Highlight');
     }
 }

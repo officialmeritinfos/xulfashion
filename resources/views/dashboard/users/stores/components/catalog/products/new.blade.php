@@ -141,6 +141,15 @@
 
                     <div class="col-md-12 mt-3">
                         <div class="form-check">
+                            <input class="form-check-input" value="1" type="checkbox" id="featured"
+                                   name="featured">
+                            <label class="form-check-label" for="featured">
+                                Make Product Featured
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <div class="form-check">
                             <input class="form-check-input" value="1" type="checkbox" id="addAnother"
                                    name="addAnother">
                             <label class="form-check-label" for="addAnother">
