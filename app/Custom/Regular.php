@@ -297,4 +297,74 @@ class Regular
     {
         return UserStoreProduct::where('id',$id)->first();
     }
+    //user store analytics
+    public function fetchTotalRevenue($store)
+    {
+        // Start of the week (Assuming week starts on Monday)
+        return UserStoreOrder::where([
+            'store'=>$store->id,'paymentStatus'=>1,'status'=>1
+        ])->sum('amountToCredit');
+    }
+    public function fetchTotalOrders($store)
+    {
+        // Start of the week (Assuming week starts on Monday)
+        return UserStoreOrder::where([
+            'store'=>$store->id,'paymentStatus'=>1,'status'=>1
+        ])->count();
+    }
+    public function fetchSalesOfWeek($store)
+    {
+        // Start of the week (Assuming week starts on Monday)
+        $startOfWeek = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+        return UserStoreOrder::where('updated_at', '>=', $startOfWeek)->where([
+            'store'=>$store->id,'paymentStatus'=>1
+        ])->sum('amountToCredit');
+    }
+    public function fetchOrdersOfWeek($store)
+    {
+        // Start of the week (Assuming week starts on Monday)
+        $startOfWeek = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+        return UserStoreOrder::where('updated_at', '>=', $startOfWeek)->where([
+            'store'=>$store->id,'paymentStatus'=>1
+        ])->count();
+    }
+    public function fetchCompletedOrders($store)
+    {
+        // Start of the week (Assuming week starts on Monday)
+        return UserStoreOrder::where([
+            'store'=>$store->id,'paymentStatus'=>1,'status'=>1
+        ])->count();
+    }
+    public function fetchPendingOrders($store)
+    {
+        // Start of the week (Assuming week starts on Monday)
+        return UserStoreOrder::where([
+            'store'=>$store->id,'status'=>2
+        ])->count();
+    }
+    public function fetchProcessingOrders($store)
+    {
+        // Start of the week (Assuming week starts on Monday)
+        return UserStoreOrder::where([
+            'store'=>$store->id,'status'=>4,'paymentStatus'=>1
+        ])->count();
+    }
+    public function fetchNewCustomers($store)
+    {
+        $oneMonthAgo = Carbon::now()->subMonth();
+        return UserStoreCustomer::where('created_at', '>=', $oneMonthAgo)->where('store',$store->id)->count();
+    }
+    public function fetchTodayOrders($store)
+    {
+        $today = Carbon::today();
+        return UserStoreOrder::whereDate('created_at', $today)->where('store',$store->id)->count();
+    }
+    public function fetchTodayMoney($store)
+    {
+        $today = Carbon::today();
+        return UserStoreOrder::whereDate('created_at', $today)->where([
+            'store'=>$store->id,
+            'paymentStatus'=>1
+        ])->sum('amountToCredit');
+    }
 }
