@@ -92,7 +92,7 @@
                             @if($order->discount>0)
                                 <li> Coupon <span class="badge bg-info text-white">{{$coupon->code}}</span></li>
                             @endif
-                            <li>CheckoutType <span class="badge bg-dark text-white">{{($order->checkOutType==1)?'Whatsapp':'Online'}}</span></li>
+                            <li>CheckoutType <span class="badge bg-dark text-white">{{($order->checkoutType==1)?'Whatsapp':'Online'}}</span></li>
                             <li>Order Status <span>
                                     @switch($order->status)
                                         @case(1)

@@ -8,6 +8,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserStore;
 use App\Models\UserStoreCustomer;
@@ -120,7 +121,16 @@ class InvoiceController extends BaseController
                     $totalCharge = $this->regular->calculateChargeOnAmount($amountPaid,$order->currency);
                     $amountCredit = $amountPaid-$totalCharge;
 
+                    $newBalance = $merchant->accountBalance+$amountCredit;
                     $merchant->accountBalance= $merchant->accountBalance+$amountCredit;
+
+
+
+                    Transaction::create([
+                        'user'=>$merchant->id,'reference'=>$order->reference,'transactionType'=>5,
+                        'amount'=>$amountCredit,'currency'=>$order->currency,'newBalance'=>$newBalance,
+                        'status'=>1
+                    ]);
 
                     $dataOrder = [
                         'paymentMethod'=>ucfirst($data['channel']),
@@ -132,6 +142,7 @@ class InvoiceController extends BaseController
                     ];
                     $order->update($dataOrder);
                     $merchant->save();
+
                     DB::commit();;
                     //Send mail to Merchant & customer
                     $message = "

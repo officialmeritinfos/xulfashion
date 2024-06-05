@@ -32,8 +32,7 @@ class Account extends BaseController
     {
         $user = Auth::user();
         $web = GeneralSetting::find(1);
-        $trans= Transaction::where('user',$user->id)->limit(10)->get();
-        $transactions = AccountFunding::where('user',$user->id)->limit(10)->get();
+        $transactions= Transaction::where('user',$user->id)->limit(10)->get();
 
         return view('dashboard.common.account')->with([
             'web'           =>$web,
@@ -42,12 +41,10 @@ class Account extends BaseController
             'user'          =>$user,
             'accountType'   =>$this->userAccountType($user),
             'transactions'  =>$transactions,
-            'trans'  =>$trans,
             'banks'         =>UserBank::where([
                 'user' => $user->id,
                 'status' => 1
             ])->get(),
-            'deposits'      =>UserDeposit::where('user',$user->id)->paginate(15),
             'withdrawals'   =>UserWithdrawal::where('user',$user->id)->paginate(15,['*'],'transfer'),
         ]);
     }

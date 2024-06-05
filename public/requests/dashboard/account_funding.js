@@ -48,7 +48,7 @@ const fundingRequest=function (){
                             "progressBar" : true
                         }
                         toastr.info(data.message);
-                        console.log(data.data);
+                        console.log(data.data);-
 
                         $('.submit').attr('disabled', false);
                         $(".submit").LoadingOverlay("hide");

@@ -34,12 +34,12 @@
                                                     Withdraw Balance
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a class="dropdown-item" data-bs-toggle="modal" href="#fund_main_balance">
-                                                    <i class="bx bx-money"></i>
-                                                    Fund Balance
-                                                </a>
-                                            </li>
+{{--                                            <li>--}}
+{{--                                                <a class="dropdown-item" data-bs-toggle="modal" href="#fund_main_balance">--}}
+{{--                                                    <i class="bx bx-money"></i>--}}
+{{--                                                    Fund Balance--}}
+{{--                                                </a>--}}
+{{--                                            </li>--}}
                                         </ul>
                                     </div>
 
@@ -118,6 +118,12 @@
                                                     @case(2)
                                                         <span class="badge bg-info">Referral Conversion</span>
                                                         @break
+                                                    @case(4)
+                                                        <span class="badge bg-primary">Order Settlement</span>
+                                                        @break
+                                                    @case(5)
+                                                        <span class="badge bg-dark">Invoice Settlement</span>
+                                                        @break
                                                     @default
                                                         <span class="badge bg-primary">Charge</span>
                                                         @break
@@ -158,73 +164,6 @@
                     </div>
                 </div>
 
-                <div class="container-fluid">
-                    <div class="ui-kit-cards grid mb-24">
-                        <h3>Account Funding</h3>
-
-                        <div class="latest-transaction-area">
-                            <div class="table-responsive h-auto" data-simplebar>
-                                <table class="table align-middle mb-0">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th >Amount</th>
-                                        <th >Destination</th>
-                                        <th>Bank</th>
-                                        <th>Account Number</th>
-                                        <th>Narration</th>
-                                        <th>DATE</th>
-                                        <th>STATUS</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($deposits as $deposit)
-                                        <tr>
-                                            <td>
-                                        <span class="badge bg-primary">
-                                            {{$deposit->orderReference}}
-                                        </span>
-                                            </td>
-                                            <td>
-                                                {{$deposit->currency}}{{number_format($deposit->amountToPay,2)}}
-                                                ({{$deposit->currency}}{{number_format($deposit->amount,2)}})
-                                            </td>
-                                            <td>
-                                                {{$deposit->type}}
-                                            </td>
-                                            <td>
-                                                {{empty($deposit->bank)?'N/A':$deposit->bank}}
-                                            </td>
-                                            <td>
-                                                {{empty($deposit->accountNumber)?'N/A':$deposit->accountNumber}}
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-dark">{{strtoupper($deposit->reference)}}</span>
-                                            </td>
-                                            <td>
-                                                {{date('D, d M Y H:i:s',strtotime($deposit->created_at))}}
-                                            </td>
-                                            <td>
-                                                @switch($deposit->status)
-                                                    @case(1)
-                                                        <span class="badge bg-success">Completed</span>
-                                                        @break
-                                                    @case(2)
-                                                        <span class="badge bg-primary">Pending</span>
-                                                        @break
-                                                    @default
-                                                        <span class="badge bg-danger">Cancelled</span>
-                                                        @break
-                                                @endswitch
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="container-fluid">
                     <div class="ui-kit-cards grid mb-24">
                         <h3>Account Withdrawal</h3>

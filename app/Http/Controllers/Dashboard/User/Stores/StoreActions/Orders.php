@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\SendMerchantOrderPurchase;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserStore;
 use App\Models\UserStoreCoupon;
@@ -261,8 +262,16 @@ class Orders extends BaseController
             if (!empty($orderExists->channelPaymentId)){
                 //owner of store
                 $owner = User::where('id',$store->user)->first();
+                $newBalance = $owner->accountBalance+$orderExists->amountToCredit;
                 $owner->accountBalance=$owner->accountBalance+$orderExists->amountToCredit;
                 $owner->save();
+
+
+                Transaction::create([
+                    'user'=>$owner->id,'reference'=>$orderExists->reference,
+                    'transactionType'=>4,'amount'=>$orderExists->amountToCredit,
+                    'currency'=>$orderExists->currency,'newBalance'=>$newBalance,'status'=>1
+                ]);
             }
             $customer = UserStoreCustomer::where('id',$orderExists->customer)->first();
             //send mail
