@@ -45,6 +45,10 @@
                 <form class="submit-property-form" id="markPaidForm" action="{{route('user.stores.orders.paid.process',['id'=>$order->reference])}}" method="post">
                     <div class="row g-3">
                         <div class="col-md-12">
+                            <label for="inputTitle" class="form-label">Amount Paid<sup class="text-danger">*</sup></label>
+                            <input type="number" step="0.01" class="form-control" id="inputTitle" name="amount" >
+                        </div>
+                        <div class="col-md-12">
                             <label for="inputTitle" class="form-label">Password<sup class="text-danger">*</sup></label>
                             <input type="password" class="form-control" id="inputTitle" name="password" >
                         </div>

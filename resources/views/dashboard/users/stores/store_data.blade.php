@@ -44,8 +44,7 @@
                             <div class="card-info">
                                 <h5 class="mb-0">{{$injected->fetchCurrencySign($store->currency)->currency_symbol}}{{$injected->formatNumber($injected->revenueInStore($store->id))}} </h5>
                                 <small>Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
-                                                 title="Total sum of money earned through your stores. This only accounts for sales which was marked as completed.
-                                                 This is not the order amount but the amount after deducting charges."></i></small>
+                                                 title="Total sum of money earned through your stores. This only accounts for sales which was marked as completed."></i></small>
                             </div>
                         </div>
                     </div>

@@ -66,7 +66,7 @@
             <div class="cart-buttons mt-3">
                 <div class="buttons d-flex flex-column gap-3 mt-4">
                     <button type="submit" class="btn btn-lg btn-dark btn-ecomm px-5 py-3 flex-grow-1 submit"><i
-                            class="bi bi-basket2 me-2"></i>Add to Bag</button>
+                            class="bi bi-basket2 me-2"></i>{{$userStoreSetting->defaultBuyText}}</button>
                 </div>
             </div>
         </form>

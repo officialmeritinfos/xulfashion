@@ -1,3 +1,4 @@
+@inject('injected','App\Custom\Regular')
 <ul class="navbar-nav ms-auto mb-lg-0">
     <li class="nav-item">
         <a href="#" class="nav-link ri-fullscreen-btn" id="fullscreen-button">
@@ -9,31 +10,32 @@
         <div class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <div class="notification-btn">
                 <i class="ri-notification-2-line"></i>
-                <span class="badge">6</span>
+                <span class="badge">{{$injected->fetchUserActivities($user)->count()}}</span>
             </div>
         </div>
 
         <div class="dropdown-menu">
             <div class="dropdown-header d-flex justify-content-between align-items-center bg-linear">
-                <span class="title d-inline-block">6 New Notifications</span>
-                <span class="mark-all-btn d-inline-block">Mark all as read</span>
+                <span class="title d-inline-block">{{$injected->fetchUserActivities($user)->count()}} unread Notifications</span>
             </div>
 
             <div class="dropdown-body" data-simplebar>
-                <a href="inbox" class="dropdown-item d-flex align-items-center">
-                    <div class="icon">
-                        <i class='bx bx-message-rounded-dots'></i>
-                    </div>
+                @foreach($injected->fetchUserActivities($user) as $activity)
+                    <a href="{{route('user.dashboard.activity.read',['id'=>$activity->id])}}" class="dropdown-item d-flex align-items-center">
+                        <div class="icon">
+                            <i class='bx bx-message-rounded-dots'></i>
+                        </div>
 
-                    <div class="content">
-                        <span class="d-block">Just sent a new message!</span>
-                        <p class="sub-text mb-0">2 sec ago</p>
-                    </div>
-                </a>
+                        <div class="content">
+                            <span class="d-block">{{$activity->title}}</span>
+                            <p class="sub-text mb-0">{{$injected->getTimeAgo($activity->created_at)}}</p>
+                        </div>
+                    </a>
+                @endforeach
             </div>
 
             <div class="dropdown-footer">
-                <a href="inbox" class="dropdown-item">View All</a>
+                <a href="{{route('user.dashboard.activity')}}" class="dropdown-item">View All</a>
             </div>
         </div>
     </li>
@@ -43,7 +45,7 @@
             <img src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="Images"
             style="width: 50px;">
             <h3>{{$user->name}}</h3>
-            <span>{{($user->completedProfile)?'N/A':$accountType}}</span>
+            <span>{{($user->completedProfile!=1)?'N/A':$accountType}}</span>
         </a>
 
         <div class="dropdown-menu">
@@ -64,28 +66,28 @@
             <div class="dropdown-body">
                 <ul class="profile-nav p-0 pt-3">
                     <li class="nav-item">
-                        <a href="profile" class="nav-link">
+                        <a href="{{route('user.settings.portfolio')}}" class="nav-link">
                             <i class="ri-user-line"></i>
                             <span>Profile</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="inbox" class="nav-link">
-                            <i class="ri-mail-send-line"></i>
-                            <span>My Inbox</span>
+                        <a href="{{route('user.dashboard.activity.all')}}" class="nav-link">
+                            <i class="ri-book-open-fill"></i>
+                            <span>My Activities</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="edit-profile" class="nav-link">
-                            <i class="ri-edit-box-line"></i>
-                            <span>Edit Profile</span>
+                        <a href="{{route('user.settings.payout')}}" class="nav-link">
+                            <i class="ri-bank-fill"></i>
+                            <span>Payout Account</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="settings" class="nav-link">
+                        <a href="{{route('user.settings.index')}}" class="nav-link">
                             <i class="ri-settings-5-line"></i>
                             <span>Settings</span>
                         </a>

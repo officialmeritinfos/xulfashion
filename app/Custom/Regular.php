@@ -10,6 +10,7 @@ use App\Models\RateType;
 use App\Models\ServiceType;
 use App\Models\State;
 use App\Models\User;
+use App\Models\UserActivity;
 use App\Models\UserAd;
 use App\Models\UserBank;
 use App\Models\UserStoreCatalogCategory;
@@ -209,8 +210,7 @@ class Regular
         return UserStoreOrder::where([
             'store'=>$store,
             'status'=>1,
-            'completedOnWhatsapp'=>2,
-        ])->sum('amountToCredit');
+        ])->sum('amountPaid');
     }
 
     //revenue in store
@@ -303,7 +303,7 @@ class Regular
         // Start of the week (Assuming week starts on Monday)
         return UserStoreOrder::where([
             'store'=>$store->id,'paymentStatus'=>1,'status'=>1
-        ])->sum('amountToCredit');
+        ])->sum('amountPaid');
     }
     public function fetchTotalOrders($store)
     {
@@ -316,15 +316,15 @@ class Regular
     {
         // Start of the week (Assuming week starts on Monday)
         $startOfWeek = Carbon::now()->startOfWeek(Carbon::SUNDAY);
-        return UserStoreOrder::where('updated_at', '>=', $startOfWeek)->where([
+        return UserStoreOrder::where('created_at', '>=', $startOfWeek)->where([
             'store'=>$store->id,'paymentStatus'=>1
-        ])->sum('amountToCredit');
+        ])->sum('amountPaid');
     }
     public function fetchOrdersOfWeek($store)
     {
         // Start of the week (Assuming week starts on Monday)
         $startOfWeek = Carbon::now()->startOfWeek(Carbon::SUNDAY);
-        return UserStoreOrder::where('updated_at', '>=', $startOfWeek)->where([
+        return UserStoreOrder::where('created_at', '>=', $startOfWeek)->where([
             'store'=>$store->id,'paymentStatus'=>1
         ])->count();
     }
@@ -365,6 +365,105 @@ class Regular
         return UserStoreOrder::whereDate('created_at', $today)->where([
             'store'=>$store->id,
             'paymentStatus'=>1
-        ])->sum('amountToCredit');
+        ])->sum('amountPaid');
+    }
+
+    public function fetchCurrentMonthSales($store)
+    {
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        return UserStoreOrder::where([
+            'store'=>$store->id,
+        ])->where(function($query) {
+            $query->where('status', 1)
+                ->orWhere('paymentStatus', 1);
+        })->whereBetween('created_at', [$startOfMonth, $endOfMonth])->sum('amountPaid');
+    }
+    //fetch current month sale
+    public function fetchLastMonthSales($store)
+    {
+        $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
+        $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
+        return UserStoreOrder::where([
+            'store'=>$store->id,
+        ])->where(function($query) {
+            $query->where('status', 1)
+                ->orWhere('paymentStatus', 1);
+        })->whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->sum('amountPaid');
+    }
+    //calculate percentage sales change
+    public function fetchPercentageSaleChange($store)
+    {
+        $lastMonthSales = $this->fetchLastMonthSales($store);
+        $monthlySales = $this->fetchCurrentMonthSales($store);
+        if ($lastMonthSales > 0) {
+            $percentageChange = (($monthlySales - $lastMonthSales) / $lastMonthSales) * 100;
+        } else {
+            $percentageChange = $monthlySales > 0 ? 100 : 0;
+        }
+        return $percentageChange;
+    }
+    //fetch most recent orders that have not been completed
+    public function latestUncompletedOrders($store)
+    {
+        return UserStoreOrder::where([
+            'store'=>$store->id,
+        ])->whereNot('status',1)->whereNot('status',3)->limit(10)->get();
+    }
+    //user activities
+    public function fetchUserActivities($user)
+    {
+        return UserActivity::where([
+            'user'=>$user->id,'status'=>2
+        ])->get();
+    }
+    //top countries
+    public function fetchTopCustomerCountry($store)
+    {
+        $topCountries = UserStoreCustomer::select(DB::raw('country, COUNT(*) as count'))
+            ->where('store', $store->id)->whereNot('country',null)
+            ->groupBy('country')
+            ->orderByDesc('count')
+            ->take(4) // Limit to top 4 countries
+            ->get();
+        $countryLabels = $topCountries->pluck('country')->toArray();
+        $countryCounts = $topCountries->pluck('count')->toArray();
+
+        return [
+            'countryLabels' => $countryLabels,
+            'countryCounts' => $countryCounts
+        ];
+    }
+    //fetch total store customers
+    public function totalStoreUsers($store)
+    {
+        return UserStoreCustomer::where([
+            'store'=>$store->id,
+        ])->get()->count();
+    }
+
+    public function fetchAveragePurchaseAmount($store)
+    {
+        $customersPurchases = UserStoreOrder::select('customer', DB::raw('SUM(amountPaid) as totalSpent'), DB::raw('COUNT(*) as orderCount'))
+            ->where('store', $store->id)
+            ->where(function($query) {
+                $query->where('status', 1)
+                    ->orWhere('paymentStatus', 1);
+            })
+            ->groupBy('customer')
+            ->get();
+
+        $totalSpent = 0;
+        $totalOrders = 0;
+
+        foreach ($customersPurchases as $purchase) {
+            $totalSpent += $purchase->totalSpent;
+            $totalOrders += $purchase->orderCount;
+        }
+
+        $averagePurchaseAmount = $totalOrders > 0 ? $totalSpent / $totalOrders : 0;
+
+        return $averagePurchaseAmount;
     }
 }

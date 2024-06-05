@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\Account;
+use App\Http\Controllers\Dashboard\Analytics;
 use App\Http\Controllers\Dashboard\Home;
 use App\Http\Controllers\Dashboard\User\AdController;
 use App\Http\Controllers\Dashboard\User\Settings;
@@ -21,6 +22,25 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('completedProfile')->group(function (){
     Route::get('dashboard',[Home::class,'landingPage'])
         ->name('dashboard');//landing page
+
+    Route::get('dashboard/activity',[Home::class,'userActivities'])
+        ->name('dashboard.activity');//user activities
+    Route::get('dashboard/activity/all',[Home::class,'allUserActivities'])
+        ->name('dashboard.activity.all');//all activities
+    Route::get('dashboard/activity/{id}/read',[Home::class,'readUserActivity'])
+        ->name('dashboard.activity.read');//read an activity
+    Route::get('dashboard/activity/read-all',[Home::class,'readAllUserActivity'])
+        ->name('dashboard.activity.read.all');//read all activity
+
+    //Analytics
+    Route::get('analytics/country-data',[Analytics::class,'fetchCountryAnalyticsData'])
+        ->name('country.analytics');
+    Route::get('analytics/order-data',[Analytics::class,'fetchOrderData'])
+        ->name('order.analytics');
+    Route::get('analytics/customer-data',[Analytics::class,'fetchCustomerAnalytics'])
+        ->name('customer.analytics');
+    Route::get('analytics/online-offline-data',[Analytics::class,'onlineOfflineAnalytics'])
+        ->name('customer.online.offline');
 
     /*========================= SETTINGS ==========================*/
     Route::get('settings/index',[Settings::class,'landingPage'])

@@ -173,7 +173,8 @@ class Orders extends BaseController
             }
 
             $validator = Validator::make($request->all(),[
-                'password'=>['required','string','current_password:web']
+                'password'=>['required','string','current_password:web'],
+                'amount'=>['required','numeric'],
             ])->stopOnFirstFailure();
 
             if ($validator->fails()){
@@ -189,6 +190,7 @@ class Orders extends BaseController
                 return $this->sendError('order.error',['error'=>'Order has been cancelled already']);
             }
             $orderExists->paymentStatus=1;
+            $orderExists->amountPaid=$input['amount'];
             $orderExists->status=4;
             $orderExists->save();
 
@@ -255,11 +257,13 @@ class Orders extends BaseController
             $orderExists->status=1;
             $orderExists->save();
 
-            //owner of store
-            $owner = User::where('id',$store->user)->first();
-
-            $owner->accountBalance=$owner->accountBalance+$orderExists->amountToCredit;
-            $owner->save();
+            //if order was manually confirmed - payment was not completed online
+            if (!empty($orderExists->channelPaymentId)){
+                //owner of store
+                $owner = User::where('id',$store->user)->first();
+                $owner->accountBalance=$owner->accountBalance+$orderExists->amountToCredit;
+                $owner->save();
+            }
             $customer = UserStoreCustomer::where('id',$orderExists->customer)->first();
             //send mail
             $mailData=[
