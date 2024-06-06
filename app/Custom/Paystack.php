@@ -4,7 +4,7 @@ namespace App\Custom;
 
 use Illuminate\Support\Facades\Http;
 
-class Paystack
+class   Paystack
 {
     public $url;
     public $secKey;
@@ -105,6 +105,20 @@ class Paystack
         return Http::withHeaders([
             "Authorization" =>'Bearer '.$this->secKey
         ])->get($this->url.'transaction/verify/'.$reference);
+    }
+    //add recipient
+    public function addRecipient($data)
+    {
+        return Http::withHeaders([
+            "Authorization" =>'Bearer '.$this->secKey
+        ])->post($this->url.'transferrecipient',$data);
+    }
+    //fetch banks
+    public function fetchBank($country)
+    {
+        return Http::withHeaders([
+            "Authorization" =>'Bearer '.$this->secKey
+        ])->get($this->url.'bank?country='.$country.'&perPage=100');
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\User;
 
 use App\Custom\Flutterwave;
 use App\Custom\GoogleUpload;
+use App\Custom\Paystack;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
@@ -265,28 +266,33 @@ class Settings extends BaseController
 
             $reference = $this->generateUniqueReference('user_banks','reference',20);
             //create the beneficiary
-            $client = new Flutterwave();
-            $response = $client->addBeneficiary([
-                'account_bank'=>$input['bank'],
+            $client = new Paystack();
+
+            $response = $client->addRecipient([
+                'bank_code'=>$input['bank'],
                 'account_number'=>$input['accountNumber'],
-                'beneficiary_name'=>$user->name
+                'name'=>$user->name,
+                'type'=>'nuban','currency'=>$user->currency
             ]);
 
-            if ($response->ok()){
+            if ($response->successful()){
                 $res = $response->json();
                 $data = $res['data'];
 
-                $bankName = $data['bank_name'];
-                $benId = $data['id'];
-                $accountName = $data['full_name'];
+                $bankName = $data['details']['bank_name'];
+                $bankCode = $data['details']['bank_code'];
+                $accountName = $data['details']['account_name'];
+                $accountNumber = $data['details']['account_number'];
+                $benId = $data['recipient_code'];
             }else{
+                $res = $response->json();
                 Log::info($response->json());
-                return $this->sendError('payout.account.error',['error'=>'Something went wrong registering beneficiary']);
+                return $this->sendError('payout.account.error',['error'=>$res['message']]);
             }
 
             $beneficiary = UserBank::create([
-                'user'=>$user->id,'bank'=>$input['bank'],
-                'bankName'=>$bankName,'accountNumber'=>$input['accountNumber'],
+                'user'=>$user->id,'bank'=>$bankCode,
+                'bankName'=>$bankName,'accountNumber'=>$accountNumber,
                 'reference'=>$reference,'benRef'=>$benId,
                 'accountName'=>$accountName
             ]);
@@ -303,7 +309,7 @@ class Settings extends BaseController
                 $user->notify(new SendPushNotification($user,'New Payout Account',$message));
                 return $this->sendResponse([
                     'redirectTo'=>url()->previous()
-                ],'Beneficiary account successfully added.');
+                ],'Payout account successfully added.');
             }
             return $this->sendError('payout.account.error',['error'=>'We are unable to add beneficiary.']);
 
@@ -428,9 +434,9 @@ class Settings extends BaseController
             $user = Auth::user();
             $countryCode = $user->countryCode;
             $country = Country::where('iso3',$countryCode)->first();
-            $client = new Flutterwave();
-            $response = $client->fetchBank($country->iso2);
-            if ($response->ok()){
+            $client = new Paystack();
+            $response = $client->fetchBank(strtolower($country->name));
+            if ($response->successful()){
                 $res = $response->json();
 
                 return $this->sendResponse([
