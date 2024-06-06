@@ -823,6 +823,7 @@
     color: #ffffff !important;
 }
 
+
 [data-theme="dark"] .main-content .main-top-navbar .navbar-collapse .navbar-nav .nav-item.apps-box .dropdown-menu .dropdown-footer {
     border-color: #212137;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#f90283), to(#7f26c6));

@@ -416,7 +416,7 @@ class Regular
     {
         return UserActivity::where([
             'user'=>$user->id,'status'=>2
-        ])->get();
+        ])->orderBy('id','desc')->get();
     }
     //top countries
     public function fetchTopCustomerCountry($store)
