@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AccountNotLocked;
 use App\Http\Middleware\ApplyTheme;
+use App\Http\Middleware\StoreCustomerLogin;
 use App\Http\Middleware\UserCompletedProfile;
 use App\Http\Middleware\UserLoggedIn;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -73,5 +74,6 @@ class Kernel extends HttpKernel
         'completedProfile'=>UserCompletedProfile::class,
         'applyTheme'=>ApplyTheme::class,
         'extend.session' => \App\Http\Middleware\ExtendSessionLifetime::class,
+        'customer.login'=>StoreCustomerLogin::class,
     ];
 }

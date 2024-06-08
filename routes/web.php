@@ -10,7 +10,11 @@ use App\Http\Controllers\Storefront\CheckoutController;
 use App\Http\Controllers\Storefront\Home;
 use App\Http\Controllers\Storefront\InvoiceController;
 use App\Http\Controllers\Storefront\ProductController;
-use App\Http\Controllers\Storefront\TicketController;
+use App\Http\Controllers\Storefront\User\Dashboard;
+use App\Http\Controllers\Storefront\User\Login;
+use App\Http\Controllers\Storefront\User\Orders;
+use App\Http\Controllers\Storefront\User\Profiles;
+use App\Http\Controllers\Storefront\User\TicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -99,10 +103,43 @@ Route::domain('{subdomain}.localhost')->group(function () {
         Route::get('checkout/checkout-order/payment/{id}/process',[CheckoutController::class,'processCheckoutOrderPayment'])
             ->name('merchant.store.checkout.order.payment.process');//callback for processing payment
 
-        //Store support Ticket
-        Route::get('ticket/new',[TicketController::class,'landingPage'])
-            ->name('merchant.store.ticket.new');
+        /**=========================STORE USER ACCOUNT ===============================================*/
+        //Dashboard overview
+        Route::get('user/login',[Login::class,'landingPage'])
+            ->name('merchant.store.login');//login
+        Route::get('user/register',[Login::class,'landingPage'])
+            ->name('merchant.store.register');//register
+        Route::get('user/recover-password',[Login::class,'landingPage'])
+            ->name('merchant.store.recoverPassword');//recover password
 
+        //POST
+        Route::post('user/login/process',[Login::class,'processLogin'])
+            ->name('merchant.store.login.process');//login
+        Route::get('user/login/{customer}/authenticate',[Login::class,'authenticateLogin'])
+            ->name('merchant.store.login.authenticate');//authenticate login from mail
+
+
+        Route::middleware(['customer.login'])->group(function (){
+            //Dashboard overview
+            Route::get('user/index',[Dashboard::class,'landingPage'])
+                ->name('merchant.store.user.index');
+            Route::get('user/logout',[Dashboard::class,'logout'])
+                ->name('merchant.store.user.logout');
+            //Orders
+            Route::get('user/orders',[Orders::class,'landingPage'])
+                ->name('merchant.store.user.orders');
+            //Orders
+            Route::get('user/profile',[Profiles::class,'landingPage'])
+                ->name('merchant.store.user.profile');
+            //Settings
+            Route::get('user/settings',[Profiles::class,'settings'])
+                ->name('merchant.store.user.settings');
+            //Store support Ticket
+            Route::get('ticket/index',[TicketController::class,'landingPage'])
+                ->name('merchant.store.ticket.index');
+            Route::get('ticket/new',[TicketController::class,'newTicket'])
+                ->name('merchant.store.ticket.new');
+        });
     });
 });
 
@@ -143,6 +180,8 @@ Route::get('/ads/page/aml',[PageController::class,'aml'])
     ->name('marketplace.aml');
 
 /*================================ COMPANY CONTROLLER ==============================*/
+Route::get('/',[PageController::class,'about'])
+    ->name('home.index');
 Route::get('about',[PageController::class,'about'])
     ->name('company.about');
 
