@@ -5,6 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
     <!-- Bootstrap Min CSS -->
     <link rel="stylesheet" href="{{asset('dashboard/css/bootstrap.min.css')}}">
@@ -143,21 +144,20 @@
 
                     <li class="nav-item dropdown profile-nav-item">
                         <a class="nav-link dropdown-toggle avatar" href="#" id="navbarDropdown-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{asset('dashboard/images/avatar.png')}}" alt="Images">
-                            <h3>Emelli Watson</h3>
-                            <span>Super Admin</span>
+                            <img src="{{'https://ui-avatars.com/api/?rounded=true&name='.$customer->name}}" alt="Images" style="width: 50px;">
+                            <h3>{{$customer->name}}</h3>
                         </a>
 
                         <div class="dropdown-menu">
                             <div class="dropdown-header d-flex flex-column align-items-center">
                                 <div class="figure mb-3">
-                                    <img src="{{asset('dashboard/images/avatar.png')}}" class="rounded-circle" alt="image">
+                                    <img src="{{'https://ui-avatars.com/api/?rounded=true&name='.$customer->name}}" class="rounded-circle" alt="image">
                                 </div>
 
                                 <div class="info text-center">
-                                    <span class="name">Emelli Watson</span>
+                                    <span class="name">{{$customer->name}}</span>
                                     <p class="mb-3 email">
-                                        <a href="https://templates.envytheme.com/cdn-cgi/l/email-protection#90f8f5fcfcffd0f5fdf5fcfcf9e7f1e4e3fffebef3fffd"><span class="__cf_email__" data-cfemail="a5cdc0c9c9cae5c0c8c0c9c9ccd2c4d1d6cacb8bc6cac8">[email&#160;protected]</span></a>
+                                        {{$customer->reference}}
                                     </p>
                                 </div>
                             </div>
@@ -165,28 +165,22 @@
                             <div class="dropdown-body">
                                 <ul class="profile-nav p-0 pt-3">
                                     <li class="nav-item">
-                                        <a href="profile" class="nav-link">
+                                        <a href="{{route('merchant.store.user.profile',['subdomain'=>$store->slug])}}" class="nav-link">
                                             <i class="ri-user-line"></i>
                                             <span>Profile</span>
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="inbox" class="nav-link">
+                                        <a href="{{route('merchant.store.ticket.index',['subdomain'=>$store->slug])}}" class="nav-link">
                                             <i class="ri-mail-send-line"></i>
-                                            <span>My Inbox</span>
+                                            <span>My Ticket</span>
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
-                                        <a href="edit-profile" class="nav-link">
-                                            <i class="ri-edit-box-line"></i>
-                                            <span>Edit Profile</span>
-                                        </a>
-                                    </li>
 
                                     <li class="nav-item">
-                                        <a href="settings" class="nav-link">
+                                        <a href="{{route('merchant.store.user.settings',['subdomain'=>$store->slug])}}" class="nav-link">
                                             <i class="ri-settings-5-line"></i>
                                             <span>Settings</span>
                                         </a>
@@ -197,7 +191,7 @@
                             <div class="dropdown-footer">
                                 <ul class="profile-nav">
                                     <li class="nav-item">
-                                        <a href="log-in" class="nav-link">
+                                        <a href="{{route('merchant.store.user.logout',['subdomain'=>$store->slug])}}" class="nav-link">
                                             <i class="ri-login-circle-line"></i>
                                             <span>Logout</span>
                                         </a>
@@ -217,6 +211,17 @@
                 </ul>
             </div>
         </nav>
+    </div>
+    <div class="page-title-area">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-sm-6">
+                    <div class="page-title">
+                        <h6>{{$pageName}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
    @yield('content')
@@ -272,5 +277,6 @@
 <!-- Custom JS -->
 <script src="{{asset('dashboard/js/custom.js')}}"></script>
 @stack('js')
+@include('basicInclude')
 </body>
 </html>

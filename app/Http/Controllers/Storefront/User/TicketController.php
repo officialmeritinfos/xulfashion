@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Storefront\User;
 use App\Http\Controllers\BaseController;
 use App\Models\GeneralSetting;
 use App\Models\UserStore;
+use App\Models\UserStoreCustomer;
 use App\Models\UserStoreSetting;
 use App\Traits\Helpers;
 use App\Traits\Themes;
@@ -20,6 +21,12 @@ class TicketController extends BaseController
         $storeSettings = UserStoreSetting::where('store',$userStore->id)->first();
         $themeLocation = $this->fetchThemeViewLocation($userStore->theme);
 
+
+        $customer = UserStoreCustomer::where([
+            'store'=>$userStore->id,'id'=>$request->session()->get('customer')
+        ])->firstOrFail();
+
+
         $web = GeneralSetting::find(1);
 
         $data=[
@@ -28,6 +35,7 @@ class TicketController extends BaseController
             'web'             =>$web,
             'siteName'        =>$web->name,
             'pageName'        =>'Support Tickets',
+            'customer'        =>$customer
         ];
         return view('storefront.account.tickets.index')->with($data);
     }

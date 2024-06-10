@@ -134,6 +134,12 @@ Route::domain('{subdomain}.localhost')->group(function () {
             //Settings
             Route::get('user/settings',[Profiles::class,'settings'])
                 ->name('merchant.store.user.settings');
+            Route::post('user/settings/{customer}/process',[Profiles::class,'updateInfoSettings'])
+                ->name('merchant.store.settings.process');//process settings
+            Route::post('user/settings/{customer}/process-password-setup',[Profiles::class,'setupPassword'])
+                ->name('merchant.store.settings.process.password.setup');//process password setup
+            Route::post('user/settings/{customer}/process-password',[Profiles::class,'changePassword'])
+                ->name('merchant.store.settings.process.password');//process password setup
             //Store support Ticket
             Route::get('ticket/index',[TicketController::class,'landingPage'])
                 ->name('merchant.store.ticket.index');
