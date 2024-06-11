@@ -22,7 +22,7 @@
     @include('genericCss')
 </head>
 <body>
-@inject('injected','App\Custom\StoreFront')
+@inject('injected','App\Custom\Storefront')
 
 <!-- Invoice 4 start -->
 <div class="invoice-4 invoice-content">
