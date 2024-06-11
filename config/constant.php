@@ -9,7 +9,7 @@ return [
 
     'vPay'=>[
         'pubKey'    =>'dd571119-2f6d-469b-908f-3488ffdf5254',
-        'secKey'    =>'ac9d962d-80eb-4cc0-8d8a-2d4317f26a87',
+        'secKey'    =>'*****',
         'live'      =>true
     ],
     'flutterwave'=>[
