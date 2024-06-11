@@ -99,13 +99,6 @@
                 </a>
             </li>
 
-            <li>
-                <a href="{{route('merchant.store.ticket.index',['subdomain'=>$store->slug])}}" class="box-style">
-                    <i class="ri-headphone-line"></i>
-                    <span class="menu-title">Support</span>
-                </a>
-            </li>
-
         </ul>
 
 
@@ -170,14 +163,6 @@
                                             <span>Profile</span>
                                         </a>
                                     </li>
-
-                                    <li class="nav-item">
-                                        <a href="{{route('merchant.store.ticket.index',['subdomain'=>$store->slug])}}" class="nav-link">
-                                            <i class="ri-mail-send-line"></i>
-                                            <span>My Ticket</span>
-                                        </a>
-                                    </li>
-
 
                                     <li class="nav-item">
                                         <a href="{{route('merchant.store.user.settings',['subdomain'=>$store->slug])}}" class="nav-link">
