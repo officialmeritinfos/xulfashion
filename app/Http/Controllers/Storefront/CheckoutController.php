@@ -204,8 +204,6 @@ class CheckoutController extends BaseController
                 $coupon->save();
             }
 
-            DB::commit();;
-
             //determine where to redirect the user to
 
             session()->put('order',$orderRef);
@@ -269,6 +267,10 @@ class CheckoutController extends BaseController
                     $message = $payment['message'];
                 }
             }
+
+            DB::commit();
+
+
             return $this->sendResponse([
                 'redirectTo'=>$url
             ],$message);
