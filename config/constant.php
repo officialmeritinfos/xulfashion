@@ -28,7 +28,7 @@ return [
         'testPubKey'    =>'pk_test_2f3096160be1e626bd011224914b5ada0c7107ff',
         'liveSecKey'    =>'*****',
         'livePubKey'    =>'*****',
-        'live'          =>true,
+        'live'          =>false,
         'url'           =>'https://api.paystack.co/'
     ]
 ];
