@@ -268,6 +268,15 @@ class CheckoutController extends BaseController
                 }
             }
 
+            $request->session()->put([
+                'loggedIn'=>1,
+                'customer'=>$customer->id,
+                'loggedInStore'=>$store->id
+            ]);
+            $customer->loggedIn=1;
+            $customer->save();
+
+
             DB::commit();
 
 

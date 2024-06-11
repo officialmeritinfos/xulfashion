@@ -69,9 +69,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('merchant.about',['subdomain'=>$subdomain])}}">About</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('merchant.contact',['subdomain'=>$subdomain])}}">Contact</a>
-                    </li>
+                    @if($storeSetting->allowSignups==1)
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{(session()->has('loggedIn'))?route('merchant.store.user.index',['subdomain'=>$subdomain]):route('merchant.store.login',['subdomain'=>$subdomain])}}">
+                                Account
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>
