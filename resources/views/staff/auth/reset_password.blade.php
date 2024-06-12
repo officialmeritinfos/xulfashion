@@ -55,38 +55,35 @@
     <div class="container">
         <div class="user-form-content">
             <h3>{{$pageName}}</h3>
-            <p>Login in to continue your account.</p>
+            <p>Reset your account password</p>
 
-            <form class="user-form" id="login" method="post" action="{{route('staff.login.process')}}">
+            <form class="user-form" id="recovery" method="post" action="{{route('auth.recovery')}}">
                 <div class="row">
 
                     <div class="col-md-12 col-12">
                         <div class="form-group">
-                            <label>Email</label>
-                            <input class="form-control" type="email" name="email"
-                                   placeholder="Enter your email">
+                            <label>Code</label>
+                            <input class="form-control" type="number" name="code"
+                                   placeholder="Enter verification code">
                         </div>
                     </div>
-
-
                     <div class="col-md-12 col-12">
                         <div class="form-group">
-                            <label>Password</label>
+                            <label>New Password</label>
                             <input class="form-control" type="password" name="password" placeholder="Enter your password">
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-12">
+                        <div class="form-group">
+                            <label>Repeat password</label>
+                            <input class="form-control" type="password" name="password_confirmation"
+                                   placeholder="Please repeat your password">
                         </div>
                     </div>
 
                     <div class="col-12">
-
-                            <span class="forgot-login col-6">
-                                <a href="{{route('recoverPassword')}}">Forgot your password?</a>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="col-12 mt-4">
                         <button class="default-btn submit" type="submit">
-                            Login
+                            Reset Password
                         </button>
                     </div>
 
@@ -143,6 +140,6 @@
 <!-- Custom JS -->
 <script src="{{asset('dashboard/js/custom.js')}}"></script>
 @include('basicInclude')
-<script src="{{asset('requests/auth/login.js')}}"></script>
+<script src="{{asset('requests/auth/account_recovery.js')}}"></script>
 </body>
 </html>

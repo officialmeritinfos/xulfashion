@@ -55,45 +55,27 @@
     <div class="container">
         <div class="user-form-content">
             <h3>{{$pageName}}</h3>
-            <p>Login in to continue your account.</p>
 
-            <form class="user-form" id="login" method="post" action="{{route('staff.login.process')}}">
+            <form class="user-form" id="registration" method="post" action="{{route('auth.email')}}">
                 <div class="row">
-
                     <div class="col-md-12 col-12">
                         <div class="form-group">
-                            <label>Email</label>
-                            <input class="form-control" type="email" name="email"
-                                   placeholder="Enter your email">
+                            <label>Verification Code</label>
+                            <input class="form-control" type="number" name="code"/>
                         </div>
                     </div>
 
-
-                    <div class="col-md-12 col-12">
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input class="form-control" type="password" name="password" placeholder="Enter your password">
-                        </div>
-                    </div>
 
                     <div class="col-12">
-
-                            <span class="forgot-login col-6">
-                                <a href="{{route('recoverPassword')}}">Forgot your password?</a>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="col-12 mt-4">
                         <button class="default-btn submit" type="submit">
-                            Login
+                            Verify Account
                         </button>
                     </div>
 
 
                     <div class="col-12">
-                        <p class="create">Don't have an account?
-                            <a href="{{route('register')}}">Sign up</a>
+                        <p class="create">Already have an account?
+                            <a href="{{route('login')}}">Sign in</a>
                         </p>
                     </div>
                 </div>
@@ -143,6 +125,6 @@
 <!-- Custom JS -->
 <script src="{{asset('dashboard/js/custom.js')}}"></script>
 @include('basicInclude')
-<script src="{{asset('requests/auth/login.js')}}"></script>
+<script src="{{asset('requests/auth/register.js')}}"></script>
 </body>
 </html>
