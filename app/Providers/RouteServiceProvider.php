@@ -34,11 +34,12 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
-
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
-
             $this->authRoute();
+            $this->staffRoute();
+            $this->subdomainRoute();
+            $this->adsRoute();
             $this->userRoute();
         });
     }
@@ -49,6 +50,18 @@ class RouteServiceProvider extends ServiceProvider
             ->prefix('auth')
             ->group(base_path('routes/auth.php'));
     }
+    //subdomain route
+    public function subdomainRoute()
+    {
+        Route::middleware('web')
+            ->group(base_path('routes/subdomain.php'));
+    }
+    //ads route
+    public function adsRoute()
+    {
+        Route::middleware('web')
+            ->group(base_path('routes/ads.php'));
+    }
     //user dashboard route
     public function userRoute()
     {
@@ -56,6 +69,13 @@ class RouteServiceProvider extends ServiceProvider
             ->prefix('me')
             ->name('user.')
             ->group(base_path('routes/user.php'));
+    }
+    //staff dashboard route
+    public function staffRoute()
+    {
+        Route::middleware(['web'])
+            ->name('staff.')
+            ->group(base_path('routes/staff.php'));
     }
     /**
      * Configure the rate limiters for the application.
