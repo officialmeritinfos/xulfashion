@@ -39,7 +39,33 @@
     <title>{{$siteName}} - {{$pageName}}</title>
 
     @include('genericCss')
+    <style>
+        #password-strength-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 2rem;
+        }
 
+        .medium-password {
+            background-color: #fd0;
+        }
+
+        .weak-password {
+            background-color: #f50a3b;
+        }
+
+        .strong-password {
+            background-color: #D5F9D5;
+        }
+        [data-theme="dark"] #password-strength-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 2rem;
+            color: #0b0b0b;
+        }
+    </style>
 </head>
 
 <body class="body-bg-f5f5f5">
@@ -116,8 +142,10 @@
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label>Password<sup class="text-danger">*</sup></label>
-                            <input class="form-control" type="password" name="password" placeholder="Enter your password">
+                            <input class="form-control" id="password" type="password" name="password" placeholder="Enter your password"
+                            onkeyup="checkPasswordStrength();">
                         </div>
+                        <div id="password-strength-status"></div>
                     </div>
 
                     <div class="col-md-6 col-12">
@@ -195,5 +223,32 @@
 <script src="{{asset('dashboard/js/custom.js')}}"></script>
 @include('basicInclude')
 <script src="{{asset('requests/auth/register.js')}}"></script>
+<script>
+    function checkPasswordStrength() {
+        var number = /([0-9])/;
+        var alphabets = /([a-zA-Z])/;
+        var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+        var password = $('#password').val().trim();
+        if (password.length < 8) {
+            $('#password-strength-status').removeClass();
+            $('#password-strength-status').addClass('weak-password');
+            $('#password-strength-status').html("Weak (should be atleast 8 characters, alphabets, numbers and special characters )");
+            $('.submit').attr('disabled', true);
+        } else {
+            if (password.match(number) && password.match(alphabets) && password.match(special_characters)) {
+                $('#password-strength-status').removeClass();
+                $('#password-strength-status').addClass('strong-password');
+                $('#password-strength-status').html("Strong password");
+                $('.submit').attr('disabled', false);
+            }
+            else {
+                $('#password-strength-status').removeClass();
+                $('#password-strength-status').addClass('medium-password');
+                $('#password-strength-status').html("Medium (should include alphabets, numbers and special characters.)");
+                $('.submit').attr('disabled', true);
+            }
+        }
+    }
+</script>
 </body>
 </html>
