@@ -66,6 +66,33 @@
             color: #0b0b0b;
         }
     </style>
+    <style>
+        #password-strength-statuss {
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 2rem;
+        }
+
+        .medium-passwords {
+            background-color: #fd0;
+        }
+
+        .weak-passwords {
+            background-color: #f50a3b;
+        }
+
+        .strong-passwords {
+            background-color: #D5F9D5;
+        }
+        [data-theme="dark"] #password-strength-statuss {
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 2rem;
+            color: #0b0b0b;
+        }
+    </style>
 </head>
 
 <body class="body-bg-f5f5f5">
@@ -152,8 +179,9 @@
                         <div class="form-group">
                             <label>Repeat password<sup class="text-danger">*</sup></label>
                             <input class="form-control" type="password" name="password_confirmation"
-                                   placeholder="Please repeat your password">
+                                   placeholder="Please repeat your password" onkeyup="checkPasswordStrengths();" id="passwords">
                         </div>
+                        <div id="password-strength-statuss"></div>
                     </div>
                     <div class="col-md-12 col-12">
                         <div class="form-group">
@@ -245,6 +273,32 @@
                 $('#password-strength-status').removeClass();
                 $('#password-strength-status').addClass('medium-password');
                 $('#password-strength-status').html("Medium (should include alphabets, numbers and special characters.)");
+                $('.submit').attr('disabled', true);
+            }
+        }
+    }
+
+    function checkPasswordStrengths() {
+        var number = /([0-9])/;
+        var alphabets = /([a-zA-Z])/;
+        var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+        var password = $('#passwords').val().trim();
+        if (password.length < 8) {
+            $('#password-strength-statuss').removeClass();
+            $('#password-strength-statuss').addClass('weak-password');
+            $('#password-strength-statuss').html("Weak (should be atleast 8 characters, alphabets, numbers and special characters )");
+            $('.submit').attr('disabled', true);
+        } else {
+            if (password.match(number) && password.match(alphabets) && password.match(special_characters)) {
+                $('#password-strength-statuss').removeClass();
+                $('#password-strength-statuss').addClass('strong-password');
+                $('#password-strength-statuss').html("Strong password");
+                $('.submit').attr('disabled', false);
+            }
+            else {
+                $('#password-strength-statuss').removeClass();
+                $('#password-strength-statuss').addClass('medium-password');
+                $('#password-strength-statuss').html("Medium (should include alphabets, numbers and special characters.)");
                 $('.submit').attr('disabled', true);
             }
         }
