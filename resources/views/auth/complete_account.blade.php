@@ -5,20 +5,20 @@
             <div class="col-12">
                 <label for="inputEmail4" class="form-label">Choose Account Type</label>
                 <div class="boxed-check-group boxed-check-primary row">
-                    <label class="boxed-check col-md-6">
+                    <label class="boxed-check col-md-4">
                         <input class="boxed-check-input" type="radio" name="accountType" value="1">
                         <div class="boxed-check-label" style="text-align:center;">
-                            <h2>Merchant</h2>
-                            <span>You intend to use {{$siteName}} to reach a wide audience as a tailor/seamstress/entrpreneur or model. </span>
+                            <h2>Merchant/Fashion Designer</h2>
+                            <span>You want to sell your fashion items, or reach a wider audience as a fashion designer and receive bookings  </span>
                         </div>
                     </label>
-                    <label class="boxed-check col-md-6">
-                        <input class="boxed-check-input" type="radio" name="accountType" value="2">
-                        <div class="boxed-check-label" style="text-align:center;">
-                            <h2>User</h2>
-                            <span>You just want to browse for clothes or buy from our verified businesses</span>
-                        </div>
-                    </label>
+{{--                    <label class="boxed-check col-md-4">--}}
+{{--                        <input class="boxed-check-input" type="radio" name="accountType" value="2">--}}
+{{--                        <div class="boxed-check-label" style="text-align:center;">--}}
+{{--                            <h2>Fashion Model</h2>--}}
+{{--                            <span>You want to showcase your modelling service, and fashion ideas to the world, and also receive booking</span>--}}
+{{--                        </div>--}}
+{{--                    </label>--}}
                 </div>
             </div>
             @include('dashboard.components.completeProfile.user_complete_profile')
