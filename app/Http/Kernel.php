@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AccountNotLocked;
 use App\Http\Middleware\ApplyTheme;
+use App\Http\Middleware\CipherLogin;
 use App\Http\Middleware\StoreCustomerLogin;
 use App\Http\Middleware\UserCompletedProfile;
 use App\Http\Middleware\UserLoggedIn;
@@ -75,5 +76,9 @@ class Kernel extends HttpKernel
         'applyTheme'=>ApplyTheme::class,
         'extend.session' => \App\Http\Middleware\ExtendSessionLifetime::class,
         'customer.login'=>StoreCustomerLogin::class,
+        'staff.loggedIn'=>CipherLogin::class,
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
     ];
 }

@@ -62,7 +62,8 @@ class LoginController extends BaseController
             //store the session
             $request->session()->put([
                 'two_factor'=>1,
-                'staff'=>$user->id
+                'staff'=>$user->id,
+                'emailEmail'=>$user->email
             ]);
             return $this->sendResponse([
                 'redirectTo'=>route('staff.twoFactor'),
