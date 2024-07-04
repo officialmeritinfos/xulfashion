@@ -14,7 +14,7 @@ Route::domain('staff.localhost')->group(function () {
 
     //Staff dashboard main
 
-    Route::middleware(['staff.loggedIn'])->prefix('me')->group(function () {
+    Route::middleware(['staff.loggedIn','auth:staff'])->prefix('me')->group(function () {
         //Dashboard landing page
         Route::get('dashboard',[Home::class,'landingPage'])->name('dashboard');
     });

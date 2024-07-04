@@ -38,28 +38,28 @@ class RolesAndPermissionsSeeder extends Seeder
 
         foreach ($models as $model) {
             foreach ($actions as $action) {
-                Permission::create(['name' => "{$action} {$model}"]);
+                Permission::create(['name' => "{$action} {$model}",'guard_name' => 'staff']);
             }
         }
 
         // Specific update permissions
-        Permission::create(['name' => 'update SuperAdmin']);
-        Permission::create(['name' => 'update Admin']);
+        Permission::create(['name' => 'update SuperAdmin','guard_name' => 'staff']);
+        Permission::create(['name' => 'update Admin','guard_name' => 'staff']);
 
         // Create roles and assign created permissions
 
          // Superadmin role
-        $superadmin = Role::create(['name' => 'superadmin']);
+        $superadmin = Role::create(['name' => 'superadmin','guard_name' => 'staff']);
         $superadmin->givePermissionTo(Permission::all());
 
         // Admin role
-        $admin = Role::create(['name' => 'admin']);
+        $admin = Role::create(['name' => 'admin','guard_name' => 'staff']);
         $admin->givePermissionTo(Permission::all());
         // Remove permission to update superadmin
         $admin->revokePermissionTo('update SuperAdmin');
 
          // Customer Support role
-         $customerSupport = Role::create(['name' => 'customer-support']);
+         $customerSupport = Role::create(['name' => 'customer-support','guard_name' => 'staff']);
          $customerSupport->givePermissionTo([
              'read AccountFunding',
              'read City',
@@ -101,7 +101,7 @@ class RolesAndPermissionsSeeder extends Seeder
          ]);
 
         // Technical Unit role
-        $technicalUnit = Role::create(['name' => 'technical-unit']);
+        $technicalUnit = Role::create(['name' => 'technical-unit','guard_name' => 'staff']);
         foreach ($models as $model) {
             $technicalUnit->givePermissionTo([
                 "read {$model}",
@@ -115,7 +115,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $technicalUnit->revokePermissionTo('update UserBalance');
 
         // Accountant role
-        $accountant = Role::create(['name' => 'accountant']);
+        $accountant = Role::create(['name' => 'accountant','guard_name' => 'staff']);
         $accountant->givePermissionTo([
             'create UserBalance', 'read UserBalance', 'update UserBalance',
             'create Transaction', 'read Transaction', 'update Transaction', 'delete Transaction',

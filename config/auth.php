@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'staff' => [
+            'driver' => 'session',
+            'provider' => 'system_staff', // Provider for SystemStaff model
+        ],
     ],
 
     /*
@@ -63,6 +67,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'system_staff' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\SystemStaff::class,
         ],
 
         // 'users' => [
