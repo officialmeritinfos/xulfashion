@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
 use App\Models\SystemStaff;
 use App\Models\SystemStaffTwoFactor;
+use App\Notifications\StaffCustomNotification;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +36,7 @@ class TwoFactorController extends BaseController
     {
         try {
             $staffId = $request->session()->get('staff');
-            $staffEmail = $request->session()->get('staffEmail');
+            $staffEmail = $request->session()->get('emailEmail');
              //validate request
              $validator = Validator::make($request->all(), [
                 'code' => ['required', 'digits:6'],
@@ -66,10 +67,13 @@ class TwoFactorController extends BaseController
 
             $role = $staff->role;
 
-            $staff->update($data);
+
 
             //remove existing sessions
             $request->session()->flush();
+
+            //delete all tokens to avoid double replication
+            SystemStaffTwoFactor::where(['user'=>$staffId,'email'=>$staffEmail])->delete();
 
             //set session
             $request->session()->put([
@@ -79,9 +83,20 @@ class TwoFactorController extends BaseController
                 'role'=>$role
             ]);
 
+            $request->session()->regenerate();//regenerate session to prevent session fixing
+
+            $loginMessage = "
+                Your staff account was accessed at ".date('d-m-Y h:i:s', time())." from IP ".$request->ip().". If this action was not performed
+                by you, your account could have been compromised. Please contact the Technical unit immediately to fix your account.
+            ";
+            $staff->notify(new StaffCustomNotification($staff,$loginMessage,'Account Login'));
+
+
+            $staff->update($data);
+
             return $this->sendResponse([
-                'redirectTo'=>route('staff.twoFactor'),
-            ],'Authentication needed. Login to your mail and use the code to login');
+                'redirectTo'=>route('staff.dashboard'),
+            ],'Authentication successful. Redirecting soon...');
 
         } catch (Exception $exception) {
             Log::info($exception->getMessage());
