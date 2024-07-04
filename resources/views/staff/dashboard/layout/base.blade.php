@@ -31,6 +31,9 @@
     <link rel="stylesheet" href="{{asset('staff/css/lib/slick.css')}}">
     <!-- main css -->
     <link rel="stylesheet" href="{{asset('staff/css/style.css')}}">
+    @stack('css')
+    @include('genericCss')
+    @livewireStyles
 </head>
 
 <body>
@@ -313,13 +316,15 @@
         <footer class="d-footer">
             <div class="row align-items-center justify-content-between">
                 <div class="col-auto">
-                    <p class="mb-0">© 2024 WowDash. All Rights Reserved.</p>
+                    <p class="mb-0">© {{ date('Y') }} {{ $siteName }}. All Rights Reserved.</p>
                 </div>
                 <div class="col-auto">
-                    <p class="mb-0">Made by <span class="text-primary-600">wowtheme7</span></p>
+                    <p class="mb-0">Made by <span class="text-primary-600">Kopium LLC</span></p>
                 </div>
             </div>
         </footer>
+
+
     </main>
     <!-- jQuery library js -->
     <script src="{{asset('staff/js/lib/jquery-3.7.1.min.js')}}"></script>
@@ -344,7 +349,46 @@
     <script src="{{asset('staff/js/app.js')}}"></script>
 
     <script src="{{asset('staff/js/homeTwoChart.js')}}"></script>
+    @stack('js')
+    @include('basicInclude')
+    @if ($staff->setPin!=1)
+    <!-- Modal -->
+    <div class="modal fade" id="setPin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Setup Authentication Pin</h1>
+                </div>
+                <div class="modal-body">
+                    <livewire:staff.staff-set-pin />
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function(){
+            $('#setPin').modal('show');
+        });
+    </script>
+
+    <script>
+        document.addEventListener('livewire:init', ()=> {
+            Livewire.on('pinSetSuccessfully', function() {
+            setTimeout(function() {
+                // window.location.href = "{{ url()->previous() }}";
+                $('#setPin').modal('hide');
+            }, 2000); // 10-second delay
+        });
+    });
+    </script>
+    @endif
+    @livewireScripts
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <x-livewire-alert::scripts />
 </body>
 
 </html>
