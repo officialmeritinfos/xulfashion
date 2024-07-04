@@ -11,4 +11,6 @@ class SystemStaff extends Model
 {
     use HasFactory,Notifiable, HasRoles;
     protected $guarded=[];
+
+    protected $guard_name = 'web';
 }
