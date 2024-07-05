@@ -129,56 +129,64 @@
     <script src="{{asset('requests/auth/login.js')}}"></script>
     <script>
         $(function(){
-        $('.submitResend').click(function(){
-            let url = $(this).data('url');
-            $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            url: url,
-            method: "POST",
-            dataType:"json",
-            beforeSend:function(){
-                $('.submit').attr('disabled', true);
-                $("#registration :input").prop("readonly", true);
-                $(".submit").LoadingOverlay("show",{
-                    text        : "please wait ...",
-                    size        : "20"
-                });
-            },
-            success:function(data)
-            {
-                if(data.error === 'ok')
+            $('.submitResend').click(function(){
+                let url = $(this).data('url');
+                $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: url,
+                method: "POST",
+                dataType:"json",
+                beforeSend:function(){
+                    $('.submit').attr('disabled', true);
+                    $("#registration :input").prop("readonly", true);
+                    $(".submit").LoadingOverlay("show",{
+                        text        : "please wait ...",
+                        size        : "20"
+                    });
+                    $(".submitResend").LoadingOverlay("show",{
+                        text        : "....",
+                        size        : "20"
+                    });
+                },
+                success:function(data)
                 {
+                    if(data.error === 'ok')
+                    {
+                        toastr.options = {
+                            "closeButton" : true,
+                            "progressBar" : true
+                        }
+                        toastr.info(data.message);
+                        $('.submit').attr('disabled', false);
+                        $(".submit").LoadingOverlay("hide");
+                        $("#registration :input").prop("readonly", false);
+                        //return to natural stage
+                        setTimeout(function(){
+                            $('.submitResend').attr('disabled', false);
+                            $(".submitResend").LoadingOverlay("hide");
+                            // window.location.replace(data.data.redirectTo)
+                        }, 30000);
+                    }
+                },
+                error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
                         "progressBar" : true
                     }
-                    toastr.info(data.message);
-                    //return to natural stage
-                    setTimeout(function(){
-                        $('.submit').attr('disabled', false);
-                        $(".submit").LoadingOverlay("hide");
-                        $("#registration :input").prop("readonly", false);
-                        // window.location.replace(data.data.redirectTo)
-                    }, 5000);
-                }
-            },
-            error:function (jqXHR, textStatus, errorThrown){
-                toastr.options = {
-                    "closeButton" : true,
-                    "progressBar" : true
-                }
-                toastr.error(errorThrown);
-                $("#registration :input").prop("readonly", false);
-                $('.submit').attr('disabled', false);
-                $(".submit").LoadingOverlay("hide");
-            },
-        });
+                    toastr.error(jqXHR.responseJSON.data.error);
+                    $("#registration :input").prop("readonly", false);
+                    $('.submit').attr('disabled', false);
+                    $(".submit").LoadingOverlay("hide");
+                    $('.submit').attr('disabled', false);
+                    $(".submit").LoadingOverlay("hide");
+                },
+            });
+            })
         })
-    })
     </script>
 </body>
 
