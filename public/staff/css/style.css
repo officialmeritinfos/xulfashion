@@ -13477,3 +13477,19 @@ td.fc-header-center {
     border-color: #7f26c6;
     color: #bfc9d1;
 }
+
+.selectize-input .selectize-control.single .selectize-input.input-active {
+    background-color: #212137 !important;
+    border-color: #353558 !important;
+    color: #ffffff !important;
+}
+.selectize-dropdown .selected {
+    background-color: #483248;
+    color: #fff;
+}
+
+.selected {
+    background-color: #212137 !important;
+    border-color: #353558 !important;
+    color: #ffffff !important;
+}

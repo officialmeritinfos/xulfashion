@@ -3,6 +3,7 @@
 use App\Http\Controllers\Staff\Auth\LoginController;
 use App\Http\Controllers\Staff\Auth\TwoFactorController;
 use App\Http\Controllers\Staff\Dashboard\Home;
+use App\Http\Controllers\Staff\Dashboard\Users;
 use Illuminate\Support\Facades\Route;
 
 Route::domain('staff.localhost')->group(function () {
@@ -18,5 +19,10 @@ Route::domain('staff.localhost')->group(function () {
         //Dashboard landing page
         Route::get('dashboard',[Home::class,'landingPage'])->name('dashboard');
         Route::get('dashboard/logout',[Home::class,'logout'])->name('logout');
+
+        //User management page
+        Route::get('users/list',[Users::class,'landingPage'])->name('users.list');
+        Route::get('users/new',[Users::class,'create'])->name('users.new');
+        Route::get('users/{id}/detail',[Users::class, 'details'])->name('users.detail');
     });
 });

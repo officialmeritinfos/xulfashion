@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class TwoFactorController extends BaseController
 {
@@ -104,8 +105,9 @@ class TwoFactorController extends BaseController
             // Authenticate the staff member using their ID
             Auth::guard('staff')->loginUsingId($staffId);
 
+            $role = Role::where('name',$staff->role)->first();
             // Assign role to the staff member
-            $staff->assignRole($staff->role);
+            $staff->assignRole($role);
 
             // Update staff data
             $staff->update($data);

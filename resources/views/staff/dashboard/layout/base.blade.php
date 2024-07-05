@@ -51,7 +51,7 @@
         <div class="sidebar-menu-area">
             <ul class="sidebar-menu" id="sidebar-menu">
                 <li>
-                    <a href="{{ route('staff.dashboard') }}">
+                    <a href="{{ route('staff.dashboard') }}" wire:navigate>
                         <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                         <span>Overview</span>
                     </a>
@@ -64,11 +64,13 @@
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="#"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                            <a href="{{ route('staff.users.list') }}" wire:navigate><i
+                                    class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
                                 List</a>
                         </li>
                         <li>
-                            <a href="#"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>
+                            <a href="{{ route('staff.users.new') }}" wire:navigate><i
+                                    class="ri-circle-fill circle-icon text-info-main w-auto"></i>
                                 Add new</a>
                         </li>
                     </ul>
@@ -299,7 +301,7 @@
         <div class="dashboard-main-body">
 
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-                <h6 class="fw-semibold mb-0">{{ $pageName }}</h6>
+                <h6 class="fw-semibold mb-0" style="font-size: 5px;">{{ $pageName }}</h6>
                 <ul class="d-flex align-items-center gap-2">
                     <li class="fw-medium">
                         <a href="{{ url()->current() }}" class="d-flex align-items-center gap-1 hover-text-primary">

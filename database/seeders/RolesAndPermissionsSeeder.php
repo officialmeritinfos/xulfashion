@@ -31,7 +31,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'UserStoreNewsletter', 'UserStoreOrder', 'UserStoreOrderBreakdown',
             'UserStoreProduct', 'UserStoreProductColorVariant',
             'UserStoreProductSizeVariant', 'UserStoreProductImage',
-            'UserStoreSetting', 'UserStoreSubscriber'
+            'UserStoreSetting', 'UserStoreSubscriber', 'UserStoreThemeSetting',
+            'UserStoreTicket','UserStoreVerification','UserVerification',
+            'UserWithdrawal','UserVerificationDocumentType'
         ];
 
         $actions = ['create', 'read', 'update', 'delete'];
@@ -97,7 +99,8 @@ class RolesAndPermissionsSeeder extends Seeder
              'read UserStoreProductSizeVariant',
              'read UserStoreProductImage',
              'read UserStoreSetting',
-             'read UserStoreSubscriber',
+             'read UserStoreSubscriber','read UserStoreThemeSetting','update UserStoreThemeSetting',
+             'read UserStoreTicket','update UserStoreTicket','read UserVerificationDocumentType'
          ]);
 
         // Technical Unit role
@@ -113,24 +116,44 @@ class RolesAndPermissionsSeeder extends Seeder
         $technicalUnit->revokePermissionTo('update SuperAdmin');
         $technicalUnit->revokePermissionTo('update Admin');
         $technicalUnit->revokePermissionTo('update UserBalance');
+        $technicalUnit->revokePermissionTo('create UserStoreVerification');
+        $technicalUnit->revokePermissionTo('update UserStoreVerification');
+        $technicalUnit->revokePermissionTo('delete UserStoreVerification');
+        $technicalUnit->revokePermissionTo('create UserVerification');
+        $technicalUnit->revokePermissionTo('update UserVerification');
+        $technicalUnit->revokePermissionTo('delete UserVerification');
+        $technicalUnit->revokePermissionTo('create UserVerificationDocumentType');
+        $technicalUnit->revokePermissionTo('update UserVerificationDocumentType');
+        $technicalUnit->revokePermissionTo('delete UserVerificationDocumentType');
 
         // Accountant role
         $accountant = Role::create(['name' => 'accountant','guard_name' => 'staff']);
         $accountant->givePermissionTo([
-            'create UserBalance', 'read UserBalance', 'update UserBalance',
+            'create UserDeposit', 'read UserBalance', 'update UserBalance',
             'create Transaction', 'read Transaction', 'update Transaction', 'delete Transaction',
-            'read UserStoreOrder', 'update UserStoreOrder',
+            'read UserStoreOrder', 'update UserStoreOrder', 'read UserWithdrawal','update UserWithdrawal',
+            'read UserDeposit','update UserDeposit'
         ]);
 
-         // Create a superadmin staff member
-         $superAdminStaff = SystemStaff::create([
-            'name' => 'Michael Erastus',
-            'email' => 'meritinfos@gmail.com',
-            'password' => Hash::make('47298815Me!'),
-            'role' => 'superadmin',
+        //Compliance role
+        $compliance = Role::create(['name' => 'compliance','guard_name' => 'staff']);
+        $compliance->givePermissionTo([
+            'read UserBalance', 'read Transaction', 'update Transaction',
+            'delete Transaction','read UserStoreOrder', 'update UserStoreOrder',
+            'read UserStoreVerification','update UserStoreVerification','create UserStoreVerification','delete UserStoreVerification',
+            'read UserVerification','update UserVerification','create UserVerification','delete UserVerification',
+            'read UserVerificationDocumentType', 'create UserVerificationDocumentType', 'update UserVerificationDocumentType',
         ]);
 
-        // Assign the superadmin role to the staff member
-        $superAdminStaff->assignRole($superadmin);
+        //  // Create a superadmin staff member
+        //  $superAdminStaff = SystemStaff::create([
+        //     'name' => 'Michael Erastus',
+        //     'email' => 'meritinfos@gmail.com',
+        //     'password' => Hash::make('47298815Me!'),
+        //     'role' => 'superadmin',
+        // ]);
+
+        // // Assign the superadmin role to the staff member
+        // $superAdminStaff->assignRole($superadmin);
     }
 }

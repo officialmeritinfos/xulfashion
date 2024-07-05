@@ -49,6 +49,7 @@ class CreateUsersTable extends Migration
             $table->integer('activateProfile')->default(1);
             $table->string('otp', 150)->nullable();
             $table->string('otpExpires', 150)->nullable();
+            $table->string('supportToken', 150)->nullable();
             $table->integer('isAdmin')->default(2);
             $table->string('activelyLookingForJob', 100)->default('2');
             $table->timestamps();
