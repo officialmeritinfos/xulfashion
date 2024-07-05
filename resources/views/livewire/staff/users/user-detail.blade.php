@@ -157,7 +157,8 @@
                                     title="Edit Merchant Information"></i>
                             </p>
                         </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                        <a href="{{route('staff.users.complete-profile',['id'=>$user->reference])}}" class="btn btn-outline-primary
+                        rounded-pill btn-sm small-button">
                             Manage
                         </a>
                     </div>
@@ -198,7 +199,8 @@
                                     title="Edit Merchant Information"></i>
                             </p>
                         </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                        <a href="{{route('staff.users.kyc',['id'=>$user->reference])}}" class="btn btn-outline-primary rounded-pill btn-sm small-button"
+                        wire:navigate>
                             Manage
                         </a>
                     </div>

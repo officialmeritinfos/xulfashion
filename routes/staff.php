@@ -25,7 +25,8 @@ Route::domain('staff.localhost')->group(function () {
         Route::get('users/new',[Users::class,'create'])->name('users.new');
         Route::get('users/{id}/complete-profile',[Users::class, 'completeProfile'])->name('users.complete-profile');
         Route::get('users/{id}/detail',[Users::class, 'details'])->name('users.detail');
-        Route::get('users/{id}/kyc',[Users::class, 'kyc'])->name('users.kyc');
+        Route::get('users/{id}/kyc',[Users::class, 'kyc'])->name('users.kyc');//show kyc
+        Route::get('users/{id}/kyc-submission',[Users::class, 'kycSubmission'])->name('users.kyc.submission');//new kyc
 
     });
 });

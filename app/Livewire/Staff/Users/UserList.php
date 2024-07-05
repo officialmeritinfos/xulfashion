@@ -95,7 +95,7 @@ class UserList extends Component
             })
             ->when($this->status != 'all', function($query) {
                 $query->where('status', $this->status);
-            })
+            })->latest()
             ->paginate(10);
 
         $staff = Auth::guard('staff')->user();

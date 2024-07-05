@@ -34,7 +34,7 @@ class CompleteProfile extends Component
     #[Validate('required|image|max:1048')] // 1MB Max
     public $photo;
     #[Validate('nullable')]
-    public $submitKyc = '';
+    public $submitKyc;
 
 
     public function mount($userId)
@@ -103,10 +103,11 @@ class CompleteProfile extends Component
             ]);
 
             if (!empty($this->submitKyc)) {
-                $this->dispatch('submitKyc', $this->user->reference);
+                $url = route('staff.users.kyc',['id'=>$this->user->reference]);
             } else {
-                $this->dispatch('merchantProfileCompleted', $this->user->reference);
+                $url = route('staff.users.detail',['id'=>$this->user->reference]);
             }
+            $this->dispatch('merchantProfileCompleted',$url);
             return;
         } catch (\Exception $e) {
             $this->alert('error', '', [

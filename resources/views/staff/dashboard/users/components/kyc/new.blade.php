@@ -1,3 +1,8 @@
-<div>
-    <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
-</div>
+@extends('staff.dashboard.layout.base')
+@section('content')
+
+    <livewire:staff.users.components.merchant.kyc.kyc-new :userId="$merchant->reference">
+
+
+
+@endsection

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Department;
 use App\Models\GeneralSetting;
 use App\Models\Login;
 use App\Models\User;
@@ -10,6 +11,7 @@ use App\Models\UserSetting;
 use App\Models\UserSkill;
 use App\Models\UserStoreThemeSetting;
 use App\Notifications\CustomNotificationMail;
+use App\Notifications\StaffCustomNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -163,6 +165,14 @@ trait Helpers
         $admin = User::where('isAdmin',1)->first();
         if (!empty($admin)){
             $admin->notify(new CustomNotificationMail($admin,$title,$message));
+        }
+    }
+    //send mail to department
+    public function sendDepartmentMail($departmentSlug,$message,$title)
+    {
+        $department = Department::where('slug',$departmentSlug)->first();
+        if (!empty($department)) {
+            $department->notify(new StaffCustomNotification($department, $message, $title));
         }
     }
     //get greeting

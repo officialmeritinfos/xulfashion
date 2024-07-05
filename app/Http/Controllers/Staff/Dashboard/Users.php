@@ -69,7 +69,7 @@ class Users extends BaseController
             'merchant'  => $merchant
         ]);
     }
-    //submit kyc
+    //list kyc
     public function kyc(Request $request,$id){
         $staff = Auth::guard("staff")->user();
         $web = GeneralSetting::where("id",1)->first();
@@ -85,4 +85,21 @@ class Users extends BaseController
             'merchant'  => $merchant
         ]);
     }
+    //new kyc
+    public function kycSubmission(Request $request,$id){
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.components.kyc.detail")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'pageName'  =>'Merchant KYC Submission',
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant
+        ]);
+    }
+
 }

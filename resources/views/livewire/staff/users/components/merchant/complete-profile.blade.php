@@ -70,7 +70,7 @@
                                             @error('submitKyc') <span class="error text-danger">{{ $message }}</span> @enderror
                                         </div>
 
-                                        <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
+                                        <div class="d-flex align-items-center justify-content-center gap-3 mt-5">
                                             <button class="btn btn-outline-success" type="submit">
                                                 <span>
                                                     Submit
@@ -91,21 +91,12 @@
     </div>
     <script>
         document.addEventListener('livewire:init', () => {
-            Livewire.on('merchantProfileCompleted', (merchant) => {
+            Livewire.on('merchantProfileCompleted', (url) => {
                 setTimeout(() => {
-                    window.location.href = "{{ route('staff.users.detail', ['id' => '__merchant__']) }}".replace('__merchant__', merchant);
+                    window.location.href = url
                 }, 3000);
             });
         });
     </script>
 
-    <script>
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('submitKyc', (merchant) => {
-                setTimeout(() => {
-                    window.location.href = "{{ route('staff.users.kyc', ['id' => '__merchant__']) }}".replace('__merchant__', merchant);
-                }, 3000);
-            });
-        });
-    </script>
 </div>
