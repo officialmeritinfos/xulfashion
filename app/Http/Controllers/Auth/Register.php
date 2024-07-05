@@ -63,6 +63,8 @@ class Register extends BaseController
                 'password_confirmation' => ['required', 'same:password'],
                 'referral' => ['nullable', 'string', 'exists:users,username'],
                 'phone'    =>['required','numeric']
+            ],[
+                'email.unique'=>'User already exists with this email. Please login instead.'
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -189,5 +191,20 @@ class Register extends BaseController
             Log::alert($exception->getMessage());
             return $this->sendError('error',['error'=>'Internal Server error']);
         }
+    }
+    //resend verification email
+    public function resendVerificationMail(Request $request){
+        $web = GeneralSetting::find(1);
+        $user = Auth::user();
+        try {
+            $user->notify(new EmailVerification($user));
+            return $this->sendResponse([
+                'redirectTo'=>route('email-verification'),
+            ],'The verification code has been resent to your registered email.');
+        }catch (\Exception $exception){
+            Log::alert('Error occurred while resending email verification mail: '.$exception->getMessage());
+            return $this->sendError('error',['error'=>'Internal Server error']);
+        }
+
     }
 }

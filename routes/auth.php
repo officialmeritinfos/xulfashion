@@ -32,12 +32,16 @@ Route::middleware(['web','auth'])->group(function (){
         ->name('email-verification');
     Route::post('register/email-verification/process',[Register::class,'processEmailVerification'])
         ->name('auth.email');
+    Route::post('register/email-verification/resend',[Register::class,'resendVerificationMail'])
+            ->name('auth.email.resend')->middleware(['throttle:token-resend']);
 
     //Two-factor authentication
     Route::get('login/login-verification',[Login::class,'twoFactorAuthentication'])
         ->name('login-verification');
     Route::post('login/login-verification/process',[Login::class,'processTwoFactor'])
         ->name('auth.twoFactor');
+    Route::post('register/login-verification/resend',[Login::class,'resendVerificationMail'])
+                ->name('auth.twoFactor.resend')->middleware(['throttle:token-resend']);
 
     //Password Reset authentication
     Route::get('recover-password/email-verification',[RecoverPassword::class,'requestVerificationPage'])

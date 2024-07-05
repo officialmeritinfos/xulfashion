@@ -1,14 +1,15 @@
 <!doctype html>
 <html lang="zxx">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <meta name="author" content="{{$siteName}}"/>
-    <meta name="description" content="{{$web->description}}"/>
+    <meta name="author" content="{{$siteName}}" />
+    <meta name="description" content="{{$web->description}}" />
     <meta name="keywords" content="{{$web->keywords}}">
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- Bootstrap Min CSS -->
     <link rel="stylesheet" href="{{asset('dashboard/css/bootstrap.min.css')}}">
@@ -42,89 +43,143 @@
 </head>
 
 <body class="body-bg-f5f5f5">
-<!-- Start Preloader Area -->
-<div class="preloader">
-    <div class="content">
-        <div class="box"></div>
-    </div>
-</div>
-<!-- End Preloader Area -->
-
-<!-- Start User Area -->
-<section class="user-area">
-    <div class="container">
-        <div class="user-form-content">
-            <h3>{{$pageName}}</h3>
-
-            <form class="user-form" id="login" method="post" action="{{route('auth.twoFactor')}}">
-                <div class="row">
-                    <div class="col-md-12 col-12">
-                        <div class="form-group">
-                            <label>Verification Code</label>
-                            <input class="form-control" type="number" name="code"/>
-                        </div>
-                    </div>
-
-
-                    <div class="col-12">
-                        <button class="default-btn submit" type="submit">
-                            Authorize Login
-                        </button>
-                    </div>
-
-
-                    <div class="col-12">
-                        <p class="create">Already have an account?
-                            <a href="{{route('login')}}">Sign in</a>
-                        </p>
-                    </div>
-                </div>
-            </form>
+    <!-- Start Preloader Area -->
+    <div class="preloader">
+        <div class="content">
+            <div class="box"></div>
         </div>
     </div>
-</section>
-<!-- End User Area -->
+    <!-- End Preloader Area -->
 
-<div class="dark-bar">
-    <a href="#" class="d-flex align-items-center">
-        <span class="dark-title">Enable Dark Theme</span>
-    </a>
+    <!-- Start User Area -->
+    <section class="user-area">
+        <div class="container">
+            <div class="user-form-content">
+                <h3>{{$pageName}}</h3>
 
-    <div class="form-check form-switch">
-        <input type="checkbox" class="checkbox" id="darkSwitch">
+                <form class="user-form" id="login" method="post" action="{{route('auth.twoFactor')}}">
+                    <div class="row">
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <label>Verification Code</label>
+                                <input class="form-control" type="number" name="code" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <button class="default-btn submit" type="submit">
+                                Authorize Login
+                            </button>
+                        </div>
+
+
+                        <div class="col-12">
+                            <p class="create">Did not receive the mail?
+                                <a data-url="{{ route('auth.twoFactor.resend') }}" class="submitResend">Resend</a>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- End User Area -->
+
+    <div class="dark-bar">
+        <a href="#" class="d-flex align-items-center">
+            <span class="dark-title">Enable Dark Theme</span>
+        </a>
+
+        <div class="form-check form-switch">
+            <input type="checkbox" class="checkbox" id="darkSwitch">
+        </div>
     </div>
-</div>
 
-<!-- Start Go Top Area -->
-<div class="go-top">
-    <i class="ri-arrow-up-s-fill"></i>
-    <i class="ri-arrow-up-s-fill"></i>
-</div>
-<!-- End Go Top Area -->
+    <!-- Start Go Top Area -->
+    <div class="go-top">
+        <i class="ri-arrow-up-s-fill"></i>
+        <i class="ri-arrow-up-s-fill"></i>
+    </div>
+    <!-- End Go Top Area -->
 
-<!-- Jquery Min JS -->
-<script src="{{asset('dashboard/js/jquery.min.js')}}"></script>
-<!-- Bootstrap Bundle Min JS -->
-<script src="{{asset('dashboard/js/bootstrap.bundle.min.js')}}"></script>
-<!-- Owl Carousel Min JS -->
-<script src="{{asset('dashboard/js/owl.carousel.min.js')}}"></script>
-<!-- Metismenu Min JS -->
-<script src="{{asset('dashboard/js/metismenu.min.js')}}"></script>
-<!-- Simplebar Min JS -->
-<script src="{{asset('dashboard/js/simplebar.min.js')}}"></script>
-<!-- mixitup Min JS -->
-<script src="{{asset('dashboard/js/mixitup.min.js')}}"></script>
-<!-- Dark Mode Switch Min JS -->
-<script src="{{asset('dashboard/js/dark-mode-switch.min.js')}}"></script>
-<!-- Form Validator Min JS -->
-<script src="{{asset('dashboard/js/form-validator.min.js')}}"></script>
-<!-- Contact JS -->
-<script src="{{asset('dashboard/js/contact-form-script.js')}}"></script>
-<!-- Ajaxchimp Min JS -->
-<script src="{{asset('dashboard/js/ajaxchimp.min.js')}}"></script>
-<!-- Custom JS -->
-<script src="{{asset('dashboard/js/custom.js')}}"></script>
-@include('basicInclude')
-<script src="{{asset('requests/auth/login.js')}}"></script>
+    <!-- Jquery Min JS -->
+    <script src="{{asset('dashboard/js/jquery.min.js')}}"></script>
+    <!-- Bootstrap Bundle Min JS -->
+    <script src="{{asset('dashboard/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- Owl Carousel Min JS -->
+    <script src="{{asset('dashboard/js/owl.carousel.min.js')}}"></script>
+    <!-- Metismenu Min JS -->
+    <script src="{{asset('dashboard/js/metismenu.min.js')}}"></script>
+    <!-- Simplebar Min JS -->
+    <script src="{{asset('dashboard/js/simplebar.min.js')}}"></script>
+    <!-- mixitup Min JS -->
+    <script src="{{asset('dashboard/js/mixitup.min.js')}}"></script>
+    <!-- Dark Mode Switch Min JS -->
+    <script src="{{asset('dashboard/js/dark-mode-switch.min.js')}}"></script>
+    <!-- Form Validator Min JS -->
+    <script src="{{asset('dashboard/js/form-validator.min.js')}}"></script>
+    <!-- Contact JS -->
+    <script src="{{asset('dashboard/js/contact-form-script.js')}}"></script>
+    <!-- Ajaxchimp Min JS -->
+    <script src="{{asset('dashboard/js/ajaxchimp.min.js')}}"></script>
+    <!-- Custom JS -->
+    <script src="{{asset('dashboard/js/custom.js')}}"></script>
+    @include('basicInclude')
+    <script src="{{asset('requests/auth/login.js')}}"></script>
+    <script>
+        $(function(){
+        $('.submitResend').click(function(){
+            let url = $(this).data('url');
+            $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: url,
+            method: "POST",
+            dataType:"json",
+            beforeSend:function(){
+                $('.submit').attr('disabled', true);
+                $("#registration :input").prop("readonly", true);
+                $(".submit").LoadingOverlay("show",{
+                    text        : "please wait ...",
+                    size        : "20"
+                });
+            },
+            success:function(data)
+            {
+                if(data.error === 'ok')
+                {
+                    toastr.options = {
+                        "closeButton" : true,
+                        "progressBar" : true
+                    }
+                    toastr.info(data.message);
+                    //return to natural stage
+                    setTimeout(function(){
+                        $('.submit').attr('disabled', false);
+                        $(".submit").LoadingOverlay("hide");
+                        $("#registration :input").prop("readonly", false);
+                        // window.location.replace(data.data.redirectTo)
+                    }, 5000);
+                }
+            },
+            error:function (jqXHR, textStatus, errorThrown){
+                toastr.options = {
+                    "closeButton" : true,
+                    "progressBar" : true
+                }
+                toastr.error(errorThrown);
+                $("#registration :input").prop("readonly", false);
+                $('.submit').attr('disabled', false);
+                $(".submit").LoadingOverlay("hide");
+            },
+        });
+        })
+    })
+    </script>
 </body>
+
 </html>

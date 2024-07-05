@@ -171,4 +171,19 @@ class Login extends BaseController
 
         return to_route('login')->with('info','Logout successful');
     }
+    //resend verification email
+    public function resendVerificationMail(Request $request){
+        $web = GeneralSetting::find(1);
+        $user = Auth::user();
+        try {
+            $user->notify(new TwoFactorAuthentication($user));
+            return $this->sendResponse([
+                'redirectTo'=>route('email-verification'),
+            ],'Authentication Pin sent to your mail.');
+        }catch (\Exception $exception){
+            Log::alert('Error occurred while resending two-factor verification mail: '.$exception->getMessage());
+            return $this->sendError('error',['error'=>'Internal Server error']);
+        }
+
+    }
 }
