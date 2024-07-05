@@ -35,11 +35,12 @@ class AddUser extends Component
     public $phone='';
     #[Validate('required|string|max:3')]
     public $fiat='';
-    #[Validate('required|string|confirmed')]
+    #[Validate('required|string|confirmed|min:8')]
     public $password='';
     public $password_confirmation='';
     public $showCompleteProfile = false;
 
+    public $merchant = '';
 
     public function submit(Request $request)
     {
@@ -76,7 +77,8 @@ class AddUser extends Component
                 'countryCode'=>$countryExists->iso3,
                 'phone'=>$this->phone,
                 'mainCurrency'=>$this->fiat,
-                'registrationIp'=>$request->ip(),'status'=>1
+                'registrationIp'=>$request->ip(),'status'=>1,
+                'accountManager'=>$staff->id
             ];
             $user = User::create($dataUser);
             if (!empty($user)){
@@ -98,7 +100,10 @@ class AddUser extends Component
                 ]);
 
                 $this->reset();
-                return $this->redirect(route('staff.users.detail', ['id' => $user->reference]),navigate: true);
+                $this->merchant = $user->reference;
+
+                $this->dispatch('merchantCreated',$this->merchant);
+                return;
             }
            $this->alert('error', '', [
                 'position' => 'top-end',

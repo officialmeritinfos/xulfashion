@@ -53,4 +53,36 @@ class Users extends BaseController
             'merchant'  => $merchant
         ]);
     }
+    //complete profile
+    public function completeProfile(Request $request,$id){
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.components.complete-profile")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'pageName'  =>'Complete Merchant Profile',
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant
+        ]);
+    }
+    //submit kyc
+    public function kyc(Request $request,$id){
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.components.kyc.index")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'pageName'  =>'Merchant KYC',
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant
+        ]);
+    }
 }

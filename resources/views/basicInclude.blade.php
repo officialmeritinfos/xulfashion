@@ -45,3 +45,11 @@
     });
 </script>
 
+<script src="{{asset('dashboard/vendors/summernote/summernote-bs5.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        $('.summernote').summernote({
+            height: 150,
+        });
+    });
+</script>

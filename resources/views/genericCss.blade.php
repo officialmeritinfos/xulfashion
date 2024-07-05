@@ -4,3 +4,5 @@
 <link rel="stylesheet" href="{{asset('dashboard/css/selectize.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('dashboard/vendors/lightboxed/lightboxed.css')}}">
 {{--<link rel="stylesheet" href="{{asset('dashboard/vendors/iconpicker/fontawesome-browser.css')}}">--}}
+
+<link rel="stylesheet" href="{{asset('dashboard/vendors/summernote/summernote-bs5.css')}}">
