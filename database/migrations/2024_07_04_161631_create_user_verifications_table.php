@@ -23,6 +23,7 @@ class CreateUserVerificationsTable extends Migration
             $table->string('idNumber', 150)->nullable();
             $table->string('selfie', 150)->nullable();
             $table->string('utilityBill', 150)->nullable();
+            $table->string('approvedBy', 150)->nullable();
             $table->integer('status')->default(2);
             $table->timestamps(, 150);
         });
