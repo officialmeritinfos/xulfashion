@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\UserVerification;
 use App\Models\UserVerificationDocumentType;
 use App\Notifications\CustomNotificationMail;
+use App\Notifications\CustomNotificationNoLink;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -285,7 +286,7 @@ class KycDetail extends Component
                     If you are a fashion designer, tailor/seamstress or model, you can equally start receiving bookings
                     and scheduling meetings online.
                 ";
-                $merchant->notify(new CustomNotificationMail($merchant->name,'Account activation',$merchantMessage));
+                $merchant->notify(new CustomNotificationNoLink($merchant->name,'Account activation',$merchantMessage));
 
                 SystemStaffAction::create([
                     'staff' => $staff->id,
@@ -371,7 +372,7 @@ class KycDetail extends Component
                     find the details below:<hr/><br/>
                     <p>$this->rejectedReason</p>
                 ";
-                $merchant->notify(new CustomNotificationMail($merchant->name,'Something wrong with your KYC',$merchantMessage));
+                $merchant->notify(new CustomNotificationNoLink($merchant->name,'Something wrong with your KYC',$merchantMessage));
 
                 SystemStaffAction::create([
                     'staff' => $staff->id,
