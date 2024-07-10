@@ -10,15 +10,13 @@
                                 <iconify-icon icon="uil:edit" class="text-xl"></iconify-icon>
                                 Edit KYC
                             </a>
-                            <a href="javascript:void(0)" class="btn btn-sm btn-success radius-8 d-inline-flex align-items-center gap-1">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-success radius-8 d-inline-flex align-items-center gap-1"
+                               wire:click="toggleApprovalForm">
                                 <iconify-icon icon="uil:edit" class="text-xl"></iconify-icon>
                                 Approve KYC
                             </a>
-                            <a href="javascript:void(0)" class="btn btn-sm btn-danger-600 radius-8 d-inline-flex align-items-center gap-1">
-                                <iconify-icon icon="pepicons-pencil:paper-plane" class="text-xl"></iconify-icon>
-                                Delete KYC
-                            </a>
-                            <a href="javascript:void(0)" class="btn btn-sm btn-warning radius-8 d-inline-flex align-items-center gap-1">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-warning radius-8 d-inline-flex align-items-center gap-1"
+                               wire:click="toggleRejectForm">
                                 <iconify-icon icon="solar:download-linear" class="text-xl"></iconify-icon>
                                 Reject KYC
                             </a>
@@ -113,19 +111,84 @@
 
                                     <div class="col-md-12 mt-5 text-center">
                                         <button class="btn btn-outline-primary text-sm btn-sm radius-8">
-                                    <span>
-                                        Show Form
-                                        <div wire:loading>
-                                            <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
-                                        </div>
-                                    </span>
+                                        <span>
+                                            Submit Form
+                                            <div wire:loading>
+                                                <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                                            </div>
+                                        </span>
                                         </button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     @endif
-                    @if(!$showForm && !$showApproveForm && !$showDeleteForm && !$showRejectForm)
+                        @if($showApproveForm)
+                            <div class="row">
+                                <div class="col-md-12 mx-auto">
+                                    <form wire:submit.prevent="approveKyc" class="row g-3">
+                                        <div class="mb-2">
+                                            <p class="text-center text-success">
+                                                You are about approving this KYC submission. Ensure that it meets with the
+                                                standard required before proceeding.
+                                            </p>
+                                        </div>
+
+                                        <div class="col-md-12 mt-3">
+                                            <label for="state" class="form-label">Authorization Pin</label>
+                                            <input type="password" class="form-control" id="state" wire:model.live="accountPin" minlength="6" maxlength="6">
+                                            @error('accountPin') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                        <div class="col-md-12 mt-5 text-center">
+                                            <button class="btn btn-outline-success text-sm btn-sm radius-8">
+                                            <span>
+                                                Approve KYC
+                                                <div wire:loading>
+                                                    <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                                                </div>
+                                            </span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
+                        @if($showRejectForm)
+                            <div class="row">
+                                <div class="col-md-12 mx-auto">
+                                    <form wire:submit.prevent="rejectKyc" class="row g-3">
+                                        <div class="mb-2">
+                                            <p class="text-center text-warning">
+                                                You are about disproving this KYC submission.
+                                        </div>
+
+                                        <div class="col-md-12 mt-3">
+                                            <label for="state" class="form-label">Reason for Rejection</label>
+                                            <textarea type="text" class="form-control summernote" id="state" wire:model.live="rejectedReason"
+                                            rows="5"></textarea>
+                                            @error('rejectedReason') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div class="col-md-12 mt-3">
+                                            <label for="state" class="form-label">Authorization Pin</label>
+                                            <input type="password" class="form-control" id="state" wire:model.live="accountPin" max="6" min="6">
+                                            @error('accountPin') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                        <div class="col-md-12 mt-5 text-center">
+                                            <button class="btn btn-outline-warning text-sm btn-sm radius-8">
+                                            <span>
+                                                Reject KYC
+                                                <div wire:loading>
+                                                    <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                                                </div>
+                                            </span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
+                    @if(!$showForm && !$showApproveForm &&  !$showRejectForm)
                         <div class="row justify-content-center" id="invoice">
                             <div class="col-lg-12">
                                 <div class="shadow-4 border radius-8">

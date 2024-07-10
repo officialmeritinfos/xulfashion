@@ -4,10 +4,12 @@ namespace App\Livewire\Staff\Users\Components\Merchant\Kyc;
 
 use App\Custom\GoogleUpload;
 use App\Models\Country;
+use App\Models\GeneralSetting;
 use App\Models\SystemStaffAction;
 use App\Models\User;
 use App\Models\UserVerification;
 use App\Models\UserVerificationDocumentType;
+use App\Notifications\CustomNotificationMail;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +29,6 @@ class KycDetail extends Component
     public $showForm = false;
     public $showApproveForm = false;
     public $showRejectForm = false;
-    public $showDeleteForm = false;
     public $documentType;
     public $document;
     public $documentTypes = [];
@@ -54,6 +55,7 @@ class KycDetail extends Component
 
     public $hasBack = false;
     public $docName;
+    public $rejectedReason;
 
     protected $listeners = [
         'kycUpdated' => 'render',
@@ -72,9 +74,38 @@ class KycDetail extends Component
         $this->state = $this->user->state;
         $this->address = $this->user->address;
     }
+    //toggle edit form
     public function toggleForm()
     {
         $this->showForm = !$this->showForm;
+        if ($this->showApproveForm){
+            $this->showApproveForm=false;
+        }
+        if ($this->showRejectForm){
+            $this->showRejectForm=false;
+        }
+    }
+    //toggle approval form
+    public function toggleApprovalForm()
+    {
+        $this->showApproveForm = !$this->showApproveForm;
+        if ($this->showForm){
+            $this->showForm=false;
+        }
+        if ($this->showRejectForm){
+            $this->showRejectForm=false;
+        }
+    }
+    //toggle reject form
+    public function toggleRejectForm()
+    {
+        $this->showRejectForm = !$this->showRejectForm;
+        if ($this->showForm){
+            $this->showForm=false;
+        }
+        if ($this->showApproveForm){
+            $this->showApproveForm=false;
+        }
     }
     public function updatedDocType($value)
     {
@@ -145,18 +176,18 @@ class KycDetail extends Component
                 $merchant->state = $this->state;
                 $merchant->save();
 
-                //send message to compliance department
-                $adminMessage = "The KYC for merchant account for ".$merchant->name." has been updated. The required
-                documents have been uploaded and is awaiting your review. KYC Reference ID is ".$this->document->reference;
-                $this->sendDepartmentMail('compliance', $adminMessage,'Account KYC updated.');
-
                 SystemStaffAction::create([
                     'staff' => $staff->id,
                     'action' => 'Updated Merchant KYC',
                     'isSuper' => $staff->role == 'superadmin' ? 1 : 2,
-                    'model' => get_class($this->user),
-                    'model_id' => $this->user->id,
+                    'model' => get_class($merchant),
+                    'model_id' => $merchant->id,
                 ]);
+
+                //send message to compliance department
+                $adminMessage = "The KYC for merchant account for ".$merchant->name." has been updated. The required
+                documents have been uploaded and is awaiting your review. KYC Reference ID is ".$this->document->reference;
+                $this->sendDepartmentMail('compliance', $adminMessage,'Account KYC updated.');
 
                 $this->alert('success', '', [
                     'position' => 'top-end',
@@ -210,6 +241,27 @@ class KycDetail extends Component
         ]);
 
         try {
+            if ($this->document->status==1){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Account already activated.',
+                    'width' => '400',
+                ]);
+                return;
+            }
+
+            if ($this->document->status!=4){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Kyc submission not received yet. Please upload the KYC documents first.',
+                    'width' => '400',
+                ]);
+                return;
+            }
 
             $merchant = User::where('reference', $this->userId)->first();
 
@@ -224,6 +276,16 @@ class KycDetail extends Component
                 //send message to compliance department
                 $adminMessage = "The KYC for merchant account for ".$merchant->name." has been approved. ";
                 $this->sendDepartmentMail('compliance', $adminMessage,'Account KYC Approved.');
+                //send merchant mail
+                $merchantMessage = "
+                    Your account has been successfully verified and the full features activated. You can now list your
+                    fashion business on our marketplace, create a storefront or online store, and receive payments online.
+                    Not only that, you can also create unlimited catalogues on the platform and sell across every social media platform.
+                    <br/>
+                    If you are a fashion designer, tailor/seamstress or model, you can equally start receiving bookings
+                    and scheduling meetings online.
+                ";
+                $merchant->notify(new CustomNotificationMail($merchant->name,'Account activation',$merchantMessage));
 
                 SystemStaffAction::create([
                     'staff' => $staff->id,
@@ -269,6 +331,7 @@ class KycDetail extends Component
     //reject kyc
     public function rejectKyc(Request $request)
     {
+        $web = GeneralSetting::find(1);
         $staff = Auth::guard('staff')->user();
 
         if ($staff->cannot('update UserVerification')) {
@@ -284,7 +347,8 @@ class KycDetail extends Component
         }
 
         $this->validate([
-            'accountPin' =>'required|string|max:6|min:6'
+            'accountPin' =>'required|string|max:6|min:6',
+            'rejectedReason'    =>'required|string'
         ]);
 
         try {
@@ -295,17 +359,23 @@ class KycDetail extends Component
                 'status'=>2,'approvedBy'=>$staff->id,
             ]);
             if ($verification) {
-                $merchant->isVerified = 1;
-                $merchant->activateProfile = 1;
+                $merchant->isVerified = 2;
                 $merchant->save();
 
                 //send message to compliance department
-                $adminMessage = "The KYC for merchant account for ".$merchant->name." has been approved. ";
-                $this->sendDepartmentMail('compliance', $adminMessage,'Account KYC Approved.');
+                $adminMessage = "The KYC for merchant account for ".$merchant->name." has been rejected. ";
+                $this->sendDepartmentMail('compliance', $adminMessage,'Account KYC rejectedion.');
+                //send mail to the merchant
+                $merchantMessage = "
+                    We ran into some challenges while trying to verify your submitted KYC on <b>".$web->name."</b>. You can
+                    find the details below:<hr/><br/>
+                    <p>$this->rejectedReason</p>
+                ";
+                $merchant->notify(new CustomNotificationMail($merchant->name,'Something wrong with your KYC',$merchantMessage));
 
                 SystemStaffAction::create([
                     'staff' => $staff->id,
-                    'action' => 'Approved Merchant KYC',
+                    'action' => 'Rejected Merchant KYC',
                     'isSuper' => $staff->role == 'superadmin' ? 1 : 2,
                     'model' => get_class($this->user).' / '.get_class($this->document),
                     'model_id' => $this->user->id,
@@ -315,14 +385,13 @@ class KycDetail extends Component
                     'position' => 'top-end',
                     'timer' => 5000,
                     'toast' => true,
-                    'text' => 'KYC successfully approved',
+                    'text' => 'KYC successfully rejected',
                     'width' => '400',
                 ]);
                 $this->dispatch('kycUpdated');
                 $this->showForm=false;
                 $this->showApproveForm=false;
                 $this->showRejectForm=false;
-                $this->showDeleteForm=false;
                 return;
             }
             $this->alert('error', '', [
