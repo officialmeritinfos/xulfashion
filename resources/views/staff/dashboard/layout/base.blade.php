@@ -31,6 +31,10 @@
     <link rel="stylesheet" href="{{asset('staff/css/lib/slick.css')}}">
     <!-- main css -->
     <link rel="stylesheet" href="{{asset('staff/css/style.css')}}">
+    <!-- Remixicon CSS -->
+    <link rel="stylesheet" href="{{asset('dashboard/css/remixicon.css')}}">
+    <!-- boxicons CSS -->
+    <link rel="stylesheet" href="{{asset('dashboard/css/boxicons.min.css')}}">
     @stack('css')
     @include('genericCss')
     @livewireStyles

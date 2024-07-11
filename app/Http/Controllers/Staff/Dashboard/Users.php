@@ -101,5 +101,40 @@ class Users extends BaseController
             'merchant'  => $merchant
         ]);
     }
+    //account balance
+    public function accountBalance(Request $request,$id)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.components.account.account")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'pageName'  =>'Merchant Account Balance',
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant
+        ]);
+    }
+    //withdrawal detail
+    public function withdrawalDetail(Request $request,$merchant,$id)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$merchant)->firstOrFail();
+
+        return view("staff.dashboard.users.components.account.withdrawal_detail")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'pageName'  =>'Withdrawal Detail',
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant,
+            'withdrawal'=>$id
+        ]);
+    }
 
 }

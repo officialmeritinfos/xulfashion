@@ -124,13 +124,22 @@
                                                     @case(5)
                                                         <span class="badge bg-dark">Invoice Settlement</span>
                                                         @break
+                                                    @case(6)
+                                                        <span class="badge bg-dark">Balance Top-up</span>
+                                                        @break
+                                                    @case(7)
+                                                        <span class="badge bg-info">Referral Earning</span>
+                                                        @break
+                                                    @case(8)
+                                                        <span class="badge bg-dark">Refund</span>
+                                                        @break
                                                     @default
                                                         <span class="badge bg-primary">Charge</span>
                                                         @break
                                                 @endswitch
                                             </td>
                                             <td>
-                                                {{date('d-m-Y-H-i-s',strtotime($transaction->created_at))}}
+                                                {{date('d-m-Y H-i-s',strtotime($transaction->created_at))}}
                                             </td>
                                             <td>
                                                 @switch($transaction->status)

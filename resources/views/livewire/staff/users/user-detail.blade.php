@@ -118,7 +118,8 @@
                                     title="Be able to fund and debit merchant's account balance."></i>
                             </p>
                         </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                        <a href="{{route('staff.users.balance',['id'=>$user->reference])}}" class="btn btn-outline-primary rounded-pill btn-sm small-button"
+                        wire:navigate>
                             Manage
                         </a>
                     </div>

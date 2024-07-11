@@ -91,7 +91,7 @@ class UserList extends Component
         $users = User::query()
             ->when($this->search, function($query) {
                 $query->where('email', 'like', '%' . $this->search . '%')
-                      ->orWhere('reference_id', 'like', '%' . $this->search . '%');
+                      ->orWhere('reference', 'like', '%' . $this->search . '%');
             })
             ->when($this->status != 'all', function($query) {
                 $query->where('status', $this->status);

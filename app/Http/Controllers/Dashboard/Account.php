@@ -18,6 +18,7 @@ use App\Notifications\SendPushNotification;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -180,7 +181,7 @@ class Account extends BaseController
                 return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
             }
             $input = $validator->validated();
-
+            DB::beginTransaction();
             //check the otp.
             if ($user->otpExpires<time()){
                 return $this->sendError('authentication.error', ['error' => 'OTP has timed out.']);
@@ -223,7 +224,7 @@ class Account extends BaseController
 
                 Transaction::create([
                     'user'=>$user->id,
-                    'reference'=>$this->generateUniqueReference('tutor_transactions','reference',20),
+                    'reference'=>$this->generateUniqueReference('transactions','reference',20),
                     'currency'=>$withdrawal->currency,
                     'amount'=>$input['amount'],
                     'transactionType'=>1,
@@ -232,6 +233,7 @@ class Account extends BaseController
                     'newBalance' => $user->accountBalance
                 ]);
 
+                DB::commit();
                 $message = "A withdrawal of ".$fiat->sign.number_format($input['amount'],2)." has been authenticated on your ".$web->name." account. This should arrive within 24 hours.";
                 UserActivity::create([
                     'user'=>$user->id,'title'=>'New Withdrawal',
@@ -253,6 +255,7 @@ class Account extends BaseController
             return  $this->sendError('withdrawal.error',['error'=>'Something went wrong while processing your request.']);
 
         }catch (\Exception $exception){
+            DB::rollBack();
             Log::info('Error on '.$exception->getFile().' on line '.$exception->getLine().': '.$exception->getMessage());
             return $this->sendError('withdrawal.error',['error'=>'Internal Server error; we are working on this now']);
         }

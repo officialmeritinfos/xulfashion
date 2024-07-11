@@ -9,6 +9,7 @@ use App\Models\JobType;
 use App\Models\RateType;
 use App\Models\ServiceType;
 use App\Models\State;
+use App\Models\SystemStaff;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserAd;
@@ -465,5 +466,10 @@ class Regular
         $averagePurchaseAmount = $totalOrders > 0 ? $totalSpent / $totalOrders : 0;
 
         return $averagePurchaseAmount;
+    }
+    //fetch staff by Id
+    public function fetchStaffById($id)
+    {
+        return SystemStaff::where('id',$id)->first();
     }
 }

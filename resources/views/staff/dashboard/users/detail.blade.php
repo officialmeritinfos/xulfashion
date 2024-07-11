@@ -32,6 +32,6 @@
             });
         });
     });
-    </script>a
+    </script>
     @endpush
     @endsection

@@ -25,8 +25,13 @@ Route::domain('staff.localhost')->group(function () {
         Route::get('users/new',[Users::class,'create'])->name('users.new');
         Route::get('users/{id}/complete-profile',[Users::class, 'completeProfile'])->name('users.complete-profile');
         Route::get('users/{id}/detail',[Users::class, 'details'])->name('users.detail');
+        //KYC
         Route::get('users/{id}/kyc',[Users::class, 'kyc'])->name('users.kyc');//show kyc
         Route::get('users/{id}/kyc-submission',[Users::class, 'kycSubmission'])->name('users.kyc.submission');//new kyc
+        //Balance
+        Route::get('users/{id}/balance',[Users::class, 'accountBalance'])->name('users.balance');//user balance
+        Route::get('users/{merchant}/balance/{id}/payouts',[Users::class, 'withdrawalDetail'])->name('users.balance.payouts');//payout
+
 
     });
 });

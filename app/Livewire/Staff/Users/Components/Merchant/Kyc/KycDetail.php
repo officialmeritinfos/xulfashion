@@ -14,6 +14,7 @@ use App\Notifications\CustomNotificationNoLink;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Validate;
@@ -242,6 +243,19 @@ class KycDetail extends Component
         ]);
 
         try {
+
+            $hashed = Hash::check($this->accountPin,$staff->accountPin);
+            if (!$hashed){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Access Denied. Wrong authorization pin',
+                    'width' => '400',
+                ]);
+                return;
+            }
+
             if ($this->document->status==1){
                 $this->alert('error', '', [
                     'position' => 'top-end',
@@ -354,10 +368,22 @@ class KycDetail extends Component
 
         try {
 
+            $hashed = Hash::check($this->accountPin,$staff->accountPin);
+            if (!$hashed){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Access Denied. Wrong authorization pin',
+                    'width' => '400',
+                ]);
+                return;
+            }
+
             $merchant = User::where('reference', $this->userId)->first();
 
             $verification = UserVerification::where('id',$this->document->id)->update([
-                'status'=>2,'approvedBy'=>$staff->id,
+                'status'=>2,'approvedBy'=>$staff->id, 'rejectReason'=>$this->rejectedReason
             ]);
             if ($verification) {
                 $merchant->isVerified = 2;

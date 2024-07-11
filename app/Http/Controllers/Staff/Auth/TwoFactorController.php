@@ -103,7 +103,7 @@ class TwoFactorController extends BaseController
             Log::info('Staff logged in: ' . $staff->email);
 
             // Authenticate the staff member using their ID
-            Auth::guard('staff')->loginUsingId($staffId);
+            Auth::guard('staff')->loginUsingId($staffId,true);
 
             $role = Role::where('name',$staff->role)->first();
             // Assign role to the staff member

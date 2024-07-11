@@ -115,23 +115,7 @@
                                     <div class="position-relative border radius-16 overflow-hidden">
                                         <img src="{{asset('staff/images/user-grid/user-grid-bg1.png')}}" alt="" class="w-100 object-fit-cover">
 
-                                        <div class="dropdown position-absolute top-0 end-0 me-16 mt-16">
-                                            <button type="button" data-bs-toggle="dropdown" aria-expanded="false" class="bg-white-gradient-light w-32-px h-32-px radius-8 border border-light-white d-flex justify-content-center align-items-center text-white">
-                                                <iconify-icon icon="entypo:dots-three-vertical" class="icon "></iconify-icon>
-                                            </button>
-                                            <ul class="dropdown-menu p-12 border bg-base shadow">
-                                                <li>
-                                                    <a class="dropdown-item px-16 py-8 rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-10" href="javascript:void(0)">
-                                                        Edit
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item px-16 py-8 rounded text-secondary-light bg-hover-danger-100 text-hover-danger-600 d-flex align-items-center gap-10" href="javascript:void(0)">
-                                                        Delete
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+
 
                                         <div class="ps-16 pb-16 pe-16 text-center mt--50">
                                             <img src="{{$user->photo}}" alt="" class="border br-white border-width-2-px
