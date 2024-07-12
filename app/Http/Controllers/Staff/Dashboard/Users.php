@@ -136,5 +136,38 @@ class Users extends BaseController
             'withdrawal'=>$id
         ]);
     }
+    //payout Account
+    public function payoutAccount(Request $request,$id)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
 
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.components.account.payout_accounts")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'pageName'  =>'Merchant Payout Accounts',
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant
+        ]);
+    }
+    //edit merchant information
+    public function editMerchantInfo(Request $request,$id)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.edit")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'pageName'  =>'Edit Merchant Information',
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant
+        ]);
+    }
 }

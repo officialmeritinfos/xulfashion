@@ -3,4 +3,4 @@
 
 <livewire:staff.users.user-list>
 
-    @endsection
+@endsection

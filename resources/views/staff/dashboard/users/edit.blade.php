@@ -1,3 +1,6 @@
-<div>
-    <!-- Let all your things have their places; let each part of your business have its time. - Benjamin Franklin -->
-</div>
+@extends('staff.dashboard.layout.base')
+@section('content')
+
+    <livewire:staff.users.user-edit :userId="$merchant->reference"/>
+
+@endsection

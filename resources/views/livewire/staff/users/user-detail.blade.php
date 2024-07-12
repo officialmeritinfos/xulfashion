@@ -138,7 +138,7 @@
                                     title="Manage merchant's payout account"></i>
                             </p>
                         </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                        <a href="{{route('staff.users.payout-account',['id'=>$user->reference])}}" class="btn btn-outline-primary rounded-pill btn-sm small-button">
                             Manage
                         </a>
                     </div>
@@ -180,7 +180,8 @@
                                     title="Edit Merchant Information"></i>
                             </p>
                         </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                        <a href="{{route('staff.users.bio.edit-info',['id'=>$user->reference])}}" class="btn btn-outline-primary rounded-pill btn-sm small-button"
+                        wire:navigate>
                             Manage
                         </a>
                     </div>
