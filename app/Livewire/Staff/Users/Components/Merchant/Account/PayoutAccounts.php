@@ -5,9 +5,11 @@ namespace App\Livewire\Staff\Users\Components\Merchant\Account;
 use App\Models\User;
 use App\Models\UserBank;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class PayoutAccounts extends Component
 {
+    use WithPagination;
     public $userId;
     public $user;
 

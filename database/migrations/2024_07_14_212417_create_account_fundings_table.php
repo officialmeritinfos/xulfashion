@@ -14,7 +14,7 @@ class CreateAccountFundingsTable extends Migration
     public function up()
     {
         Schema::create('account_fundings', function (Blueprint $table) {
-            $table->bigInteger('id');
+            $table->bigInteger('id')->primary();
             $table->bigInteger('user');
             $table->string('reference', 150)->nullable();
             $table->string('amount', 150)->nullable();

@@ -35,6 +35,11 @@ Route::domain('staff.localhost')->group(function () {
         Route::get('users/{id}/payout-account',[Users::class, 'payoutAccount'])->name('users.payout-account');//payout accounts
         //Edit Merchant Information
         Route::get('users/{id}/bio/edit-info',[Users::class, 'editMerchantInfo'])->name('users.bio.edit-info');//update merchant information
+        //Merchant listings
+        Route::get('users/{id}/ads',[Users::class, 'merchantAds'])->name('users.ads');//merchant ads
+        Route::get('users/{id}/ads/new',[Users::class, 'newMerchantAds'])->name('users.ads.new');//add merchant ads
+        Route::get('users/{id}/ads/{ad}/details',[Users::class, 'newMerchantAds'])->name('users.ads.new');//view merchant ad
+
 
 
 

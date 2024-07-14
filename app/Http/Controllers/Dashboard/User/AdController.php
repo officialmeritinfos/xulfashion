@@ -75,7 +75,7 @@ class AdController extends BaseController
                 'serviceType'=>['required','integer','exists:service_types,id'],
                 'description'=>['required','string'],
                 'priceType'=>['required','integer','in:1,2'],
-                'price'=>['nullable','numeric'],
+                'price'=>['nullable','required_if:priceType,2', 'numeric'],
                 'negotiate'=>['nullable','numeric','in:1,2,3'],
                 'category'=>['nullable'],
                 'category.*'=>['nullable','string'],

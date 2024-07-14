@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Payouts extends Component
 {
-    use LivewireAlert,Helpers;
+    use LivewireAlert,Helpers,WithPagination;
     public $staff;
     public $userId;
     public $user;

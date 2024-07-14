@@ -26,6 +26,8 @@ class CreateUserWithdrawalsTable extends Migration
             $table->string('wallet')->nullable();
             $table->integer('paymentStatus')->default(2);
             $table->integer('status')->default(2);
+            $table->string('approvedBy', 100)->nullable();
+            $table->string('timeUpdated', 100)->nullable();
             $table->timestamps();
         });
     }

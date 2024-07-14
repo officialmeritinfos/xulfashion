@@ -222,7 +222,8 @@
                                     title="View merchant's ads"></i>
                             </p>
                         </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                        <a href="{{route('staff.users.ads',['id'=>$user->reference])}}" class="btn btn-outline-primary rounded-pill btn-sm small-button"
+                        wire:navigate>
                             Manage
                         </a>
                     </div>

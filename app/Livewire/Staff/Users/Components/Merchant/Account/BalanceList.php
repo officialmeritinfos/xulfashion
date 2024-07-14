@@ -16,18 +16,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class BalanceList extends Component
 {
-    use LivewireAlert,Helpers;
+    use LivewireAlert,Helpers,WithPagination;
     public $staff;
     public $userId;
     public $user;
     public $currency;
+    #[Url]
     public $withdrawalSearch='';
+    #[Url]
     public $withdrawalStatus='all';
+    #[Url]
     public $transactionSearch='';
+    #[Url]
     public $transactionStatus='all';
     public $showAddBalance=false;
     public $showSubBalance=false;

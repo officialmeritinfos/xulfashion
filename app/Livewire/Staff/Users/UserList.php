@@ -5,12 +5,14 @@ namespace App\Livewire\Staff\Users;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class UserList extends Component
 {
     use WithPagination;
+    #[Url]
     public $search = '';
     public $status = 'all';
     public $duration = 'month'; // default duration
@@ -43,8 +45,6 @@ class UserList extends Component
                 return [$now->startOfDay(), $now->endOfDay()];
             case 'week':
                 return [$now->startOfWeek(), $now->endOfWeek()];
-            case 'month':
-                return [$now->startOfMonth(), $now->endOfMonth()];
             case 'year':
                 return [$now->startOfYear(), $now->endOfYear()];
             case 'custom':
