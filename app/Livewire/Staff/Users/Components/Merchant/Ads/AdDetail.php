@@ -295,7 +295,7 @@ class AdDetail extends Component
                 'model_id' => $this->ad->reference,
             ]);
             DB::commit();
-            $merchant->notify(new CustomNotificationNoLink($merchant->name,'Ad post rejected',$message));
+            $merchant->notify(new CustomNotificationNoLink($merchant->name,'Ad post approved',$message));
             $this->alert('success', '', [
                 'position' => 'top-end',
                 'timer' => 5000,
