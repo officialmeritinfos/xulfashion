@@ -206,7 +206,7 @@ class Users extends BaseController
         ]);
     }
     //add merchant listings
-    public function newMerchantAdsDetail(Request $request,$id,$ads)
+    public function merchantAdsDetail(Request $request,$id,$ads)
     {
         $staff = Auth::guard("staff")->user();
         $web = GeneralSetting::where("id",1)->first();

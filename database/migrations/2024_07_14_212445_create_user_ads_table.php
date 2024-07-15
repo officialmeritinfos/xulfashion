@@ -37,6 +37,7 @@ class CreateUserAdsTable extends Migration
             $table->string('numberOfViews', 100)->default('1');
             $table->timestamps(, 150);
             $table->integer('approvedBy')->nullable();
+            $table->text('rejectReason')->nullable();
             $table->string('deleted_at', 150)->nullable();
         });
     }

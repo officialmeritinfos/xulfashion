@@ -89,7 +89,8 @@
                                 @endswitch
                             </td>
                             <td>
-                                <a href="javascript:void(0)" class="w-32-px h-32-px bg-primary-light text-primary-600
+                                <a href="{{route('staff.users.ads.details',['id'=>$user->reference,'ad'=>$ad->reference])}}"
+                                   class="w-32-px h-32-px bg-primary-light text-primary-600
                                 rounded-circle d-inline-flex align-items-center justify-content-center" wire:navigate>
                                     <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                 </a>

@@ -188,60 +188,62 @@
         </div>
         <!-- Car Listing section end -->
 
-        <!-- Related car start -->
-        <div class="bg-selago">
-            <div class="container">
-                <div class="row pb-70">
-                    <div class="col-md-12">
-                        <div class="section-title style1 text-center mb-40">
-                            <span>More Ads</span>
-                            <h2>Explore Related Ads</h2>
+        @if($ads->count()>0)
+            <!-- Related car start -->
+            <div class="bg-selago">
+                <div class="container">
+                    <div class="row pb-70">
+                        <div class="col-md-12">
+                            <div class="section-title style1 text-center mb-40">
+                                <span>More Ads</span>
+                                <h2>Explore Related Ads</h2>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="deals-slider-wrap">
-                            <div class="deals-item-slider swiper-container">
-                                <div class="swiper-wrapper">
+                        <div class="col-md-12">
+                            <div class="deals-slider-wrap">
+                                <div class="deals-item-slider swiper-container">
+                                    <div class="swiper-wrapper">
 
-                                    @foreach($ads as $advert)
-                                        <div class="swiper-slide">
-                                            <div class="deals-card style1">
-                                                <div class="deals-img">
-                                                    <img src="{{$advert->featuredImage}}" alt="Image">
-                                                </div>
-                                                <div class="deals-info">
-                                                    <h3 class="deals-title"><a href="{{route('marketplace.detail',['slug'=>\Illuminate\Support\Str::slug($advert->title),'id'=>$advert->reference])}}">
-                                                            {{$advert->title}}
-                                                        </a></h3>
-                                                    <span class="deals-price">
+                                        @foreach($ads as $advert)
+                                            <div class="swiper-slide">
+                                                <div class="deals-card style1">
+                                                    <div class="deals-img">
+                                                        <img src="{{$advert->featuredImage}}" alt="Image" style="height: 300px;width: 350px;" class="lightboxed">
+                                                    </div>
+                                                    <div class="deals-info">
+                                                        <h3 class="deals-title"><a href="{{route('marketplace.detail',['slug'=>\Illuminate\Support\Str::slug($advert->title),'id'=>$advert->reference])}}">
+                                                                {{$advert->title}}
+                                                            </a></h3>
+                                                        <span class="deals-price">
                                                          @empty($advert->amount)
-                                                            Contact for Price
-                                                        @else
-                                                            {{$advert->currency}}{{$advert->amount}}
-                                                        @endempty
+                                                                Contact for Price
+                                                            @else
+                                                                {{$advert->currency}}{{$advert->amount}}
+                                                            @endempty
                                                     </span>
-                                                    <ul class="deals-metainfo  list-style">
-                                                        <li><a href="{{route('marketplace.state',['id'=>$advert->state])}}"><i class="flaticon-speedometer"></i>{{$advert->state}}</a></li>
-                                                        <li><i class="flaticon-gear"></i>{{$advert->companyName}}</li>
-                                                        <li><a href="{{route('marketplace.service',['id'=>$advert->serviceType])}}">
-                                                                <i class="flaticon-road-with-broken-line"></i>{{$injected->serviceTypeById($advert->serviceType)->name}}</a></li>
-                                                    </ul>
+                                                        <ul class="deals-metainfo  list-style">
+                                                            <li><a href="{{route('marketplace.state',['id'=>$advert->state])}}"><i class="flaticon-speedometer"></i>{{$advert->state}}</a></li>
+                                                            <li><i class="flaticon-gear"></i>{{$advert->companyName}}</li>
+                                                            <li><a href="{{route('marketplace.service',['id'=>$advert->serviceType])}}">
+                                                                    <i class="flaticon-road-with-broken-line"></i>{{$injected->serviceTypeById($advert->serviceType)->name}}</a></li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
 
 
+                                    </div>
                                 </div>
+                                <div class="slider-btn style2 deals-prev"><i class="flaticon-left-arrow"></i></div>
+                                <div class="slider-btn style2 deals-next"><i class="flaticon-right-arrow"></i></div>
                             </div>
-                            <div class="slider-btn style2 deals-prev"><i class="flaticon-left-arrow"></i></div>
-                            <div class="slider-btn style2 deals-next"><i class="flaticon-right-arrow"></i></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Related car end -->
+            <!-- Related car end -->
+        @endif
 
     </div>
     <!-- Content wrapper end -->

@@ -38,7 +38,7 @@ Route::domain('staff.localhost')->group(function () {
         //Merchant listings
         Route::get('users/{id}/ads',[Users::class, 'merchantAds'])->name('users.ads');//merchant ads
         Route::get('users/{id}/ads/new',[Users::class, 'newMerchantAds'])->name('users.ads.new');//add merchant ads
-        Route::get('users/{id}/ads/{ad}/details',[Users::class, 'newMerchantAds'])->name('users.ads.new');//view merchant ad
+        Route::get('users/{id}/ads/{ad}/details',[Users::class, 'merchantAdsDetail'])->name('users.ads.details');//view merchant ad
 
 
 

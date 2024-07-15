@@ -31,6 +31,7 @@
     <link href="{{asset('marketplace/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('marketplace/css/dark-theme.css')}}" rel="stylesheet">
     @stack('css')
+    @include('genericCss')
 </head>
 
 <body>

@@ -75,13 +75,16 @@ class MarketplaceController extends BaseController
 
         $tagsArray = explode(',', $ads->tags);
 
-        $relatedAds = UserAd::where('user',$merchant->id)->orderBy('id','desc')->take(10)->get();
+        $relatedAds = UserAd::where([
+            'user'=>$merchant->id,'status'=>1
+        ])->whereNot('id',$ads->id)->orderBy('id','desc')->take(10)->get();
         if ($relatedAds->count()<1){
-            $query = UserAd::where('serviceType', $ads->serviceType)
-                ->orWhere(function($query) use ($tagsArray) {
-                    foreach ($tagsArray as $tag) {
-                        $query->orWhereRaw('FIND_IN_SET(?, tags)', [$tag]);
-                    }
+            $query = UserAd::whereNot('id',$ads->id)->where(function($query) use ($tagsArray,$ads) {
+                    $query->where('serviceType',$ads->serviceType)->where(function ($query) use($tagsArray){
+                        foreach ($tagsArray as $tag) {
+                            $query->orWhereRaw('FIND_IN_SET(?, tags)', [$tag])->where('status',1);
+                        }
+                    });
                 });
             $relatedAds = $query->get();
         }
