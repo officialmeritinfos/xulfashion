@@ -76,6 +76,12 @@
                                                     Copy Referral Link
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a class="dropdown-item cpy" data-clipboard-text="$user->username">
+                                                    <i class="bx bxs-copy-alt"></i>
+                                                    Copy Referral Code
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -175,6 +181,9 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="mt-3">
+                                {{$transactions->links()}}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -242,9 +251,72 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="mt-3">
+                                {{$withdrawals->links()}}
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="container-fluid">
+                    <div class="ui-kit-cards grid mb-24">
+                        <h3>Referrals</h3>
+
+                        <div class="latest-transaction-area">
+                            <div class="table-responsive h-auto" data-simplebar>
+                                <table class="table align-middle mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>S/L</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>DATE</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($referrals as $index=> $referral)
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-primary">
+                                                    {{$referrals->firstItem()+$index}}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{$referral->name}}
+                                            </td>
+                                            <td>
+                                                {{$referral->username}}
+                                            </td>
+                                            <td>
+                                                {{date('d M Y H:i:s',strtotime($referral->created_at))}}
+                                            </td>
+                                            <td>
+                                                @switch($referral->status)
+                                                    @case(1)
+                                                        <span class="badge bg-success">Active</span>
+                                                        @break
+                                                    @case(2)
+                                                        <span class="badge bg-primary">Inactive</span>
+                                                        @break
+                                                    @default
+                                                        <span class="badge bg-danger">Locked</span>
+                                                        @break
+                                                @endswitch
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-3">
+                                {{$referrals->links()}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>

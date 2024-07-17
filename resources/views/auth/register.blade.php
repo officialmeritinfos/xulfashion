@@ -169,8 +169,11 @@
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label>Password<sup class="text-danger">*</sup></label>
-                            <input class="form-control" id="password" type="password" name="password" placeholder="Enter your password"
-                            onkeyup="checkPasswordStrength();">
+                            <div class="input-group mb-3">
+                                <input class="form-control" id="password" type="password" name="password" placeholder="Enter your password"
+                                       onkeyup="checkPasswordStrength();">
+                                <span class="input-group-text" id="toggle-password-visibility"><i class="bx bx-show"></i></span>
+                            </div>
                         </div>
                         <div id="password-strength-status"></div>
                     </div>
@@ -178,15 +181,18 @@
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label>Repeat password<sup class="text-danger">*</sup></label>
-                            <input class="form-control" type="password" name="password_confirmation"
-                                   placeholder="Please repeat your password" onkeyup="checkPasswordStrengths();" id="passwords">
+                            <div class="input-group mb-3">
+                                <input class="form-control" type="password" name="password_confirmation"
+                                       placeholder="Please repeat your password" onkeyup="checkPasswordStrengths();" id="passwords">
+                                <span class="input-group-text" id="toggle-passwords-visibility"><i class="bx bx-show"></i></span>
+                            </div>
                         </div>
                         <div id="password-strength-statuss"></div>
                     </div>
                     <div class="col-md-12 col-12">
                         <div class="form-group">
-                            <label>Referral<sup>(optional)</sup></label>
-                            <input class="form-control" type="text" name="referral" placeholder="Enter your referral"
+                            <label>Referral Code<sup>(optional)</sup></label>
+                            <input class="form-control" type="text" name="referral" placeholder="Enter your referral Code"
                             value="{{$referral}}">
                         </div>
                     </div>
@@ -303,6 +309,31 @@
             }
         }
     }
+    $(document).ready(function () {
+        $('#toggle-password-visibility').click(function () {
+            let passwordInput = $('#password');
+            let icon = $(this).find('i');
+            if (passwordInput.attr('type') === 'password') {
+                passwordInput.attr('type', 'text');
+                icon.removeClass('bx-show').addClass('bx-hide');
+            } else {
+                passwordInput.attr('type', 'password');
+                icon.removeClass('bx-hide').addClass('bx-show');
+            }
+        });
+
+        $('#toggle-passwords-visibility').click(function () {
+            let passwordInput = $('#passwords');
+            let icon = $(this).find('i');
+            if (passwordInput.attr('type') === 'password') {
+                passwordInput.attr('type', 'text');
+                icon.removeClass('bx-show').addClass('bx-hide');
+            } else {
+                passwordInput.attr('type', 'password');
+                icon.removeClass('bx-hide').addClass('bx-show');
+            }
+        });
+    });
 </script>
 </body>
 </html>

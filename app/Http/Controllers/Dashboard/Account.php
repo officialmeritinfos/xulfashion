@@ -9,6 +9,7 @@ use App\Models\AccountFunding;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserBank;
 use App\Models\UserDeposit;
@@ -33,7 +34,7 @@ class Account extends BaseController
     {
         $user = Auth::user();
         $web = GeneralSetting::find(1);
-        $transactions= Transaction::where('user',$user->id)->limit(10)->get();
+        $transactions= Transaction::where('user',$user->id)->paginate(15);
 
         return view('dashboard.common.account')->with([
             'web'           =>$web,
@@ -47,6 +48,7 @@ class Account extends BaseController
                 'status' => 1
             ])->get(),
             'withdrawals'   =>UserWithdrawal::where('user',$user->id)->paginate(15,['*'],'transfer'),
+            'referrals'     =>User::where('referral',$user->id)->paginate(15,['*'],'referrals'),
         ]);
     }
     //convert from referral to Main Balance
