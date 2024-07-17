@@ -226,4 +226,22 @@ class Users extends BaseController
             'ad'        =>$ad
         ]);
     }
+
+    //merchant store
+    public function merchantStore($id)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.components.store.index")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant,
+            'pageName'  =>'Merchant Store'
+        ]);
+    }
 }

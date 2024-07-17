@@ -238,11 +238,12 @@
                                 <i class="ri-apps-2-fill"></i> Merchant Store
                             </h5>
                             <p class="card-text" style="word-break: break-word;">
-                                View all merchant's ads - <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                View all merchant's Store - <i class="ri-information-fill" data-bs-toggle="tooltip"
                                     title="View merchant's ads"></i>
                             </p>
                         </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                        <a href="{{route('staff.users.store',['id'=>$user->reference])}}" class="btn btn-outline-primary rounded-pill btn-sm small-button"
+                        wire:navigate>
                             Manage
                         </a>
                     </div>

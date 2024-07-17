@@ -103,7 +103,7 @@ class Stores extends BaseController
             }
             $input = $validator->validated();
 
-            $reference = $this->generateUniqueReference('user_ads','reference',16);
+            $reference = $this->generateUniqueReference('user_stores','reference',16);
             //let us try to upload the image
             if ($request->hasFile('file')) {
                 //lets upload the address proof
@@ -235,7 +235,7 @@ class Stores extends BaseController
                 ],'Store successfully updated. Redirecting soon ...');
             }
         }catch (\Exception $exception){
-            Log::info('Error in  ' . __METHOD__ . ' while edit store info: ' . $exception->getMessage());
+            Log::info('Error in  ' . __METHOD__ . ' while edit store info: ' . $exception->getMessage().' on line: '.$exception->getLine());
             return $this->sendError('server.error',[
                 'error'=>'A server error occurred while processing your request.'
             ]);

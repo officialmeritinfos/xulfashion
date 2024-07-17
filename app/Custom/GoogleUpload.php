@@ -12,7 +12,7 @@ class GoogleUpload
     {
         $user = Auth::user();
         //get the credentials in the json file
-        $googleConfigFile = file_get_contents(config_path('oloscrow.json'));
+        $googleConfigFile = file_get_contents(config_path('xulfashion.json'));
         //create a StorageClient object
         $storage = new StorageClient([
             'keyFile' => json_decode($googleConfigFile, true)
@@ -38,7 +38,6 @@ class GoogleUpload
         ]);
 
         if ($request){
-
             return [
                 'done'=>true,
                 'link'=>'https://storage.googleapis.com/oloscrow-uploads/profile-uploads/'.$fileName

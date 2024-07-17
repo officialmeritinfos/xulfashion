@@ -21,21 +21,21 @@ class UserStoreThemeSetting extends Model
     {
         return Attribute::make(
             get: fn (string $value) => json_decode($value),
-            set: fn (string $value) => json_encode($value),
+            set: fn ($value) => json_encode($value),
         );
     }
     protected function perkIcon(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => json_decode($value),
-            set: fn (string $value) => json_encode($value),
+            set: fn ($value) => json_encode($value),
         );
     }
     protected function perkContent(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => json_decode($value),
-            set: fn (string $value) => json_encode($value),
+            set: fn ( $value) => json_encode($value),
         );
     }
 }

@@ -75,7 +75,9 @@ class KYB extends BaseController
 
             $reference = $this->generateUniqueReference('user_store_verifications','reference',16);
 
-
+            if ($user->isVerified==2){
+                $this->sendError('kyb.error',['error'=>'Please submit your account verification first before submitting Store KYC']);
+            }
 
             //let us upload the director's proof of address
             if ($request->hasFile('addressProof')) {
