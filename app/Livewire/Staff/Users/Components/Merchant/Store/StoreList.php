@@ -4,6 +4,7 @@ namespace App\Livewire\Staff\Users\Components\Merchant\Store;
 
 use App\Custom\GoogleUpload;
 use App\Models\Country;
+use App\Models\GeneralSetting;
 use App\Models\ServiceType;
 use App\Models\State;
 use App\Models\StoreTheme;
@@ -313,9 +314,11 @@ class StoreList extends Component
     }
     public function render()
     {
+        $web = GeneralSetting::find(1);
         return view('livewire.staff.users.components.merchant.store.store-list',[
             'states'        =>State::where('country_code',$this->country->iso2)->orderBy('name','asc')->get(),
             'services'      =>ServiceType::where('status',1)->get(),
+            'siteName'      =>$web->name
         ]);
     }
 }

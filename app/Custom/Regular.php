@@ -20,6 +20,7 @@ use App\Models\UserStoreInvoice;
 use App\Models\UserStoreOrder;
 use App\Models\UserStoreOrderBreakdown;
 use App\Models\UserStoreProduct;
+use App\Models\UserStoreVerification;
 use App\Traits\Helpers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -471,5 +472,10 @@ class Regular
     public function fetchStaffById($id)
     {
         return SystemStaff::where('id',$id)->first();
+    }
+    //fetch store kyc
+    public function fetchStoreKYB($storeId)
+    {
+        return UserStoreVerification::where('store',$storeId)->first();
     }
 }

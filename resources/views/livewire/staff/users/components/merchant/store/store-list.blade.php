@@ -1,5 +1,5 @@
 <div>
-
+@inject('option','App\Custom\Regular')
     @if($showInitializeStoreForm)
         @if($staff->can('create UserStore'))
             <div class="product-area">
@@ -179,6 +179,161 @@
     @endif
     @if($staff->can('read UserStore'))
 
+            <div class="row gy-4">
+                <div class="col-lg-6 mx-auto">
+                    <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
+                        <img src="{{ asset('staff/images/user-grid/user-grid-bg1.png') }}" alt=""
+                             class="w-100 object-fit-cover">
+                        <div class="pb-24 ms-16 mb-24 me-16  mt--100">
+                            <div class="text-center border border-top-0 border-start-0 border-end-0">
+                                <img src="{{ $store->logo??'https://ui-avatars.com/api/?rounded=true&name='.$store->name }}"
+                                     alt=""
+                                     class="border br-white border-width-2-px w-200-px h-200-px rounded-circle object-fit-cover">
+                                <h6 class="mb-0 mt-16">{{ $store->name }}</h6>
+                                <span class="text-secondary-light mb-16">{{ $store->email }}</span>
+                            </div>
+                            <div class="mt-24">
+                                <h6 class="text-xl mb-16">Store Info</h6>
+                                <ul>
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light">Store Name</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: {{ $store->name }}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Legal Name</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: {{ $option->fetchStoreKYB($store->id)->legalName??'N/A' }}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Doing Business As</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: {{ $option->fetchStoreKYB($store->id)->dba??'N/A' }}</span>
+                                    </li>
+
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Email</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: {{ $store->email }}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Phone Number</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: {{ $store->phone??'N/A' }}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Country:</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: {{ $option->fetchCountryIso2($store->country)->name }}</span>
+                                    </li>
+
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Address:</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: {{ $store->address??'N/A' }}</span>
+                                    </li>
+
+
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> State:</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: {{ $option->fetchState($store->country,$store->state)->name??'N/A' }}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> KYB Status</span>
+                                        <span class="w-70 text-secondary-light fw-medium">:
+                                         @switch($store->isVerified)
+                                                @case(1)
+                                                    <span class="badge text-sm fw-semibold bg-dark-success-gradient px-20 py-9 radius-4 text-white">
+                                                        Verified
+                                                    </span>
+                                                    @break
+                                                @case(4)
+                                                    <span class="badge text-sm fw-semibold bg-dark-primary-gradient px-20 py-9 radius-4 text-white">Under Review</span>
+                                                    @break
+                                                @default
+                                                    <span class="badge text-sm fw-semibold bg-dark-lilac-gradient px-20 py-9 radius-4 text-white">Pending Submission/Rejected</span>
+                                                    @break
+                                            @endswitch
+                                        </span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-1">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Description</span>
+                                        <span class="w-70 text-secondary-light fw-medium">:
+                                    {!! $store->description !!}
+                                </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="col-xl-6 mb-4 col-lg-6 col-12">
+                    <div class="card h-auto">
+                        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+                            <div class="d-flex flex-wrap align-items-center gap-3">
+                                <h6 class="text-lg fw-semibold mb-0">Statistics</h6>
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center gap-3">
+                                <h6 class="text-lg fw-semibold mb-0">
+                                    <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank"><i class="ri-eye-line" data-bs-toggle="tooltip"
+                                                                                                                         title="View Store"></i> </a>
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="card-body g-5 d-flex flex-wrap">
+                            <div class="row gy-3">
+                                <div class="col-md-6 col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-chart-pie-2 ti-sm"></i></div>
+                                        <div class="card-info">
+                                            <h5 class="mb-0">{{$option->formatNumber($option->numberOfSalesInStore($store->id))}}</h5>
+                                            <small>Total Sales<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                 title="Total number of orders received - which includes ony successfully processed orders where the status
+                                    has updated to completed."></i> </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
+                                        <div class="card-info">
+                                            <h5 class="mb-0">{{$option->fetchCurrencySign($store->currency)->currency_symbol}}{{$option->formatNumber($option->invoiceRevenueInStore($store->id))}} </h5>
+                                            <small>Invoice Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                     title="Total sum of money earned through invoices. This only accounts for invoices whose payment was processed through
+                                                 this platform not offline payments."></i></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
+                                        <div class="card-info">
+                                            <h5 class="mb-0">{{$option->fetchCurrencySign($store->currency)->currency_symbol}}{{$option->formatNumber($option->revenueInStore($store->id))}} </h5>
+                                            <small>Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                             title="Total sum of money earned through your stores. This only accounts for sales which was marked as completed."></i></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
+                                        <div class="card-info">
+                                            <h5 class="mb-0">{{$option->formatNumber($option->numberOfCustomersInStore($store->id))}}</h5>
+                                            <small>Customers</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-shopping-cart ti-sm"></i></div>
+                                        <div class="card-info">
+                                            <h5 class="mb-0">{{$option->numberOfProductInStore($store->id)}}</h5>
+                                            <small>Products</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/ Statistics -->
+
+            </div>
 
     @endif
 </div>
