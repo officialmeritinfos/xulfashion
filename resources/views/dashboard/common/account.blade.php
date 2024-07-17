@@ -70,6 +70,12 @@
                                                     Convert Balance
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a class="dropdown-item cpy" data-clipboard-text="{{route('register',['ref'=>$user->username])}}">
+                                                    <i class="bx bx-copy-alt"></i>
+                                                    Copy Referral Link
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
 

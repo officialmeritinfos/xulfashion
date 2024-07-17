@@ -41,6 +41,7 @@ class RouteServiceProvider extends ServiceProvider
             $this->subdomainRoute();
             $this->adsRoute();
             $this->userRoute();
+            $this->homeRoute();
         });
     }
     //auth route
@@ -76,6 +77,13 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware(['web'])
             ->name('staff.')
             ->group(base_path('routes/staff.php'));
+    }
+    //landing page
+    public function homeRoute()
+    {
+        Route::middleware(['web'])
+            ->name('home.')
+            ->group(base_path('routes/home.php'));
     }
     /**
      * Configure the rate limiters for the application.

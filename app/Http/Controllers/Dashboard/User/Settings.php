@@ -510,7 +510,7 @@ class Settings extends BaseController
             ])){
                 $this->userNotification($user,'Profile updated','Your profile data has been updated.',$request->ip());
                 return $this->sendResponse([
-                    'redirectTo'=>route('user.portfolios.index')
+                    'redirectTo'=>url()->previous()
                 ],'profile update successful. Redirecting soon ...');
             }
             return $this->sendError('setup.error',['error'=>'Something went wrong. Please try again']);
