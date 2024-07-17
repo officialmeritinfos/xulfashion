@@ -37,10 +37,15 @@ class MarketplaceController extends BaseController
             ]);
         }
 
+        $pageName = 'Find the Best Tailors, Fashion Designers, Models & Fashion Stores in your area';
+        if ($hasCountry==1){
+            $pageName = 'Find the Best Tailors, Fashion Designers, Models & Fashion Stores in '.$country->name;
+        }
+
         return view('marketplace.index')->with([
             'web'           =>$web,
             'siteName'      =>$web->name,
-            'pageName'      =>'Find the Best Tailors, Fashion Designers in your area',
+            'pageName'      =>$pageName,
             'serviceTypes'  =>ServiceType::where('status',1)->get(),
             'country'       =>$country,
             'hasCountry'    =>$hasCountry,

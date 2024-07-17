@@ -5,9 +5,53 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="canonical" href="{{url('/')}}">
+    <meta name="robots" content="index, follow">
+    <meta property="og:locale" content="en_US">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-navbutton-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="{{$web->description}}">
+    <meta name="keywords" content="{{$web->keywords}}">
+    <meta name="author" content="{{$siteName}}">
+    <meta property="og:title" content="{{$siteName}} - {{$pageName}}">
+    <meta property="og:description" content="{{$web->description}}">
+    <meta property="og:image" content="{{asset($web->favicon)}}">
+    <meta property="og:url" content="{{url('/')}}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{$siteName}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{$siteName}} - {{$pageName}}">
+    <meta name="twitter:description" content="{{$web->description}}">
+    <meta name="twitter:image" content="{{asset($web->favicon)}}">
+    <meta name="twitter:site" content="@xulfashion">
+    <meta name="twitter:creator" content="@xulfashion">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "{{$siteName}}",
+          "url": "{{url('/')}}",
+          "description": "{{$web->description}}",
+          "sameAs": [
+            "https://www.facebook.com/xulfashion",
+            "https://www.twitter.com/xulfashion",
+            "https://www.instagram.com/getxulfashion"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "{{$siteName}}",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "{{asset($web->favicon)}}"
+            }
+          },
+          "image": "{{asset($web->logo)}}"
+        }
+    </script>
     <!--====== Title ======-->
     <title>
-        {{$siteName}} - {{$pageName}}
+        {{$siteName}} | {{$pageName}}
     </title>
     <!--====== Google Fonts ======-->
     <link rel="preconnect" href="https://fonts.gstatic.com/">
@@ -32,6 +76,7 @@
     <link href="{{asset('marketplace/css/dark-theme.css')}}" rel="stylesheet">
     @stack('css')
     @include('genericCss')
+
 </head>
 
 <body>

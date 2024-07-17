@@ -25,6 +25,50 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
           integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="canonical" href="{{url('/')}}">
+    <meta name="robots" content="index, follow">
+    <meta property="og:locale" content="en_US">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-navbutton-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="{{$store->description}}">
+    <meta name="keywords" content="{{$web->keywords}}">
+    <meta name="author" content="{{$store->name}}">
+    <meta property="og:title" content="{{$siteName}} - {{$pageName}}">
+    <meta property="og:description" content="{{$store->description}}">
+    <meta property="og:image" content="{{asset($store->logo)}}">
+    <meta property="og:url" content="{{url('/')}}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{$store->name}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{$store->name}} - {{$pageName??'Your one stop fashion store'}}">
+    <meta name="twitter:description" content="{{$store->description}}">
+    <meta name="twitter:image" content="{{asset($store->logo)}}">
+    <meta name="twitter:site" content="@ {{$store->name}}">
+    <meta name="twitter:creator" content="@ {{$store->name}}">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "{{$store->name}}",
+          "url": "{{url('/')}}",
+          "description": "{{$store->description}}",
+          "sameAs": [
+            "https://www.facebook.com/xulfashion",
+            "https://www.twitter.com/xulfashion",
+            "https://www.instagram.com/getxulfashion"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "{{$store->name}}",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "{{asset($store->logo)}}"
+            }
+          },
+          "image": "{{asset($store->logo)}}"
+        }
+    </script>
 </head>
 
 <body>
