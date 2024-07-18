@@ -12,7 +12,7 @@ class GoogleUpload
     {
         $user = Auth::user();
         //get the credentials in the json file
-        $googleConfigFile = file_get_contents(config_path('xulfashion.json'));
+        $googleConfigFile = file_get_contents(config_path('xulfashion2.json'));
         //create a StorageClient object
         $storage = new StorageClient([
             'keyFile' => json_decode($googleConfigFile, true)
