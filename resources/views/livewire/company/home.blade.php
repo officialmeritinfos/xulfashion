@@ -2,7 +2,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      Conatct : Main Section
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <div class="contact_main-section padding-bottom-120" id="join-waitlist">
+    <div class="contact_main-section padding-bottom-120 mt-5g" id="join-waitlist">
         <div class="container">
             <div class="row row--cuatom">
                 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11">
