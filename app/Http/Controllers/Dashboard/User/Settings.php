@@ -485,20 +485,18 @@ class Settings extends BaseController
                 'activeForJob'          =>['nullable','numeric'],
                 'tutorKeywords'         =>['nullable'],
                 'tutorKeywords.*'       =>['nullable','string'],
-                'image'                 => ['nullable', 'image','max:1024'],
+                'image'                 => ['required', 'image','max:1024'],
 
             ])->stopOnFirstFailure();
             if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
             $input = $validator->validated();
 
-
+            $image = $user->photo;
             if ($request->hasFile('image')){
                 //upload image
                 $google = new GoogleUpload();
                 $imageResult = $google->uploadGoogle($request->file('image'));
                 $image  = $imageResult['link'];
-            }else{
-                $image = $user->photo;
             }
 
             //update the user's profile

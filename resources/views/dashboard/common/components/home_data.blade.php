@@ -1,4 +1,4 @@
-<div class="today-card-area pt-24">
+<div class="today-card-area pt-24" style="margin-top: -2.5rem; margin-bottom: -2rem;">
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-3 col-sm-6">

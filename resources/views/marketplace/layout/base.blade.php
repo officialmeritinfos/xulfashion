@@ -278,7 +278,7 @@
                                 Useful Links
                             </h5>
                             <ul class="footer-menu  list-style">
-                                <li><a href="{{route('company.about')}}">About Us</a></li>
+                                <li><a href="{{route('home.about')}}">About Us</a></li>
                                 <li><a href="{{route('marketplace.faq')}}">FAQ's</a></li>
                                 <li><a href="{{route('marketplace.stores')}}">Stores</a></li>
                             </ul>

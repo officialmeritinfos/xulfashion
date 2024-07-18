@@ -19,4 +19,14 @@ class Home extends BaseController
             'web'           =>$web
         ]);
     }
+    //about us
+    public function about()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.about')->with([
+            'pageName'      =>'About '.$web->name,
+            'siteName'      =>$web->name,
+            'web'           =>$web
+        ]);
+    }
 }

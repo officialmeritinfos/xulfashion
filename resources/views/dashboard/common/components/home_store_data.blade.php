@@ -1,7 +1,7 @@
 <div class="today-card-area pt-24">
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: 0rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Total Store Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Total Order<i class="ri-information-fill" data-bs-toggle="tooltip"
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Today's Money</span>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Today's Order</span>
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">New Customers</span>
@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Sales Of This Week</span>
@@ -80,7 +80,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Order Of This Week</span>
@@ -93,7 +93,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Pending Orders</span>
@@ -106,7 +106,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Completed Orders</span>
@@ -119,7 +119,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 mb-0" style="margin-top: -0.5rem;">
                 <div class="single-today-card d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="today">Processing Orders</span>

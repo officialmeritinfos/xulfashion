@@ -30,16 +30,12 @@
             </div>
         </nav>
     </div>
-    <div class="mb-2 mt-3">
-        <a href="javascript: history.go(-1)"><i class="bx bx-arrow-to-left"></i> Go back</a>
-    </div>
-
     <div class="page-title-area" style="margin-bottom: 0rem;">
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-sm-6">
                     <div class="page-title">
-                        <h3 style="font-size: 12px;">{{$pageName}}</h3>
+                        <h3>{{$pageName}}</h3>
                     </div>
                 </div>
             </div>

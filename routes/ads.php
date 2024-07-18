@@ -37,7 +37,5 @@ Route::get('/ads/page/privacy',[PageController::class,'privacy'])
 Route::get('/ads/page/aml',[PageController::class,'aml'])
     ->name('marketplace.aml');
 
-/*================================ COMPANY CONTROLLER ==============================*/
-Route::get('about',[PageController::class,'about'])
-    ->name('company.about');
+
 

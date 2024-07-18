@@ -70,7 +70,7 @@
                                                         <li><span><i class="flaticon-checkmark"></i></span>Store-front support</li>
                                                         <li><span><i class="flaticon-checkmark"></i></span>24/7 Support Provided</li>
                                                     </ul>
-                                                    <a href="{{route('company.about')}}" class="btn style1">Read More</a>
+                                                    <a href="{{route('home.about')}}" class="btn style1">Read More</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -40,7 +40,7 @@ class GoogleUpload
         if ($request){
             return [
                 'done'=>true,
-                'link'=>'https://storage.googleapis.com/oloscrow-uploads/profile-uploads/'.$fileName
+                'link'=>'https://storage.googleapis.com/xulfashion/profile-uploads/'.$fileName
             ];
         }else{
             Log::info($request->json());
