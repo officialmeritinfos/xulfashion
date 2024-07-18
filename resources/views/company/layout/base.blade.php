@@ -160,7 +160,7 @@
                 <div class="col-lg-4 offset-lg-1 col-sm-4 col-5" data-aos-duration="1000" data-aos="fade-left" data-aos-delay="300">
                     <div class="home-3_hero-image-block">
                         <div class="home-3_hero-image">
-                            <img class="hero-image" src="{{asset('home/image/home-3/hero-mobile.png')}}" alt="hero image" />
+                            <img class="hero-image" src="{{asset('home/image/11.png')}}" alt="hero image" />
                             <div class="home-3_hero-image-shape-1">
                                 <img src="{{asset('home/image/home-3/hero-image-shape-1.svg')}}" alt="image shape" />
                             </div>
