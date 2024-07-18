@@ -58,8 +58,8 @@
     <!-- Plugin'stylesheets  -->
     <link rel="stylesheet" type="text/css" href="{{asset('home/fonts/typography/fonts.css')}}">
     <link rel="stylesheet" href="{{asset('home/fonts/fontawesome/css/all.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins//aos/aos.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins//fancybox/jquery.fancybox.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins/aos/aos.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins/fancybox/jquery.fancybox.min.css')}}">
     <!-- Vendor stylesheets  -->
     <link rel="stylesheet" type="text/css" href="{{asset('home/plugins//bootstrap/dist/css/bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('home/css/style.css')}}">
@@ -201,18 +201,18 @@
     </div>
 </div>
 <!-- Vendor Scripts -->
-<script src="{{asset('home/plugins//jquery/jquery.min.js')}}"></script>
-<script src="{{asset('home/plugins//jquery/jquery-migrate.min.js')}}"></script>
-<script src="{{asset('home/plugins//bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('home/plugins/jquery/jquery.min.js')}}"></script>
+{{--<script src="{{asset('home/plugins/jquery/jquery-migrate.min.js')}}"></script>--}}
+<script src="{{asset('home/plugins/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
 <!-- Plugin's Scripts -->
-<script src="{{asset('home/plugins//inlineSvg/inlineSvg.min.js')}}"></script>
-<script src="{{asset('home/plugins//fancybox/jquery.fancybox.min.js')}}"></script>
-<script src="{{asset('home/plugins//aos/aos.min.js')}}"></script>
-<script src="{{asset('home/plugins//isotope/isotope.pkgd.min.js')}}"></script>
-<script src="{{asset('home/plugins//isotope/packery.pkgd.min.js')}}"></script>
-<script src="{{asset('home/plugins//isotope/image.loaded.js')}}"></script>
-<script src="{{asset('home/plugins//slick/slick.min.js')}}"></script>
-<script src="{{asset('home/plugins//countdown/jquery.countdown.js')}}" defer></script>
+<script src="{{asset('home/plugins/inlineSvg/inlineSvg.min.js')}}"></script>
+<script src="{{asset('home/plugins/fancybox/jquery.fancybox.min.js')}}"></script>
+<script src="{{asset('home/plugins/aos/aos.min.js')}}"></script>
+<script src="{{asset('home/plugins/isotope/isotope.pkgd.min.js')}}"></script>
+<script src="{{asset('home/plugins/isotope/packery.pkgd.min.js')}}"></script>
+<script src="{{asset('home/plugins/isotope/image.loaded.js')}}"></script>
+<script src="{{asset('home/plugins/slick/slick.min.js')}}"></script>
+<script src="{{asset('home/plugins/countdown/jquery.countdown.js')}}" defer></script>
 <script src="{{asset('home/js/menu.js')}}"></script>
 <script src="{{asset('home/js/custom.js')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
