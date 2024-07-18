@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -55,15 +54,7 @@
     <title>
         {{$siteName}} | {{$pageName}}
     </title>
-    <!-- Plugin'stylesheets  -->
-    <link rel="stylesheet" type="text/css" href="{{asset('home/fonts/typography/fonts.css')}}">
-    <link rel="stylesheet" href="{{asset('home/fonts/fontawesome/css/all.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins/aos/aos.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins/fancybox/jquery.fancybox.min.css')}}">
-    <!-- Vendor stylesheets  -->
-    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins/bootstrap/dist/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('home/css/style.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('home/css/demo.css')}}">
+    <!-- Inline critical CSS -->
     <style>
         @import url('https://fonts.cdnfonts.com/css/clash-display');
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&amp;display=swap');
@@ -73,19 +64,18 @@
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap');
         @import url('https://fonts.cdnfonts.com/ss/clash-display');
     </style>
+    <!-- Plugin'stylesheets -->
+    <link rel="stylesheet" href="{{asset('home/fonts/fontawesome/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('home/plugins/aos/aos.min.css')}}" defer>
+    <link rel="stylesheet" href="{{asset('home/plugins/fancybox/jquery.fancybox.min.css')}}" defer>
+    <!-- Vendor stylesheets -->
+    <link rel="stylesheet" href="{{asset('home/plugins/bootstrap/dist/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('home/css/style.min.css')}}">
+    <link rel="stylesheet" href="{{asset('home/css/demo.css')}}">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{asset($web->favicon)}}">
 </head>
-
 <body>
-{{--<div class="preloader-wrapper">--}}
-{{--    <div class="lds-ellipsis">--}}
-{{--        <div></div>--}}
-{{--        <div></div>--}}
-{{--        <div></div>--}}
-{{--        <div></div>--}}
-{{--    </div>--}}
-{{--</div>--}}
 <div class="page-wrapper overflow-hidden">
     <!--~~~~~~~~~~~~~~~~~~~~~~~~
      Header Area
@@ -201,21 +191,21 @@
     </div>
 </div>
 <!-- Vendor Scripts -->
-<script src="{{asset('home/plugins/jquery/jquery.min.js')}}"></script>
+<script src="{{asset('home/plugins/jquery/jquery.min.js')}}" defer></script>
 {{--<script src="{{asset('home/plugins/jquery/jquery-migrate.min.js')}}"></script>--}}
-<script src="{{asset('home/plugins/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('home/plugins/bootstrap/dist/js/bootstrap.bundle.min.js')}}" defer></script>
 <!-- Plugin's Scripts -->
-<script src="{{asset('home/plugins/inlineSvg/inlineSvg.min.js')}}"></script>
-<script src="{{asset('home/plugins/fancybox/jquery.fancybox.min.js')}}"></script>
-<script src="{{asset('home/plugins/aos/aos.min.js')}}"></script>
-<script src="{{asset('home/plugins/isotope/isotope.pkgd.min.js')}}"></script>
-<script src="{{asset('home/plugins/isotope/packery.pkgd.min.js')}}"></script>
-<script src="{{asset('home/plugins/isotope/image.loaded.min.js')}}"></script>
-<script src="{{asset('home/plugins/slick/slick.min.js')}}"></script>
+<script src="{{asset('home/plugins/inlineSvg/inlineSvg.min.js')}}" defer></script>
+<script src="{{asset('home/plugins/fancybox/jquery.fancybox.min.js')}}" defer></script>
+<script src="{{asset('home/plugins/aos/aos.min.js')}}" defer></script>
+<script src="{{asset('home/plugins/isotope/isotope.pkgd.min.js')}}" defer></script>
+<script src="{{asset('home/plugins/isotope/packery.pkgd.min.js')}}" defer></script>
+<script src="{{asset('home/plugins/isotope/image.loaded.min.js')}}" defer></script>
+<script src="{{asset('home/plugins/slick/slick.min.js')}}" defer></script>
 <script src="{{asset('home/plugins/countdown/jquery.countdown.min.js')}}" defer></script>
-<script src="{{asset('home/js/menu.js')}}"></script>
-<script src="{{asset('home/js/custom.min.js')}}"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{asset('home/js/menu.js')}}" defer></script>
+<script src="{{asset('home/js/custom.min.js')}}" defer></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 <x-livewire-alert::scripts />
 </body>
 </html>
