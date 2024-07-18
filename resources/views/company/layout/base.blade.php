@@ -217,6 +217,5 @@
 <script src="{{asset('home/js/custom.js')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <x-livewire-alert::scripts />
-@include('basicInclude')
 </body>
 </html>
