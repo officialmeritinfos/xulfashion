@@ -34,7 +34,7 @@ class Home extends Component
         return [
             'name'=>['required','string','max:225'],
             'email'=>['required','email',Rule::unique('users','email')],
-            'captcha' => ['nullable'],
+            'captcha' => ['required'],
         ];
     }
     //submit
