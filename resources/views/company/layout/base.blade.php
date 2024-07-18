@@ -54,15 +54,23 @@
     <title>
         {{$siteName}} | {{$pageName}}
     </title>
+    <!-- Preload key images -->
+    <link rel="preload" href="{{asset('home/image/11.webp')}}" as="image">
+    <link rel="preload" href="{{asset('home/image/home-3/hero-shape.png')}}" as="image">
     <!-- Inline critical CSS -->
     <style>
-        @import url('https://fonts.cdnfonts.com/css/clash-display');
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&amp;display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@500;600;700;800;900&amp;display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@500;600;700&amp;display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap');
-        @import url('https://fonts.cdnfonts.com/ss/clash-display');
+        .home-3_hero-section {
+            /* Add critical styles here */
+            padding-top: 100px;
+            padding-bottom: 40px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-content__title {
+            /* Add critical styles here */
+        }
+        /* Add other critical CSS here */
     </style>
     <!-- Plugin'stylesheets -->
     <link rel="stylesheet" href="{{asset('home/fonts/fontawesome/css/all.min.css')}}">
@@ -77,20 +85,13 @@
 </head>
 <body>
 <div class="page-wrapper overflow-hidden">
-    <!--~~~~~~~~~~~~~~~~~~~~~~~~
-     Header Area
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!-- Header Area -->
     <header class="site-header site-header--transparent site-header--absolute">
         <div class="container">
             <nav class="navbar site-navbar">
-                <!--~~~~~~~~~~~~~~~~~~~~~~~~
-                  Brand Logo
-              ~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                 <div class="brand-logo">
                     <a href="{{route('home.index')}}">
-                        <!-- light version logo (logo must be black)-->
                         <img class="logo-light" src="{{asset($web->logo)}}" alt="brand logo">
-                        <!-- Dark version logo (logo must be White)-->
                     </a>
                 </div>
                 <div class="menu-block-wrapper ">
@@ -119,25 +120,17 @@
                         </ul>
                     </nav>
                 </div>
-                <!--~~~~~~~~~~~~~~~~~~~~~~~~
-                mobile menu trigger
-               ~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                 <div class="mobile-menu-trigger">
                     <span></span>
                 </div>
-                <!--~~~~~~~~~~~~~~~~~~~~~~~~
-                  Mobile Menu Hamburger Ends
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                 <div class="header-cta-btn-wrapper">
                     <a href="{{route('home.index')}}#join-waitlist" class="btn-masco btn--header btn-primary-l03 btn-shadow rounded-pill">
-                        <span>Join wait-list</span></a>
+                        <span>Join wait-list</span>
+                    </a>
                 </div>
             </nav>
         </div>
     </header>
-    <!--~~~~~~~~~~~~~~~~~~~~~~~~
-     navbar-
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     @yield('content')
 
     <div class="footer padding-top-100 footer--light footer-l03">

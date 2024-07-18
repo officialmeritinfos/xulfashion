@@ -10,10 +10,10 @@
         </div>
         <div class="container">
             <div class="row row--custom">
-                <div class="col-lg-4 offset-lg-1 col-sm-4 col-5" data-aos-duration="1000" data-aos="fade-left" data-aos-delay="300">
+                <div class="col-lg-4 offset-lg-1 col-sm-4 col-5" >
                     <div class="home-3_hero-image-block">
                         <div class="home-3_hero-image">
-                            <img class="hero-image" src="{{asset('home/image/11.webp')}}" alt="hero image" />
+                            <img class="hero-image" src="{{asset('home/image/11.webp')}}" alt="hero image"  loading="lazy" />
                             <div class="home-3_hero-image-shape-1">
                                 <img src="{{asset('home/image/home-3/hero-image-shape-1.svg')}}" alt="image shape" />
                             </div>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-7 col-md-10" data-aos-duration="1000" data-aos="fade-right" data-aos-delay="300">
+                <div class="col-lg-7 col-md-10" >
                     <div class="home-3_hero-content">
                         <div class="home-3_hero-content-text">
                             <h3 class="hero-content__title heading-lg text-black">
