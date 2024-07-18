@@ -17,33 +17,6 @@
                                 <div class="content-divider"></div>
                             </div>
                         </div>
-                        <div class="content_main-testimonial">
-                            <div class="testimonial-widget-4" data-aos="fade-left" data-aos-delay="NaN">
-                                <div class="testimonial-widget-4__rating">
-                                    <img src="{{asset('home/image/icons/star-five-yellow.svg')}}" class="testimonial-widget-4__star" alt="image alt">
-                                </div>
-                                <p>
-                                    "
-                                    I am immensely proud to lead a platform that is not just about fashion commerce but
-                                    about revolutionizing how fashion creators and consumers interact on a global scale.
-                                    At {{$siteName}}, we are committed to empowering designers, tailors, and retailers with
-                                    innovative tools that facilitate growth and success. Our mission extends beyond
-                                    transactions; we strive to build a community where creativity thrives and opportunities
-                                    abound. Join us as we shape the future of fashion, making it more accessible, sustainable,
-                                    and rewarding for all involved.
-                                    "
-                                </p>
-                                <div class="testimonial-widget-4__body">
-                                    <div class="testimonial-widget-4__user-image">
-                                        <img src="{{asset('home/image/ceo.jpeg')}}" alt="image alt" style="width: 50px;">
-                                    </div>
-                                    <div class="testimonial-widget-4__user-metadeta">
-                                        <h4 class="testimonial-widget-4__user">Michael Erastus</h4>
-                                        <span class="testimonial-widget-4__user-position">CEO & Co-founder @ {{$siteName}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="offset-xl-1 col-lg-6 col-md-10">

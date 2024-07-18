@@ -85,22 +85,6 @@
                             </p>
                             <div class="content-divider"></div>
                         </div>
-                        <div class="content-testimonial">
-                            <div class="content-testimonial__text">
-                                <p>
-                                    “We love what we do & create solution to help the fashion industry dominate more .”
-                                </p>
-                            </div>
-                            <div class="content-testimonial__user-metadata">
-                                <div class="content-testimonial__user">
-                                    <img src="{{asset('home/image/chijiokeemmanuel.jpeg')}}" style="width: 50px;" alt="alternative text">
-                                </div>
-                                <div class="content-testimonial__body">
-                                    <h4 class="content-testimonial__user-name">Chijioke Emmanuel</h4>
-                                    <span>CAO & Co-founder @ {{$siteName}}</span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

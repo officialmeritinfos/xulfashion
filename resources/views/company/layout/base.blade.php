@@ -78,14 +78,14 @@
 </head>
 
 <body>
-<div class="preloader-wrapper">
-    <div class="lds-ellipsis">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-</div>
+{{--<div class="preloader-wrapper">--}}
+{{--    <div class="lds-ellipsis">--}}
+{{--        <div></div>--}}
+{{--        <div></div>--}}
+{{--        <div></div>--}}
+{{--        <div></div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 <div class="page-wrapper overflow-hidden">
     <!--~~~~~~~~~~~~~~~~~~~~~~~~
      Header Area
