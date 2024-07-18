@@ -61,8 +61,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('home/plugins/aos/aos.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('home/plugins/fancybox/jquery.fancybox.min.css')}}">
     <!-- Vendor stylesheets  -->
-    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins//bootstrap/dist/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('home/css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('home/plugins/bootstrap/dist/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('home/css/style.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('home/css/demo.css')}}">
     <style>
         @import url('https://fonts.cdnfonts.com/css/clash-display');
@@ -210,11 +210,11 @@
 <script src="{{asset('home/plugins/aos/aos.min.js')}}"></script>
 <script src="{{asset('home/plugins/isotope/isotope.pkgd.min.js')}}"></script>
 <script src="{{asset('home/plugins/isotope/packery.pkgd.min.js')}}"></script>
-<script src="{{asset('home/plugins/isotope/image.loaded.js')}}"></script>
+<script src="{{asset('home/plugins/isotope/image.loaded.min.js')}}"></script>
 <script src="{{asset('home/plugins/slick/slick.min.js')}}"></script>
-<script src="{{asset('home/plugins/countdown/jquery.countdown.js')}}" defer></script>
+<script src="{{asset('home/plugins/countdown/jquery.countdown.min.js')}}" defer></script>
 <script src="{{asset('home/js/menu.js')}}"></script>
-<script src="{{asset('home/js/custom.js')}}"></script>
+<script src="{{asset('home/js/custom.min.js')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <x-livewire-alert::scripts />
 </body>

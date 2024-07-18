@@ -13,7 +13,7 @@
                 <div class="col-lg-4 offset-lg-1 col-sm-4 col-5" data-aos-duration="1000" data-aos="fade-left" data-aos-delay="300">
                     <div class="home-3_hero-image-block">
                         <div class="home-3_hero-image">
-                            <img class="hero-image" src="{{asset('home/image/11.png')}}" alt="hero image" />
+                            <img class="hero-image" src="{{asset('home/image/11.webp')}}" alt="hero image" />
                             <div class="home-3_hero-image-shape-1">
                                 <img src="{{asset('home/image/home-3/hero-image-shape-1.svg')}}" alt="image shape" />
                             </div>
@@ -107,7 +107,7 @@
                 <div class="offset-lg-1 col-xxl-auto col-md-3  col-xs-4 col-5" data-aos-duration="1000" data-aos="fade-right">
                     <div class="home-3_content-image-1-block ">
                         <div class="home-3_content-image-1">
-                            <img src="{{asset('home/image/8.png')}}" alt="alternative text">
+                            <img src="{{asset('home/image/8.webp')}}" alt="alternative text">
                         </div>
                         <div class="home-3_content-image-1-shape absolute-center">
                             <img src="{{asset('home/image/home-3/content-1-shape.svg')}}" alt="image shape" class="">
@@ -148,7 +148,7 @@
                 <div class="col-xl-4 offset-lg-1 col-md-3 col-xs-4 col-5" data-aos-duration="1000" data-aos="fade-left">
                     <div class="home-3_content-image-2-block content-image--mobile-width">
                         <div class="home-3_content-image-2">
-                            <img src="{{asset('home/image/9.png')}}" alt="alternative text">
+                            <img src="{{asset('home/image/9.webp')}}" alt="alternative text">
                         </div>
                         <div class="home-3_content-image-2-shape absolute-center">
                             <img src="{{asset('home/image/home-3/content-2-shape.svg')}}" alt="image shape" class="">
@@ -383,7 +383,7 @@
             <div class="cta-home-3__inner">
                 <div class="cta-home-3__image-block">
                     <div class="cta-home-3__image">
-                        <img src="{{asset('home/image/1.png')}}" alt="image alt">
+                        <img src="{{asset('home/image/1.webp')}}" alt="image alt">
                         <div class="cta-home-3__image-shape">
                             <img src="{{asset('home/image/cta/cta-3-shape.png')}}" alt="image alt">
                         </div>
