@@ -21,15 +21,15 @@ use Illuminate\Support\Facades\Session;
 class MarketplaceController extends BaseController
 {
     //landing page
-    public function landingPage($country=null)
+    public function landingPage($countryIso=null)
     {
         $web = GeneralSetting::find(1);
-        if ($country==null){
+        if ($countryIso==null){
             $hasCountry=2;
             $country = Country::where('status',1)->get();
         }else{
             $hasCountry=1;
-            $country = Country::where('iso3',strtoupper($country))->first();
+            $country = Country::where('iso3',strtoupper($countryIso))->first();
             //let us store the country variable
             Session::put([
                 'country'=>$country->iso2,

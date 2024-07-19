@@ -144,7 +144,7 @@ class Stores extends BaseController
                 ],'Store successfully initialized. Redirecting soon ...');
             }
         }catch (\Exception $exception){
-            Log::info('Error in  ' . __METHOD__ . ' while initializing store: ' . $exception->getMessage());
+            Log::info('Error in  ' . __METHOD__ . ' while initializing store: ' . $exception->getMessage().' on line '.$exception->getLine());
             return $this->sendError('server.error',[
                 'error'=>'A server error occurred while processing your request.'
             ]);

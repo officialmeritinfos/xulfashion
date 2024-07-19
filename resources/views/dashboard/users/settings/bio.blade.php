@@ -8,9 +8,9 @@
             @csrf
             <div class="col-md-12" id="frontImage">
                 <label for="inputAddress" class="form-label">
-                    Image <i class="ri-information-fill" data-bs-toggle="tooltip"
+                    Profile Photo <i class="ri-information-fill" data-bs-toggle="tooltip"
                              title="This is a public image, and will serve as your profile picture. Make sure the image you
-                         upload corresponds with the image you will upload for KYC"></i><sup class="text-danger">*</sup>
+                         upload corresponds with the image you will upload for KYC. Only upload when you wish to change your profile image."></i><sup class="text-info">(Optional)</sup>
                 </label>
                 <input type="file" class="form-control" id="inputAddress" name="image">
             </div>
