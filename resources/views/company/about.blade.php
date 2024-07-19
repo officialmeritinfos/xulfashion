@@ -30,19 +30,19 @@
             <div class="row justify-content-center row--custom">
                 <div class="col-12">
                     <div class="row banner_image-row padding-top-100">
-                        <div class="col-xs-4 col-7">
+                        <div class="col-xs-4 col-4">
                             <div class="single-image-1">
-                                <img src="{{asset('home/image/uchez.png')}}" alt="alternative text">
+                                <img src="{{asset('home/image/uchez.webp')}}" alt="alternative text">
                             </div>
                         </div>
-                        <div class="col-xs-4 col-7">
+                        <div class="col-xs-4 col-4">
                             <div class="single-image-2">
-                                <img src="{{asset('home/image/ugonnabarr.jpg')}}" alt="alternative text">
+                                <img src="{{asset('home/image/ugonnabarr.webp')}}" alt="alternative text">
                             </div>
                         </div>
-                        <div class="col-xs-4 col-7">
+                        <div class="col-xs-4 col-4">
                             <div class="single-image-3">
-                                <img src="{{asset('home/image/coo.jpeg')}}" alt="alternative text">
+                                <img src="{{asset('home/image/coo.webp')}}" alt="alternative text">
                             </div>
                         </div>
                     </div>

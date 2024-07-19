@@ -25,8 +25,8 @@
     <meta name="twitter:title" content="{{$siteName}} - {{$pageName}}">
     <meta name="twitter:description" content="{{$pageName}}">
     <meta name="twitter:image" content="{{asset($web->favicon)}}">
-    <meta name="twitter:site" content="@{{$siteName}}">
-    <meta name="twitter:creator" content="@{{$siteName}}">
+    <meta name="twitter:site" content="@ {{$siteName}}">
+    <meta name="twitter:creator" content="@ {{$siteName}}">
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
