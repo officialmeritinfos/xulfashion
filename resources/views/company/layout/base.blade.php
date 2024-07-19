@@ -51,6 +51,10 @@
         }
     </script>
     <!--====== Title ======-->
+    <script
+        src='//uae.fw-cdn.com/40063761/21716.js'
+        chat='true'>
+    </script>
     <title>
         {{$siteName}} | {{$pageName}}
     </title>
@@ -200,9 +204,6 @@
 <script src="{{asset('home/js/custom.min.js')}}" defer></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 <x-livewire-alert::scripts />
-<script
-    src='//uae.fw-cdn.com/40063761/21716.js'
-    chat='true'>
-</script>
+
 </body>
 </html>
