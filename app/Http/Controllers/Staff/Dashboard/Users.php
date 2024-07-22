@@ -6,7 +6,9 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
 use App\Models\User;
+use App\Models\UserActivity;
 use App\Models\UserAd;
+use App\Models\UserSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -242,6 +244,42 @@ class Users extends BaseController
             'user'      =>$staff,
             'merchant'  => $merchant,
             'pageName'  =>'Merchant Store'
+        ]);
+    }
+    //merchant's activities
+    public function merchantActivity($id)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.activities")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant,
+            'pageName'  =>'Merchant Activities',
+            'activities'=>UserActivity::where('user',$merchant->id)->latest()->paginate(15)
+        ]);
+    }
+    //merchant's settings
+    public function merchantSettings($id)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $merchant = User::where("reference",$id)->firstOrFail();
+
+        return view("staff.dashboard.users.settings")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'merchant'  => $merchant,
+            'pageName'  =>'Merchant Settings',
+            'settings'  =>UserSetting::where('user',$merchant->id)->latest()->first()
         ]);
     }
 }

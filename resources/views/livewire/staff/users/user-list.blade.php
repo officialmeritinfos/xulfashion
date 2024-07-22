@@ -123,78 +123,80 @@
         </div>
         <div class="card-body">
             @if($users->isNotEmpty())
-            <table class="table bordered-table mb-0">
-                <thead>
-                    <tr>
-                        <th scope="col">
-                            S.L
-                        </th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Reference</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Data Joined</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($users as $index=>$user)
-                    <tr>
-                        <td>
-                            <div class="form-check style-check d-flex align-items-center">
-                                {{ $users->firstItem() + $index }}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="{{ $user->photo??'https://ui-avatars.com/api/?rounded=true&name='.$user->name }}"
-                                    alt="" class="w-64-px h-64-px rounded-circle object-fit-cover lightboxed">
-                                <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $user->name }}</h6>
-                            </div>
-                        </td>
-                        <td><a href="{{ route('staff.users.detail',['id'=>$user->reference]) }}"
-                                class="text-primary-600">{{ $user->reference }}</a></td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ date('F d, Y h:i:s', strtotime($user->created_at)) }}</td>
-                        <td>
-                            @switch($user->status)
-                            @case(1)
-                            <span
-                                class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                            @break
+                <div class="table-responsive">
+                    <table class="table bordered-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    S.L
+                                </th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Reference</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Data Joined</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($users as $index=>$user)
+                            <tr>
+                                <td>
+                                    <div class="form-check style-check d-flex align-items-center">
+                                        {{ $users->firstItem() + $index }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ $user->photo??'https://ui-avatars.com/api/?rounded=true&name='.$user->name }}"
+                                            alt="" class="w-64-px h-64-px rounded-circle object-fit-cover lightboxed">
+                                        <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $user->name }}</h6>
+                                    </div>
+                                </td>
+                                <td><a href="{{ route('staff.users.detail',['id'=>$user->reference]) }}"
+                                        class="text-primary-600">{{ $user->reference }}</a></td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ date('F d, Y h:i:s', strtotime($user->created_at)) }}</td>
+                                <td>
+                                    @switch($user->status)
+                                    @case(1)
+                                    <span
+                                        class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
+                                    @break
 
-                            @default
-                            <span
-                                class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">Inactive</span>
-                            @break
-                            @endswitch
-                        </td>
-                        <td>
-                            <a href="{{ route('staff.users.detail',['id'=>$user->reference]) }}" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle
-                                d-inline-flex align-items-center justify-content-center" wire:navigate>
-                                <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                            </a>
-                            @can('update User')
-                            <a href="javascript:void(0)"
-                                class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                <iconify-icon icon="lucide:edit"></iconify-icon>
-                            </a>
-                            @endcan
-                            @can('delete User')
-                            <a href="javascript:void(0)"
-                                class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                            </a>
-                            @endcan
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <div class="mt-5">
-                {{ $users->links() }}
+                                    @default
+                                    <span
+                                        class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">Inactive</span>
+                                    @break
+                                    @endswitch
+                                </td>
+                                <td>
+                                    <a href="{{ route('staff.users.detail',['id'=>$user->reference]) }}" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle
+                                        d-inline-flex align-items-center justify-content-center" wire:navigate>
+                                        <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
+                                    </a>
+                                    @can('update User')
+                                    <a href="javascript:void(0)"
+                                        class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
+                                        <iconify-icon icon="lucide:edit"></iconify-icon>
+                                    </a>
+                                    @endcan
+                                    @can('delete User')
+                                    <a href="javascript:void(0)"
+                                        class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
+                                        <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                    </a>
+                                    @endcan
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-5">
+                    {{ $users->links() }}
 
-            </div>
+                </div>
 
             @else
             <div class="row gy-4">

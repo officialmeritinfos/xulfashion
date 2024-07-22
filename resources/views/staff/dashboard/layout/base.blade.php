@@ -46,7 +46,7 @@
             <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
         </button>
         <div>
-            <a href="index" class="sidebar-logo">
+            <a href="{{route('staff.dashboard')}}" class="sidebar-logo" wire:navigate>
                 <img src="{{asset($web->logo)}}" alt="site logo" class="light-logo">
                 <img src="{{asset( $web->logo2 )}}" alt="site logo" class="dark-logo">
                 <img src="{{asset($web->favicon)}}" alt="site logo" class="logo-icon">
@@ -55,16 +55,16 @@
         <div class="sidebar-menu-area">
             <ul class="sidebar-menu" id="sidebar-menu">
                 <li>
-                    <a href="{{ route('staff.dashboard') }}" wire:navigate>
-                        <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+                    <a href="{{ route('staff.dashboard') }}" wire:navigate style="font-size: 20px;">
+                        <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon" style="font-size: 20px;"></iconify-icon>
                         <span>Overview</span>
                     </a>
                 </li>
-                <li class="sidebar-menu-group-title">Application</li>
+                <li class="sidebar-menu-group-title" >Application</li>
                 <li class="dropdown">
-                    <a href="javascript:void(0)">
-                        <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-                        <span>User Management</span>
+                    <a href="javascript:void(0)" style="font-size: 20px;">
+                        <iconify-icon icon="flowbite:users-group-outline" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                        <span>Users</span>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
@@ -81,9 +81,9 @@
                 </li>
 
                 <li class="dropdown">
-                    <a href="javascript:void(0)">
-                        <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-                        <span>Staff Management</span>
+                    <a href="javascript:void(0)" style="font-size: 20px;">
+                        <iconify-icon icon="wpf:administrator" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                        <span>Staff</span>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
@@ -96,44 +96,36 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="javascript:void(0)">
-                        <iconify-icon icon="solar:document-text-outline" class="menu-icon"></iconify-icon>
+
+                <li>
+                    <a href="#" wire:navigate style="font-size: 20px;">
+                        <iconify-icon icon="mdi:advertisements" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                        <span>Ads</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('staff.stores.list')}}" wire:navigate style="font-size: 20px;">
+                        <iconify-icon icon="streamline:shopping-store-2-store-shop-shops-stores" class="menu-icon"
+                                      style="font-size: 20px;"></iconify-icon>
                         <span>Stores</span>
                     </a>
-                    <ul class="sidebar-submenu">
-                        <li>
-                            <a href="typography"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
-                                List</a>
-                        </li>
+                </li>
 
-
-                        <li>
-                            <a href="star-rating"><i class="ri-circle-fill circle-icon text-indigo w-auto"></i>
-                                Add New</a>
-                        </li>
-                    </ul>
+                <li>
+                    <a href="#" wire:navigate style="font-size: 20px;">
+                        <iconify-icon icon="icon-park:shopping" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                        <span>Orders</span>
+                    </a>
                 </li>
                 <li class="dropdown">
-                    <a href="javascript:void(0)">
-                        <iconify-icon icon="heroicons:document" class="menu-icon"></iconify-icon>
-                        <span>Order Management</span>
+                    <a href="javascript:void(0)" style="font-size: 20px;">
+                        <iconify-icon icon="mdi:finance" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                        <span>Financials</span>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="form"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Input
-                                List</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:void(0)">
-                        <iconify-icon icon="mingcute:storage-line" class="menu-icon"></iconify-icon>
-                        <span>Financial Management</span>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li>
-                            <a href="table-basic"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                            <a href="table-basic" wire:navigate><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
                                 Transactions List</a>
                         </li>
                         <li>
@@ -142,37 +134,24 @@
                         </li>
                     </ul>
                 </li>
-
-                <li class="dropdown">
-                    <a href="javascript:void(0)">
-                        <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-                        <span>General Settings</span>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li>
-                            <a href="users-list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
-                                Settings </a>
-                        </li>
-                    </ul>
-                </li>
                 <li>
-                    <a href="terms-condition">
-                        <iconify-icon icon="octicon:info-24" class="menu-icon"></iconify-icon>
+                    <a href="terms-condition" wire:navigate style="font-size: 22px;">
+                        <iconify-icon icon="iconamoon:notification" class="menu-icon" style="font-size: 22px;"></iconify-icon>
                         <span>Notifications</span>
                     </a>
                 </li>
                 <li class="dropdown">
-                    <a href="javascript:void(0)">
-                        <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>
+                    <a href="javascript:void(0)" style="font-size: 22px;">
+                        <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon" style="font-size: 22px;"></iconify-icon>
                         <span>Settings</span>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="company"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                            <a href="company" wire:navigate><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
                                 Security</a>
                         </li>
                         <li>
-                            <a href="notification"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>
+                            <a href="notification" wire:navigate><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>
                                 General</a>
                         </li>
                     </ul>

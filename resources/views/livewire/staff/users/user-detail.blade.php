@@ -230,6 +230,46 @@
                 </div>
                 @endcan
 
+                    @can('read UserActivity')
+                        <div class="card shadow mb-3">
+                            <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                <div class="flex-grow-1 mb-3 mb-md-0">
+                                    <h5 class="card-title">
+                                        <i class="ri-apps-2-fill"></i> Merchant Activity
+                                    </h5>
+                                    <p class="card-text" style="word-break: break-word;">
+                                        View all merchant's activities - <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                            title="View merchant's activities"></i>
+                                    </p>
+                                </div>
+                                <a href="{{route('staff.users.activities',['id'=>$user->reference])}}" wire:navigate
+                                   class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                    Manage
+                                </a>
+                            </div>
+                        </div>
+                    @endcan
+
+                    @can('read UserSetting')
+                        <div class="card shadow mb-3">
+                            <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                <div class="flex-grow-1 mb-3 mb-md-0">
+                                    <h5 class="card-title">
+                                        <i class="ri-apps-2-fill"></i> Merchant Settings
+                                    </h5>
+                                    <p class="card-text" style="word-break: break-word;">
+                                        View all merchant's settings - <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                          title="View merchant's settings"></i>
+                                    </p>
+                                </div>
+                                <a href="{{route('staff.users.settings',['id'=>$user->reference])}}" wire:navigate
+                                   class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                    Manage
+                                </a>
+                            </div>
+                        </div>
+                    @endcan
+
                 @can('read UserStore')
                 <div class="card shadow mb-3">
                     <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
@@ -250,170 +290,6 @@
                 </div>
                 @endcan
 
-                @can('read UserActivity')
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Merchant Activity
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                View all merchant's activities - <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                    title="View merchant's activities"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
-
-                @can('read UserSetting')
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Merchant Settings
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                View all merchant's settings - <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                    title="View merchant's settings"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
-                @can('read UserStoreCoupon')
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Merchant Store Coupons
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                View all merchant's coupons - <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                    title="View merchant's settings"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
-                @can('read UserStoreCustomer')
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Merchant Store Customer
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                View all merchant's customers - <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                    title="View merchant's customers"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
-                @can('read UserStoreInvoice')
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Merchant Store invoices
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                View all merchant's invoices - <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                    title="View merchant's customers"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
-                @can('read UserStoreOrder')
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Merchant Store Products
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                View all merchant's products - <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                    title="View merchant's products"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
-                @can('read UserStoreCatalogCategory')
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Merchant Store Product Category
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                View all merchant's product category - <i class="ri-information-fill"
-                                    data-bs-toggle="tooltip" title="View merchant's product category"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
-
-                @can('read UserStoreSetting')
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Merchant Store Setting
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                View all merchant's store setting - <i class="ri-information-fill"
-                                    data-bs-toggle="tooltip" title="View merchant's product category"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
-                @can(['create UserVerification','update UserVerification'])
-                <div class="card shadow mb-3">
-                    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="flex-grow-1 mb-3 mb-md-0">
-                            <h5 class="card-title">
-                                <i class="ri-apps-2-fill"></i> Store KYB
-                            </h5>
-                            <p class="card-text" style="word-break: break-word;">
-                                Manage Merchant KYB - <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                    title="Edit Merchant Information"></i>
-                            </p>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm small-button">
-                            Manage
-                        </a>
-                    </div>
-                </div>
-                @endcan
 
             </div>
         </div>

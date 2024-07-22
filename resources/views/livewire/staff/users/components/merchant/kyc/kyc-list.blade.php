@@ -88,7 +88,7 @@
                             <div class="col-md-12 mt-5 text-center">
                                 <button class="btn btn-outline-primary text-sm btn-sm radius-8">
                                     <span>
-                                        Show Form
+                                        Submit
                                         <div wire:loading>
                                             <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
                                         </div>

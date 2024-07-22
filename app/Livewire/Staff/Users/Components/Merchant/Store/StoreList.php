@@ -36,6 +36,7 @@ class StoreList extends Component
     public $country;
     public $showInitializeStoreForm=false;
     public $showVerifyBusinessForm=false;
+    public $showStoreDetail=false;
     #[Validate]
     public $name;
     #[Validate]
@@ -84,6 +85,7 @@ class StoreList extends Component
             $this->doingBusinessAs = $this->store->name;
             $this->address = $this->store->address;
         }
+        $this->showStoreDetail=!$this->showInitializeStoreForm && !$this->showVerifyBusinessForm;
     }
     //validate rule
     public function rules()

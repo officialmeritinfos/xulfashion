@@ -117,7 +117,8 @@
     @endif
     @if($showVerifyBusinessForm)
         @if($staff->can('create UserStoreVerification'))
-                <div class="product-area">
+            <div class="card">
+                <div class="product-area card-body">
                     <div class="container-fluid">
 
                         <div class="submit-property-area">
@@ -175,9 +176,11 @@
 
                     </div>
                 </div>
+            </div>
         @endif
     @endif
-    @if($staff->can('read UserStore'))
+    @if($showStoreDetail)
+        @if($staff->can('read UserStore'))
 
             <div class="row gy-4">
                 <div class="col-lg-6 mx-auto">
@@ -260,80 +263,239 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Statistics -->
-                <div class="col-xl-6 mb-4 col-lg-6 col-12">
-                    <div class="card h-auto">
-                        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
-                            <div class="d-flex flex-wrap align-items-center gap-3">
-                                <h6 class="text-lg fw-semibold mb-0">Statistics</h6>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center gap-3">
-                                <h6 class="text-lg fw-semibold mb-0">
-                                    <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank"><i class="ri-eye-line" data-bs-toggle="tooltip"
-                                                                                                                         title="View Store"></i> </a>
-                                </h6>
+                <div class="col-md-6">
+                    <div class="row">
+                        <!-- Statistics -->
+                        <div class="col-xl-12 mb-4 col-lg-12 col-12">
+                            <div class="card h-auto">
+                                <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                    <div class="d-flex flex-wrap align-items-center gap-3">
+                                        <h6 class="text-lg fw-semibold mb-0">Statistics</h6>
+                                    </div>
+                                    <div class="d-flex flex-wrap align-items-center gap-3">
+                                        <h6 class="text-lg fw-semibold mb-0">
+                                            <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank"><i class="ri-eye-line" data-bs-toggle="tooltip"
+                                                                                                                                 title="View Store"></i> </a>
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="card-body g-5 d-flex flex-wrap">
+                                    <div class="row gy-3">
+                                        <div class="col-md-6 col-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-chart-pie-2 ti-sm"></i></div>
+                                                <div class="card-info">
+                                                    <h5 class="mb-0">{{$option->formatNumber($option->numberOfSalesInStore($store->id))}}</h5>
+                                                    <small>Total Sales<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                         title="Total number of orders received - which includes ony successfully processed orders where the status
+                                            has updated to completed."></i> </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
+                                                <div class="card-info">
+                                                    <h5 class="mb-0">{{$option->fetchCurrencySign($store->currency)->currency_symbol}}{{$option->formatNumber($option->invoiceRevenueInStore($store->id))}} </h5>
+                                                    <small>Invoice Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                             title="Total sum of money earned through invoices. This only accounts for invoices whose payment was processed through
+                                                         this platform not offline payments."></i></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
+                                                <div class="card-info">
+                                                    <h5 class="mb-0">{{$option->fetchCurrencySign($store->currency)->currency_symbol}}{{$option->formatNumber($option->revenueInStore($store->id))}} </h5>
+                                                    <small>Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                     title="Total sum of money earned through your stores. This only accounts for sales which was marked as completed."></i></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
+                                                <div class="card-info">
+                                                    <h5 class="mb-0">{{$option->formatNumber($option->numberOfCustomersInStore($store->id))}}</h5>
+                                                    <small>Customers</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-shopping-cart ti-sm"></i></div>
+                                                <div class="card-info">
+                                                    <h5 class="mb-0">{{$option->numberOfProductInStore($store->id)}}</h5>
+                                                    <small>Products</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body g-5 d-flex flex-wrap">
-                            <div class="row gy-3">
-                                <div class="col-md-6 col-6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-chart-pie-2 ti-sm"></i></div>
-                                        <div class="card-info">
-                                            <h5 class="mb-0">{{$option->formatNumber($option->numberOfSalesInStore($store->id))}}</h5>
-                                            <small>Total Sales<i class="ri-information-fill" data-bs-toggle="tooltip"
-                                                                 title="Total number of orders received - which includes ony successfully processed orders where the status
-                                    has updated to completed."></i> </small>
+                        <!--/ Statistics -->
+
+                        <div class="col-lg-12 mx-auto mt-3">
+                            <div class="container-fluid" style="margin-bottom: 5rem;">
+
+
+                                @can('read UserStoreCoupon')
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                            <div class="flex-grow-1 mb-3 mb-md-0">
+                                                <h5 class="card-title">
+                                                    <i class="ri-apps-2-fill"></i> Merchant Store Coupons
+                                                </h5>
+                                                <p class="card-text" style="word-break: break-word;">
+                                                    View all merchant's coupons - <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                                     title="View merchant's settings"></i>
+                                                </p>
+                                            </div>
+                                            <a href="{{route('staff.stores.coupons',['id'=>$store->reference])}}" wire:navigate
+                                               class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                                Manage
+                                            </a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
-                                        <div class="card-info">
-                                            <h5 class="mb-0">{{$option->fetchCurrencySign($store->currency)->currency_symbol}}{{$option->formatNumber($option->invoiceRevenueInStore($store->id))}} </h5>
-                                            <small>Invoice Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
-                                                                     title="Total sum of money earned through invoices. This only accounts for invoices whose payment was processed through
-                                                 this platform not offline payments."></i></small>
+                                @endcan
+                                @can('read UserStoreCustomer')
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                            <div class="flex-grow-1 mb-3 mb-md-0">
+                                                <h5 class="card-title">
+                                                    <i class="ri-apps-2-fill"></i> Merchant Store Customer
+                                                </h5>
+                                                <p class="card-text" style="word-break: break-word;">
+                                                    View all merchant's customers - <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                                       title="View merchant's customers"></i>
+                                                </p>
+                                            </div>
+                                            <a href="{{route('staff.stores.customers',['id'=>$store->reference])}}" wire:navigate
+                                               class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                                Manage
+                                            </a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
-                                        <div class="card-info">
-                                            <h5 class="mb-0">{{$option->fetchCurrencySign($store->currency)->currency_symbol}}{{$option->formatNumber($option->revenueInStore($store->id))}} </h5>
-                                            <small>Revenue<i class="ri-information-fill" data-bs-toggle="tooltip"
-                                                             title="Total sum of money earned through your stores. This only accounts for sales which was marked as completed."></i></small>
+                                @endcan
+                                @can('read UserStoreInvoice')
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                            <div class="flex-grow-1 mb-3 mb-md-0">
+                                                <h5 class="card-title">
+                                                    <i class="ri-apps-2-fill"></i> Merchant Store invoices
+                                                </h5>
+                                                <p class="card-text" style="word-break: break-word;">
+                                                    View all merchant's invoices - <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                                      title="View merchant's customers"></i>
+                                                </p>
+                                            </div>
+                                            <a href="{{route('staff.stores.invoices',['id'=>$store->reference])}}" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                                Manage
+                                            </a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
-                                        <div class="card-info">
-                                            <h5 class="mb-0">{{$option->formatNumber($option->numberOfCustomersInStore($store->id))}}</h5>
-                                            <small>Customers</small>
+                                @endcan
+                                @can('read UserStoreOrder')
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                            <div class="flex-grow-1 mb-3 mb-md-0">
+                                                <h5 class="card-title">
+                                                    <i class="ri-apps-2-fill"></i> Merchant Store Products
+                                                </h5>
+                                                <p class="card-text" style="word-break: break-word;">
+                                                    View all merchant's products - <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                                      title="View merchant's products"></i>
+                                                </p>
+                                            </div>
+                                            <a href="{{route('staff.stores.products',['id'=>$store->reference])}}" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                                Manage
+                                            </a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-shopping-cart ti-sm"></i></div>
-                                        <div class="card-info">
-                                            <h5 class="mb-0">{{$option->numberOfProductInStore($store->id)}}</h5>
-                                            <small>Products</small>
+                                @endcan
+                                @can('read UserStoreCatalogCategory')
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                            <div class="flex-grow-1 mb-3 mb-md-0">
+                                                <h5 class="card-title">
+                                                    <i class="ri-apps-2-fill"></i> Merchant Store Product Category
+                                                </h5>
+                                                <p class="card-text" style="word-break: break-word;">
+                                                    View all merchant's product category - <i class="ri-information-fill"
+                                                                                              data-bs-toggle="tooltip" title="View merchant's product category"></i>
+                                                </p>
+                                            </div>
+                                            <a href="{{route('staff.stores.categories',['id'=>$store->reference])}}" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                                Manage
+                                            </a>
                                         </div>
                                     </div>
-                                </div>
+                                @endcan
+                                @can('read UserStoreOrder')
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                            <div class="flex-grow-1 mb-3 mb-md-0">
+                                                <h5 class="card-title">
+                                                    <i class="ri-apps-2-fill"></i> Merchant Store Orders
+                                                </h5>
+                                                <p class="card-text" style="word-break: break-word;">
+                                                    View all merchant's orders - <i class="ri-information-fill"
+                                                                                              data-bs-toggle="tooltip" title="View merchant's product category"></i>
+                                                </p>
+                                            </div>
+                                            <a href="{{route('staff.stores.orders',['id'=>$store->reference])}}" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                                Manage
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endcan
+
+                                @can('read UserStoreSetting')
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                            <div class="flex-grow-1 mb-3 mb-md-0">
+                                                <h5 class="card-title">
+                                                    <i class="ri-apps-2-fill"></i> Merchant Store Setting
+                                                </h5>
+                                                <p class="card-text" style="word-break: break-word;">
+                                                    View all merchant's store setting - <i class="ri-information-fill"
+                                                                                           data-bs-toggle="tooltip" title="View merchant's product category"></i>
+                                                </p>
+                                            </div>
+                                            <a href="#" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                                Manage
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endcan
+                                @can(['create UserVerification','update UserVerification'])
+                                    <div class="card shadow mb-3">
+                                        <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                                            <div class="flex-grow-1 mb-3 mb-md-0">
+                                                <h5 class="card-title">
+                                                    <i class="ri-apps-2-fill"></i> Store KYB
+                                                </h5>
+                                                <p class="card-text" style="word-break: break-word;">
+                                                    Manage Merchant KYB - <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                                             title="Edit Merchant Information"></i>
+                                                </p>
+                                            </div>
+                                            <a href="#" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                                Manage
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
                     </div>
+
                 </div>
-                <!--/ Statistics -->
 
             </div>
 
+        @endif
     @endif
 </div>

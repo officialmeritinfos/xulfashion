@@ -291,93 +291,95 @@
         </div>
         <div class="card-body">
             @if($transactions->isNotEmpty())
-                <table class="table bordered-table mb-0">
-                    <thead>
-                    <tr>
-                        <th scope="col">
-                            S.L
-                        </th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Reference</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($transactions as $index=>$transaction)
+                <div class="table-responsive">
+                    <table class="table bordered-table mb-0">
+                        <thead>
                         <tr>
-                            <td>
-                                <div class="form-check style-check d-flex align-items-center">
-                                    {{ $transactions->firstItem() + $index }}
-                                </div>
-                            </td>
-                            <td>{{$transaction->currency}}{{number_format($transaction->amount,2)}}</td>
-                            <td>
-                                <span class="badge bg-primary">{{$transaction->reference}}</span>
-                            </td>
-                            <td>
-                                {{date('d-m-Y H-i-s',strtotime($transaction->created_at))}}
-                            </td>
-                            <td>
-                                @switch($transaction->transactionType)
-                                    @case(1)
-                                        <span class="badge bg-success">Withdrawal</span>
-                                        @break
-                                    @case(2)
-                                        <span class="badge bg-info">Referral Conversion</span>
-                                        @break
-                                    @case(4)
-                                        <span class="badge bg-primary">Order Settlement</span>
-                                        @break
-                                    @case(5)
-                                        <span class="badge bg-dark">Invoice Settlement</span>
-                                        @break
-                                    @case(6)
-                                        <span class="badge bg-dark">Balance Top-up</span>
-                                        @break
-                                    @case(7)
-                                        <span class="badge bg-info">Referral Earning</span>
-                                        @break
-                                    @case(8)
-                                        <span class="badge bg-dark">Refund</span>
-                                        @break
-                                    @default
-                                        <span class="badge bg-primary">Charge</span>
-                                        @break
-                                @endswitch
-                            </td>
-                            <td>
-                                @switch($transaction->status)
-                                    @case(1)
-                                        <span class="badge bg-success text-white">
-                                            <i class="bx bx-checkbox-checked"
-                                               data-bs-toggle="tooltip" title="completed"
-                                               style="font-size: 15px;"></i>
-                                        </span>
-                                        @break
-                                    @case(2)
-                                        <span class="badge bg-primary text-white">
-                                            <i class="bx bx-loader-circle bx-spin" data-bs-toggle="tooltip" title="processing"
-                                               style="font-size: 15px;"></i>
-                                        </span>
-                                        @break
-                                    @default
-                                        <span class="badge bg-danger text-white">
-                                            <i class="bx bx-sad"
-                                               data-bs-toggle="tooltip" title="Please contact support"
-                                               style="font-size: 15px;"></i>
-                                        </span>
-                                        @break
-                                @endswitch
-                            </td>
+                            <th scope="col">
+                                S.L
+                            </th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Reference</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Status</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-                <div class="mt-5">
-                    {{ $transactions->links() }}
+                        </thead>
+                        <tbody>
+                        @foreach($transactions as $index=>$transaction)
+                            <tr>
+                                <td>
+                                    <div class="form-check style-check d-flex align-items-center">
+                                        {{ $transactions->firstItem() + $index }}
+                                    </div>
+                                </td>
+                                <td>{{$transaction->currency}}{{number_format($transaction->amount,2)}}</td>
+                                <td>
+                                    <span class="badge bg-primary">{{$transaction->reference}}</span>
+                                </td>
+                                <td>
+                                    {{date('d-m-Y H-i-s',strtotime($transaction->created_at))}}
+                                </td>
+                                <td>
+                                    @switch($transaction->transactionType)
+                                        @case(1)
+                                            <span class="badge bg-success">Withdrawal</span>
+                                            @break
+                                        @case(2)
+                                            <span class="badge bg-info">Referral Conversion</span>
+                                            @break
+                                        @case(4)
+                                            <span class="badge bg-primary">Order Settlement</span>
+                                            @break
+                                        @case(5)
+                                            <span class="badge bg-dark">Invoice Settlement</span>
+                                            @break
+                                        @case(6)
+                                            <span class="badge bg-dark">Balance Top-up</span>
+                                            @break
+                                        @case(7)
+                                            <span class="badge bg-info">Referral Earning</span>
+                                            @break
+                                        @case(8)
+                                            <span class="badge bg-dark">Refund</span>
+                                            @break
+                                        @default
+                                            <span class="badge bg-primary">Charge</span>
+                                            @break
+                                    @endswitch
+                                </td>
+                                <td>
+                                    @switch($transaction->status)
+                                        @case(1)
+                                            <span class="badge bg-success text-white">
+                                                <i class="bx bx-checkbox-checked"
+                                                   data-bs-toggle="tooltip" title="completed"
+                                                   style="font-size: 15px;"></i>
+                                            </span>
+                                            @break
+                                        @case(2)
+                                            <span class="badge bg-primary text-white">
+                                                <i class="bx bx-loader-circle bx-spin" data-bs-toggle="tooltip" title="processing"
+                                                   style="font-size: 15px;"></i>
+                                            </span>
+                                            @break
+                                        @default
+                                            <span class="badge bg-danger text-white">
+                                                <i class="bx bx-sad"
+                                                   data-bs-toggle="tooltip" title="Please contact support"
+                                                   style="font-size: 15px;"></i>
+                                            </span>
+                                            @break
+                                    @endswitch
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    <div class="mt-5">
+                        {{ $transactions->links() }}
 
+                    </div>
                 </div>
 
             @else
@@ -419,65 +421,67 @@
         </div>
         <div class="card-body">
             @if($withdrawals->isNotEmpty())
-                <table class="table bordered-table mb-0">
-                    <thead>
-                    <tr>
-                        <th scope="col">
-                            S.L
-                        </th>
-                        <th>Id</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($withdrawals as $index=>$withdrawal)
+                <div class="table-responsive">
+                    <table class="table bordered-table mb-0">
+                        <thead>
                         <tr>
-                            <td>
-                                <div class="form-check style-check d-flex align-items-center">
-                                    {{ $withdrawals->firstItem() + $index }}
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge bg-primary">
-                                    {{$withdrawal->reference}}
-                                </span>
-                            </td>
-                            <td>
-                                {{$withdrawal->currency}}{{number_format($withdrawal->amount,2)}}
-                                <sup>({{$withdrawal->currency}}{{number_format($withdrawal->amountCredit,2)}})</sup>
-                            </td>
-                            <td>
-                                {{date('D, d M Y H:i:s',strtotime($withdrawal->created_at))}}
-                            </td>
-                            <td>
-                                @switch($withdrawal->status)
-                                    @case(1)
-                                        <span class="badge bg-success">Completed</span>
-                                        @break
-                                    @case(2)
-                                        <span class="badge bg-primary">Pending</span>
-                                        @break
-                                    @default
-                                        <span class="badge bg-danger">Cancelled</span>
-                                        @break
-                                @endswitch
-                            </td>
-                            <td>
-                                <a href="{{ route('staff.users.balance.payouts',['merchant'=>$user->reference,'id'=>$withdrawal->reference]) }}" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle
-                                d-inline-flex align-items-center justify-content-center" wire:navigate>
-                                    <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                                </a>
-                            </td>
+                            <th scope="col">
+                                S.L
+                            </th>
+                            <th>Id</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-                <div class="mt-5">
-                    {{ $withdrawals->links() }}
+                        </thead>
+                        <tbody>
+                        @foreach($withdrawals as $index=>$withdrawal)
+                            <tr>
+                                <td>
+                                    <div class="form-check style-check d-flex align-items-center">
+                                        {{ $withdrawals->firstItem() + $index }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">
+                                        {{$withdrawal->reference}}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{$withdrawal->currency}}{{number_format($withdrawal->amount,2)}}
+                                    <sup>({{$withdrawal->currency}}{{number_format($withdrawal->amountCredit,2)}})</sup>
+                                </td>
+                                <td>
+                                    {{date('D, d M Y H:i:s',strtotime($withdrawal->created_at))}}
+                                </td>
+                                <td>
+                                    @switch($withdrawal->status)
+                                        @case(1)
+                                            <span class="badge bg-success">Completed</span>
+                                            @break
+                                        @case(2)
+                                            <span class="badge bg-primary">Pending</span>
+                                            @break
+                                        @default
+                                            <span class="badge bg-danger">Cancelled</span>
+                                            @break
+                                    @endswitch
+                                </td>
+                                <td>
+                                    <a href="{{ route('staff.users.balance.payouts',['merchant'=>$user->reference,'id'=>$withdrawal->reference]) }}" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle
+                                    d-inline-flex align-items-center justify-content-center" wire:navigate>
+                                        <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    <div class="mt-5">
+                        {{ $withdrawals->links() }}
 
+                    </div>
                 </div>
 
             @else

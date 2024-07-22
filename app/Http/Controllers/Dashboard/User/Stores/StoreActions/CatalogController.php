@@ -701,7 +701,7 @@ class CatalogController extends BaseController
 
         //another is highlighted
         $highlighted = UserStoreProduct::where([
-            'store'=>$store->id,'reference'=>$id
+            'store'=>$store->id,'highlighted'=>1
         ])->whereNot('id',$id)->first();
 
         if (!empty($highlighted)){
