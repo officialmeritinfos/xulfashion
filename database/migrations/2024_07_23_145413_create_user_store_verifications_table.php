@@ -24,6 +24,8 @@ class CreateUserStoreVerificationsTable extends Migration
             $table->string('addressProof', 200);
             $table->text('address');
             $table->integer('status');
+            $table->text('rejectReason')->nullable();
+            $table->string('approvedBy', 150)->nullable();
             $table->timestamps(, 150);
         });
     }
