@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserAd;
 use App\Models\UserBank;
+use App\Models\UserStore;
 use App\Models\UserStoreCatalogCategory;
 use App\Models\UserStoreCustomer;
 use App\Models\UserStoreInvoice;
@@ -477,5 +478,10 @@ class Regular
     public function fetchStoreKYB($storeId)
     {
         return UserStoreVerification::where('store',$storeId)->first();
+    }
+    //fetch store by id
+    public function fetchStoreById($id)
+    {
+        return UserStore::where('id',$id)->first();
     }
 }

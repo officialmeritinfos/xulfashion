@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Staff\Auth\LoginController;
 use App\Http\Controllers\Staff\Auth\TwoFactorController;
+use App\Http\Controllers\Staff\Dashboard\ActivityController;
+use App\Http\Controllers\Staff\Dashboard\AdController;
 use App\Http\Controllers\Staff\Dashboard\Home;
 use App\Http\Controllers\Staff\Dashboard\OrderController;
+use App\Http\Controllers\Staff\Dashboard\SettingController;
 use App\Http\Controllers\Staff\Dashboard\StoreController;
 use App\Http\Controllers\Staff\Dashboard\Users;
 use Illuminate\Support\Facades\Route;
@@ -47,7 +50,6 @@ Route::domain('staff.localhost')->group(function () {
         Route::get('users/{id}/activities',[Users::class, 'merchantActivity'])->name('users.activities');//merchant activities
         //Merchant settings
         Route::get('users/{id}/settings',[Users::class, 'merchantSettings'])->name('users.settings');//merchant settings
-
         //Stores list
         Route::get('stores/list',[StoreController::class, 'landingPage'])->name('stores.list');
         Route::get('stores/{id}/coupons',[StoreController::class, 'coupons'])->name('stores.coupons');//coupons
@@ -60,9 +62,17 @@ Route::domain('staff.localhost')->group(function () {
         Route::get('stores/{id}/orders',[StoreController::class, 'orders'])->name('stores.orders');//Orders
         Route::get('stores/{id}/settings',[StoreController::class, 'settings'])->name('stores.settings');//Settings
         Route::get('stores/{id}/kyb',[StoreController::class, 'kyb'])->name('stores.kyb');//Store KYB
-
         //Orders
         Route::get('orders/list',[OrderController::class, 'landingPage'])->name('orders.list');
         Route::get('orders/{id}/{store}/detail',[OrderController::class, 'orderDetail'])->name('orders.detail');
+        //Ads
+        Route::get('ads/list',[AdController::class, 'landingPage'])->name('ads.list');
+        //Activities
+        Route::get('activity/index',[ActivityController::class, 'landingPage'])->name('activity.index');
+        //Settings
+        Route::get('settings/profile',[SettingController::class, 'profilePage'])->name('settings.profile');
+        Route::get('settings/general',[SettingController::class, 'generalSettings'])->name('settings.general');
+        Route::get('settings/security',[SettingController::class, 'securitySetting'])->name('settings.security');
+
     });
 });
