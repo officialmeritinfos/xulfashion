@@ -464,7 +464,7 @@
                                                                                            data-bs-toggle="tooltip" title="View merchant's product category"></i>
                                                 </p>
                                             </div>
-                                            <a href="#" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                            <a href="{{route('staff.stores.settings',['id'=>$store->reference])}}" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
                                                 Manage
                                             </a>
                                         </div>
@@ -482,7 +482,7 @@
                                                                              title="Edit Merchant Information"></i>
                                                 </p>
                                             </div>
-                                            <a href="#" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
+                                            <a href="{{route('staff.stores.kyb',['id'=>$store->reference])}}" wire:navigate class="btn btn-outline-primary rounded-pill btn-sm small-button">
                                                 Manage
                                             </a>
                                         </div>

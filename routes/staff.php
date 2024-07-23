@@ -3,6 +3,7 @@
 use App\Http\Controllers\Staff\Auth\LoginController;
 use App\Http\Controllers\Staff\Auth\TwoFactorController;
 use App\Http\Controllers\Staff\Dashboard\Home;
+use App\Http\Controllers\Staff\Dashboard\OrderController;
 use App\Http\Controllers\Staff\Dashboard\StoreController;
 use App\Http\Controllers\Staff\Dashboard\Users;
 use Illuminate\Support\Facades\Route;
@@ -57,9 +58,11 @@ Route::domain('staff.localhost')->group(function () {
         Route::get('stores/{id}/categories',[StoreController::class, 'categories'])->name('stores.categories');//Categories
         Route::get('stores/{id}/products',[StoreController::class, 'products'])->name('stores.products');//Products
         Route::get('stores/{id}/orders',[StoreController::class, 'orders'])->name('stores.orders');//Orders
+        Route::get('stores/{id}/settings',[StoreController::class, 'settings'])->name('stores.settings');//Settings
+        Route::get('stores/{id}/kyb',[StoreController::class, 'kyb'])->name('stores.kyb');//Store KYB
 
         //Orders
-        Route::get('orders/list',[StoreController::class, 'landingPage'])->name('orders.list');
-        Route::get('orders/{id}/detail',[StoreController::class, 'landingPage'])->name('orders.detail');
+        Route::get('orders/list',[OrderController::class, 'landingPage'])->name('orders.list');
+        Route::get('orders/{id}/{store}/detail',[OrderController::class, 'orderDetail'])->name('orders.detail');
     });
 });

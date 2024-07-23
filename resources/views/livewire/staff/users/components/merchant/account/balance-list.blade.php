@@ -1,7 +1,7 @@
 @inject('option','App\Custom\Regular')
 <div>
     <div class="row">
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-4 mx-auto">
             <div class="card h-100 p-0 radius-12">
 
                 <div class="card h-100 p-0 radius-12">
@@ -11,7 +11,7 @@
                             <div class="col-xxl-12 col-md-12 user-grid-card   ">
                                 <div class="position-relative border radius-16 overflow-hidden">
                                     <div class="dropdown position-absolute top-0 end-0 me-16 mt-16">
-                                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false" class="bg-white-gradient-light w-32-px h-32-px radius-8 border border-light-white d-flex justify-content-center align-items-center text-white">
+                                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false" class="bg-primary w-32-px h-32-px radius-8 border border-light-white d-flex justify-content-center align-items-center text-white">
                                             <iconify-icon icon="entypo:dots-three-vertical" class="icon "></iconify-icon>
                                         </button>
                                         <ul class="dropdown-menu p-12 border bg-base shadow">
@@ -47,7 +47,32 @@
             </div>
         </div>
 
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-4 mx-auto">
+            <div class="card h-100 p-0 radius-12">
+
+                <div class="card h-100 p-0 radius-12">
+
+                    <div class="card-body p-24">
+                        <div class="row gy-4">
+                            <div class="col-xxl-12 col-md-12 user-grid-card   ">
+                                <div class="position-relative border radius-16 overflow-hidden">
+
+                                    <div class="ps-16 pb-16 pe-16 text-center mt-5">
+                                        <h6 class="text-lg mb-0 mt-4">
+                                            Pending Balance
+                                        </h6>
+                                        <span class="text-secondary-light mb-16">{{$currency->sign}} {{number_format($user->pendingBalance,2)}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-4 mx-auto">
             <div class="card h-100 p-0 radius-12">
 
                 <div class="card h-100 p-0 radius-12">
@@ -57,7 +82,7 @@
                             <div class="col-xxl-12 col-md-12 user-grid-card   ">
                                 <div class="position-relative border radius-16 overflow-hidden">
                                     <div class="dropdown position-absolute top-0 end-0 me-16 mt-16">
-                                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false" class="bg-white-gradient-light w-32-px h-32-px radius-8 border border-light-white d-flex justify-content-center align-items-center text-white">
+                                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false" class="bg-primary w-32-px h-32-px radius-8 border border-light-white d-flex justify-content-center align-items-center text-white">
                                             <iconify-icon icon="entypo:dots-three-vertical" class="icon "></iconify-icon>
                                         </button>
                                         <ul class="dropdown-menu p-12 border bg-base shadow">
@@ -342,6 +367,12 @@
                                             @break
                                         @case(8)
                                             <span class="badge bg-dark">Refund</span>
+                                            @break
+                                        @case(9)
+                                            <span class="badge bg-dark">Debit from Pending Balance</span>
+                                            @break
+                                        @case(10)
+                                            <span class="badge bg-dark">Credit From Pending Balance</span>
                                             @break
                                         @default
                                             <span class="badge bg-primary">Charge</span>

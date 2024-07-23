@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\User\Stores\StoreActions;
 
+use App\Custom\GoogleUpload;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
@@ -79,34 +80,71 @@ class KYB extends BaseController
                 $this->sendError('kyb.error',['error'=>'Please submit your account verification first before submitting Store KYC']);
             }
 
+            $google = new GoogleUpload();
             //let us upload the director's proof of address
             if ($request->hasFile('addressProof')) {
                 //lets upload the address proof
-                $result = $this->google->uploadGoogle($request->file('addressProof'));
+                $result = $google->uploadGoogle($request->file('addressProof'));
                 $addressProof  = $result['link'];
             }
 
             //let us upload the business certificate
             if ($request->hasFile('regCert')) {
-                $results = $this->google->uploadGoogle($request->file('regCert'));
+                $results = $google->uploadGoogle($request->file('regCert'));
                 $certificate  = $results['link'];
             }
 
+            //check if verification exists
+            $kybExists = UserStoreVerification::where('store',$store->id)->first();
+            //if empty
+            if (empty($kybExists)){
+                //collate business's data
+                $businessData = [
+                    'store'=>$store->id,
+                    'reference'=>$reference,
+                    'certificate'=>$certificate,
+                    'addressProof'=>$addressProof,
+                    'status'=>4,
+                    'address'=>$input['address'],'regNumber'=>$input['regNumber'],
+                    'dba'=>$input['doingBusinessAs'],'legalName'=>$input['legalName']
+                ];
 
-            //collate business's data
-            $businessData = [
-                'store'=>$store->id,
-                'reference'=>$reference,
-                'certificate'=>$certificate,
-                'addressProof'=>$addressProof,
-                'status'=>4,
-                'address'=>$input['address'],'regNumber'=>$input['regNumber'],
-                'dba'=>$input['doingBusinessAs'],'legalName'=>$input['legalName']
-            ];
+                //we create the document
+                $verification = UserStoreVerification::create($businessData);
+                if (!empty($verification)){
+                    $store->isVerified=4;
+                    $store->legalName=$input['legalName'];
+                    $store->address=$input['address'];
+                    $store->save();
 
-            //we create the document
-            $verification = UserStoreVerification::create($businessData);
-            if (!empty($verification)){
+                    //send notification
+                    $message = "The KYC for your store ".$store->name." has been submitted and is currently under review.";
+                    $this->userNotification($user,'KYC for Store submitted',$message,$request->ip());
+
+                    //send message to admin
+                    $adminMessage = "A new KYC for business account has been received from ".$user->name.". The required
+                documents have been uploaded and is awaiting your review. KYC Reference ID is ".$reference;
+                    $this->sendDepartmentMail('compliance', $adminMessage,'New KYB for Store Submitted.');
+
+                    return $this->sendResponse([
+                        'redirectTo'=>url()->previous()
+                    ],'Your Store KYC has been received and will be reviewed shortly. ');
+                }
+                return $this->sendError('document.error',[
+                    'error'=>'Something went wrong while processing your documents'
+                ]);
+            }else{
+                //collate business's data
+                $businessData = [
+                    'certificate'=>$certificate,
+                    'addressProof'=>$addressProof,
+                    'status'=>4,
+                    'address'=>$input['address'],'regNumber'=>$input['regNumber'],
+                    'dba'=>$input['doingBusinessAs'],'legalName'=>$input['legalName']
+                ];
+
+                //we create the document
+                $verification = $kybExists->update($businessData);
                 $store->isVerified=4;
                 $store->legalName=$input['legalName'];
                 $store->address=$input['address'];
@@ -119,15 +157,12 @@ class KYB extends BaseController
                 //send message to admin
                 $adminMessage = "A new KYC for business account has been received from ".$user->name.". The required
                 documents have been uploaded and is awaiting your review. KYC Reference ID is ".$reference;
-                $this->sendAdminMail($adminMessage,'New KYB for Store Submitted.');
+                $this->sendDepartmentMail('compliance', $adminMessage,'New KYB for Store Submitted.');
 
                 return $this->sendResponse([
                     'redirectTo'=>url()->previous()
                 ],'Your Store KYC has been received and will be reviewed shortly. ');
             }
-            return $this->sendError('document.error',[
-                'error'=>'Something went wrong while processing your documents'
-            ]);
         }catch (\Exception $exception){
             Log::info('Error in  ' . __METHOD__ . ' updating verification documents: ' . $exception->getMessage());
             return $this->sendError('server.error',[

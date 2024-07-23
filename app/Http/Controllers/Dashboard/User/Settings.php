@@ -115,21 +115,58 @@ class Settings extends BaseController
                 $backImage = '';
             }
 
-            //collate director's data
-            $directorData = [
-                'user'=>$user->id,
-                'reference'=>$reference,
-                'docType'=>$input['docType'],
-                'frontImage'=>$frontImage,
-                'backImage'=>$backImage,
-                'idNumber'=>$input['idNumber'],
-                'utilityBill'=>$addressProof,
-                'status'=>4
-            ];
+            //check if kyc already exists
+            $kycExists = UserVerification::where('user',$user->id)->first();
+            if (empty($kycExists)){
+                //collate director's data
+                $directorData = [
+                    'user'=>$user->id,
+                    'reference'=>$reference,
+                    'docType'=>$input['docType'],
+                    'frontImage'=>$frontImage,
+                    'backImage'=>$backImage,
+                    'idNumber'=>$input['idNumber'],
+                    'utilityBill'=>$addressProof,
+                    'status'=>4
+                ];
 
-            //we create the document
-            $verification = UserVerification::create($directorData);
-            if (!empty($verification)){
+                //we create the document
+                $verification = UserVerification::create($directorData);
+                if (!empty($verification)){
+                    $user->isVerified=4;
+                    $user->state=$input['state'];
+                    $user->save();
+
+                    //send notification
+                    $message = "The KYC for your account ".$user->name." has been submitted and is currently under review.";
+                    $this->userNotification($user,'KYC for Account submitted',$message,$request->ip());
+
+                    //send message to admin
+                    $adminMessage = "A new KYC for individual account has been received from ".$user->name.". The required
+                documents have been uploaded and is awaiting your review. KYC Reference ID is ".$reference;
+                    $this->sendDepartmentMail('compliance', $adminMessage,'New KYC for Account Submitted.');
+
+                    return $this->sendResponse([
+                        'redirectTo'=>url()->previous()
+                    ],'Your account KYC has been received and will be reviewed shortly. ');
+                }
+                return $this->sendError('document.error',[
+                    'error'=>'Something went wrong while processing your documents'
+                ]);
+            }else{
+                //collate director's data
+                $directorData = [
+                    'docType'=>$input['docType'],
+                    'frontImage'=>$frontImage,
+                    'backImage'=>$backImage,
+                    'idNumber'=>$input['idNumber'],
+                    'utilityBill'=>$addressProof,
+                    'status'=>4
+                ];
+
+                //we update
+                $kycExists->update($directorData);
+
                 $user->isVerified=4;
                 $user->state=$input['state'];
                 $user->save();
@@ -141,15 +178,12 @@ class Settings extends BaseController
                 //send message to admin
                 $adminMessage = "A new KYC for individual account has been received from ".$user->name.". The required
                 documents have been uploaded and is awaiting your review. KYC Reference ID is ".$reference;
-                $this->sendAdminMail($adminMessage,'New KYC for Account Submitted.');
+                $this->sendDepartmentMail('compliance',$adminMessage,'New KYC for Account Submitted.');
 
                 return $this->sendResponse([
                     'redirectTo'=>url()->previous()
                 ],'Your account KYC has been received and will be reviewed shortly. ');
             }
-            return $this->sendError('document.error',[
-                'error'=>'Something went wrong while processing your documents'
-            ]);
         }catch (\Exception $exception){
             Log::info('Error in  ' . __METHOD__ . ' updating verification documents: ' . $exception->getMessage());
             return $this->sendError('server.error',[

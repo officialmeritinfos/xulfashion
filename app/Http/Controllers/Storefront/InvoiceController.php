@@ -121,10 +121,14 @@ class InvoiceController extends BaseController
                     $totalCharge = $this->regular->calculateChargeOnAmount($amountPaid,$order->currency);
                     $amountCredit = $amountPaid-$totalCharge;
 
-                    $newBalance = $merchant->accountBalance+$amountCredit;
-                    $merchant->accountBalance= $merchant->accountBalance+$amountCredit;
-
-
+                    if ($store->isVerified!=1){
+                        $newBalance = bcadd($merchant->pendingBalance,$amountCredit,5);
+                        $merchant->pendingBalance= bcadd($merchant->pendingBalance,$amountCredit,5);
+                        $merchant->pendingBalanceStore= bcadd($merchant->pendingBalanceStore,$amountCredit,5);
+                    }else{
+                        $newBalance = bcadd($merchant->accountBalance,$amountCredit,5);
+                        $merchant->accountBalance= bcadd($merchant->accountBalance,$amountCredit,5);
+                    }
 
                     Transaction::create([
                         'user'=>$merchant->id,'reference'=>$order->reference,'transactionType'=>5,

@@ -7,7 +7,7 @@
                 <div class="col-lg-6 mx-auto">
                     <div class="row justify-content-center">
 
-                        <div class="col-lg-6 col-sm-6">
+                        <div class="col-lg-4 col-sm-4">
                             <div class="single-today-card d-flex align-items-center">
                                 <div class="flex-grow-1">
                                         <span class="today">
@@ -46,11 +46,29 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-sm-6">
+                        <div class="col-lg-4 col-sm-4">
                             <div class="single-today-card d-flex align-items-center">
                                 <div class="flex-grow-1">
                                         <span class="today">
-                                            Referral Balance <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                            Pending <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                            title="This account holds all payments received which have not been settled
+                                                            into your account balance. If your business is not verified yet, payments received will be
+                                                            held here."></i>
+                                        </span>
+                                    <h6>
+                                            <span style="word-break: break-word;">
+                                                {{$user->mainCurrency}} {{number_format($user->pendingBalance,2)}}
+                                            </span>
+                                    </h6>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-4">
+                            <div class="single-today-card d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                        <span class="today">
+                                            Referral <i class="ri-information-fill" data-bs-toggle="tooltip"
                                                                 title="Funds here are amount you received from your referrals"></i>
                                         </span>
                                     <span class="text-info">
@@ -144,6 +162,12 @@
                                                         @break
                                                     @case(8)
                                                         <span class="badge bg-dark">Refund</span>
+                                                        @break
+                                                    @case(9)
+                                                        <span class="badge bg-dark">Debit from Pending Balance</span>
+                                                        @break
+                                                    @case(10)
+                                                        <span class="badge bg-dark">Credit From Pending Balance</span>
                                                         @break
                                                     @default
                                                         <span class="badge bg-primary">Charge</span>

@@ -262,8 +262,14 @@ class Orders extends BaseController
             if (!empty($orderExists->channelPaymentId)){
                 //owner of store
                 $owner = User::where('id',$store->user)->first();
-                $newBalance = $owner->accountBalance+$orderExists->amountToCredit;
-                $owner->accountBalance=$owner->accountBalance+$orderExists->amountToCredit;
+                if ($store->isVerified!=1){
+                    $newBalance = bcadd($owner->pendingBalance,$orderExists->amountToCredit,5);
+                    $owner->pendingBalance=bcadd($owner->pendingBalance,$orderExists->amountToCredit,5);
+                    $owner->pendingBalanceStore= bcadd($owner->pendingBalanceStore,$orderExists->amountToCredit,5);
+                }else{
+                    $newBalance = bcadd($owner->accountBalance,$orderExists->amountToCredit,5);
+                    $owner->accountBalance=bcadd($owner->accountBalance,$orderExists->amountToCredit,5);
+                }
                 $owner->save();
 
 

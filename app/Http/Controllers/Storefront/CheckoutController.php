@@ -134,6 +134,12 @@ class CheckoutController extends BaseController
             if (empty($state)){
                 return  $this->sendError('state.error',['error'=>'The selected state does not exist in the country']);
             }
+
+            //check if cart is empty
+            if (empty(session()->get('cart', []))){
+                return $this->sendError('checkout.error',['error'=>'Unable to checkout an empty cart']);
+            }
+
             //create the customer
             $customerRef = $this->generateUniqueReference('user_store_customers','reference');
             $customer = UserStoreCustomer::firstOrCreate(

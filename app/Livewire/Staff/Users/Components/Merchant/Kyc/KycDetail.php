@@ -391,7 +391,7 @@ class KycDetail extends Component
 
                 //send message to compliance department
                 $adminMessage = "The KYC for merchant account for ".$merchant->name." has been rejected. ";
-                $this->sendDepartmentMail('compliance', $adminMessage,'Account KYC rejectedion.');
+                $this->sendDepartmentMail('compliance', $adminMessage,'Account KYC Rejection.');
                 //send mail to the merchant
                 $merchantMessage = "
                     We ran into some challenges while trying to verify your submitted KYC on <b>".$web->name."</b>. You can

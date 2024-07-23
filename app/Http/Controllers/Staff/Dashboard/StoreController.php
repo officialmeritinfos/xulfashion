@@ -10,6 +10,7 @@ use App\Models\UserStoreCoupon;
 use App\Models\UserStoreCustomer;
 use App\Models\UserStoreInvoice;
 use App\Models\UserStoreOrder;
+use App\Models\UserStoreSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -168,6 +169,40 @@ class StoreController extends Controller
             'siteName'  =>$web->name,
             'user'      =>$staff,
             'pageName'  =>'Store Orders',
+            'store'     =>$store,
+        ]);
+    }
+    //settings
+    public function settings($storeRef)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $store = UserStore::where('reference',$storeRef)->firstOrFail();
+
+        return view("staff.dashboard.users.components.store.settings")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'pageName'  =>'Store Settings',
+            'store'     =>$store,
+        ]);
+    }
+    //kyb
+    public function kyb($storeRef)
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        $store = UserStore::where('reference',$storeRef)->firstOrFail();
+
+        return view("staff.dashboard.users.components.store.kyb.index")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'siteName'  =>$web->name,
+            'user'      =>$staff,
+            'pageName'  =>'Store KYB',
             'store'     =>$store,
         ]);
     }

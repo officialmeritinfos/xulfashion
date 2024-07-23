@@ -254,17 +254,68 @@ class StoreList extends Component
             }
 
             $merchant = User::where('reference',$this->user->reference)->first();
-            $businessData = [
-                'store'=>$this->store->id,
-                'reference'=>$reference,
-                'certificate'=>$certificate,
-                'addressProof'=>$addressProof,
-                'status'=>4,
-                'address'=>$this->address,'regNumber'=>$this->regNumber,
-                'dba'=>$this->doingBusinessAs,'legalName'=>$this->legalName
-            ];
-            $verification = UserStoreVerification::create($businessData);
-            if (!empty($verification)) {
+
+            //check if kyb exists
+            $kybExists = UserStoreVerification::where('store',$this->store->id)->first();
+
+            if (empty($kybExists)){
+                $businessData = [
+                    'store'=>$this->store->id,
+                    'reference'=>$reference,
+                    'certificate'=>$certificate,
+                    'addressProof'=>$addressProof,
+                    'status'=>4,
+                    'address'=>$this->address,'regNumber'=>$this->regNumber,
+                    'dba'=>$this->doingBusinessAs,'legalName'=>$this->legalName
+                ];
+                $verification = UserStoreVerification::create($businessData);
+                if (!empty($verification)) {
+                    $this->store->isVerified = 4;
+                    $this->store->legalName = $this->legalName;
+                    $this->store->address = $this->address;
+                    $this->store->save();
+
+                    SystemStaffAction::create([
+                        'staff' => $this->staff->id,
+                        'action' => 'Submitted Store KYC',
+                        'isSuper' => $this->staff->role == 'superadmin' ? 1 : 2,
+                        'model' => get_class($this->user).'/'.get_class($verification),
+                        'model_id' => $verification->id,
+                    ]);
+
+                    DB::commit();
+
+                    //send notification
+                    $message = "The KYC for your store ".$this->store->name." has been submitted and is currently under review.";
+                    $merchant->notify(new CustomNotificationNoLink($merchant->name,'Store KYC Received',$message));
+
+                    $adminMessage = "A new KYC for business account has been received from ".$merchant->name.". The required
+                documents have been uploaded and is awaiting your review. KYC Reference ID is ".$reference;
+                    $this->sendDepartmentMail('compliance', $adminMessage,'New KYB for Store Submitted');
+
+                    $this->alert('success', '', [
+                        'position' => 'top-end',
+                        'timer' => 5000,
+                        'toast' => true,
+                        'text' => 'Store KYB successfully initialized.',
+                        'width' => '400',
+                    ]);
+                    $this->showInitializeStoreForm=false;
+                    $this->showVerifyBusinessForm= false;
+                    $this->dispatch('renderAds');
+                    return;
+
+                }
+            }else{
+                $businessData = [
+                    'certificate'=>$certificate,
+                    'addressProof'=>$addressProof,
+                    'status'=>4,
+                    'address'=>$this->address,'regNumber'=>$this->regNumber,
+                    'dba'=>$this->doingBusinessAs,'legalName'=>$this->legalName
+                ];
+                $kybExists->update($businessData);
+
                 $this->store->isVerified = 4;
                 $this->store->legalName = $this->legalName;
                 $this->store->address = $this->address;
@@ -274,8 +325,8 @@ class StoreList extends Component
                     'staff' => $this->staff->id,
                     'action' => 'Submitted Store KYC',
                     'isSuper' => $this->staff->role == 'superadmin' ? 1 : 2,
-                    'model' => get_class($this->user).'/'.get_class($verification),
-                    'model_id' => $verification->id,
+                    'model' => get_class($this->user).'/'.get_class($kybExists),
+                    'model_id' => $kybExists->id,
                 ]);
 
                 DB::commit();
@@ -292,14 +343,13 @@ class StoreList extends Component
                     'position' => 'top-end',
                     'timer' => 5000,
                     'toast' => true,
-                    'text' => 'Store KYB successfully initialized.',
+                    'text' => 'Store KYB successfully updated.',
                     'width' => '400',
                 ]);
                 $this->showInitializeStoreForm=false;
                 $this->showVerifyBusinessForm= false;
                 $this->dispatch('renderAds');
                 return;
-
             }
         }catch (\Exception $exception){
             DB::rollBack();

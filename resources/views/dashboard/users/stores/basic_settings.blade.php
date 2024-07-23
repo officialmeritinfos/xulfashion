@@ -30,9 +30,9 @@
                                            name="newsletter"
                                         {{($settings->allowNewLetters==1)?'checked':''}}>
                                     <label class="form-check-label" for="cancelledSub">
-                                        Allow Newletters signup
+                                        Allow Newsletters signup
                                         <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                           title="Allow your customers to join newletters on your store - that is if you offer one."></i>
+                                           title="Allow your customers to join newsletters on your store - that is if you offer one."></i>
                                     </label>
                                 </div>
                             </div>
