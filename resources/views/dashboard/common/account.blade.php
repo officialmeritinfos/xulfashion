@@ -95,7 +95,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item cpy" data-clipboard-text="$user->username">
+                                                <a class="dropdown-item cpy" data-clipboard-text="{{$user->username}}">
                                                     <i class="bx bxs-copy-alt"></i>
                                                     Copy Referral Code
                                                 </a>
