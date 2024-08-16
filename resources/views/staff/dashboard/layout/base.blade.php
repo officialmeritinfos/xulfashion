@@ -166,12 +166,27 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li>
-                                <a href="#"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                                <a href="{{route('staff.staffs.list')}}" wire:navigate><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
                                     List</a>
                             </li>
+                        </ul>
+                    </li>
+                @endif
+
+                @if($staff->can('update SuperAdmin'))
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" style="font-size: 20px;">
+                            <iconify-icon icon="oui:app-users-roles" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                            <span>Permissions & Roles</span>
+                        </a>
+                        <ul class="sidebar-submenu">
                             <li>
-                                <a href="#"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>
-                                    Add new</a>
+                                <a href="{{route('staff.roles')}}" wire:navigate><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                                    Roles</a>
+                            </li>
+                            <li>
+                                <a href="{{route('staff.permissions')}}" wire:navigate><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>
+                                    Permissions</a>
                             </li>
                         </ul>
                     </li>
@@ -315,37 +330,37 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('user.account.index')}}">
+                    <a href="{{route('staff.users.list')}}">
                         <i class="ri-group-line"></i>
                         <p>Users</p>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('user.ads.index')}}">
+                    <a href="{{route('staff.staffs.list')}}">
                         <i class="ri-table-alt-line"></i>
                         <p>Staff</p>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('user.stores.index')}}">
+                    <a href="{{route('staff.ads.list')}}">
                         <i class="ri-advertisement-line"></i>
                         <p>ADS</p>
                     </a>
                 </li>
                 <li>
-                    <a class="menu-bar" href="{{route('marketplace.index')}}">
+                    <a class="menu-bar" href="{{route('staff.stores.list')}}">
                         <i class="ri-store-2-line"></i>
                         <p>Stores</p>
                     </a>
                 </li>
                 <li>
-                    <a class="menu-bar" href="{{route('user.settings.index')}}">
+                    <a class="menu-bar" href="{{route('staff.orders.list')}}">
                         <i class="ri-shopping-cart-2-line"></i>
                         <p>Orders</p>
                     </a>
                 </li>
                 <li>
-                    <a class="menu-bar" href="{{route('user.settings.index')}}">
+                    <a class="menu-bar" href="{{route('staff.activity.index')}}">
                         <i class="ri-dashboard-3-line"></i>
                         <p>Activities</p>
                     </a>

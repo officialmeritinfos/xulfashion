@@ -19,7 +19,7 @@ class CreateLoginsTable extends Migration
             $table->text('agent');
             $table->string('device', 150)->nullable();
             $table->string('Ip', 150)->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

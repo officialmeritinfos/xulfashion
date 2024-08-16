@@ -74,4 +74,9 @@ class LoginController extends BaseController
             return $this->sendError('authentication.error',['error'=>'Internal Server Error']);
         }
     }
+
+    public function setupPassword(Request $request,$token,$email,$staff)
+    {
+
+    }
 }

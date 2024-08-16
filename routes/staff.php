@@ -7,6 +7,7 @@ use App\Http\Controllers\Staff\Dashboard\AdController;
 use App\Http\Controllers\Staff\Dashboard\Home;
 use App\Http\Controllers\Staff\Dashboard\OrderController;
 use App\Http\Controllers\Staff\Dashboard\SettingController;
+use App\Http\Controllers\Staff\Dashboard\StaffController;
 use App\Http\Controllers\Staff\Dashboard\StoreController;
 use App\Http\Controllers\Staff\Dashboard\Users;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,7 @@ Route::domain('staff.localhost')->group(function () {
     Route::post('login/process',[LoginController::class,'processLogin'])->name('login.process');//process login
     Route::get('login/authenticate',[TwoFactorController::class,'landingPage'])->name('twoFactor');//two-factor authentication
     Route::post('login/authenticate/process',[TwoFactorController::class,'processAuthentication'])->name('twoFactor.process');//process two-factor authentication
+    Route::get('login/{token}/welcome/{email}/{staff}/set-password',[LoginController::class,'setupPassword'])->name('staff.setup.password');
 
     //Staff dashboard main
 
@@ -73,6 +75,11 @@ Route::domain('staff.localhost')->group(function () {
         Route::get('settings/profile',[SettingController::class, 'profilePage'])->name('settings.profile');
         Route::get('settings/general',[SettingController::class, 'generalSettings'])->name('settings.general');
         Route::get('settings/security',[SettingController::class, 'securitySetting'])->name('settings.security');
-
+        //Staff
+        Route::get('staffs/list',[StaffController::class,'landingPage'])->name('staffs.list');
+        Route::get('staffs/new',[StaffController::class,'addStaff'])->name('staffs.new');
+        //Roles & Permissions
+        Route::get('roles',[StaffController::class,'roles'])->name('roles');
+        Route::get('permissions',[StaffController::class,'permissions'])->name('permissions');
     });
 });

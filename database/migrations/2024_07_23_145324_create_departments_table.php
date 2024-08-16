@@ -20,7 +20,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('email', 150);
             $table->text('description')->nullable();
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 
