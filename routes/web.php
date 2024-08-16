@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\Account;
+use App\Http\Controllers\Mobile\Home;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,5 +23,7 @@ Route::post('account/withdraw',[Account::class,'withdrawFromAccount'])
     ->name('account.withdraw');
 
 
+/* ================================MOBILE WEB PWA ROUTE ===========================*/
 
-
+Route::get('mobile/index',[Home::class,'landingPage'])->name('mobile.index');
+Route::get('mobile/base',[Home::class,'base'])->name('mobile.base');
