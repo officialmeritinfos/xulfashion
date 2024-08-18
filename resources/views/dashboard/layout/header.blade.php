@@ -86,9 +86,13 @@
 </style>
 <style>
     @media (max-width: 767.98px) {
-        .sidebar-nav{
+        .side-menu-area{
             display: none;
         }
+        .side-menu-logo{
+            display: none;
+        }
+
         #mobile-collapse{
             display: none;
         }

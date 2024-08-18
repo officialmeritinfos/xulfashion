@@ -7,5 +7,3 @@ Route::get('/',[Home::class,'landingPage'])->name('index');
 /*================================ COMPANY CONTROLLER ==============================*/
 Route::get('about',[Home::class,'about'])
     ->name('about');
-Route::get('about',[Home::class,'about'])
-    ->name('company.about');

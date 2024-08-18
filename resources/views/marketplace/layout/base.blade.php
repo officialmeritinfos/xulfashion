@@ -77,6 +77,88 @@
     @stack('css')
     @include('genericCss')
 
+    <style>
+        @media (max-width: 767.98px) {
+            .side-menu-area{
+                display: none;
+            }
+            .side-menu-logo{
+                display: none;
+            }
+
+            #mobile-collapse{
+                display: none;
+            }
+            /* Style for mobile devices */
+            .footer-bottom {
+                position: fixed;
+                width: 100%;
+                z-index: 9;
+                bottom: 0;
+                left: 0;
+                background: #fff;
+                border-top: 1px solid #DCDCE9;
+            }
+            .footer-bottom ul {
+                margin: 0;
+                padding: 0;
+            }
+            .footer-bottom ul li {
+                list-style: none;
+                display: inline-block;
+                margin: 0 8px;
+                padding: 10px 0 8px 0;
+                position: relative; /* Added */
+            }
+            .footer-bottom ul li p {
+                margin-bottom: 0;
+                font-size: 10px;
+                -webkit-transition: 0.4s;
+                -o-transition: 0.4s;
+                transition: 0.4s;
+            }
+            .footer-bottom ul li a {
+                -webkit-transition: 0.4s;
+                -o-transition: 0.4s;
+                transition: 0.4s;
+            }
+            .footer-bottom ul li a:hover {
+                color: #6236ff;
+            }
+            .footer-bottom ul li a:hover p {
+                color: #6236ff;
+            }
+            /* Added */
+            .footer-bottom .submenu {
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 100%;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                width: 100%;
+            }
+            .footer-bottom .submenu li {
+                display: block;
+            }
+            .footer-bottom .submenu li a {
+                display: block;
+                padding: 10px;
+                color: #333;
+                text-decoration: none;
+            }
+            .footer-bottom .submenu li a:hover {
+                background-color: #f5f5f5;
+            }
+        }
+
+        @media (min-width: 768px) {
+            /* Hide navbar on larger screens */
+            .footer-bottom {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -200,7 +282,6 @@
                                         <li><a href="{{route('marketplace.index')}}">HOME</a></li>
                                     @endif
                                     <li><a href="{{route('marketplace.stores')}}">SHOPS</a></li>
-                                    <li><a href="#">CONTACT</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -231,6 +312,34 @@
         </div>
     </header>
     <!-- Header  end -->
+
+    <div class="footer-bottom text-center">
+        <ul>
+            @if($hasCountry==1)
+                <li>
+                    <a href="{{route('marketplace.index',['country'=>$iso3])}}">
+                        HOME
+                    </a>
+                </li>
+            @else
+                <li>
+                    <a href="{{route('marketplace.index')}}">
+                       HOME
+                    </a>
+                </li>
+            @endif
+            <li>
+                <a href="{{route('marketplace.stores')}}">
+                    SHOPS
+                </a>
+            </li>
+            <li>
+                <a href="{{route('register')}}">
+                    LIST YOUR BUSINESS
+                </a>
+            </li>
+        </ul>
+    </div>
 
 @yield('content')
     <!-- Footer  start -->

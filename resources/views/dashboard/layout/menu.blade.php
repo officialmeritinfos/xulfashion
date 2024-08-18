@@ -107,7 +107,7 @@
             </a>
         </li>
         <li>
-            <a class="menu-bar" href="{{route('marketplace.index')}}">
+            <a class="menu-bar" href="{{route('marketplace.index',['country'=>$user->countryCode])}}">
                 <i class="bx bxs-business"></i>
                 <p>Marketplace</p>
             </a>

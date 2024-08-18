@@ -17,7 +17,7 @@
     </a>
 </li>
 <li>
-    <a href="{{route('marketplace.index')}}" target="_blank" class="box-style">
+    <a href="{{route('marketplace.index',['country'=>$user->countryCode])}}" target="_blank" class="box-style">
         <i class="ri-user-settings-fill"></i>
         <span class="menu-title">Marketplace</span>
     </a>

@@ -36,6 +36,84 @@
     <title>{{$store->name}} - {{$pageName??'Your one stop fashion store'}}</title>
     @include('genericCss')
     @stack('css')
+    <style>
+        @media (max-width: 767.98px) {
+            .sidebar-nav{
+                display: none;
+            }
+            #mobile-collapse{
+                display: none;
+            }
+            /* Style for mobile devices */
+            .footer-bottom {
+                position: fixed;
+                width: 100%;
+                z-index: 9;
+                bottom: 0;
+                left: 0;
+                background: #fff;
+                border-top: 1px solid #DCDCE9;
+            }
+            .footer-bottom ul {
+                margin: 0;
+                padding: 0;
+            }
+            .footer-bottom ul li {
+                list-style: none;
+                display: inline-block;
+                margin: 0 8px;
+                padding: 10px 0 8px 0;
+                position: relative; /* Added */
+            }
+            .footer-bottom ul li p {
+                margin-bottom: 0;
+                font-size: 10px;
+                -webkit-transition: 0.4s;
+                -o-transition: 0.4s;
+                transition: 0.4s;
+            }
+            .footer-bottom ul li a {
+                -webkit-transition: 0.4s;
+                -o-transition: 0.4s;
+                transition: 0.4s;
+            }
+            .footer-bottom ul li a:hover {
+                color: #6236ff;
+            }
+            .footer-bottom ul li a:hover p {
+                color: #6236ff;
+            }
+            /* Added */
+            .footer-bottom .submenu {
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 100%;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                width: 100%;
+            }
+            .footer-bottom .submenu li {
+                display: block;
+            }
+            .footer-bottom .submenu li a {
+                display: block;
+                padding: 10px;
+                color: #333;
+                text-decoration: none;
+            }
+            .footer-bottom .submenu li a:hover {
+                background-color: #f5f5f5;
+            }
+        }
+
+        @media (min-width: 768px) {
+            /* Hide navbar on larger screens */
+            .footer-bottom {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body class="body-bg-f5f5f5">
@@ -114,6 +192,35 @@
     </nav>
 </div>
 <!-- End Sidebar Area -->
+
+<div class="footer-bottom text-center">
+    <ul>
+        <li>
+            <a href="{{route('merchant.store.user.index',['subdomain'=>$store->slug])}}">
+                <i class="fa fa-home"></i>
+                <p>Overview</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('merchant.store.user.orders',['subdomain'=>$store->slug])}}">
+                <i class="bx bx-cart"></i>
+                <p>My Orders</p>
+            </a>
+        </li>
+        <li>
+            <a class="menu-bar" href="{{route('merchant.store.user.profile',['subdomain'=>$store->slug])}}">
+                <i class="bx bxs-user"></i>
+                <p>Profile</p>
+            </a>
+        </li>
+        <li>
+            <a class="menu-bar" href="{{route('merchant.store.user.settings',['subdomain'=>$store->slug])}}">
+                <i class="ri-settings-2-line"></i>
+                <p>Settings</p>
+            </a>
+        </li>
+    </ul>
+</div>
 
 <!-- Start Main Content Area -->
 <div class="main-content d-flex flex-column">
@@ -218,7 +325,7 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-lg-6">
                     <div class="copy-right">
-                        <p>Copyright @ {{date('Y')}} {{$store->name}}. Powered By <a href="{{route('company.about')}}" target="_blank">{{$siteName}}</a></p>
+                        <p>Copyright @ {{date('Y')}} {{$store->name}}. Powered By <a href="{{route('home.about')}}" target="_blank">{{$siteName}}</a></p>
                     </div>
                 </div>
 
