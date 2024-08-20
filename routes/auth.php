@@ -51,6 +51,8 @@ Route::middleware(['web','auth'])->group(function (){
 
     Route::get('logout',[Login::class,'logout'])
         ->name('logout');
+    Route::get('logout/mobile',[Login::class,'mobileLogout'])
+        ->name('logout.mobile');
 
     //Complete Profile
     Route::get('complete-account-setup',[CompleteProfile::class,'landingPage'])

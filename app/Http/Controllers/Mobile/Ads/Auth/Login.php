@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Mobile\Ads\Auth;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
@@ -29,18 +29,10 @@ class Login extends BaseController
     public function landingPage()
     {
         $web = GeneralSetting::find(1);
-
-        //check if session is active and redirect to dashboard
-        if (\auth()->check()){
-            $user = \auth()->user();
-            $url =  $this->userDashboard($user);
-            return redirect()->to($url);
-        }
-
-        return view('auth.login')->with([
-            'web'        =>$web,
-            'siteName'   =>$web->name,
-            'pageName'   =>'Login to your account',
+        return view('mobile.ads.auth.login')->with([
+            'web'       =>$web,
+            'pageName'  =>"Sign in to ".$web->name,
+            'siteName'  =>$web->name
         ]);
     }
     //profess form
@@ -73,7 +65,7 @@ class Login extends BaseController
                     //send email verification
                     $user->notify(new EmailVerification($user));
                     return $this->sendResponse([
-                        'redirectTo'=>route('email-verification'),
+                        'redirectTo'=>route('mobile.email-verification'),
                     ],'A code has been sent to your email. Verify your email to proceed.');
                 }
                 //user settings
@@ -83,14 +75,14 @@ class Login extends BaseController
                     $user->save();
                     Auth::login($user);
                     $user->notify(new TwoFactorAuthentication($user));
-                    $url = route('login-verification');
+                    $url = route('mobile.login-verification');
                     $message = "Login authorization required. Redirecting soon ...";
                 }else{
                     $user->loggedIn = 1;
                     $user->save();
                     Auth::login($user);
                     //since two-factor authentication is off, we redirect to the necessary page
-                    $url = $this->userDashboard($user);
+                    $url = route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)]);
                     $message = "Account authenticated. Redirecting soon ...";
                 }
                 return $this->sendResponse([
@@ -113,9 +105,10 @@ class Login extends BaseController
         $dataView = [
             'pageName' => 'Login Authorization',
             'siteName' => $web->name,
-            'web'      => $web
+            'web'      => $web,
+            'user'     =>Auth::user()
         ];
-        return view('auth.two_factor',$dataView);
+        return view('mobile.ads.auth.two_factor',$dataView);
     }
     //process two factor
     public function processTwoFactor(Request $request): JsonResponse
@@ -154,7 +147,7 @@ class Login extends BaseController
                 TwoFactor::where('user',$user->id)->delete();
 
                 return $this->sendResponse([
-                    'redirectTo'=>$this->userDashboard($user)
+                    'redirectTo'=> route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)])
                 ],'Login successfully verified.');
             }
             return $this->sendError('account.error',['error'=>'Unable to verify login']);
@@ -162,21 +155,6 @@ class Login extends BaseController
             Log::alert($exception->getMessage());
             return $this->sendError('error',['error'=>'Internal Server error']);
         }
-    }
-    //logout
-    public function logout(Request $request)
-    {
-        $user = Auth::user();
-
-        User::where('id',$user->id)->update(['loggedIn'=>2]);
-
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return to_route('login')->with('info','Logout successful');
     }
     //resend verification email
     public function resendVerificationMail(Request $request){
@@ -192,20 +170,5 @@ class Login extends BaseController
             return $this->sendError('error',['error'=>'Internal Server error']);
         }
 
-    }
-    //logout mobile
-    public function mobileLogout(Request $request)
-    {
-        $user = Auth::user();
-
-        User::where('id',$user->id)->update(['loggedIn'=>2]);
-
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return to_route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)])->with('info','Logout successful');
     }
 }

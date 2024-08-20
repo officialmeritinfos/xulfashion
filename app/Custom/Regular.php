@@ -26,6 +26,7 @@ use App\Traits\Helpers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Jenssegers\Agent\Agent;
 
 class Regular
 {
@@ -483,5 +484,11 @@ class Regular
     public function fetchStoreById($id)
     {
         return UserStore::where('id',$id)->first();
+    }
+
+    public function checkIfAccessorIsMobile()
+    {
+        $agent = new Agent();
+        return $agent->isMobile();
     }
 }

@@ -106,12 +106,16 @@
                 <p>Stores</p>
             </a>
         </li>
-        <li>
-            <a class="menu-bar" href="{{route('marketplace.index',['country'=>$user->countryCode])}}">
-                <i class="bx bxs-business"></i>
-                <p>Marketplace</p>
-            </a>
-        </li>
+        @if($injected->checkIfAccessorIsMobile())
+
+            <li>
+                <a class="menu-bar" href="{{route('mobile.marketplace.index',['country'=>$user->countryCode])}}">
+                    <i class="bx bxs-business"></i>
+                    <p>Marketplace</p>
+                </a>
+            </li>
+
+        @endif
         <li>
             <a class="menu-bar" href="{{route('user.settings.index')}}">
                 <i class="ri-settings-2-line"></i>

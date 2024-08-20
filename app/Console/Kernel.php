@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('model:prune')->daily();
-        $schedule->command('app:move-pending-balance-to-main')->everyMinute();
+        $schedule->command('app:move-pending-balance-to-main')->everyMinute()->withoutOverlapping();
+        $schedule->command('location:update')->daily();
     }
 
     /**

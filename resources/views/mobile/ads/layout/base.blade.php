@@ -20,6 +20,7 @@
     <meta name="msapplication-TileImage" content="{{asset($web->favicon)}}" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    @stack('css')
 
     <!--Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -28,8 +29,6 @@
 
     <!-- iconsax css -->
     <link rel="stylesheet" type="text/css" href="{{asset('mobile/css/vendors/iconsax.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{asset('dashboard/css/boxicons.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{asset('dashboard/css/remixicon.css')}}" />
 
     <!-- bootstrap css -->
     <link rel="stylesheet" id="rtl-link" type="text/css" href="{{asset('mobile/css/vendors/bootstrap.min.css')}}" />
@@ -39,14 +38,15 @@
 
     <!-- Theme css -->
     <link rel="stylesheet" id="change-link" type="text/css" href="{{asset('mobile/css/style.css')}}" />
-    @include('genericCss')
-    @stack('css')
+    @livewireStyles
 </head>
 
-<body class="auth-body dark">
-
+<body>
+@include('mobile.ads.layout.topSection')
 
 @yield('content')
+
+@include('mobile.ads.layout.footerSection')
 
 <!-- swiper js -->
 <script src="{{asset('mobile/js/swiper-bundle.min.js')}}"></script>
@@ -68,6 +68,6 @@
 <script src="{{asset('mobile/js/script.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @stack('js')
-@include('basicInclude')
+@livewireScripts
 </body>
 </html>

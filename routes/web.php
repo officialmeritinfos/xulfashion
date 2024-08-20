@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\Dashboard\Account;
+use App\Http\Controllers\Mobile\Ads\Auth\Login;
+use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
+use App\Http\Controllers\Mobile\Ads\Auth\Register;
+use App\Http\Controllers\Mobile\Ads\MarketplaceController;
+use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Home;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +30,58 @@ Route::post('account/withdraw',[Account::class,'withdrawFromAccount'])
 
 /* ================================MOBILE WEB PWA ROUTE ===========================*/
 
-Route::get('mobile/index',[Home::class,'landingPage'])->name('mobile.index');
-Route::get('mobile/base',[Home::class,'base'])->name('mobile.base');
+Route::prefix('mobile')->name('mobile.')->group(function (){
+
+    Route::get('index',[Home::class,'landingPage'])->name('index');
+    Route::get('base',[Home::class,'base'])->name('base');
+
+    //mobile page for ads
+    Route::get('/ads/base',[SplashScreenController::class,'landingPage'])
+        ->name('ads.index');//splash screen
+
+    Route::get('/ads/{country?}',[MarketplaceController::class,'landingPage'])
+        ->name('marketplace.index');
+
+    //Registration & Login as User
+    //REGISTRATION
+    Route::get('register',[Register::class,'landingPage'])->name('register');
+    Route::post('register/process',[Register::class,'processRegistration'])
+        ->name('register.process');
+    //LOGIN
+    Route::get('login',[Login::class,'landingPage'])->name('login');
+    Route::post('login/process',[Login::class,'processLogin'])->name('login.process');
+    //FORGOTTEN PASSWORD
+    Route::get('recover-password',[RecoverPassword::class,'landingPage'])
+        ->name('recoverPassword');
+    Route::post('recover-password/process',[RecoverPassword::class,'processPasswordRecovery'])
+        ->name('recover.process');
+
+
+    Route::middleware(['web','auth'])->group(function () {
+        //Email verification
+        Route::get('register/email-verification', [Register::class, 'emailVerification'])
+            ->name('email-verification');
+        Route::post('register/email-verification/process', [Register::class, 'processEmailVerification'])
+            ->name('auth.email');
+        Route::post('register/email-verification/resend', [Register::class, 'resendVerificationMail'])
+            ->name('auth.email.resend')->middleware(['throttle:token-resend']);
+
+        //Two-factor authentication
+        Route::get('login/login-verification', [Login::class, 'twoFactorAuthentication'])
+            ->name('login-verification');
+        Route::post('login/login-verification/process', [Login::class, 'processTwoFactor'])
+            ->name('auth.twoFactor');
+        Route::post('register/login-verification/resend', [Login::class, 'resendVerificationMail'])
+            ->name('auth.twoFactor.resend')->middleware(['throttle:token-resend']);
+
+        //Password Reset authentication
+        Route::get('recover-password/email-verification',[RecoverPassword::class,'requestVerificationPage'])
+            ->name('verify-password-reset');
+        Route::post('recover-password/email-verification/process',[RecoverPassword::class,'processVerificationCode'])
+            ->name('auth.recovery');
+        Route::post('recover/recovery-verification/resend', [RecoverPassword::class, 'resendVerificationMail'])
+            ->name('auth.passwordRecover.resend')->middleware(['throttle:token-resend']);
+
+    });
+
+});
