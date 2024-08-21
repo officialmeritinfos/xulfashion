@@ -26,7 +26,7 @@ class CreateAccountFundingsTable extends Migration
             $table->string('paymentReference', 150)->nullable();
             $table->string('transactionHash', 150)->nullable();
             $table->integer('status')->default(2);
-            $table->timestamps();
+            $table->timestamps(, 150);
         });
     }
 

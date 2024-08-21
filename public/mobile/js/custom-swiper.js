@@ -1,16 +1,16 @@
 var sliderThree = new Swiper(".categories", {
-  slidesPerView: 4,
+  slidesPerView: 3,
   spaceBetween: 10,
   loop: true,
   breakpoints: {
     0: {
-      slidesPerView: 3,
+      slidesPerView: 1,
     },
     375: {
-      slidesPerView: 4,
+      slidesPerView: 1,
     },
     767: {
-      slidesPerView: 5,
+      slidesPerView: 2,
     },
   },
 });

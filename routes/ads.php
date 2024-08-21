@@ -27,6 +27,7 @@ Route::get('ads/stores/list',[StoreController::class,'landingPage'])
     ->name('marketplace.stores');
 Route::get('/ads/store/search',[StoreController::class,'filterStores'])
     ->name('marketplace.store.search');
+
 //Other pages
 Route::get('/ads/page/faqs',[PageController::class,'faq'])
     ->name('marketplace.faq');

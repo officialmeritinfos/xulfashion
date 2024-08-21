@@ -31,7 +31,7 @@ class CreateGeneralSettingsTable extends Migration
             $table->integer('fileUploadAllowed')->default(5);
             $table->string('onlinePaymentFee', 100)->default('2.5');
             $table->string('ticketHelpDesk', 150)->nullable();
-            $table->timestamps();
+            $table->timestamps(, 150);
         });
     }
 

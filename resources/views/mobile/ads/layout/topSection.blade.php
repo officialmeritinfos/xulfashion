@@ -76,17 +76,28 @@
 
 <!-- search section starts -->
 <section>
-    <div class="custom-container">
-        <form class="theme-form search-head" target="_blank">
+    <div class="custom-container mt-4">
+        <form class="theme-form search-head" action="{{route('mobile.marketplace.search')}}" method="get">
             <div class="form-group">
                 <div class="form-input">
-                    <input type="text" class="form-control search" id="inputusername" placeholder="Search here..." />
-                    <i class="iconsax search-icon" data-icon="search-normal-2"></i>
+                    <select class="form-control form-control-lg stateAds" aria-label="Default select example" name="state">
+                        <option value="" data-value="{{route('mobile.marketplace.index')}}">All of {{$country->name}}</option>
+                        @foreach($states as $state)
+                            <option value="{{$state->iso2}}" {{(isset($params['state']) && $params['state']==$state->iso2)?'selected':''}} >{{$state->name}}</option>
+                        @endforeach
+                    </select>
                 </div>
-
-                <a href="#search-filter" class="btn filter-btn mt-0" data-bs-toggle="modal">
-                    <i class="iconsax filter-icon" data-icon="media-sliders-3"></i>
-                </a>
+                <div class="form-input">
+                    <select class="form-control form-control-lg categoryAds" aria-label="Default select example" name="category">
+                        <option value="" data-value="{{route('mobile.marketplace.index')}}">All</option>
+                        @foreach($serviceTypes as $serviceType)
+                            <option value="{{$serviceType->id}}" {{( isset($params['category']) && $params['category']==$serviceType->id)?'selected':''}}>{{$serviceType->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-input">
+                    <input class="form-control-lg form-control" type="submit" aria-label="Default select example" value="Search"/>
+                </div>
             </div>
         </form>
     </div>

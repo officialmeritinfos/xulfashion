@@ -41,8 +41,18 @@
     @livewireStyles
 </head>
 
-<body>
-@include('mobile.ads.layout.topSection')
+<body class="details-page details-page2">
+<!-- header start -->
+<header class="product2-header">
+    <div class="custom-container">
+        <div class="header-panel">
+            <a onclick="history.back()">
+                <i class="iconsax back-btn" data-icon="arrow-left"></i>
+            </a>
+            <h3>{{$pageName}}</h3>
+        </div>
+    </div>
+</header>
 
 @yield('content')
 

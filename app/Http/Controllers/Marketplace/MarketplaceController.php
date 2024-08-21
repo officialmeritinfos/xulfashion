@@ -13,10 +13,12 @@ use App\Models\Testimonial;
 use App\Models\User;
 use App\Models\UserAd;
 use App\Models\UserAdPhoto;
+use App\Models\UserAdView;
 use App\Models\UserStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Jenssegers\Agent\Agent;
 
 class MarketplaceController extends BaseController
 {
@@ -71,12 +73,24 @@ class MarketplaceController extends BaseController
         $country = $request->session()->get('country');
 
         $ads = UserAd::where('reference',$id)->where('status',1)->firstOrFail();
-        $ads->numberOfViews = $ads->numberOfViews+1;
-        $ads->save();
-        $ads->refresh();
 
+        $agent = new Agent();
+        //update view
+        if (empty($hasViewed)){
+            $ads->numberOfViews = $ads->numberOfViews+1;
+            $ads->save();
+            $ads->refresh();
+
+            UserAdView::create([
+                'ipAddress'=>$request->ip(),
+                'user'=>\auth()->user()->id??'',
+                'browser'=>$agent->browser(),
+                'ad'=>$ads->reference
+            ]);
+        }
         $merchant = User::where('id',$ads->user)->first();
-        $store = UserStore::where('id',$merchant->id)->first();
+
+        $store = UserStore::where('user',$merchant->id)->first();
 
         $tagsArray = explode(',', $ads->tags);
 

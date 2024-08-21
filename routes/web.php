@@ -6,6 +6,7 @@ use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
 use App\Http\Controllers\Mobile\Ads\Auth\Register;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
+use App\Http\Controllers\Mobile\Ads\StoreController;
 use App\Http\Controllers\Mobile\Home;
 use Illuminate\Support\Facades\Route;
 
@@ -39,8 +40,30 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
     Route::get('/ads/base',[SplashScreenController::class,'landingPage'])
         ->name('ads.index');//splash screen
 
+
+    Route::get('/ads/categories',[MarketplaceController::class,'categories'])
+        ->name('marketplace.categories');
+
     Route::get('/ads/{country?}',[MarketplaceController::class,'landingPage'])
         ->name('marketplace.index');
+    Route::get('/ads/{slug}/{id}/detail',[MarketplaceController::class,'adDetails'])
+        ->name('marketplace.detail');
+
+    Route::get('/ads/{id}/merchant',[MarketplaceController::class,'merchantDetail'])
+        ->name('marketplace.merchant');
+    Route::get('/ads/{id}/state',[MarketplaceController::class,'adsByState'])
+        ->name('marketplace.state');
+    Route::get('/ads/{id}/service',[MarketplaceController::class,'adsByService'])
+        ->name('marketplace.service');
+
+    Route::get('ads/filter/search',[MarketplaceController::class,'filterAds'])
+        ->name('marketplace.search');
+
+    //STORES
+    Route::get('ads/stores/list',[StoreController::class,'landingPage'])
+        ->name('marketplace.stores');
+    Route::get('/ads/store/search',[StoreController::class,'filterStores'])
+        ->name('marketplace.store.search');
 
     //Registration & Login as User
     //REGISTRATION
