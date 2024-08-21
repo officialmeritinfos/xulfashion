@@ -140,23 +140,25 @@
         </div>
     </section>
 
-    <!-- banner section start -->
-    <section class="banner-wapper">
-        <div class="custom-container">
-            <div class="banner-bg">
-                <img class="img-fluid img-bg" src="{{$bestSelling->featuredImage}}" alt="banner-2" />
-                <div class="banner-content">
-                    <h2 class="fw-semibold">Best Selling</h2>
-                    <h4>{{$bestSelling->name}}</h4>
+    @if(!empty($bestSelling))
+        <!-- banner section start -->
+        <section class="banner-wapper">
+            <div class="custom-container">
+                <div class="banner-bg">
+                    <img class="img-fluid img-bg" src="{{$bestSelling->featuredImage}}" alt="banner-2" />
+                    <div class="banner-content">
+                        <h2 class="fw-semibold">Best Selling</h2>
+                        <h4>{{$bestSelling->title}}</h4>
+                    </div>
+                    <a href="{{route('mobile.marketplace.detail',['slug'=>textToSlug($bestSelling->title),'id'=>$bestSelling->reference])}}" class="more-btn">
+                        <h4>View More</h4>
+                        <i class="iconsax right-arrow" data-icon="arrow-right"></i>
+                    </a>
                 </div>
-                <a href="{{route('mobile.marketplace.detail',['slug'=>textToSlug($bestSelling->title),'id'=>$bestSelling->reference])}}" class="more-btn">
-                    <h4>View More</h4>
-                    <i class="iconsax right-arrow" data-icon="arrow-right"></i>
-                </a>
             </div>
-        </div>
-    </section>
-    <!-- banner section end -->
+        </section>
+        <!-- banner section end -->
+    @endif
 
     @foreach($serviceTypes as $serviceType)
         @if(trendingInCategory($serviceType->id)->count()>0)
