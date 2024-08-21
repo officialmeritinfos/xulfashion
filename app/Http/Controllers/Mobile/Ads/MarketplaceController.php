@@ -25,14 +25,16 @@ use Stevebauman\Location\Facades\Location;
 class MarketplaceController extends BaseController
 {
     //landing Page
-    public function landingPage()
+    public function landingPage(Request $request)
     {
         if (!Cache::has('hasAdsCountry')){
             $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
             $country = Country::where('iso2',$position->countryCode)->first();
             Cache::put('hasAdsCountry',$country->iso3,now()->addDays(7));
+            $countryIso = $country->iso3;
+        }else{
+            $countryIso = Cache::get('hasAdsCountry');
         }
-        $countryIso = Cache::get('hasAdsCountry');
 
         $web = GeneralSetting::find(1);
         if ($countryIso==null){
