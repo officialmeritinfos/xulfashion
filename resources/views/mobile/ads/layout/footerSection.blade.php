@@ -105,7 +105,7 @@
         @else
 
             <li class="{{(url()->current()==route('user.settings.index'))?'active':''}}">
-                <a href="{{route('user.settings.index')}}">
+                <a href="{{route('mobile.user.profile.landing-page')}}">
                     <div class="icon">
                         <img class="unactive" src="{{asset('mobile/images/svg/profile.svg')}}" alt="profile" />
                         <img class="active" src="{{asset('mobile/images/svg/profile-fill.svg')}}" alt="profile" />

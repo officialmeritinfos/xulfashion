@@ -8,6 +8,7 @@ use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
 use App\Http\Controllers\Mobile\Home;
+use App\Http\Controllers\Mobile\User\Profile;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -113,5 +114,12 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('auth.passwordRecover.resend')->middleware(['throttle:token-resend']);
 
     });
+    //USER ACCOUNT ROUTE MOBILE
+    Route::middleware(['web','auth','lockedOut','twoFactor'])->name('user.')->prefix('user')->group(function () {
+        //profile
+        Route::get('profile',[Profile::class,'landingPage'])
+            ->name('profile.landing-page');
 
+
+    });
 });

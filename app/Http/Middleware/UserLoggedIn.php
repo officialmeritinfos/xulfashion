@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Jenssegers\Agent\Agent;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserLoggedIn
@@ -16,12 +17,18 @@ class UserLoggedIn
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $agent = new Agent();
         $user = Auth::user();
 
         if ($user->loggedIn!=1){
             Auth::logout();
             $request->session()->regenerate();
-            return to_route('login')->with('error','Account is locked');
+
+            if ($agent->isMobile()){
+                return to_route('login')->with('error','Two-factor Authentication Required');
+            }else{
+                return to_route('mobile.login')->with('error','Two-factor Authentication Required');
+            }
         }
 
         return $next($request);
