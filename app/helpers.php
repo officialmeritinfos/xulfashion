@@ -399,7 +399,9 @@ if (!function_exists('trendingInCategory')) {
 
     function trendingInCategory($id)
     {
-        return \App\Models\UserAd::where('serviceType',$id)->orderBy('numberOfViews','desc')->take(10)->get();
+        return \App\Models\UserAd::where([
+            'serviceType'=>$id,'status' => 1
+        ])->orderBy('numberOfViews','desc')->take(10)->get();
     }
 }
 
