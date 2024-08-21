@@ -60,10 +60,17 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
         ->name('marketplace.search');
 
     //STORES
-    Route::get('ads/stores/list',[StoreController::class,'landingPage'])
+    Route::get('stores/list',[StoreController::class,'landingPage'])
         ->name('marketplace.stores');
-    Route::get('/ads/store/search',[StoreController::class,'filterStores'])
+    Route::get('stores/{id}/detail',[StoreController::class,'storeDetail'])
+        ->name('marketplace.store.detail');
+
+    Route::get('/store/search',[StoreController::class,'searchSuggestion'])
         ->name('marketplace.store.search');
+    Route::get('/store/category/search',[StoreController::class,'categorySearchResult'])
+        ->name('marketplace.store.category.search');
+    Route::get('/store/search/result',[StoreController::class,'searchResult'])
+        ->name('marketplace.store.search.result');
 
     //Registration & Login as User
     //REGISTRATION

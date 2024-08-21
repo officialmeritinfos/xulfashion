@@ -3,6 +3,7 @@
 use App\Models\State;
 use App\Models\User;
 use App\Models\UserActivity;
+use App\Models\UserStoreProduct;
 use Carbon\Carbon;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Database\Eloquent\Model;
@@ -418,6 +419,19 @@ if (!function_exists('adsInService')) {
     function adsInService($id)
     {
         return \App\Models\UserAd::where('serviceType',$id)->count();
+    }
+}
+if (!function_exists('shortenText')) {
+
+    function shortenText($text,$length)
+    {
+        return \Illuminate\Support\Str::words($text,$length);
+    }
+}
+if (!function_exists('numberOfProductsInCategory')) {
+    function numberOfProductsInCategory($category)
+    {
+        return UserStoreProduct::where('category', $category)->count();
     }
 }
 

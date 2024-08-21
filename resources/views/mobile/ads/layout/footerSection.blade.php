@@ -84,8 +84,8 @@
                 </div>
             </a>
         </li>
-        <li class="">
-            <a href="cart">
+        <li class="{{(url()->current()==route('mobile.marketplace.stores'))?'active':''}}">
+            <a href="{{route('mobile.marketplace.stores')}}">
                 <div class="icon">
                     <img class="unactive" src="{{asset('mobile/images/svg/bag.svg')}}" alt="bag" />
                     <img class="active" src="{{asset('mobile/images/svg/bag-fill.svg')}}" alt="bag" />
