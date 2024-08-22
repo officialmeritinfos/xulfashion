@@ -63,7 +63,7 @@
 
                         <div class="product-box-detail">
                             <h4>{{$recentAd->title}}</h4>
-                            <h5>{{serviceTypeById($recentAd->serviceType)->name}}</h5>
+                            <h5> {{ $recentAd->service->name }}</h5>
                             <div class="d-flex justify-content-between gap-3">
                                 <h5>By: {{$recentAd->companyName}}</h5>
                                 <h3 class="text-end">
@@ -109,7 +109,7 @@
                                 <div class="d-flex align-items-center justify-content-between">
                                     <h4>{{$ad->title}}</h4>
                                 </div>
-                                <h5>{{serviceTypeById($ad->serviceType)->name}}</h5>
+                                <h5>{{ $ad->service->name }}</h5>
                                 <div class="d-flex justify-content-between gap-3">
                                     <h5>By: {{$ad->companyName}}</h5>
                                     <h3 class="text-end">

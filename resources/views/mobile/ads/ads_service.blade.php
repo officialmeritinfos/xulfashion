@@ -7,9 +7,11 @@
                 <div class="row g-3" id="product-list">
                     @include('mobile.ads.layout.ads_listing')
                 </div>
-                <div class="text-center mt-4">
-                    <button id="load-more" class="btn btn-light" data-url="{{ url()->full() }}">Load More</button>
-                </div>
+                @if ($ads->hasMorePages())
+                    <div class="text-center mt-4">
+                        <button id="load-more" class="btn btn-light" data-url="{{ url()->full() }}">Load More</button>
+                    </div>
+                @endif
             @else
                 <div class="empty-tab">
                     <img class="img-fluid empty-img w-100" src="{{asset('mobile/images/gif/search.gif')}}" alt="empty-search" />

@@ -63,11 +63,11 @@ class MarketplaceController extends BaseController
             'country'       =>$country,
             'hasCountry'    =>$hasCountry,
             'states'        =>($hasCountry==1)?State::where('country_code',$country->iso2)->orderBy('name','asc')->get():'',
-            'ads'           =>($hasCountry==1)?UserAd::where(['status'=>1, 'country'=>$country->iso2])
-                ->inRandomOrder()->take(30)->get():UserAd::where(['status'=>1])
+            'ads'           =>($hasCountry==1)?UserAd::where(['status'=>1, 'country'=>$country->iso2])->with('service')
+                ->inRandomOrder()->take(30)->get():UserAd::where(['status'=>1])->with('service')
                 ->inRandomOrder()->take(30)->get(),
-            'recentAds'     =>($hasCountry==1)?UserAd::where(['status'=>1, 'country'=>$country->iso2])
-                ->orderBy('id','desc')->take(30)->get():UserAd::where(['status'=>1])
+            'recentAds'     =>($hasCountry==1)?UserAd::where(['status'=>1, 'country'=>$country->iso2])->with('service')
+                ->orderBy('id','desc')->take(30)->get():UserAd::where(['status'=>1])->with('service')
                 ->orderBy('id','desc')->take(30)->get(),
             'testimonials'  =>Testimonial::where('status',1)->get(),
             'iso3'          =>($hasCountry==1)?$country->iso3:'',
@@ -87,7 +87,10 @@ class MarketplaceController extends BaseController
         }
         $country = $request->session()->get('country');
 
-        $ads = UserAd::where('reference',$id)->where('status',1)->firstOrFail();
+        $ads = UserAd::where([
+            'reference' => $id,
+            'status' => 1
+        ])->with('service')->firstOrFail();
         //if user is logged in
         if (\auth()->check()){
             $hasViewed = UserAdView::where([
@@ -132,7 +135,7 @@ class MarketplaceController extends BaseController
                     }
                 });
             });
-            $relatedAds = $query->get();
+            $relatedAds = $query->with('service')->paginate(10);
         }
 
         return view('mobile.ads.ad_details')->with([
@@ -166,7 +169,7 @@ class MarketplaceController extends BaseController
         $ads = UserAd::where([
             'country'=>$country,
             'status'=>1,'user'=>$user->id
-        ])->orderBy('id','desc')->paginate(30);
+        ])->with('service')->orderBy('id','desc')->paginate(30);
 
         return view('mobile.ads.merchant_detail')->with([
             'web'           =>$web,
@@ -226,7 +229,7 @@ class MarketplaceController extends BaseController
         $ads = UserAd::where([
             'country'=>$country,
             'status'=>1,'serviceType'=>$service->id
-        ])->latest()->paginate(30);
+        ])->with('service')->latest()->paginate(30);
 
         $country = Country::where('iso2',$country)->first();
 
@@ -255,24 +258,29 @@ class MarketplaceController extends BaseController
     //filter results
     public function filterAds(FilterAdsRequest $request)
     {
+        $state = $request->input('state');
+        $serviceType = $request->input('category');
         $country = Session::get('country');
         if (!$country){
             return to_route('marketplace.index');
         }
-        $query = UserAd::query();
+        $ads = UserAd::where([
+            'country'=>$country,'status' => 1
+        ])->when($request->filled('state'),function ($fetch) use($state){
+            $fetch->where('state', $state);
+        })->when($request->filled('category'),function ($fetch) use($serviceType){
+            $fetch->where('serviceType', $serviceType);
+        })->with('service')->inRandomOrder()->paginate(30);
 
-        $query->where('country',$country);
-
-        if ($request->filled('state')) {
-            $query->where('state', $request->input('state'));
-        }
-
-        if ($request->filled('category')) {
-            $query->where('serviceType', $request->input('category'));
-        }
-
-        $ads = $query->inRandomOrder()->paginate(1);
-        $otherAds = UserAd::where('country',$country)->where('status',1)->latest()->paginate(9);
+        //fetch similar ads not in the searched category/state
+        $otherAds = UserAd::where([
+            'country'=>$country,
+            'status'=>1
+        ])->when($request->filled('state'),function ($q) use($state){
+            $q->whereNot('state',$state);
+        })->when($request->filled('category'),function ($q) use($serviceType){
+            $q->whereNot('serviceType',$serviceType);
+        })->with('service')->latest()->paginate(14);
 
         $country = Country::where('iso2',$country)->first();
 

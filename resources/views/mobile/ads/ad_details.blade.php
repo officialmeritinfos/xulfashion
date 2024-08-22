@@ -46,7 +46,7 @@
                         {{$ad->title}}
                     </h2>
                     <h6>
-                        {{serviceTypeById($ad->serviceType)->name}}
+                        {{$ad->service->name}}
                     </h6>
                 </div>
                 <p class="mt-1">
@@ -200,7 +200,7 @@
                                 </div>
                                 <div class="product-box-detail">
                                     <h4>{{$ad->title}}</h4>
-                                    <h5>{{serviceTypeById($ad->serviceType)->name}}</h5>
+                                    <h5>{{$ad->service->name}}</h5>
                                     <div class="d-flex justify-content-between gap-3">
                                         <h5>By: {{$ad->companyName}}</h5>
                                         <h3 class="text-end">

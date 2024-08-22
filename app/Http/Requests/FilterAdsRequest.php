@@ -26,6 +26,7 @@ class FilterAdsRequest extends FormRequest
             'minPrice' => 'nullable|numeric|min:0',
             'maxPrice' => 'nullable|numeric|min:0',
             'serviceType' => 'nullable|numeric',
+            'category' => 'nullable|numeric',
         ];
     }
 }

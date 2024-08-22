@@ -109,7 +109,7 @@
                             <h6>Visit Store</h6>
                             <h6>
 
-                                <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank">
+                                <a href="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}">
                                     <img src="https://glenthemes.github.io/iconsax/icons/external-square.svg" style="font-size: 12px;"/>
                                 </a>
                             </h6>
@@ -142,7 +142,7 @@
                                 </div>
                                 <div class="product-box-detail">
                                     <h4>{{$ad->title}}</h4>
-                                    <h5>{{serviceTypeById($ad->serviceType)->name}}</h5>
+                                    <h5>{{$ad->service->name}}</h5>
                                     <div class="d-flex justify-content-between gap-3">
                                         <h5>By: {{$ad->companyName}}</h5>
                                         <h3 class="text-end">

@@ -10,4 +10,9 @@ class UserAd extends Model
 {
     use HasFactory,SoftDeletes;
     protected $guarded=[];
+
+    public function service()
+    {
+        return $this->belongsTo(ServiceType::class,'serviceType');
+    }
 }
