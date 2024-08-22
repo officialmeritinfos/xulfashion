@@ -1,4 +1,4 @@
-@extends('mobile.users.layout.base')
+@extends('mobile.users.layout.innerBase')
 @section('content')
 
 

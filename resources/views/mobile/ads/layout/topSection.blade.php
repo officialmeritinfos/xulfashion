@@ -4,7 +4,7 @@
         @guest()
         <img class="img-fluid profile-pic" src="{{asset('mobile/images/icons/profile.png')}}" alt="profile" />
         @else
-        <img class="img-fluid profile-pic" src="https://ui-avatars.com/api/?name={{$user->name}}" alt="profile" />
+        <img class="img-fluid profile-pic" src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="profile" />
         @endguest
         <h4>Hello, {{$user->name??'Guest'}}!</h4>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -60,7 +60,7 @@
                     @guest()
                         <img class="img-fluid profile-pic" src="{{asset('mobile/images/icons/profile.png')}}" alt="profile" />
                     @else
-                        <img class="img-fluid profile-pic" src="https://ui-avatars.com/api/?name={{$user->name}}&rounded?true" alt="profile" />
+                        <img class="img-fluid profile-pic" src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="profile" />
                     @endguest
 
                     <div>

@@ -119,6 +119,8 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
         //profile
         Route::get('profile',[Profile::class,'landingPage'])
             ->name('profile.landing-page');
+        Route::get('profile/edit',[Profile::class,'editProfile'])
+            ->name('profile.edit');
 
 
     });

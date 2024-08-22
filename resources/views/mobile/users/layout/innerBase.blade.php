@@ -101,14 +101,24 @@
 <div class="loader-wrapper">
     <span class="loader"></span>
 </div>
-<!-- header start -->
-<header class="section-t-space">
+
+
+
+<header class="profile-header section-t-space">
     <div class="custom-container">
         <div class="header-panel">
-            <a onclick="history.back()" class="back">
-                <i class="iconsax back-btn" data-icon="arrow-left"></i>
-            </a>
             <h3>{{$pageName}}</h3>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <div class="profile-pic mt-5">
+                <img class="img-fluid img" src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="profile" />
+            </div>
+            <div class="profile-name d-flex align-items-center justify-content-between mt-3 w-100">
+                <h4 class="theme-color">{{$user->name}}</h4>
+                <a href="{{route('mobile.user.profile.edit')}}">
+                    <i class="iconsax edit-icon" data-icon="edit-1"></i>
+                </a>
+            </div>
         </div>
     </div>
 </header>
