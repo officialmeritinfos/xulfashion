@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Offline</title>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #000 !important;
+                color: #fff !important;
+            }
+        }
+
+        body {
+            color: #444;
+            margin: 0;
+            font: normal 14px/20px Arial, Helvetica, sans-serif;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 15vw; /* Responsive font size based on viewport width */
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 6vw; /* Responsive font size */
+        }
+
+        p {
+            font-size: 4vw; /* Responsive font size */
+            margin-bottom: 20px;
+        }
+
+        .btn-pill {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 4vw; /* Responsive font size */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-pill:hover {
+            background-color: #333;
+        }
+
+        svg {
+            width: 40vw; /* Responsive width */
+            height: auto;
+        }
+
+        /* Media query for larger screens */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 120px; /* Fixed size for larger screens */
+            }
+
+            h2 {
+                font-size: 30px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            .btn-pill {
+                font-size: 16px;
+            }
+
+            svg {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>
+        <svg width="250" height="250" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 21H23L12 2L1 21Z" fill="black"/>
+            <path d="M12 16V18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 10V13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+    </h1>
+    <h2>Protocol Error</h2>
+    <p>A protocol error occurred</p>
+    <button class="btn-pill" onclick="location.reload();">Refresh Widget</button>
+</div>
+</body>
+</html>

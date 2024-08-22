@@ -449,5 +449,6 @@
 <script src="{{asset('marketplace/js/main.js')}}"></script>
 @include('basicInclude')
 @stack('js')
+<script src="{{asset('sw-register.js')}}"></script>
 </body>
 </html>

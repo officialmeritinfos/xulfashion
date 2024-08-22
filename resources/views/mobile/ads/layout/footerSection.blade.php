@@ -145,3 +145,5 @@
         }
     });
 </script>
+
+<script src="{{asset('sw-register.js')}}"></script>

@@ -1,48 +1,48 @@
 {
-  "name": "Fuzzy app",
-  "short_name": "Fuzzy app",
+  "name": "Xulfashion",
+  "short_name": "Xulfashion",
   "lang": "en-US",
   "start_url": ".",
   "display": "standalone",
   "background_color": "white",
   "theme_color": "#122636",
-  "description": "fuzzy app",
+  "description": "xulfashion app",
   "icons": [
     {
-      "src": "assets/images/logo/favicon.png",
+      "src": "/logo.png",
       "sizes": "40x40",
       "type": "image/png"
     },
     {
-      "src": "assets/images/logo/48.png",
+      "src": "/logo.png",
       "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "assets/images/logo/72.png",
+      "src": "/logo.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "assets/images/logo/96.png",
+      "src": "/logo.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "assets/images/logo/144.png",
+      "src": "/logo.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "assets/images/logo/168.png",
+      "src": "/logo.png",
       "sizes": "168x168",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "assets/images/logo/512.png",
+      "src": "/logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

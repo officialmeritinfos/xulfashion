@@ -68,5 +68,6 @@
 <!-- End Go Top Area -->
 
 @include('dashboard.layout.footer')
+<script src="{{asset('sw-register.js')}}"></script>
 </body>
 </html>

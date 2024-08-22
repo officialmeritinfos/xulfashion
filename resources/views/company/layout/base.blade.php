@@ -218,5 +218,6 @@
     })();
 </script>
 <!--End of Tawk.to Script-->
+<script src="{{asset('sw-register.js')}}"></script>
 </body>
 </html>
