@@ -21,7 +21,63 @@
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     @stack('css')
+    <style>
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
+        .loader {
+            position: relative;
+            display: flex;
+        }
+
+        .loader:before,
+        .loader:after {
+            content: '';
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            position: relative;
+            margin: 0 5px;
+            border-radius: 50%;
+            color: #FFF;
+            background: currentColor;
+            box-shadow: 50px 0, -50px 0;
+            animation: left 1s infinite ease-in-out;
+        }
+
+        .loader:after {
+            color: #FF3D00;
+            animation: right 1.1s infinite ease-in-out;
+        }
+
+        @keyframes right {
+            0%, 100% {
+                transform: translateY(-10px);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes left {
+            0%, 100% {
+                transform: translateY(10px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
     <!--Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -42,6 +98,9 @@
 </head>
 
 <body class="details-page details-page2">
+<div class="loader-wrapper">
+    <span class="loader"></span>
+</div>
 <!-- header start -->
 <header class="product2-header">
     <div class="custom-container">

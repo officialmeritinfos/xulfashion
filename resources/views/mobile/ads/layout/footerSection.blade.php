@@ -1,3 +1,4 @@
+
 <!-- filter offcanvas start -->
 <div class="modal search-filter" id="search-filter" tabindex="-1">
     <div class="modal-dialog modal-fullscreen">
@@ -103,8 +104,8 @@
                         <img class="unactive" src="{{asset('mobile/images/svg/profile.svg')}}" alt="profile" />
                         <img class="active" src="{{asset('mobile/images/svg/profile-fill.svg')}}" alt="profile" />
                     </div>
+                    <p>Register/Sign-in</p>
                 </a>
-                <p>Register/Sign-in</p>
             </li>
         @else
 
@@ -114,11 +115,22 @@
                         <img class="unactive" src="{{asset('mobile/images/svg/profile.svg')}}" alt="profile" />
                         <img class="active" src="{{asset('mobile/images/svg/profile-fill.svg')}}" alt="profile" />
                     </div>
+                    <p>Account</p>
                 </a>
-                <p>Account</p>
             </li>
         @endguest
     </ul>
 </div>
 <!-- bottom navbar end -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(window).on('load', function() {
+        $('.loader-wrapper').fadeOut('slow');
+    });
+
+    $('a').on('click', function(e) {
+        $('.loader-wrapper').fadeIn('fast');
+    });
+</script>

@@ -39,9 +39,71 @@
     <!-- Theme css -->
     <link rel="stylesheet" id="change-link" type="text/css" href="{{asset('mobile/css/style.css')}}" />
     @livewireStyles
+    <style>
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader {
+            position: relative;
+            display: flex;
+        }
+
+        .loader:before,
+        .loader:after {
+            content: '';
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            position: relative;
+            margin: 0 5px;
+            border-radius: 50%;
+            color: #FFF;
+            background: currentColor;
+            box-shadow: 50px 0, -50px 0;
+            animation: left 1s infinite ease-in-out;
+        }
+
+        .loader:after {
+            color: #FF3D00;
+            animation: right 1.1s infinite ease-in-out;
+        }
+
+        @keyframes right {
+            0%, 100% {
+                transform: translateY(-10px);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes left {
+            0%, 100% {
+                transform: translateY(10px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+
 </head>
 
 <body>
+<div class="loader-wrapper">
+    <span class="loader"></span>
+</div>
+
 @include('mobile.ads.layout.topSection')
 
 @yield('content')
@@ -66,7 +128,6 @@
 
 <!-- script js -->
 <script src="{{asset('mobile/js/script.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @stack('js')
 @livewireScripts
 <script>
