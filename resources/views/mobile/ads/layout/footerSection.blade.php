@@ -74,6 +74,7 @@
                     <img class="unactive" src="{{asset('mobile/images/svg/home.svg')}}" alt="home" />
                     <img class="active" src="{{asset('mobile/images/svg/home-fill.svg')}}" alt="home" />
                 </div>
+                <p>Home</p>
             </a>
         </li>
         <li class="{{(url()->current()==route('mobile.marketplace.categories'))?'active':''}}">
@@ -82,6 +83,7 @@
                     <img class="unactive" src="{{asset('mobile/images/svg/categories.svg')}}" alt="categories" />
                     <img class="active" src="{{asset('mobile/images/svg/categories-fill.svg')}}" alt="categories" />
                 </div>
+                <p>Categories</p>
             </a>
         </li>
         <li class="{{(url()->current()==route('mobile.marketplace.stores'))?'active':''}}">
@@ -90,6 +92,7 @@
                     <img class="unactive" src="{{asset('mobile/images/svg/bag.svg')}}" alt="bag" />
                     <img class="active" src="{{asset('mobile/images/svg/bag-fill.svg')}}" alt="bag" />
                 </div>
+                <p>Stores</p>
             </a>
         </li>
 
@@ -101,6 +104,7 @@
                         <img class="active" src="{{asset('mobile/images/svg/profile-fill.svg')}}" alt="profile" />
                     </div>
                 </a>
+                <p>Register/Sign-in</p>
             </li>
         @else
 
@@ -111,6 +115,7 @@
                         <img class="active" src="{{asset('mobile/images/svg/profile-fill.svg')}}" alt="profile" />
                     </div>
                 </a>
+                <p>Account</p>
             </li>
         @endguest
     </ul>

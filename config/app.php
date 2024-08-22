@@ -202,4 +202,5 @@ return [
     'recaptcha_secret' => env('CAPTCHA_SECRET_KEY'),
     'recaptcha_key' => env('CAPTCHA_SITE_KEY'),
 
+    'feature_request_url'=>'https://xulfashion.ducalis.io/reature-requests',
 ];

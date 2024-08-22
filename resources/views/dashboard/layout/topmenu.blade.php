@@ -92,6 +92,12 @@
                             <span>Settings</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{config('app.feature_request_url')}}" class="nav-link" target="_blank">
+                            <i class="ri-git-pull-request-line"></i>
+                            <span>Features Request</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
