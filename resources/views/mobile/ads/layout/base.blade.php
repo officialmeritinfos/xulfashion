@@ -67,7 +67,7 @@
             position: relative;
             margin: 0 5px;
             border-radius: 50%;
-            color: #FFF;
+            color: #E8175E;
             background: currentColor;
             box-shadow: 50px 0, -50px 0;
             animation: left 1s infinite ease-in-out;
