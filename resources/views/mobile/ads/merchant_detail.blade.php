@@ -5,17 +5,39 @@
         <link rel="stylesheet" type="text/css" href="{{asset('mobile/css/vendors/swiper-bundle.min.css')}}" />
     @endpush
 
+
     <!-- product-image section start -->
-    <section class="product2-image-section mt-5">
+    <section class="product2-image-section">
         <div class="custom-container">
             <div class="product2-img-slider">
-                <img class="img-fluid product2-bg" src="{{$merchant->photo}}" alt="product-bg" />
+                <img class="img-fluid product2-bg" src="{{asset('mobile/images/background/product-img-bg.png')}}" alt="product-bg" />
+                <div class="swiper product-2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img class="img-fluid product-img" src="{{empty($merchant->photo)?asset('dashboard/images/avatar1.png'):$merchant->photo}}" alt="p26" />
+                        </div>
+                    </div>
+                    <div class="swiper-button-next">
+                        <i class="iconsax arrow" data-icon="arrow-right"></i>
+                    </div>
+                    <div class="swiper-button-prev">
+                        <i class="iconsax arrow" data-icon="arrow-left"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- details section starts -->
-    <section class="mb-4">
+    <section class="mb-4 position-relative">
+        <img src="{{asset('mobile/images/effect.png')}}" class="img-fluid product-details-effect" alt="effect" />
+        <img class="img-fluid product-details-effect-dark" src="{{asset('mobile/images/effect-dark.png')}}" alt="effect-dark" />
+        <ul class="color-option">
+            <li class="product-color color1"></li>
+            <li class="product-color color2"></li>
+            <li class="product-color color3"></li>
+            <li class="product-color color4"></li>
+        </ul>
         <div class="custom-container">
             <h4 class="theme-color fw-semibold">Bio :</h4>
             <p class="theme-color fw-normal mt-1">
@@ -43,8 +65,8 @@
                 <div class="dimensions-box delivery-box">
                     <div class="d-block">
                         <h6>Contact</h6>
-                        <h6>
-                            <a href="tel:{{$store->phone??$merchant->phone}}">{{$store->phone??$merchant->phone}}</a>
+                        <h6 id="contact-number" style="cursor: pointer;">
+                            Click to reveal
                         </h6>
                     </div>
                 </div>
@@ -86,8 +108,10 @@
                         <div class="d-block">
                             <h6>Visit Store</h6>
                             <h6>
-                                <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}"
-                                   target="_blank">Visit Store</a>
+
+                                <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank">
+                                    <img src="https://glenthemes.github.io/iconsax/icons/external-square.svg" style="font-size: 12px;"/>
+                                </a>
                             </h6>
                         </div>
                     </div>
@@ -158,5 +182,14 @@
     @push('js')
         <!-- range-slider js -->
         <script src="{{asset('mobile/js/range-slider.js')}}"></script>
+        <script>
+            $(document).ready(function(){
+                var phoneNumber = '{{$store->phone??$merchant->phone}}';
+
+                $('#contact-number').on('click', function(){
+                    $(this).text(phoneNumber);
+                });
+            });
+        </script>
     @endpush
 @endsection

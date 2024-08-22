@@ -10,7 +10,7 @@
                 <div class="swiper product-2">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            <img class="img-fluid product-img" src="{{$store->logo}}" alt="p26" />
+                            <img class="img-fluid product-img" src="{{$store->logo}}" alt="" />
                         </div>
                     </div>
                     <div class="swiper-button-next">
@@ -68,7 +68,7 @@
                             <div class="d-block">
                                 <h6>Email</h6>
                                 <h6 style="word-break: break-word;">
-                                    <a href="mailto:{{$store->email}}" target="_blank">{{maskEmail($store->email)}}</a>
+                                    {{$store->email}}
                                 </h6>
                             </div>
                         </div>
@@ -80,8 +80,8 @@
                         <div class="dimensions-box delivery-box">
                             <div class="d-block">
                                 <h6>Contact</h6>
-                                <h6 style="word-break: break-word; ">
-                                    <a href="tel:{{$store->phone}}" target="_blank">{{$store->phone}}</a>
+                                <h6 id="contact-number" style="cursor: pointer;word-break: break-word;">
+                                    Click to reveal
                                 </h6>
                             </div>
                         </div>
@@ -147,5 +147,14 @@
     @push('js')
         <!-- range-slider js -->
         <script src="{{asset('mobile/js/range-slider.js')}}"></script>
+        <script>
+            $(document).ready(function(){
+                var phoneNumber = '{{$store->phone}}';
+
+                $('#contact-number').on('click', function(){
+                    $(this).text(phoneNumber);
+                });
+            });
+        </script>
     @endpush
 @endsection

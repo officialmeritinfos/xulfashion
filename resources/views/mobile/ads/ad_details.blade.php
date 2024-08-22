@@ -55,8 +55,8 @@
                     @endphp
                     @foreach($cates as $cate)
                         <span class="badge bg-primary text-white">
-                                                {{$cate}}
-                                            </span>
+                            {{$cate}}
+                        </span>
                     @endforeach
                 </p>
 
@@ -106,8 +106,8 @@
                 <div class="dimensions-box delivery-box">
                     <div class="d-block">
                         <h6>Contact</h6>
-                        <h6>
-                            <a href="tel:{{$merchant->phone}}" target="_blank">{{$merchant->phone}}</a>
+                        <h6 id="contact-number" style="cursor: pointer;">
+                            Click to reveal
                         </h6>
                     </div>
                 </div>
@@ -163,8 +163,10 @@
                         <div class="d-block">
                             <h6>Visit Store</h6>
                             <h6>
-                                <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}"
-                                   target="_blank">Visit Store</a>
+
+                                <a href="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}">
+                                    <img src="https://glenthemes.github.io/iconsax/icons/external-square.svg" style="font-size: 12px;"/>
+                                </a>
                             </h6>
                         </div>
                     </div>
@@ -235,5 +237,14 @@
     @push('js')
         <!-- range-slider js -->
         <script src="{{asset('mobile/js/range-slider.js')}}"></script>
+        <script>
+            $(document).ready(function(){
+                var phoneNumber = '{{$merchant->phone}}';
+
+                $('#contact-number').on('click', function(){
+                    $(this).text(phoneNumber);
+                });
+            });
+        </script>
     @endpush
 @endsection

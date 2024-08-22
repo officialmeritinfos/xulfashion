@@ -171,7 +171,7 @@ class MarketplaceController extends BaseController
         return view('mobile.ads.merchant_detail')->with([
             'web'           =>$web,
             'siteName'      =>$web->name,
-            'pageName'      =>"Listings By ".$user->displayName,
+            'pageName'      =>"Listings By ".$user->displayName??$user->name,
             'serviceTypes'  =>ServiceType::where('status',1)->get(),
             'country'       =>Country::where('iso2',$country)->first(),
             'hasCountry'    =>$hasCountry=1,
