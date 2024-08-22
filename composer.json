@@ -24,6 +24,7 @@
         "livewire/livewire": "^3.5",
         "mews/purifier": "^3.4",
         "pragmarx/google2fa-laravel": "^2.1",
+        "sentry/sentry-laravel": "^4.8",
         "spatie/laravel-permission": "^6.9",
         "stevebauman/location": "^7.1"
     },
