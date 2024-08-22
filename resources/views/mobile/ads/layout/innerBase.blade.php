@@ -105,7 +105,7 @@
 <header class="section-t-space">
     <div class="custom-container">
         <div class="header-panel">
-            <a onclick="history.back()">
+            <a onclick="history.back()" class="back">
                 <i class="iconsax back-btn" data-icon="arrow-left"></i>
             </a>
             <h3>{{$pageName}}</h3>
