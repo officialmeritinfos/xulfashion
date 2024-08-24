@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('model:prune')->daily()->sentryMonitor();
         $schedule->command('app:move-pending-balance-to-main')->everyMinute()->withoutOverlapping()->sentryMonitor();
         $schedule->command('location:update')->daily()->sentryMonitor();
+        $schedule->command('app:welcome-mail')->everyMinute()->sentryMonitor();
     }
 
     /**

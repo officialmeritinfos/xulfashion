@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\GeneralSetting;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -14,15 +15,17 @@ use Illuminate\Queue\SerializesModels;
 class SendWelcomeEmail extends Mailable
 {
     use Queueable, SerializesModels;
-    public mixed $mailData;
+    public mixed $user;
+    public mixed $web;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($mailData)
+    public function __construct(User $user,GeneralSetting $web)
     {
-        $this->mailData = $mailData;
+        $this->user = $user;
+        $this->web = $web;
     }
 
     /**
@@ -33,11 +36,11 @@ class SendWelcomeEmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address($this->mailData['fromMail'],$this->mailData['siteName']),
+            from: new Address($this->web->email,$this->web->name),
             replyTo:[
-                $this->mailData['supportMail']
+                $this->web->supportEmail
             ] ,
-            subject: 'Welcome to '.$this->mailData['siteName'],
+            subject: 'Welcome to '.$this->web->name,
         );
     }
 
@@ -48,14 +51,13 @@ class SendWelcomeEmail extends Mailable
      */
     public function content()
     {
-        $web = GeneralSetting::find(1);
-        //let us process email verification link
-        $user = $this->mailData['user'];
+        $user = $this->user;
+        $web = $this->web;
 
         return new Content(
             view: 'emails.welcome_email',
             with: [
-                'web'=>$web,
+                'web'=>$this->web,
                 'siteName'=>$web->name,
                 'user'  =>$user->name,
                 'supportMail'=>$web->supportMail

@@ -15,7 +15,7 @@ use App\Http\Controllers\Storefront\User\TicketController;
 
 /*==============================MERCHANT STORE =====================================*/
 
-Route::domain('{subdomain}.localhost')->group(function () {
+Route::domain('{subdomain}.xulstore.com')->group(function () {
     Route::middleware(['applyTheme','extend.session'])->group(function (){
         //landing page
         Route::get('/', [Home::class,'landingPage'])->name('merchant.store');//landing page
@@ -69,7 +69,7 @@ Route::domain('{subdomain}.localhost')->group(function () {
         Route::post('checkout/order/process',[CheckoutController::class,'processCheckout'])
             ->name('merchant.store.checkout.process');
         Route::post('checkout/order/process/authenticated',[CheckoutController::class,'processCheckoutAuthenticated'])
-            ->name('merchant.store.checkout.process.authenticated');
+            ->name('merchant.store.checkout.process.authenticated')->middleware('auth.customer');
 
 
         Route::get('checkout/checkout-order/{id}/invoice',[CheckoutController::class,'checkoutInvoice'])

@@ -203,4 +203,15 @@ return [
     'recaptcha_key' => env('CAPTCHA_SITE_KEY'),
 
     'feature_request_url'=>'https://xulfashion.ducalis.io/reature-requests',
+
+    'appLink'=>[
+        'merchant'=>[
+            'apple'=>env('APP_STORE_MERCHANT_LINK',null),
+            'google'=>env('PLAY_STORE_MERCHANT_LINK',null)
+        ],
+        'client'=>[
+            'apple'=>env('APP_STORE_CLIENT_LINK',null),
+            'google'=>env('PLAY_STORE_CLIENT_LINK',null)
+        ]
+    ]
 ];
