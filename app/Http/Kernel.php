@@ -81,5 +81,6 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'auth.staff' => \App\Http\Middleware\RedirectIfNotStaff::class,
+        'auth.customer' => \App\Http\Middleware\RedirectIfNotCustomer::class,
     ];
 }

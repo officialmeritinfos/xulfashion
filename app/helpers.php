@@ -435,3 +435,32 @@ if (!function_exists('numberOfProductsInCategory')) {
     }
 }
 
+if (!function_exists('getStateFromCountryIso3')){
+    /**
+     * Retrieve a state by its ISO2 code and country code.
+     *
+     * This function takes a state ISO2 code and a country code as input and retrieves
+     * the corresponding state record from the database using the State model. It returns
+     * the first matching state found or null if no matching state is found.
+     *
+     * @param string $stateIso2 The ISO2 code of the state to retrieve.
+     * @param string $countryCodeIso3 The country code associated with the state.
+     * @return \App\Models\State|null The state object if found, or null if not found.
+     */
+    function getStateFromCountryIso3($stateIso2,$countryCodeIso3)
+    {
+        $country = \App\Models\Country::select('iso2')->where('iso3',$countryCodeIso3)->first();
+        return State::where([
+            'iso2'=>$stateIso2,
+            'country_code'=>$country->iso2
+        ])->first();
+    }
+}
+if (!function_exists('getCountryFromIso3')){
+
+    function getCountryFromIso3($countryCodeIso3)
+    {
+        return \App\Models\Country::where('iso3',$countryCodeIso3)->first();
+
+    }
+}

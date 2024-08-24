@@ -11,6 +11,7 @@ use App\Models\UserStoreSetting;
 use App\Traits\Helpers;
 use App\Traits\Themes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends BaseController
 {
@@ -46,6 +47,7 @@ class Dashboard extends BaseController
         ])->firstOrFail();
         $customer->loggedIn=2;
         $customer->save();
+        Auth::guard('customers')->logout();
 
         $request->session()->forget(['loggedIn', 'customer','loggedInStore']);
 

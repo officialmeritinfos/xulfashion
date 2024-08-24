@@ -22,6 +22,7 @@ use App\Notifications\CustomNotificationMail;
 use App\Traits\Helpers;
 use App\Traits\Themes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -150,6 +151,177 @@ class CheckoutController extends BaseController
                     'reference'=>$customerRef
                 ]
             );
+
+            $orderRef = $this->generateUniqueReference('user_store_orders','reference');
+            $paymentReference = $this->generateUniqueReference('user_store_orders','paymentReference');
+
+            $couponData = session()->get('coupon', ['coupon_discount' => 0]);
+
+            // Create the order
+            $order = UserStoreOrder::create([
+                'store' => $store->id,'customer'=>$customer->id,'paymentStatus'=>2,
+                'amount' => 0,'coupon'=>session()->has('coupon')?$couponData['couponId']:'','currency'=>$store->currency,
+                'status'=>2,'reference'=>$orderRef,'checkoutType'=>$input['checkoutType'],
+                'completedOnWhatsapp'=>($input['checkoutType']==1)?1:2,'paymentReference'=>$paymentReference
+            ]);
+
+            // Fetch cart and coupon details from session
+            $cart = session()->get('cart', []);
+            $couponData = session()->get('coupon', ['coupon_discount' => 0]);
+            $bagTotal = 0;
+
+            // Add products to order breakdown
+            foreach ($cart as $item) {
+                $lineTotal = $item['quantity'] * $item['price'];
+                $bagTotal += $lineTotal;
+                $product = UserStoreProduct::where([
+                    'store'=>$store->id,'id'=>$item['product_id']
+                ])->first();
+
+                $product->quantity = $product->quantity-$item['quantity'];
+
+                UserStoreOrderBreakdown::create([
+                    'orderId' => $order->id,
+                    'store'=>$store->id,
+                    'product' => $product->id,
+                    'quantity' => $item['quantity'],
+                    'amount' => $item['price'],
+                    'totalAmount' => $lineTotal,
+                    'sizeVariants'=>$item['size_name'],
+                    'colorVariant'=>$item['color_name']
+                ]);
+                $product->save();
+            }
+            // Apply coupon discount if any
+            $couponDiscount = $couponData['coupon_discount'];
+            $totalAmount = $bagTotal - $couponDiscount;
+
+            // Update order total amount
+            $order->update([
+                'totalAmountToPay' => $totalAmount,
+                'coupon'    =>session()->has('coupon')?$couponData['couponId']:'',
+                'amount'=>$bagTotal,'discount'=>$couponDiscount
+            ]);
+
+            if (session()->has('coupon')){
+                $coupon = UserStoreCoupon::where([
+                    'store'=>$store->id,'id'=>$couponData['couponId']
+                ])->first();
+                $coupon->numberOfUsage=$coupon->numberOfUsage+1;
+                $coupon->save();
+            }
+
+            //determine where to redirect the user to
+
+            session()->put('order',$orderRef);
+
+            $checkoutType = ($input['checkoutType']==1)?'Whatsapp':'Online';
+
+            //send mail to merchant and customer
+            $mailData=[
+                'fromMail'=>$web->email,
+                'title'=>'New Order Received',
+                'siteName'=>$web->name,
+                'supportMail'=>$web->supportEmail,
+                'order'=>$orderRef
+            ];
+            Mail::to($store->email)->send(new SendMerchantOrderPurchase($mailData,'New Order Received'));
+
+            Mail::to($customer->email)->send(new SendMerchantOrderPurchase($mailData,'Pending Order Payment'));
+
+            $invoiceUrl = route('merchant.store.checkout.order.invoice',['subdomain'=>$subdomain,'id'=>$orderRef]);
+
+            if ($input['checkoutType']==1){
+
+                // Generate WhatsApp message
+                $itemsText = "";
+                foreach ($cart as $item) {
+                    $product = UserStoreProduct::where([
+                        'store'=>$store->id,'id'=>$item['product_id']
+                    ])->first();
+                    $lineTotal = $item['quantity'] * $item['price'];
+                    $itemsText .= "*Product:* {$product->name}\n";
+                    $itemsText .= "Quantity: {$item['quantity']}\n";
+                    $itemsText .= "Price: {$store->currency} {$item['price']}\n";
+                    $itemsText .= "Line Total: {$store->currency} {$lineTotal}\n\n";
+                }
+
+                $couponText = $couponDiscount > 0 ? "Discount: -{$store->currency} {$couponDiscount}\n" : "No discount applied\n";
+                $summaryText="I just placed an order on your store and the details are below \n\n";
+                $summaryText .= "*Order Summary:*\n\n";
+                $summaryText .= $itemsText;
+                $summaryText .= "Bag Total: {$store->currency} {$bagTotal}\n";
+                $summaryText .= $couponText;
+                $summaryText .= "Total Amount: {$store->currency} {$totalAmount}\n\n";
+                $summaryText .= "*Invoice Url:* {$invoiceUrl}";
+
+                $url = "https://wa.me/".$settings->whatsappContact.'?text='.urlencode($summaryText);
+                $message = "Order processed. Redirecting to the appropriate page.";
+                session()->forget(['coupon','cart']);
+
+            }else{
+                //process if payment method is Online; we determine the currency first and then begin the processing
+                $fetchedOrder = UserStoreOrder::where(['store'=>$store->id,'reference'=>$orderRef])->first();
+                $payment = $this->payment->initiateOrderPayment($fetchedOrder,$store,$web);
+                if ($payment['result']){
+                    $url=$payment['url'];
+                    $fetchedOrder->channelPaymentReference = $payment['reference'];
+                    $fetchedOrder->save();
+                    $message = "Order processed. Redirecting to the appropriate page.";
+                    session()->forget(['coupon','cart']);
+                }else{
+                    $url=$invoiceUrl;
+                    $message = $payment['message'];
+                }
+            }
+
+            $request->session()->put([
+                'loggedIn'=>1,
+                'customer'=>$customer->id,
+                'loggedInStore'=>$store->id
+            ]);
+            $customer->loggedIn=1;
+            $customer->save();
+
+
+            DB::commit();
+
+
+            return $this->sendResponse([
+                'redirectTo'=>$url
+            ],$message);
+        }catch (\Exception $exception) {
+            DB::rollBack();
+
+            Log::error($exception->getMessage().' on line '.$exception->getLine());
+            return $this->sendError('checkout.error',['error'=>'An error occurred while processing checkout.']);
+        }
+    }
+
+    //process checkout as logged-in customer
+    public function processCheckoutAuthenticated(Request $request, $subdomain)
+    {
+        $web = GeneralSetting::find(1);
+        $store = UserStore::where('slug', $subdomain)->first();
+        if (!$store) {
+            return $this->sendError('store.error', ['error' => 'Store not found.']);
+        }
+        $settings = UserStoreSetting::where('store',$store->id)->first();
+        // Validate input
+        $validated = Validator::make($request->all(), [
+            'checkoutType'  =>['required','numeric','in:1,2']
+        ])->stopOnFirstFailure();
+
+        if ($validated->fails()){
+            return $this->sendError('validation.error',['error'=>$validated->errors()->all()]);
+        }
+
+        $input = $validated->validated();
+
+        try {
+            DB::beginTransaction();
+
+            $customer = Auth::guard('customers')->user();
 
             $orderRef = $this->generateUniqueReference('user_store_orders','reference');
             $paymentReference = $this->generateUniqueReference('user_store_orders','paymentReference');

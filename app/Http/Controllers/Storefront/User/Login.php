@@ -74,6 +74,8 @@ class Login extends BaseController
             if (!$hashed){
                 return $this->sendError('authentication.error',['error'=>'Wrong Email and Password combination']);
             }
+
+            Auth::guard('customers')->login($customer);
             //login
             $request->session()->put([
                 'loggedIn'=>1,
@@ -112,6 +114,7 @@ class Login extends BaseController
                 'customer'=>$customer->id,
                 'loggedInStore'=>$store->id
             ]);
+            Auth::guard('customers')->login($customer);
             $customer->loggedIn=1;
             $customer->save();
 

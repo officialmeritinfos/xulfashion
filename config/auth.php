@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'system_staff', // Provider for SystemStaff model
         ],
+        'customers' => [
+            'driver' => 'session',
+            'provider' => 'user_store_customers', // Provider for UserStoreCustomer model
+        ],
     ],
 
     /*
@@ -71,6 +75,10 @@ return [
         'system_staff' => [
             'driver' => 'eloquent',
             'model' => App\Models\SystemStaff::class,
+        ],
+        'user_store_customers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\UserStoreCustomer::class,
         ],
 
         // 'users' => [

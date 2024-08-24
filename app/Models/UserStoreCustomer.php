@@ -12,4 +12,6 @@ class UserStoreCustomer extends Authenticatable
 {
     use HasFactory,SoftDeletes,Notifiable;
     protected $guarded=[];
+
+    protected $guard_name = 'customers';
 }

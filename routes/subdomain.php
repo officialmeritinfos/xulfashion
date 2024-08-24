@@ -15,7 +15,7 @@ use App\Http\Controllers\Storefront\User\TicketController;
 
 /*==============================MERCHANT STORE =====================================*/
 
-Route::domain('{subdomain}.xulstore.com')->group(function () {
+Route::domain('{subdomain}.localhost')->group(function () {
     Route::middleware(['applyTheme','extend.session'])->group(function (){
         //landing page
         Route::get('/', [Home::class,'landingPage'])->name('merchant.store');//landing page
@@ -68,6 +68,8 @@ Route::domain('{subdomain}.xulstore.com')->group(function () {
             ->name('merchant.store.checkout.summary.checkout');//preview cart items on cart page
         Route::post('checkout/order/process',[CheckoutController::class,'processCheckout'])
             ->name('merchant.store.checkout.process');
+        Route::post('checkout/order/process/authenticated',[CheckoutController::class,'processCheckoutAuthenticated'])
+            ->name('merchant.store.checkout.process.authenticated');
 
 
         Route::get('checkout/checkout-order/{id}/invoice',[CheckoutController::class,'checkoutInvoice'])
@@ -105,7 +107,7 @@ Route::domain('{subdomain}.xulstore.com')->group(function () {
             ->name('merchant.store.login.authenticate');//authenticate login from mail
 
 
-        Route::middleware(['customer.login'])->group(function (){
+        Route::middleware(['customer.login','auth.customer'])->group(function (){
             //Dashboard overview
             Route::get('user/index',[Dashboard::class,'landingPage'])
                 ->name('merchant.store.user.index');

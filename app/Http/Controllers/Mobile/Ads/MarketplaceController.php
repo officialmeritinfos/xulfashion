@@ -73,7 +73,7 @@ class MarketplaceController extends BaseController
             'iso3'          =>($hasCountry==1)?$country->iso3:'',
             'user'          =>Auth::user(),
             'bestSelling'   =>($hasCountry==1)?UserAd::where(['status'=>1, 'country'=>$country->iso2])
-                ->orderBy('numberOfViews','desc')->first():UserAd::where(['status'=>1])
+                ->orderByDesc('numberOfViews')->first():UserAd::where(['status'=>1])
                 ->orderBy('numberOfViews','desc')->first()
         ]);
     }
