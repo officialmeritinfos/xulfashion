@@ -5,7 +5,7 @@
     @include('dashboard.layout.header')
 </head>
 
-<body class="body-bg-f5f5f5" data-theme="dark">
+<body>
 <!-- Start Preloader Area -->
 <div class="preloader">
     <div class="content">
@@ -69,5 +69,7 @@
 
 @include('dashboard.layout.footer')
 <script src="{{asset('sw-register.js')}}"></script>
+
+
 </body>
 </html>

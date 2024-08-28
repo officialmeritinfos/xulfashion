@@ -5,6 +5,11 @@
             <i class="ri-fullscreen-line"></i>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link" id="theme-switcher">
+            <i id="theme-icon" class="ri-moon-line"></i>
+        </a>
+    </li>
 
     <li class="nav-item notification-box dropdown">
         <div class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
