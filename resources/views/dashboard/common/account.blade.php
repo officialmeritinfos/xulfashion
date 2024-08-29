@@ -29,10 +29,10 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <a class="dropdown-item" data-bs-toggle="modal" href="#withdraw_main_balance">
+                                                <span class="dropdown-item" data-bs-toggle="modal" href="#withdraw_main_balance">
                                                     <i class="ri-send-plane-fill"></i>
                                                     Withdraw Balance
-                                                </a>
+                                                </span>
                                             </li>
 {{--                                            <li>--}}
 {{--                                                <a class="dropdown-item" data-bs-toggle="modal" href="#fund_main_balance">--}}
@@ -83,22 +83,22 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 
                                             <li>
-                                                <a class="dropdown-item" data-bs-toggle="modal" href="#convert_referral_balance">
+                                                <span class="dropdown-item" data-bs-toggle="modal" href="#convert_referral_balance">
                                                     <i class="bx bx-repeat"></i>
                                                     Convert Balance
-                                                </a>
+                                                </span>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item cpy" data-clipboard-text="{{route('register',['ref'=>$user->username])}}">
+                                                <span class="dropdown-item cpy" data-clipboard-text="{{route('register',['ref'=>$user->username])}}">
                                                     <i class="bx bx-copy-alt"></i>
                                                     Copy Referral Link
-                                                </a>
+                                                </span>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item cpy" data-clipboard-text="{{$user->username}}">
+                                                <span class="dropdown-item cpy" data-clipboard-text="{{$user->username}}">
                                                     <i class="bx bxs-copy-alt"></i>
                                                     Copy Referral Code
-                                                </a>
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>

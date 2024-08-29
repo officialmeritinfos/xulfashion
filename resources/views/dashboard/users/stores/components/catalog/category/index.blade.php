@@ -83,12 +83,12 @@
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                 <li>
-                                                    <a class="dropdown-item cpy"
+                                                    <span class="dropdown-item cpy text-warning"
                                                        data-clipboard-text="Hey guys,checkout my new catalog on {{$siteName}} for {{$category->categoryName}}
                                                    {{route('merchant.store.category',['subdomain'=>$store->slug,'id'=>$category->id])}}">
                                                         Share
                                                         <i class="ri-share-forward-2-fill"></i>
-                                                    </a>
+                                                    </span>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="{{route('user.stores.catalog.category.edit',['id'=>$category->id])}}">

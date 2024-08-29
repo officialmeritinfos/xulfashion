@@ -100,14 +100,14 @@
                                             <i class="ri-more-2-fill"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-{{--                                            <li>--}}
-{{--                                                <a class="dropdown-item cpy"--}}
-{{--                                                   data-clipboard-text="Follow this link to make payment for your invoice: {{$invoice->title}} on {{$siteName}}--}}
-{{--                                                   {{route('merchant.store.invoice.detail',['subdomain'=>$store->slug,'id'=>$invoice->reference])}}">--}}
-{{--                                                    Share--}}
-{{--                                                    <i class="ri-share-forward-2-fill"></i>--}}
-{{--                                                </a>--}}
-{{--                                            </li>--}}
+                                            <li>
+                                                <span class="dropdown-item cpy text-warning"
+                                                   data-clipboard-text="Follow this link to make payment for your invoice: {{$invoice->title}} on {{$siteName}}
+                                                   {{route('merchant.store.invoice.detail',['subdomain'=>$store->slug,'id'=>$invoice->reference])}}">
+                                                    Share
+                                                    <i class="ri-share-forward-2-fill"></i>
+                                                </span>
+                                            </li>
                                             <li>
                                                 <a class="dropdown-item" href="{{route('user.stores.invoices.details',['id'=>$invoice->reference])}}">
                                                     Details

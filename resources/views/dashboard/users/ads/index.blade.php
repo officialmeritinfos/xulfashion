@@ -22,14 +22,7 @@
                 </div>
             @else
                 <div class="row">
-                    <div class="row">
-                        <div class="col-lg-6 col-sm-6">
-                            <form class="search-bar d-flex">
-                                <i class="ri-search-line"></i>
-                                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                            </form>
-                        </div>
-                    </div>
+
                     <div class="row" style="margin-top:1rem;">
                         <div class="col-xl-12 col-sm-12 mx-auto">
                             <div class=" shadow-none mb-3">
@@ -73,11 +66,11 @@
 
                                     <div class="flex-shrink-0 align-self-center">
                                         <div class="dropdown ms-auto text-end">
-                                            <a class="dropdown-toggle dropdown-toggle-nocaret" href="#"
+                                            <span class="dropdown-toggle dropdown-toggle-nocaret" href="#"
                                                data-bs-toggle="dropdown">
                                                 <i class='bx bx-dots-horizontal-rounded font-22 text-option' .
                                                    style="font-size: 15px;"></i>
-                                            </a>
+                                            </span>
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <a class="dropdown-item" href="{{route('user.ads.edit',['id'=>$ad->reference])}}">

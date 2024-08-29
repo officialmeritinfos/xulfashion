@@ -110,12 +110,12 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <a class="dropdown-item cpy"
+                                                <span class="dropdown-item cpy text-warning"
                                                    data-clipboard-text="Hey guys,checkout my new product: {{$product->name}} on {{$siteName}} in the catalog {{$injected->fetchCategoryById($product->category)->categoryName??'N/A'}}
                                                    {{route('merchant.store.product.detail',['subdomain'=>$store->slug,'id'=>$product->reference])}}">
                                                     Share
                                                     <i class="ri-share-forward-2-fill"></i>
-                                                </a>
+                                                </span>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" href="{{route('user.stores.catalog.product.edit',['id'=>$product->reference])}}">
