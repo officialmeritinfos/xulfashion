@@ -8,9 +8,9 @@
                     <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank"><i class="ri-eye-line" data-bs-toggle="tooltip" title="View Store"></i> </a>
                 </h5>
                 <h5 class="card-title mb-0">
-                    <a class="cpy"
+                    <span class="cpy"
                        data-clipboard-text="Hey guys,checkout my new store: {{$store->name}} on {{$siteName}}  {{route('merchant.store',['subdomain'=>$store->slug])}}"
-                    ><i class="ri-share-forward-2-fill" data-bs-toggle="tooltip" title="Share Store Link"></i> </a>
+                    ><i class="ri-share-forward-2-fill" data-bs-toggle="tooltip" title="Share Store Link"></i> </span>
                 </h5>
             </div>
             <hr style="margin-top: -0.5rem;"/>
