@@ -32,6 +32,18 @@ class Home extends BaseController
             'ads'           =>UserAd::where('user',$user->id)->count(),
         ]);
     }
+    //landing page
+    public function showClientApp()
+    {
+        $user = Auth::user();
+        $web = GeneralSetting::find(1);
+
+        return view('dashboard.client_app_landing')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>$this->userAccountType($user).' Dashboard',
+        ]);
+    }
     //user activities
     public function userActivities()
     {

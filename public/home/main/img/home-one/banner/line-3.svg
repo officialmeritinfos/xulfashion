@@ -1,0 +1,24 @@
+<svg width="39" height="44" viewBox="0 0 39 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+      path {
+         fill: none;
+         animation: mymove 4s infinite;
+         animation-delay: 0.8s;
+      }
+    @keyframes mymove {
+        from {
+            stroke-dasharray: 720;
+            stroke-dashoffset: 720;
+        }
+        to {stroke-dashoffset: 0;}
+    }
+    @-webkit-keyframes mymove {
+        from {
+            stroke-dasharray: 720;
+            stroke-dashoffset: 720;
+        }
+        to {stroke-dashoffset: 0;}
+    }
+   </style>
+<path d="M3.20029 1.87452C3.20029 1.87452 16.8973 32.3756 37.53 40.6426" stroke="#00C7B8" stroke-width="6.00255"/>
+</svg>

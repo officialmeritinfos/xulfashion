@@ -100,7 +100,7 @@
         @if($injected->checkIfAccessorIsMobile())
 
             <li>
-                <a class="menu-bar" href="{{route('mobile.marketplace.index',['country'=>$user->countryCode])}}">
+                <a class="menu-bar" href="{{route('user.dashboard.show-client-app')}}">
                     <i class="bx bxs-business"></i>
                     <p>Marketplace</p>
                 </a>

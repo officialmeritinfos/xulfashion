@@ -23,6 +23,9 @@ Route::middleware('completedProfile')->group(function (){
     Route::get('dashboard',[Home::class,'landingPage'])
         ->name('dashboard');//landing page
 
+    Route::get('dashboard/show-client-app',[Home::class,'showClientApp'])
+        ->name('dashboard.show-client-app');//landing page
+
     Route::get('dashboard/activity',[Home::class,'userActivities'])
         ->name('dashboard.activity');//user activities
     Route::get('dashboard/activity/all',[Home::class,'allUserActivities'])
