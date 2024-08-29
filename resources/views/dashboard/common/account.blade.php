@@ -46,30 +46,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-sm-4">
-                            <div class="single-today-card d-flex align-items-center">
-                                <div class="flex-grow-1">
-                                        <span class="today">
-                                            Pending <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                                            title="This account holds all payments received which have not been settled
-                                                            into your account balance. If your business is not verified yet, payments received will be
-                                                            held here."></i>
-                                        </span>
-                                    <h6>
-                                            <span style="word-break: break-word;">
-                                                {{$user->mainCurrency}} {{number_format($user->pendingBalance,2)}}
-                                            </span>
-                                    </h6>
-                                </div>
 
-                            </div>
-                        </div>
                         <div class="col-lg-4 col-sm-4">
                             <div class="single-today-card d-flex align-items-center">
                                 <div class="flex-grow-1">
                                         <span class="today">
                                             Referral <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                                                title="Funds here are amount you received from your referrals"></i>
+                                                        title="Funds here are amount you received from your referrals"></i>
                                         </span>
                                     <span class="text-info">
                                                 {{$user->mainCurrency}} {{number_format($user->referralBalance,2)}}
@@ -103,6 +86,24 @@
                                         </ul>
                                     </div>
 
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-4">
+                            <div class="single-today-card d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                        <span class="today">
+                                            Holding <i class="ri-information-fill" data-bs-toggle="tooltip"
+                                                            title="This account holds all payments received which have not been settled
+                                                            into your account balance. If your business is not verified yet, payments received will be
+                                                            held here."></i>
+                                        </span>
+                                    <h6>
+                                            <span style="word-break: break-word;">
+                                                {{$user->mainCurrency}} {{number_format($user->pendingBalance,2)}}
+                                            </span>
+                                    </h6>
                                 </div>
 
                             </div>
