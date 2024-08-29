@@ -141,7 +141,7 @@
     <div class="footer padding-top-100 footer--light footer-l03">
         <div class="container">
             <div class="row row--footer-main">
-                <div class="col-md-12 col-lg-12 col-xl-12 col-12 col-xxl-12">
+                <div class="col-md-8 col-lg-5 col-xl-5 col-xxl-4 col-12">
                     <div class="footer__content-block">
                         <div class="footer__content-text">
                             <div class="footer-brand">
@@ -175,6 +175,63 @@
                                 </a>
                             </li>
                         </ul>
+                    </div>
+                </div>
+                <div class=" col-lg-7 col-xl-6 col-xxl-7 offset-xl-1 col-12">
+                    <div class="row row--list-block">
+                        <div class="col-auto col-md-4 col-lg-auto col-xl-auto col-xxl-auto col-6">
+                            <h3 class="footer-title">Company</h3>
+                            <ul class="footer-list">
+                                <li>
+                                    <a href="#">About Us</a>
+                                </li>
+                                <li>
+                                    <a href="#">Pricing</a>
+                                </li>
+                                <li>
+                                    <a href="#">Career</a>
+                                </li>
+                                <li>
+                                    <a href="#">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-auto col-md-4 col-lg-auto col-xl-auto col-xxl-auto">
+                            <h3 class="footer-title">Resources</h3>
+                            <ul class="footer-list">
+                                <li>
+                                    <a href="#">Blog</a>
+                                </li>
+                                <li>
+                                    <a href="#"> FAQs</a>
+                                </li>
+                                <li>
+                                    <a href="{{$web->ticketHelpDesk}}" target="_blank"> Support</a>
+                                </li>
+                                <li>
+                                    <a href="{{config('app.feature_request_url')}}" target="_blank"> Features Request</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-auto col-md-4 col-lg-auto col-xl-auto col-xxl-auto">
+                            <h3 class="footer-title">Legal</h3>
+                            <ul class="footer-list">
+                                <li>
+                                    <a href="{{route('home.terms-and-conditions')}}">General Terms of Use</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('home.privacy-policy')}}"> General Privacy Policy</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('home.aml')}}"> Anti-money Laundering</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('home.legal')}}"> Addendum Legals</a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </div>

@@ -99,12 +99,21 @@
                             <span>Settings</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{config('app.feature_request_url')}}" class="nav-link" target="_blank">
-                            <i class="ri-git-pull-request-line"></i>
-                            <span>Features Request</span>
-                        </a>
-                    </li>
+                    @if($injected->checkIfAccessorIsMobile())
+                        <li class="nav-item">
+                            <span data-clipboard-text="{{config('app.feature_request_url')}}" class="nav-link cpy-link">
+                                <i class="ri-git-pull-request-line"></i>
+                                <span>Features Request</span>
+                            </span>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a href="{{config('app.feature_request_url')}}" class="nav-link" target="_blank">
+                                <i class="ri-git-pull-request-line"></i>
+                                <span>Features Request</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </div>
 

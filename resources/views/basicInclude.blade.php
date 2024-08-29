@@ -22,6 +22,18 @@
 
     });
 </script>
+<script>
+    var clipboard= new ClipboardJS('.cpy-link');
+    clipboard.on('success', function(e) {
+        toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.info("Link copied. Visit your browser and paste it to continue.");
+
+    });
+</script>
 
 <script src="{{asset('dashboard/js/selectize.min.js')}}"></script>
 <script>
