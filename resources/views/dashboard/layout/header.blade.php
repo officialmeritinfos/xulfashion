@@ -169,7 +169,7 @@
 @if(checkIfAccessorIsMobile())
 <style>
     .navbar-nav .nav-item {
-        margin-right: 30px; /* Adjust the spacing between each list item */
+        margin-right: 20px; /* Adjust the spacing between each list item */
     }
 
     .navbar-nav .nav-item:last-child {

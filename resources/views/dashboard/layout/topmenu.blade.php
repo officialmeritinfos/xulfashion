@@ -48,12 +48,12 @@
     </li>
 
     <li class="nav-item dropdown profile-nav-item">
-        <a class="nav-link dropdown-toggle avatar" href="#" id="navbarDropdown-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="nav-link dropdown-toggle avatar" href="#" id="navbarDropdown-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="Images"
             style="width: 50px;">
             <h3>{{$user->name}}</h3>
             <span>{{($user->completedProfile!=1)?'N/A':$accountType}}</span>
-        </a>
+        </span>
 
         <div class="dropdown-menu">
             <div class="dropdown-header d-flex flex-column align-items-center">
