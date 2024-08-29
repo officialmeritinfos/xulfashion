@@ -53,3 +53,28 @@
         });
     });
 </script>
+
+
+<script>
+    $(window).on('load', function() {
+        $('.loader-wrapper').fadeOut('slow');
+    });
+
+    $(window).on('pageshow', function(event) {
+        if (event.originalEvent.persisted) {
+            // Page is loaded from cache, hide the preloader
+            $('.loader-wrapper').fadeOut('slow');
+        }
+    });
+
+    $('a').on('click', function(e) {
+        // Check if the link has the class "back"
+        if (!$(this).hasClass('back')) {
+            // If it doesn't have the class "back", show the preloader
+            $('.loader-wrapper').fadeIn('fast');
+        }
+    });
+    $(window).on('beforeunload', function() {
+        $('.loader-wrapper').show();
+    });
+</script>

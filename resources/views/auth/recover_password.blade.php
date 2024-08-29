@@ -42,13 +42,21 @@
 </head>
 
 <body class="body-bg-f5f5f5">
-<!-- Start Preloader Area -->
-<div class="preloader">
-    <div class="content">
-        <div class="box"></div>
+@if(checkIfAccessorIsMobile())
+    <!-- Start Preloader Area -->
+    <div class="loader-wrapper">
+        <span class="loader"></span>
     </div>
-</div>
-<!-- End Preloader Area -->
+    <!-- End Preloader Area -->
+@else
+    <!-- Start Preloader Area -->
+    <div class="preloader">
+        <div class="content">
+            <div class="box"></div>
+        </div>
+    </div>
+    <!-- End Preloader Area -->
+@endif
 
 <!-- Start User Area -->
 <section class="user-area">

@@ -9,6 +9,7 @@ use Google\Cloud\Storage\StorageClient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Jenssegers\Agent\Agent;
 
 if (!function_exists('maskEmail')) {
     /**
@@ -462,5 +463,12 @@ if (!function_exists('getCountryFromIso3')){
     {
         return \App\Models\Country::where('iso3',$countryCodeIso3)->first();
 
+    }
+}
+if (!function_exists('checkIfAccessorIsMobile')){
+    function checkIfAccessorIsMobile()
+    {
+        $agent = new Agent();
+        return $agent->isMobile();
     }
 }

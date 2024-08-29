@@ -1,24 +1,25 @@
 @inject('injected','App\Custom\Regular')
 <!-- Start Sidebar Area -->
 <div class="side-menu-area">
-    <div class="side-menu-logo bg-linear">
-        <a href="{{url('/')}}" class="navbar-brand d-flex align-items-center">
-            <img src="{{asset($web->favicon)}}" alt="image" style="width: 35px;">
-            <span>{{$siteName}}</span>
-        </a>
 
-        <div class="burger-menu d-none d-lg-block">
-            <span class="top-bar"></span>
-            <span class="middle-bar"></span>
-            <span class="bottom-bar"></span>
-        </div>
+        <div class="side-menu-logo bg-linear">
+            <a href="{{url('/')}}" class="navbar-brand d-flex align-items-center">
+                <img src="{{asset($web->favicon)}}" alt="image" style="width: 35px;">
+                <span>{{$siteName}}</span>
+            </a>
 
-        <div class="responsive-burger-menu d-block d-lg-none">
-            <span class="top-bar"></span>
-            <span class="middle-bar"></span>
-            <span class="bottom-bar"></span>
+            <div class="burger-menu d-none d-lg-block">
+                <span class="top-bar"></span>
+                <span class="middle-bar"></span>
+                <span class="bottom-bar"></span>
+            </div>
+
+            <div class="responsive-burger-menu d-block d-lg-none">
+                <span class="top-bar"></span>
+                <span class="middle-bar"></span>
+                <span class="bottom-bar"></span>
+            </div>
         </div>
-    </div>
 
     <nav class="sidebar-nav" data-simplebar>
         @if($user->completedProfile==1)

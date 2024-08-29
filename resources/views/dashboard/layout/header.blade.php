@@ -166,3 +166,14 @@
         }
     }
 </style>
+@if(checkIfAccessorIsMobile())
+<style>
+    .navbar-nav .nav-item {
+        margin-right: 30px; /* Adjust the spacing between each list item */
+    }
+
+    .navbar-nav .nav-item:last-child {
+        margin-right: 0; /* Remove the right margin from the last item */
+    }
+</style>
+@endif

@@ -43,6 +43,13 @@
 </head>
 
 <body class="body-bg-f5f5f5">
+@if(checkIfAccessorIsMobile())
+    <!-- Start Preloader Area -->
+    <div class="loader-wrapper">
+        <span class="loader"></span>
+    </div>
+    <!-- End Preloader Area -->
+@else
     <!-- Start Preloader Area -->
     <div class="preloader">
         <div class="content">
@@ -50,6 +57,7 @@
         </div>
     </div>
     <!-- End Preloader Area -->
+@endif
 
     <!-- Start User Area -->
     <section class="user-area">

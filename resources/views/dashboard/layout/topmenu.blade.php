@@ -1,14 +1,16 @@
 @inject('injected','App\Custom\Regular')
 <ul class="navbar-nav ms-auto mb-lg-0">
-    <li class="nav-item">
-        <a href="#" class="nav-link ri-fullscreen-btn" id="fullscreen-button">
+    @if(!checkIfAccessorIsMobile())
+        <li class="nav-item">
+        <span class="nav-link ri-fullscreen-btn" id="fullscreen-button">
             <i class="ri-fullscreen-line"></i>
-        </a>
-    </li>
+        </span>
+        </li>
+    @endif
     <li class="nav-item">
-        <a href="#" class="nav-link" id="theme-switcher">
+        <span href="#" class="nav-link" id="theme-switcher">
             <i id="theme-icon" class="ri-moon-line"></i>
-        </a>
+        </span>
     </li>
 
     <li class="nav-item notification-box dropdown">

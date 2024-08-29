@@ -41,63 +41,7 @@
     <link rel="stylesheet" id="change-link" type="text/css" href="{{asset('mobile/css/style.css')}}" />
     @include('genericCss')
     @stack('css')
-    <style>
-        .loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
-        .loader {
-            position: relative;
-            display: flex;
-        }
-
-        .loader:before,
-        .loader:after {
-            content: '';
-            width: 15px;
-            height: 15px;
-            display: inline-block;
-            position: relative;
-            margin: 0 5px;
-            border-radius: 50%;
-            color: #E8175E;
-            background: currentColor;
-            box-shadow: 50px 0, -50px 0;
-            animation: left 1s infinite ease-in-out;
-        }
-
-        .loader:after {
-            color: #FF3D00;
-            animation: right 1.1s infinite ease-in-out;
-        }
-
-        @keyframes right {
-            0%, 100% {
-                transform: translateY(-10px);
-            }
-            50% {
-                transform: translateY(10px);
-            }
-        }
-
-        @keyframes left {
-            0%, 100% {
-                transform: translateY(10px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-    </style>
 </head>
 
 <body class="auth-body dark">
@@ -129,26 +73,7 @@
 @stack('js')
 @include('basicInclude')
 
-<script>
-    $(window).on('load', function() {
-        $('.loader-wrapper').fadeOut('slow');
-    });
 
-    $(window).on('pageshow', function(event) {
-        if (event.originalEvent.persisted) {
-            // Page is loaded from cache, hide the preloader
-            $('.loader-wrapper').fadeOut('slow');
-        }
-    });
-
-    $('a').on('click', function(e) {
-        // Check if the link has the class "back"
-        if (!$(this).hasClass('back')) {
-            // If it doesn't have the class "back", show the preloader
-            $('.loader-wrapper').fadeIn('fast');
-        }
-    });
-</script>
 <script src="{{asset('sw-register.js')}}"></script>
 
 </body>

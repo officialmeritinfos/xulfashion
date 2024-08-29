@@ -6,13 +6,21 @@
 </head>
 
 <body>
-<!-- Start Preloader Area -->
-<div class="preloader">
-    <div class="content">
-        <div class="box"></div>
+@if(checkIfAccessorIsMobile())
+    <!-- Start Preloader Area -->
+    <div class="loader-wrapper">
+        <span class="loader"></span>
     </div>
-</div>
-<!-- End Preloader Area -->
+    <!-- End Preloader Area -->
+@else
+    <!-- Start Preloader Area -->
+    <div class="preloader">
+        <div class="content">
+            <div class="box"></div>
+        </div>
+    </div>
+    <!-- End Preloader Area -->
+@endif
 
 @include('dashboard.layout.menu')
 <!-- Start Main Content Area -->
@@ -20,11 +28,13 @@
     <div class="container-fluid">
         <nav class="navbar main-top-navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="responsive-burger-menu d-block d-lg-none">
-                    <span class="top-bar"></span>
-                    <span class="middle-bar"></span>
-                    <span class="bottom-bar"></span>
-                </div>
+                @if(!checkIfAccessorIsMobile())
+                    <div class="responsive-burger-menu d-block d-lg-none">
+                        <span class="top-bar"></span>
+                        <span class="middle-bar"></span>
+                        <span class="bottom-bar"></span>
+                    </div>
+                @endif
                 @include('dashboard.layout.topmenu')
 
             </div>
