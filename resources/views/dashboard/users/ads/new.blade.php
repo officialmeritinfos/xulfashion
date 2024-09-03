@@ -57,7 +57,7 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input boxed-check-success" type="radio" name="priceType" id="priceType2" value="2"
                         checked>
-                        <label class="form-check-label" for="priceType2">Specify price</label>
+                        <label class="form-check-label" for="priceType2">Specify price for item</label>
                     </div>
                 </div>
                 <div class="col-md-12 price">
