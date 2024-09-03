@@ -1,3 +1,5 @@
-<div>
-    <!-- Simplicity is the ultimate sophistication. - Leonardo da Vinci -->
-</div>
+@extends('company.layouts.base')
+@section('content')
+
+
+@endsection

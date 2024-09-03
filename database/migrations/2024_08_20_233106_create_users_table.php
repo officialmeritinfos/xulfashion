@@ -56,6 +56,9 @@ class CreateUsersTable extends Migration
             $table->integer('welcomeSent')->default(2);
             $table->string('tokenExpire', 100)->nullable();
             $table->integer('accountManager')->nullable();
+            $table->integer('requestedForAccountDeletion')->default(2);
+            $table->string('timeToDeleteAccount')->nullable();
+            $table->text('reasonForDeleting')->nullable();
             $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });

@@ -1,3 +1,5 @@
-<div>
-    <!-- Let all your things have their places; let each part of your business have its time. - Benjamin Franklin -->
-</div>
+@extends('company.layouts.base')
+@section('content')
+
+
+@endsection
