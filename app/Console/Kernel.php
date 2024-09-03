@@ -14,10 +14,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('model:prune')->daily()->sentryMonitor();
-        $schedule->command('app:move-pending-balance-to-main')->everyMinute()->withoutOverlapping();
-        $schedule->command('location:update')->daily();
-        $schedule->command('app:welcome-mail')->everyMinute();
+//        $schedule->command('model:prune')->daily()->sentryMonitor();
+//        $schedule->command('app:move-pending-balance-to-main')->everyMinute()->withoutOverlapping();
+//        $schedule->command('location:update')->daily();
+//        $schedule->command('app:welcome-mail')->everyMinute();
+        $schedule->command('app:delete-user-data')->everyMinute();
+
+
     }
 
     /**

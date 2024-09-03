@@ -33,8 +33,15 @@
                             </p>
                             @enderror
                             <div class="col-lg-12 mt-3">
-                                <button type="submit" class="btn theme_btn_two hover_effect">Delete Now<i
-                                        class="ti-arrow-right"></i></button>
+                                <button type="submit" class="btn theme_btn_two hover_effect">
+                                    <span>
+                                        Delete Now
+                                        <i class="ti-arrow-right" wire:loading.remove></i>
+                                        <div wire:loading>
+                                            <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                                        </div>
+                                    </span>
+                                </button>
                             </div>
                             <p>
                                 Your account deletion request will be processed in accordance to our privacy policy .

@@ -34,7 +34,7 @@ class DeleteMyInformation extends Component
         return [
             'reason'=>['required','string','max:225'],
             'email'=>['required','email',Rule::exists('users','email')],
-            'captcha' => ['required'],
+            'captcha' => ['nullable'],
         ];
     }
     //submit
