@@ -14,6 +14,7 @@ use App\Models\UserAdPhoto;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -62,6 +63,7 @@ class AdController extends BaseController
     //process ad creation
     public function processAdCreation(Request $request)
     {
+        DB::beginTransaction();
         try {
             $web = GeneralSetting::find(1);
             $user = Auth::user();
@@ -102,9 +104,9 @@ class AdController extends BaseController
                 'user'=>$user->id,'reference'=>$reference,
                 'title'=>$input['title'],'description'=>$input['description'],
                 'companyName'=>$input['companyName'],'priceType'=>$input['priceType'],
-                'amount'=>$input['price'],'serviceType'=>$input['serviceType'],
+                'amount'=>($input['priceType']!=1)?$input['price']:0,'serviceType'=>$input['serviceType'],
                 'state'=>$input['location'],'tags'=>implode(',',$input['category']),
-                'openToNegotiation'=>$input['negotiate'],'status'=>2,
+                'openToNegotiation'=>($input['priceType']!=1)?$input['negotiate']:2,'status'=>2,
                 'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2
             ]);
             if (!empty($ad)){
@@ -119,12 +121,14 @@ class AdController extends BaseController
                         ]);
                     }
                 }
+                DB::commit();
                 $this->userNotification($user,'Ad Created','Your ad was created successfully and is pending review',$request->ip());
                 return $this->sendResponse([
                     'redirectTo'=>route('user.ads.index')
                 ],'Ad created successful. Redirecting soon ...');
             }
         }catch (\Exception $exception){
+            DB::rollBack();
             Log::info('Error in  ' . __METHOD__ . ' while adding new ad: ' . $exception->getMessage());
             return $this->sendError('server.error',[
                 'error'=>'A server error occurred while processing your request.'
