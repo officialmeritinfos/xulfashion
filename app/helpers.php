@@ -472,3 +472,27 @@ if (!function_exists('checkIfAccessorIsMobile')){
         return $agent->isMobile();
     }
 }
+if (!function_exists('merchantType')){
+    function merchantType($type)
+    {
+        switch ($type){
+            case 1:
+                $text='Retailer';
+                break;
+            case 2:
+                $text='Fashion Designer';
+                break;
+            case 3:
+                $text='Manufacturer';
+                break;
+            case 4:
+                $text='Model';
+                break;
+            default:
+                $text='Unknown';
+                break;
+        }
+        return $text;
+    }
+}
+

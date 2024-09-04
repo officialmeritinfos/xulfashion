@@ -44,14 +44,19 @@
                                     @case(1)
                                     Merchant/Fashion Designer
                                     @break
-                                    @case(2)
-                                    Model
-                                    @break
                                     @default
                                     User
                                     @endswitch
                                 </span>
                             </li>
+                            @if(!empty($user->merchantType))
+                                <li class="d-flex align-items-center gap-1 mb-12">
+                                    <span class="w-30 text-md fw-semibold text-primary-light"> Merchant type</span>
+                                    <span class="w-70 text-secondary-light fw-medium">:
+                                    {{merchantType($user->merchantType)}}
+                                </span>
+                                </li>
+                            @endif
                             <li class="d-flex align-items-center gap-1 mb-12">
                                 <span class="w-30 text-md fw-semibold text-primary-light"> Country:</span>
                                 <span class="w-70 text-secondary-light fw-medium">: {{ $user->country }}</span>
