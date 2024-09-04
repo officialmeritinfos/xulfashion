@@ -54,6 +54,7 @@ class CompleteProfile extends BaseController
                 'tutorKeywords'         =>['nullable'],
                 'tutorKeywords.*'       =>['nullable','string'],
                 'image'                 => ['required', 'image','max:1024'],
+                'merchantType'          =>['required','numeric']
 
             ])->stopOnFirstFailure();
             if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
@@ -71,7 +72,7 @@ class CompleteProfile extends BaseController
                 'activelyLookingForJob'=>$request->filled('activeForJob')?1:2,
                 'completedProfile'=>1, 'dob'=>$input['dob'],
                 'displayName'=>$input['displayName'],
-                'address'=>$input['address'], 'accountType'=>1,'photo'=>$image
+                'address'=>$input['address'], 'accountType'=>1,'photo'=>$image,'merchantType' => $input['merchantType']
             ])){
                 $this->userNotification($user,'Profile setup completed','Your profile setup as a merchant has been completed.',$request->ip());
                 return $this->sendResponse([

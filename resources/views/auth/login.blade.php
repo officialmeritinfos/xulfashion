@@ -117,15 +117,7 @@
 </section>
 <!-- End User Area -->
 
-<div class="dark-bar">
-    <a href="#" class="d-flex align-items-center">
-        <span class="dark-title">Enable Dark Theme</span>
-    </a>
 
-    <div class="form-check form-switch">
-        <input type="checkbox" class="checkbox" id="darkSwitch">
-    </div>
-</div>
 
 <!-- Start Go Top Area -->
 <div class="go-top">

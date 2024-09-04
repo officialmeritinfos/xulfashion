@@ -15,8 +15,18 @@ class="submit-property-form product-upload shadow-none" enctype="multipart/form-
                 title="This is public. So make sure you properly tell your audience about yourself and what you do."></i> <sup class="text-danger">*</sup></label>
             <textarea type="date" class="form-control summernote" id="inputPassword4" name="bio">{{$user->bio}}</textarea>
         </div>
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Merchant Type<sup class="text-danger">*</sup></label>
+            <select class="form-control selectize" id="inputEmail4" name="merchantType">
+                <option value="">Select an Option</option>
+                <option value="1" {{($user->merchantType=='1')?'selected':''}}>Retailer</option>
+                <option value="2" {{($user->merchantType=='2')?'selected':''}}>Fashion Designer</option>
+                <option value="3" {{($user->merchantType=='3')?'selected':''}}>Manufacturer</option>
+                <option value="4" {{($user->merchantType=='4')?'selected':''}}>Model</option>
+            </select>
+        </div>
 
-        <div class="col-md-12">
+        <div class="col-md-6">
             <label for="inputAddress" class="form-label">
                 Display Name <i class="ri-information-fill" data-bs-toggle="tooltip"
                                 title="This will serve as your name on our marketplace. This does not replace your legal name as that will be used to

@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('accountType', 100)->nullable();
+            $table->string('merchantType', 100)->nullable();
             $table->string('accountBalance', 150)->default('0');
             $table->string('referralBalance', 100)->default('0');
             $table->string('pendingBalance', 150)->default('0');

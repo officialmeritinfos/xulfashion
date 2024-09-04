@@ -129,7 +129,7 @@
         function checkPasswordStrength() {
             var number = /([0-9])/;
             var alphabets = /([a-zA-Z])/;
-            var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+            var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<,.])/;
             var password = $('#password').val().trim();
             if (password.length < 8) {
                 $('#password-strength-status').removeClass();
@@ -155,7 +155,7 @@
         function checkPasswordStrengths() {
             var number = /([0-9])/;
             var alphabets = /([a-zA-Z])/;
-            var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+            var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<,.])/;
             var password = $('#passwords').val().trim();
             if (password.length < 8) {
                 $('#password-strength-statuss').removeClass();
