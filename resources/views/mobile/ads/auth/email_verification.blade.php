@@ -29,7 +29,7 @@
         </form>
         <div class="col-12 mt-3 text-white mb-3">
             <p class="create">Did not receive the mail?
-                <a data-url="{{ route('auth.email.resend') }}" class="submitResend">Resend</a>
+                <span data-url="{{ route('auth.email.resend') }}" class="submitResend">Resend</span>
             </p>
         </div>
     </div>
