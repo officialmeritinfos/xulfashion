@@ -119,21 +119,12 @@
 
             <div class="dropdown-footer">
                 <ul class="profile-nav">
-                    @if($injected->checkIfAccessorIsMobile())
-                        <li class="nav-item">
-                            <a href="{{route('logout.mobile')}}" class="nav-link">
-                                <i class="ri-login-circle-line"></i>
-                                <span>Logout</span>
-                            </a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a href="{{route('logout')}}" class="nav-link">
-                                <i class="ri-login-circle-line"></i>
-                                <span>Logout</span>
-                            </a>
-                        </li>
-                    @endif
+                    <li class="nav-item">
+                        <a href="{{route('logout')}}" class="nav-link">
+                            <i class="ri-login-circle-line"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
