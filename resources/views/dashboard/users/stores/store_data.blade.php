@@ -4,9 +4,11 @@
         <div class="card h-auto">
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="card-title mb-0">Statistics</h5>
-                <h5 class="card-title mb-0">
-                    <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank"><i class="ri-eye-line" data-bs-toggle="tooltip" title="View Store"></i> </a>
-                </h5>
+                @if(!checkIfAccessorIsMobile())
+                    <h5 class="card-title mb-0">
+                        <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank"><i class="ri-eye-line" data-bs-toggle="tooltip" title="View Store"></i> </a>
+                    </h5>
+                @endif
                 <h5 class="card-title mb-0">
                     <span class="cpy"
                        data-clipboard-text="Hey guys,checkout my new store: {{$store->name}} on {{$siteName}}  {{route('merchant.store',['subdomain'=>$store->slug])}}"
