@@ -294,7 +294,7 @@
     <!--end tabular product-->
 
 
-    @if(count($setting->perkTitle)>0)
+    @if($setting->perkTitle!=null && count($setting->perkTitle)>0)
         <!--start features-->
         <section class="product-thumb-slider section-padding">
             <div class="container">
