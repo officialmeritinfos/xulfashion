@@ -6,7 +6,7 @@
         <div class="auth-content">
             <div>
                 <h2>Hello Again!</h2>
-                <h4 class="p-0">Welcome back, sign-in to continue your adventure on {{$siteName}}</h4>
+                <h4 class="p-0" style="color: #9F2B68;">Welcome back, sign-in to continue your adventure on {{$siteName}}</h4>
             </div>
         </div>
     </div>

@@ -29,7 +29,8 @@ const registerRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
                         //return to natural stage
@@ -44,7 +45,8 @@ const registerRequest=function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#registration :input").prop("readonly", false);

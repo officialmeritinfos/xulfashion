@@ -35,7 +35,8 @@ const themesRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -50,7 +51,8 @@ const themesRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
 
@@ -64,7 +66,8 @@ const themesRequests = function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#processForm :input").prop("readonly", false);

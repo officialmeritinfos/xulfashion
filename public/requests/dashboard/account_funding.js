@@ -29,7 +29,8 @@ const fundingRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width",
                         }
                         toastr.error(data.data.error);
 
@@ -45,7 +46,8 @@ const fundingRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width",
                         }
                         toastr.info(data.message);
                         console.log(data.data);-
@@ -76,7 +78,8 @@ const fundingRequest=function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width",
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#fundMainBalance :input").prop("readonly", false);
@@ -117,7 +120,8 @@ const fundingRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -133,7 +137,8 @@ const fundingRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
 
@@ -154,7 +159,8 @@ const fundingRequest=function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#convertReferralBalance :input").prop("readonly", false);
@@ -195,7 +201,8 @@ const fundingRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -211,7 +218,8 @@ const fundingRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
 
@@ -232,7 +240,8 @@ const fundingRequest=function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#withdrawMainBalance :input").prop("readonly", false);

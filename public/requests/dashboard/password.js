@@ -35,7 +35,8 @@ const passwordRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width",
                         }
                         toastr.error(data.data.error);
 
@@ -50,7 +51,8 @@ const passwordRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width",
                         }
                         toastr.info(data.message);
 
@@ -65,7 +67,8 @@ const passwordRequests = function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width",
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#processPasswordSetup :input").prop("readonly", false);

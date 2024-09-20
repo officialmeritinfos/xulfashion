@@ -35,7 +35,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -50,7 +51,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
 
@@ -65,7 +67,8 @@ const settingsRequests = function (){
                 error:function (jqXHR){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#basicSettings :input").prop("readonly", false);
@@ -110,7 +113,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -125,7 +129,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
 
@@ -140,7 +145,8 @@ const settingsRequests = function (){
                 error:function (jqXHR){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#passwordUpdate :input").prop("readonly", false);
@@ -185,7 +191,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -200,7 +207,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
 
@@ -215,7 +223,8 @@ const settingsRequests = function (){
                 error:function (jqXHR){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#twoFactors :input").prop("readonly", false);
@@ -260,7 +269,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -275,7 +285,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
 
@@ -290,7 +301,8 @@ const settingsRequests = function (){
                 error:function (jqXHR){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#cvSetting :input").prop("readonly", false);
@@ -335,7 +347,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -350,7 +363,8 @@ const settingsRequests = function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
 
@@ -365,7 +379,8 @@ const settingsRequests = function (){
                 error:function (jqXHR){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#individualKyc :input").prop("readonly", false);

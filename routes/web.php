@@ -122,6 +122,9 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
         Route::get('profile/edit',[Profile::class,'editProfile'])
             ->name('profile.edit');
 
+        Route::post('profile/edit/process',[Profile::class,'updateProfile'])
+            ->name('profile.edit.process');
+
 
     });
 });

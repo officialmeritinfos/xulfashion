@@ -738,7 +738,7 @@ li {
   border-radius: 6px;
   border: none;
   color: rgba(var(--white), 1);
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: #fff;
   border-left: 4px solid rgba(var(--secondary-color), 1);
 }
 [dir=rtl] .auth-form .form-group .form-input .form-control {
@@ -5597,3 +5597,50 @@ body.dark .details-accordion .accordion-item .accordion-body .input-group .theme
   background-color: rgba(var(--theme-color), 0.7);
 }
 /*# sourceMappingURL=style.css.map */
+
+
+/* Success notification */
+#toast-container .toast-success {
+    background-color: #28a745 !important; /* Prominent green */
+    color: #ffffff !important; /* White text */
+    border-left: 5px solid #1e7e34 !important; /* Darker green border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for prominence */
+}
+
+/* Error notification */
+#toast-container .toast-error {
+    background-color: #dc3545 !important; /* Prominent red */
+    color: #ffffff !important; /* White text */
+    border-left: 5px solid #c82333 !important; /* Darker red border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for prominence */
+}
+
+/* Info notification */
+#toast-container .toast-info {
+    background-color: #17a2b8 !important; /* Prominent blue */
+    color: #ffffff !important; /* White text */
+    border-left: 5px solid #117a8b !important; /* Darker blue border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for prominence */
+}
+
+/* Warning notification */
+#toast-container .toast-warning {
+    background-color: #ffc107 !important; /* Prominent yellow */
+    color: #ffffff !important; /* White text */
+    border-left: 5px solid #e0a800 !important; /* Darker yellow border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for prominence */
+}
+
+/* General Toast Styles */
+#toast-container .toast {
+    font-family: 'Arial', sans-serif; /* A clean, readable font */
+    font-size: 16px !important; /* Larger font size for readability */
+    padding: 15px !important; /* More padding for prominence */
+    border-radius: 8px !important; /* Rounded corners */
+    opacity: 1 !important; /* Fully opaque */
+}
+
+/* Close button styling */
+#toast-container .toast-close-button {
+    color: #ffffff !important; /* White close button for contrast */
+}

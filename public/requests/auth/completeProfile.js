@@ -33,7 +33,8 @@ const completeProfileRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -49,7 +50,8 @@ const completeProfileRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
                         //return to natural stage
@@ -64,7 +66,8 @@ const completeProfileRequest=function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#tutorData :input").prop("readonly", false);
@@ -108,7 +111,8 @@ const completeProfileRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -124,7 +128,8 @@ const completeProfileRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
                         //return to natural stage
@@ -139,7 +144,8 @@ const completeProfileRequest=function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#schoolData :input").prop("readonly", false);
@@ -183,7 +189,8 @@ const completeProfileRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.error(data.data.error);
 
@@ -199,7 +206,8 @@ const completeProfileRequest=function (){
                     {
                         toastr.options = {
                             "closeButton" : true,
-                            "progressBar" : true
+                            "progressBar" : true,
+                            "positionClass": "toast-top-full-width"
                         }
                         toastr.info(data.message);
                         //return to natural stage
@@ -214,7 +222,8 @@ const completeProfileRequest=function (){
                 error:function (jqXHR, textStatus, errorThrown){
                     toastr.options = {
                         "closeButton" : true,
-                        "progressBar" : true
+                        "progressBar" : true,
+                        "positionClass": "toast-top-full-width"
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
                     $("#parentData :input").prop("readonly", false);
