@@ -15,15 +15,17 @@ class StaffCustomNotification extends Notification
     public $user;
     public $message;
     public $subject;
+    public $lockAccount;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(SystemStaff $user,$message,$subject)
+    public function __construct($user,$message,$subject, $hasLockAccount=false)
     {
         $this->user = $user;
         $this->message = $message;
         $this->subject = $subject;
+        $this->lockAccount = $hasLockAccount;
     }
 
     /**
@@ -41,7 +43,12 @@ class StaffCustomNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $url = URL::signedRoute('staff.staff.lock.account',['staff'=>$this->user->id]);
+        $url = route('staff.login');
+        $actionText = "Login to account";
+        if ($this->lockAccount){
+            $url = URL::signedRoute('staff.staff.lock.account',['staff'=>$this->user->id]);
+            $actionText = "Lock Account";
+        }
 
         return (new MailMessage)
                 ->subject($this->subject)
@@ -50,7 +57,7 @@ class StaffCustomNotification extends Notification
                     <br/>
                     If you feel your account is compromised, click the button below to lock your account.
                 ")
-                ->action('Lock Account',$url);
+                ->action($actionText,$url);
     }
 
     /**

@@ -177,7 +177,7 @@ class LoginController extends BaseController
                 <b>Note:</b> Your account can only be unlocked by the department with appropriate privilege.
             ";
 
-            $user->notify(new StaffCustomNotification($user, $message, 'Staff Account Lockout'));
+            $user->notify(new StaffCustomNotification($user, $message, 'Staff Account Lockout',true));
 
             SystemStaffAction::create([
                 'staff' => $user->id,

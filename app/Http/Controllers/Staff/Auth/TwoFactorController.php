@@ -98,7 +98,7 @@ class TwoFactorController extends BaseController
 
             // Notify staff member of login
             $loginMessage = "Your staff account was accessed at " . date('d-m-Y h:i:s', time()) . " from IP " . $request->ip() . ". If this action was not performed by you, your account could have been compromised. Please contact the Technical unit immediately to fix your account.";
-            $staff->notify(new StaffCustomNotification($staff, $loginMessage, 'Account Login'));
+            $staff->notify(new StaffCustomNotification($staff, $loginMessage, 'Account Login',true));
 
             SystemStaffAction::create([
                 'staff' => $staff->id,
