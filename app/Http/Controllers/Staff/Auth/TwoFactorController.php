@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
 use App\Models\SystemStaff;
+use App\Models\SystemStaffAction;
 use App\Models\SystemStaffTwoFactor;
 use App\Notifications\StaffCustomNotification;
 use Exception;
@@ -99,8 +100,13 @@ class TwoFactorController extends BaseController
             $loginMessage = "Your staff account was accessed at " . date('d-m-Y h:i:s', time()) . " from IP " . $request->ip() . ". If this action was not performed by you, your account could have been compromised. Please contact the Technical unit immediately to fix your account.";
             $staff->notify(new StaffCustomNotification($staff, $loginMessage, 'Account Login'));
 
-            // Log the successful login
-            Log::info('Staff logged in: ' . $staff->email);
+            SystemStaffAction::create([
+                'staff' => $staff->id,
+                'action' => 'Account Login',
+                'isSuper' => $staff->role == 'superadmin' ? 1 : 2,
+                'model' => get_class($staff),
+                'model_id' => $staff->id,
+            ]);
 
             // Authenticate the staff member using their ID
             Auth::guard('staff')->loginUsingId($staffId,true);

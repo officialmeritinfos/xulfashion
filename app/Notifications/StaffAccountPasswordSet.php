@@ -9,21 +9,17 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 
-class StaffCustomNotification extends Notification
+class StaffAccountPasswordSet extends Notification
 {
     use Queueable;
-    public $user;
-    public $message;
-    public $subject;
 
+    public $staff;
     /**
      * Create a new notification instance.
      */
-    public function __construct(SystemStaff $user,$message,$subject)
+    public function __construct(SystemStaff $staff)
     {
-        $this->user = $user;
-        $this->message = $message;
-        $this->subject = $subject;
+        $this->staff = $staff;
     }
 
     /**
@@ -41,16 +37,15 @@ class StaffCustomNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $url = URL::signedRoute('staff.staff.lock.account',['staff'=>$this->user->id]);
-
+        $urlToDeactivateAccount = URL::signedRoute('staff.staff.lock.account',['staff'=>$this->staff->id]);
         return (new MailMessage)
-                ->subject($this->subject)
-                ->greeting('Hello '.$this->user->name)
-                ->line($this->message."
-                    <br/>
-                    If you feel your account is compromised, click the button below to lock your account.
-                ")
-                ->action('Lock Account',$url);
+                    ->subject('Staff Account Password Updated.')
+                    ->greeting('Hello '.$this->staff->name)
+                    ->line('Your account on '.config('app.name').' CRM has been updated. If you did not make this
+                    change, please click the button below to lock your account immediately.'
+                    )
+                    ->action('Lock Account', url($urlToDeactivateAccount))
+                    ->line('Thank you for being part of the family.');
     }
 
     /**

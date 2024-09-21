@@ -134,8 +134,8 @@ class StaffList extends Component
             'name'        =>['required','string','max:150'],
             'email'       =>['required','email','unique:system_staff,email'],
             'staffRole'   =>['required','string','max:100',Rule::exists('roles','name')->where('guard_name','staff')],
-            'password'    =>['required','string','confirmed','min:8'],
-            'password_confirmation'    =>['required','string','min:8'],
+            'password'    =>['nullable','string','confirmed','min:8'],
+            'password_confirmation'    =>['nullable','string','min:8'],
         ]);
         if (!$this->mainStaff->can('create SystemStaff')) {
             $this->alert('error', '', [
@@ -150,7 +150,7 @@ class StaffList extends Component
         DB::beginTransaction();
         try {
             $staff = SystemStaff::create([
-                'name'=>$this->name,'email' => $this->email,'password' => bcrypt($this->password),
+                'name'=>$this->name,'email' => $this->email,'password' =>!empty($this->password)?bcrypt($this->password):'',
                 'setPin' => 2,'twoFactor' => 1,'status' => 1,'hasUpdatedPassword' => 2,
                 'role' => $this->staffRole
             ]);

@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Staff\Auth;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
+use App\Models\StaffEmailVerification;
 use App\Models\SystemStaff;
+use App\Models\SystemStaffAction;
 use App\Notifications\EmailVerification;
+use App\Notifications\StaffAccountPasswordSet;
+use App\Notifications\StaffCustomNotification;
 use App\Notifications\StaffTwoFactorAuthentication;
 use App\Notifications\TwoFactorAuthentication;
 use Illuminate\Http\JsonResponse;
@@ -77,6 +81,116 @@ class LoginController extends BaseController
 
     public function setupPassword(Request $request,$token,$email,$staff)
     {
+        $web = GeneralSetting::find(1);
 
+        return view('staff.auth.set_password')->with([
+            'web'        =>$web,
+            'siteName'   =>$web->name,
+            'pageName'   =>'Set-up Password',
+            'token'      =>$token,
+            'email'      =>$email
+        ]);
+    }
+    //process password set-up
+    public function processPasswordSetUp(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'email' => ['required', 'email', 'exists:system_staff,email'],
+                'token' => ['required','string'],
+                'password'=>['required',Password::min(8)->uncompromised(1),'confirmed'],
+                'password_confirmation'=>['required',Password::min(8)->uncompromised(1),'same:password'],
+            ])->stopOnFirstFailure();
+            if ($validator->fails()) return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
+
+            $input = $validator->validated();
+            $user = SystemStaff::where([
+                'email' => $input['email']
+            ])->first();
+
+            if(empty($user)){
+                return $this->sendError('staff.error',['error'=>'Account not found']);
+            }
+            //check if the token is valid
+            $token = StaffEmailVerification::where([
+                'email' => $input['email'],
+                'token' => $input['token']
+            ])->orderBy('id','desc')->first();
+
+            if (empty($token)){
+                return $this->sendError('staff.error',['error'=>'Token not found']);
+            }
+
+            //check if the token has expired
+            if (time() < $token->codeExpires){
+                return $this->sendError('staff.error',['error'=>'Token already expired']);
+            }
+
+            $staff = $user;
+
+            //update record
+            $data = [
+                'hasUpdatedPassword'=>1,
+                'password'=>bcrypt($input['password'])
+            ];
+            $staff->update($data);
+            $token->delete();
+
+            SystemStaffAction::create([
+                'staff' => $user->id,
+                'action' => 'Password Set-up',
+                'isSuper' => $user->role == 'superadmin' ? 1 : 2,
+                'model' => get_class($user),
+                'model_id' => $user->id,
+            ]);
+
+            //notify the staff
+            $user->notify(new StaffAccountPasswordSet($user));
+
+            //send them notification
+            return $this->sendResponse([
+                'redirectTo'=>route('staff.login'),
+            ],'Password updated. Please login to access account.');
+        }catch (\Exception $exception){
+            Log::alert($exception->getMessage());
+            return $this->sendError('authentication.error',['error'=>'Internal Server Error']);
+        }
+    }
+
+    //lock staff account
+    public function lockStaffAccount(Request $request,$staff)
+    {
+        try {
+            $user = SystemStaff::where('id', $staff)->first();
+            if (empty($user)){
+                return to_route('staff.login')->with('error','Account not found');
+            }
+
+            if ($user->status!=1){
+                return to_route('staff.login')->with('error','Account already locked.');
+            }
+
+            $user->status=3;
+            $user->save();
+
+            $message = "Your staff account was locked based on the request received at " . date('d-m-Y h:i:s', time()) . " from IP " . $request->ip() . ".<br/>
+                <b>Note:</b> Your account can only be unlocked by the department with appropriate privilege.
+            ";
+
+            $user->notify(new StaffCustomNotification($user, $message, 'Staff Account Lockout'));
+
+            SystemStaffAction::create([
+                'staff' => $user->id,
+                'action' => 'Account Lock-out',
+                'isSuper' => $user->role == 'superadmin' ? 1 : 2,
+                'model' => get_class($user),
+                'model_id' => $user->id,
+            ]);
+            return to_route('staff.login')->with('success','Account successfully locked.');
+
+        }catch (\Exception $exception){
+            Log::alert($exception->getMessage());
+            return $this->sendError('authentication.error',['error'=>'Internal Server Error']);
+        }
     }
 }

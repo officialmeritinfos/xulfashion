@@ -177,7 +177,7 @@
                     <li class="dropdown">
                         <a href="javascript:void(0)" style="font-size: 20px;">
                             <iconify-icon icon="oui:app-users-roles" class="menu-icon" style="font-size: 20px;"></iconify-icon>
-                            <span>Permissions & Roles</span>
+                            <span>P & R</span>
                         </a>
                         <ul class="sidebar-submenu">
                             <li>
