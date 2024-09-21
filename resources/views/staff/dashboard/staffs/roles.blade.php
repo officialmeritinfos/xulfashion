@@ -1,3 +1,6 @@
-<div>
-    <!-- It is quality rather than quantity that matters. - Lucius Annaeus Seneca -->
-</div>
+@extends('staff.dashboard.layout.base')
+@section('content')
+
+    <livewire:staff.staffs.roles />
+
+@endsection

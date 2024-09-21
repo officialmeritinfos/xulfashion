@@ -93,7 +93,7 @@
                                         @endswitch
                                     </td>
                                     <td>
-                                        <a wire:click.prevent="toggleShowStaffDetail({{$staff->id}})" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle
+                                        <a href="{{route('staff.staffs.detail',['id'=>$staff->id])}}" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle
                                         d-inline-flex align-items-center justify-content-center" wire:navigate>
                                             <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                         </a>

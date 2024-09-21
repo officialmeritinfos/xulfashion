@@ -81,7 +81,7 @@ Route::domain('staff.localhost')->group(function () {
         Route::get('settings/security',[SettingController::class, 'securitySetting'])->name('settings.security');
         //Staff
         Route::get('staffs/list',[StaffController::class,'landingPage'])->name('staffs.list');
-        Route::get('staffs/new',[StaffController::class,'addStaff'])->name('staffs.new');
+        Route::get('staffs/{id}/details',[StaffController::class,'staffDetails'])->name('staffs.detail');
         //Roles & Permissions
         Route::get('roles',[StaffController::class,'roles'])->name('roles');
         Route::get('permissions',[StaffController::class,'permissions'])->name('permissions');
