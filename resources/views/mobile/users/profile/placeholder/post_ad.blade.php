@@ -9,7 +9,9 @@
                 <h2>Continuously Building!</h2>
                 <h5 class="mt-3">
                     <p>
-                        This feature is only available on Web. Please login through the web to post an AD. Click the copy
+                        This feature is only available on the Web.
+                        Please login through the web to post an AD.
+                        Click the copy
                         button below to copy the link.
                     </p>
                 </h5>

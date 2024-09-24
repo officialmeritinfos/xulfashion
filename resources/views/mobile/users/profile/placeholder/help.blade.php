@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="profile-details">
                                     <h4>Live Chat</h4>
-                                    <p class="mb-0">Click to copy</p>
+                                    <p class="mb-0">Click to start conversation</p>
                                 </div>
                             </span>
                         </li>
