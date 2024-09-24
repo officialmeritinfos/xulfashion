@@ -56,8 +56,8 @@ const settingsRequests = function (){
                         toastr.success(data.message);
 
                         // Update the profile picture if available in the response
-                        if (data.photo) {
-                            $('#profilePicture').attr('src', data.photo); // Assuming the image has an ID of 'profilePicture'
+                        if (data.data.photo) {
+                            $('#profilePicture').attr('src', data.data.photo); // Assuming the image has an ID of 'profilePicture'
                         }
 
                         setTimeout(function(){

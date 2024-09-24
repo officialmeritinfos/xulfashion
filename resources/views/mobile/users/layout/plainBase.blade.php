@@ -112,7 +112,7 @@
             <h3>{{$pageName}}</h3>
         </div>
         <div class="profile-setting-pic mx-auto">
-            <img class="img-fluid img" src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="profile" />
+            <img class="img-fluid img" id="profilePicture" src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="profile" />
         </div>
     </div>
 </header>
