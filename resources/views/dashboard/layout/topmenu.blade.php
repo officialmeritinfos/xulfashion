@@ -50,7 +50,7 @@
     <li class="nav-item dropdown profile-nav-item">
         <span class="nav-link dropdown-toggle avatar" href="#" id="navbarDropdown-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="Images"
-            style="width: 50px;">
+            style="width: 50px; height: 50px;">
             <h3>{{$user->name}}</h3>
             <span>{{($user->completedProfile!=1)?'N/A':$accountType}}</span>
         </span>
@@ -59,7 +59,7 @@
             <div class="dropdown-header d-flex flex-column align-items-center">
                 <div class="figure mb-3">
                     <img src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" class="rounded-circle" alt="image"
-                         style="width: 50px;">
+                         style="width: 50px;height: 50px;">
                 </div>
 
                 <div class="info text-center">
