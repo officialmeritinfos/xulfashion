@@ -84,4 +84,26 @@ class Profile extends BaseController
             return $this->sendError('user.profile.error',['error'=>'Internal Server Error']);
         }
     }
+    public function comingSoon()
+    {
+        $web = GeneralSetting::find(1);
+
+        return view('mobile.users.profile.placeholder.coming_soon')->with([
+            'pageName'  =>'Coming Soon',
+            'web'       =>$web,
+            'siteName'  =>$web->name,
+            'user'      =>Auth::user()
+        ]);
+    }
+    public function postAds()
+    {
+        $web = GeneralSetting::find(1);
+
+        return view('mobile.users.profile.placeholder.post_ad')->with([
+            'pageName'  =>'ADS',
+            'web'       =>$web,
+            'siteName'  =>$web->name,
+            'user'      =>Auth::user()
+        ]);
+    }
 }

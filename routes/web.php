@@ -126,5 +126,13 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('profile.edit.process');
 
 
+        //PROFILE PLACEHOLDERS
+        //coming soon
+        Route::get('profile/coming-soon',[Profile::class,'comingSoon'])
+            ->name('coming.soon');
+        Route::get('profile/post-ads',[Profile::class,'postAds'])
+            ->name('post.ads');
+
+
     });
 });
