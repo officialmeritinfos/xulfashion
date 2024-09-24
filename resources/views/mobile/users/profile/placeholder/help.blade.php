@@ -23,48 +23,54 @@
     @endpush
 
     <!-- help section start -->
-    <section class="section-b-space">
+    <section class="section-b-space pt-0">
         <div class="custom-container">
-            <div class="help-center">
-                <img class="img-fluid help-pic" src="{{asset('mobile/images/banner/help-pic.png')}}" alt="help" />
+            <div class="help-center empty-tab">
+                <img class="img-fluid" src="{{asset('mobile/images/banner/help-pic.png')}}" alt="" style="width: 150px;"/>
                 <h2>Help Center</h2>
                 <p>Please get in touch and we will be happy to help you. Get quick customer support by using any of these channels.</p>
                 <div class="row mt-4">
-                    @if(!empty($web->phone))
-                        <!-- Phone Card -->
-                        <div class="col-12 mb-3">
-                            <div class="card cpy" style="cursor: pointer;" data-clipboard-text="{{$web->phone}}">
-                                <div class="card-body d-flex align-items-center">
-                                    <i class="fas fa-phone icon me-3"></i>
-                                    <div>
-                                        <h3 class="mb-1">Call Support</h3>
-                                        <p class="mb-0">Click to copy support number</p>
+
+                    <ul class="profile-list">
+                        @if(!empty($web->phone))
+                            <!-- Email Card -->
+                            <li class="col-12 mb-3 cpy" data-clipboard-text="{{$web->phone}}">
+                                <span class="profile-box">
+                                    <div class="profile-img">
+                                        <i class="iconsax icon" data-icon="phone"></i>
                                     </div>
+                                    <div class="profile-details">
+                                        <h4>Call Support</h4>
+                                        <p class="mb-0">Click to copy</p>
+                                    </div>
+                                </span>
+                            </li>
+                        @endif
+                        <!-- Email Card -->
+                        <li class="col-12 mb-3 cpy" data-clipboard-text="{{$web->supportEmail}}">
+                            <span class="profile-box">
+                                <div class="profile-img">
+                                    <i class="iconsax icon" data-icon="mail"></i>
                                 </div>
-                            </div>
-                        </div>
-                    @endif
+                                <div class="profile-details">
+                                    <h4>Email Support</h4>
+                                    <p class="mb-0">Click to copy</p>
+                                </div>
+                            </span>
+                        </li>
 
-                    <!-- Email Card -->
-                    <div class="col-12 mb-3">
-                        <div class="card" onclick="sendEmail()" style="cursor:pointer;">
-                            <div class="card-body">
-                                <i class="fas fa-envelope icon"></i>
-                                <h3>Email Support</h3>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Live Chat Card -->
-                    <div class="col-12 mb-3">
-                        <div class="card" onclick="openLiveChat()" style="cursor:pointer;">
-                            <div class="card-body">
-                                <i class="fas fa-comments icon"></i>
-                                <h3>Live Chat Support</h3>
-                            </div>
-                        </div>
-                    </div>
+                        <li class="col-12 mb-3" onclick="openLiveChat()">
+                            <span class="profile-box">
+                                <div class="profile-img">
+                                    <i class="iconsax icon" data-icon="messages-4"></i>
+                                </div>
+                                <div class="profile-details">
+                                    <h4>Live Chat</h4>
+                                    <p class="mb-0">Click to copy</p>
+                                </div>
+                            </span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -106,10 +112,6 @@
 
             }
 
-            function sendEmail() {
-                window.open("mailto:{{$web->supportEmail}}", '_blank');
-                window.location.reload();
-            }
         </script>
 
     @endpush
