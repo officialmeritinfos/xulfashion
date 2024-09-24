@@ -33,7 +33,7 @@
             <div class="form-group d-block mt-3">
                 <label for="inputusernumber" class="form-label">Photo</label>
                 <div class="form-input">
-                    <input type="file" class="form-control" id="inputusernumber" name="image"/>
+                    <input type="file" class="form-control" id="inputusernumber" name="image" accept="image/*"/>
                     <i class="iconsax icons" data-icon="picture-upload"></i>
                 </div>
             </div>
