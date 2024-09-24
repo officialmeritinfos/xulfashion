@@ -51,8 +51,20 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{route('mobile.user.app.settings')}}" class="profile-box">
+                        <div class="profile-img">
+                            <i class="iconsax icon" data-icon="setting-1"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Settings</h4>
+                            <h5>Dark mode settings</h5>
+                        </div>
+                    </a>
+                </li>
+
                 <li class="border-bottom-0">
-                    <a href="help.html" class="profile-box">
+                    <a href="{{route('mobile.user.help')}}" class="profile-box">
                         <div class="profile-img">
                             <i class="iconsax icon" data-icon="phone"></i>
                         </div>

@@ -106,4 +106,26 @@ class Profile extends BaseController
             'user'      =>Auth::user()
         ]);
     }
+    public function settings()
+    {
+        $web = GeneralSetting::find(1);
+
+        return view('mobile.users.profile.placeholder.settings')->with([
+            'pageName'  =>'Settings',
+            'web'       =>$web,
+            'siteName'  =>$web->name,
+            'user'      =>Auth::user()
+        ]);
+    }
+    public function helpCenter()
+    {
+        $web = GeneralSetting::find(1);
+
+        return view('mobile.users.profile.placeholder.help')->with([
+            'pageName'  =>'Help Center',
+            'web'       =>$web,
+            'siteName'  =>$web->name,
+            'user'      =>Auth::user()
+        ]);
+    }
 }

@@ -132,6 +132,10 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('coming.soon');
         Route::get('profile/post-ads',[Profile::class,'postAds'])
             ->name('post.ads');
+        Route::get('profile/settings',[Profile::class,'settings'])
+            ->name('app.settings');
+        Route::get('profile/help',[Profile::class,'helpCenter'])
+            ->name('help');
 
 
     });
