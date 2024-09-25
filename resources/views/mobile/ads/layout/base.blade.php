@@ -100,9 +100,9 @@
 </head>
 
 <body>
-{{--<div class="loader-wrapper">--}}
-{{--    <span class="loader"></span>--}}
-{{--</div>--}}
+<div class="loader-wrapper">
+    <span class="loader"></span>
+</div>
 
 @include('mobile.ads.layout.topSection')
 
