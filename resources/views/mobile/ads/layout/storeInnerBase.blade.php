@@ -99,9 +99,9 @@
 </head>
 
 <body>
-<div class="loader-wrapper">
-    <span class="loader"></span>
-</div>
+{{--<div class="loader-wrapper">--}}
+{{--    <span class="loader"></span>--}}
+{{--</div>--}}
 <!-- header start -->
 <header class="section-t-space">
     <div class="custom-container">
