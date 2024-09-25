@@ -8,9 +8,9 @@
 <body>
 @if(checkIfAccessorIsMobile())
     <!-- Start Preloader Area -->
-{{--    <div class="loader-wrapper">--}}
-{{--        <span class="loader"></span>--}}
-{{--    </div>--}}
+    <div class="loader-wrapper">
+        <span class="loader"></span>
+    </div>
     <!-- End Preloader Area -->
 @else
     <!-- Start Preloader Area -->

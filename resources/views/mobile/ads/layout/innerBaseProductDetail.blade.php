@@ -98,9 +98,9 @@
 </head>
 
 <body class="details-page details-page2">
-{{--<div class="loader-wrapper">--}}
-{{--    <span class="loader"></span>--}}
-{{--</div>--}}
+<div class="loader-wrapper">
+    <span class="loader"></span>
+</div>
 <!-- header start -->
 <header class="product2-header">
     <div class="custom-container">
