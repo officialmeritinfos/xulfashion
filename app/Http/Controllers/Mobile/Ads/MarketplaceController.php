@@ -323,11 +323,6 @@ class MarketplaceController extends BaseController
         }
         $country = $request->session()->get('country');
 
-        $ads = UserAd::where([
-            'country'=>$country,
-            'status'=>1
-        ])->groupBy('serviceType')->get();
-
         $country = Country::where('iso2',$country)->first();
 
         return view('mobile.ads.categories')->with([
@@ -337,10 +332,10 @@ class MarketplaceController extends BaseController
             'serviceTypes'  =>ServiceType::where('status',1)->get(),
             'country'       =>$country,
             'hasCountry'    =>$hasCountry=1,
-            'ads'           =>$ads,
             'iso3'          =>$request->session()->get('iso3'),
             'states'        =>State::where('country_code',$country)->orderBy('name','asc')->get(),
             'user'          =>Auth::user(),
+            'categories'    =>ServiceType::where('status',1)->get()
         ]);
     }
 }

@@ -6,13 +6,14 @@ use App\Http\Controllers\Staff\Dashboard\ActivityController;
 use App\Http\Controllers\Staff\Dashboard\AdController;
 use App\Http\Controllers\Staff\Dashboard\Home;
 use App\Http\Controllers\Staff\Dashboard\OrderController;
+use App\Http\Controllers\Staff\Dashboard\ServiceTypeController;
 use App\Http\Controllers\Staff\Dashboard\SettingController;
 use App\Http\Controllers\Staff\Dashboard\StaffController;
 use App\Http\Controllers\Staff\Dashboard\StoreController;
 use App\Http\Controllers\Staff\Dashboard\Users;
 use Illuminate\Support\Facades\Route;
 
-Route::domain('staff.xulstore.com')->group(function () {
+Route::domain('staff.localhost')->group(function () {
     //Staff authentication
     Route::get('/',[LoginController::class,'landingPage'])->name('login');//login
     Route::post('login/process',[LoginController::class,'processLogin'])->name('login.process');//process login
@@ -77,8 +78,11 @@ Route::domain('staff.xulstore.com')->group(function () {
         Route::get('activity/index',[ActivityController::class, 'landingPage'])->name('activity.index');
         //Settings
         Route::get('settings/profile',[SettingController::class, 'profilePage'])->name('settings.profile');
-        Route::get('settings/general',[SettingController::class, 'generalSettings'])->name('settings.general');
         Route::get('settings/security',[SettingController::class, 'securitySetting'])->name('settings.security');
+        //APP Settings
+        Route::get('settings/general',[SettingController::class, 'generalSettings'])->name('settings.general');
+        Route::get('settings/service-types',[ServiceTypeController::class, 'landingPage'])->name('settings.service-types');
+
         //Staff
         Route::get('staffs/list',[StaffController::class,'landingPage'])->name('staffs.list');
         Route::get('staffs/{id}/details',[StaffController::class,'staffDetails'])->name('staffs.detail');

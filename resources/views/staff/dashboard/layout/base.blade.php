@@ -220,11 +220,23 @@
                     </a>
                 </li>
                 @if($staff->can('update GeneralSetting'))
-                    <li>
-                        <a href="{{route('staff.settings.general')}}" wire:navigate style="font-size: 22px;">
-                            <i class="ri-settings-5-line" style="font-size: 22px;"></i>
-                            <span>App Setup</span>
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" style="font-size: 20px;">
+                            <iconify-icon icon="mdi-light:settings" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                            <span>App Settings</span>
                         </a>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{route('staff.settings.general')}}" wire:navigate><i
+                                        class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                                    App Setup</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('staff.settings.service-types') }}" wire:navigate><i
+                                        class="ri-circle-fill circle-icon text-info-main w-auto"></i>
+                                    Service Types</a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
             </ul>
