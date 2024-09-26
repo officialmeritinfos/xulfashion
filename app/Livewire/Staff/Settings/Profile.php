@@ -88,6 +88,8 @@ class Profile extends Component
                 'width' => '400',
             ]);
             $this->dispatch('passwordUpdated',route('staff.logout'));
+            $this->reset(['password','password_confirmation','accountPin','oldPassword']);
+            return;
 
         }catch (\Exception $exception){
 
