@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\Account;
 use App\Http\Controllers\Mobile\Ads\Auth\Login;
 use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
 use App\Http\Controllers\Mobile\Ads\Auth\Register;
+use App\Http\Controllers\Mobile\Ads\CatalogController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
@@ -72,6 +73,16 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
         ->name('marketplace.store.category.search');
     Route::get('/store/search/result',[StoreController::class,'searchResult'])
         ->name('marketplace.store.search.result');
+
+    //CATALOG
+    Route::get('stores/{id}/catalog',[CatalogController::class,'catalogsInStore'])
+        ->name('marketplace.catalog.index');
+    Route::get('stores/{store}/catalog/{catalog}/detail',[CatalogController::class,'catalogItems'])
+        ->name('marketplace.catalog.detail');
+    Route::get('stores/{store}/product/{product}/detail',[CatalogController::class,'productDetail'])
+        ->name('marketplace.store.product.detail');
+
+
 
     //Registration & Login as User
     //REGISTRATION

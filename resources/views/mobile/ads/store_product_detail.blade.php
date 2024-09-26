@@ -1,6 +1,5 @@
 @extends('mobile.ads.layout.innerBaseProductDetail')
 @section('content')
-    @inject('injected','App\Custom\Regular')
 
     <!-- product-image section start -->
     <section class="product2-image-section">
@@ -9,9 +8,14 @@
                 <img class="img-fluid product2-bg" src="{{asset('mobile/images/background/product-img-bg.png')}}" alt="product-bg" />
                 <div class="swiper product-2">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img class="img-fluid product-img" src="{{$store->logo}}" alt="" />
+                        <div class="swiper-slide swiper-slide-active">
+                            <img class="img-fluid product-img active" src="{{$product->featuredImage}}" alt="{{$product->name}}" />
                         </div>
+                        @foreach($photos as $photo)
+                            <div class="swiper-slide">
+                                <img class="img-fluid product-img" src="{{$photo->image}}" alt="p26" />
+                            </div>
+                        @endforeach
                     </div>
                     <div class="swiper-button-next">
                         <i class="iconsax arrow" data-icon="arrow-right"></i>
@@ -23,6 +27,7 @@
             </div>
         </div>
     </section>
+    <!-- product-image section end -->
 
     <!-- product-details section start -->
     <section class="position-relative">
@@ -37,22 +42,45 @@
         <div class="custom-container">
             <div class="product-details">
                 <div class="product-name">
-                    <h2 class="theme-color">
-                        {{$store->name}}
-                    </h2>
-                    <h6>
-                        {{serviceTypeById($store->service)->name}}
-                    </h6>
+                    <h2 class="theme-color">{{$product->name}}</h2>
+                    <h6>{{storeCategoryById($product->category)->categoryName}}</h6>
+                </div>
+                <p class="mt-1">
+                    {!! $product->description !!}
+                </p>
+
+                <div class="product-price">
+                    <h3>{{currencySign($product->currency)}}{{number_format($product->amount,2)}} <del>{{currencySign($product->currency)}}{{number_format($product->amount+$product->amount*mt_rand(5,100)/100,2)}}</del></h3>
+                    <div class="plus-minus">
+                        <h6>Stock: {{$product->quantity}}</h6>
+                    </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+    <!-- delivery section start -->
+
+    <!-- product-details section start -->
+    <section class="position-relative">
+        <div class="custom-container">
+            <div class="product-details">
                 <div class="delivery-sec">
 
                     <div class="d-flex justify-content-between gap-3">
                         <div class="dimensions-box delivery-box">
                             <div class="d-block">
+                                <h6>Store</h6>
+                                <h6 style="word-break: break-word;">
+                                    {{$store->name??$store->legalName}}
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="dimensions-box delivery-box">
+                            <div class="d-block">
                                 <h6>Address</h6>
                                 <h6 style="word-break: break-word;">
-                                   {{$store->address}}
+                                    {{$store->address}}
                                 </h6>
                             </div>
                         </div>
@@ -64,14 +92,7 @@
                                 </h6>
                             </div>
                         </div>
-                        <div class="dimensions-box delivery-box">
-                            <div class="d-block">
-                                <h6>Email</h6>
-                                <h6 style="word-break: break-word;">
-                                    {{$store->email}}
-                                </h6>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 <div class="delivery-sec">
@@ -87,20 +108,20 @@
                         </div>
                         <div class="dimensions-box delivery-box">
                             <div class="d-block">
-                                <h6>Number of Views</h6>
-                                <h6 style="word-break: break-word; ">
-                                    {{$store->numberOfViews}}
+                                <h6>Email</h6>
+                                <h6 style="word-break: break-word;">
+                                    {{$store->email}}
                                 </h6>
                             </div>
                         </div>
                         <div class="dimensions-box delivery-box">
                             <div class="d-block">
-                                <h6>Store-front <sup class="text-primary">(Click to copy)</sup></h6>
-                                <h6 class="cpy-link" data-clipboard-text="{{route('merchant.store',['subdomain'=>$store->slug])}}">
+                                <h6>Buy online <sup class="text-primary">(Click to copy)</sup></h6>
+                                <h6 class="cpy-link" data-clipboard-text="{{route('merchant.store.product.detail',['subdomain'=>$store->slug,'id'=>$product->reference])}}">
 
                                     <span
-                                          style="cursor: pointer;word-break: break-word;">
-                                        {{route('merchant.store',['subdomain'=>$store->slug])}}
+                                        style="cursor: pointer;word-break: break-word;">
+                                        <img src="https://glenthemes.github.io/iconsax/icons/document-copy.svg" style="font-size: 12px;"/>
                                     </span>
                                 </h6>
                             </div>
@@ -111,43 +132,6 @@
         </div>
     </section>
     <!-- delivery section start -->
-
-    <!-- other furniture section start -->
-    <section class="section-t-space">
-        <div class="custom-container">
-            <div class="title">
-                <h2>Store Catalogue</h2>
-                <a href="{{route('mobile.marketplace.catalog.index',['id'=>$store->reference])}}" style="cursor: pointer;">View All</a>
-            </div>
-
-            <div class="row g-4">
-                @foreach($catalogs as $catalog)
-                    <div class="col-6" style="cursor: pointer;">
-                        <div class="product-box">
-                            <div class="product-box-img">
-                                <a href="{{route('mobile.marketplace.catalog.detail',['store'=>$store->reference,'catalog'=>$catalog->id])}}"
-                                      > <img class="img" src="{{$catalog->photo??asset('customcategory.jpg')}}" alt="p10" /></a>
-
-                                <div class="cart-box">
-                                    <a  href="{{route('mobile.marketplace.catalog.detail',['store'=>$store->reference,'catalog'=>$catalog->id])}}"
-                                           class="cart-bag ">
-                                        <i class="iconsax bag" data-icon="basket-2"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product-box-detail">
-                                <h4>{{ucfirst($catalog->categoryName)}}</h4>
-                                <div class="d-flex justify-content-between gap-3">
-                                    <h5>{{numberOfProductsInCategory($catalog->id)}} Products</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-
-            </div>
-        </div>
-    </section>
 
     @push('js')
         <!-- range-slider js -->

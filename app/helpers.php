@@ -496,3 +496,10 @@ if (!function_exists('merchantType')){
     }
 }
 
+if (!function_exists('storeCategoryById')) {
+
+    function storeCategoryById($id)
+    {
+        return \App\Models\UserStoreCatalogCategory::where('id',$id)->first();
+    }
+}

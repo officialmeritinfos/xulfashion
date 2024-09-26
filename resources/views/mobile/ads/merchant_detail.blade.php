@@ -109,9 +109,9 @@
                             <h6>Visit Store</h6>
                             <h6 style="cursor: pointer;">
 
-                                <span class="cpy-link" data-clipboard-text="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}">
+                                <a href="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}">
                                     <img src="https://glenthemes.github.io/iconsax/icons/document-copy.svg" style="font-size: 12px;"/>
-                                </span>
+                                </a>
                             </h6>
                         </div>
                     </div>
