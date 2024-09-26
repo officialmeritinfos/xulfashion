@@ -103,6 +103,20 @@
                                     {!! $user->bio !!}
                                 </span>
                             </li>
+                            @if($user->requestedForAccountDeletion==1)
+                                <li class="d-flex align-items-center gap-1">
+                                    <span class="w-30 text-md fw-semibold text-primary-light"> Data Removal Reason</span>
+                                    <span class="w-70 text-secondary-light fw-medium">:
+                                        {{ $user->reasonForDeleting }}
+                                    </span>
+                                </li>
+                                <li class="d-flex align-items-center gap-1">
+                                    <span class="w-30 text-md fw-semibold text-primary-light"> Time To Remove</span>
+                                    <span class="w-70 text-secondary-light fw-medium">:
+                                        {{ date('d-m-Y h:i:s a', $user->timeToDeleteAccount) }}
+                                    </span>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>

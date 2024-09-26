@@ -44,6 +44,7 @@ class DeleteMyInformation extends Component
         try {
 
             $user = User::where('email',$this->email)->first();
+
             if (empty($user)){
                 $this->alert('error', '', [
                     'position' => 'top-end',
@@ -64,6 +65,8 @@ class DeleteMyInformation extends Component
                 ]);
                 return;
             }
+            $user->reasonForDeleting=$this->reason;
+            $user->save();
             //send the verification email
             Mail::to($user->email)->send(new VerifyAccountDeletion($user));
             $this->alert('success', '', [

@@ -65,6 +65,8 @@ class DeleteMyInformation extends Component
                 ]);
                 return;
             }
+            $user->reasonForDeleting=$this->reason;
+            $user->save();
             //send the verification email
             Mail::to($user->email)->send(new VerifyAccountDeletion($user));
             $this->alert('success', '', [

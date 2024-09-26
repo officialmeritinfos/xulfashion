@@ -50,8 +50,12 @@ Route::get('verify-account-deletion/{email}/{id}',function (Request $request,$em
     if ($user->requestedForAccountDeletion==1){
         return to_route('home.delete-my-information')->with('error','Account removal request already received.');
     }
-
+    $message = "
+        The user <b>".$user->name."</b> with ID ".$user->reference." has requested for their data to be deleted. This must be processed in 30 days if the user
+        does not cancel their request.
+    ";
     \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AccountDeletionReceived($user));
+    sendDepartmentMail('compliance',$message,'New Account Deletion Request');
     $user->requestedForAccountDeletion=1;
     $user->timeToDeleteAccount = strtotime('30 Days',time());
     $user->save();
@@ -75,6 +79,10 @@ Route::get('cancel-account-deletion/{email}/{id}',function (Request $request,$em
     if ($user->requestedForAccountDeletion!=1){
         return to_route('home.delete-my-information')->with('error','Account removal request not received.');
     }
+    $message = "
+        The user <b>".$user->name."</b> has cancelled their request for their data to be deleted, and no longer wants to remove
+        their data from the platform.
+    ";
 
     $user->requestedForAccountDeletion=2;
     $user->timeToDeleteAccount = '';

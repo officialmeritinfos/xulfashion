@@ -133,7 +133,8 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Reference</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Data Joined</th>
+                                <th scope="col">Date Joined</th>
+                                <th scope="col">Deletion Request</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -157,6 +158,19 @@
                                         class="text-primary-600">{{ $user->reference }}</a></td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ date('F d, Y h:i:s', strtotime($user->created_at)) }}</td>
+                                <td>
+                                    @switch($user->requestedForAccountDeletion)
+                                    @case(1)
+                                    <span
+                                        class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Received</span>
+                                    @break
+
+                                    @default
+                                    <span
+                                        class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">Not Received</span>
+                                    @break
+                                    @endswitch
+                                </td>
                                 <td>
                                     @switch($user->status)
                                     @case(1)

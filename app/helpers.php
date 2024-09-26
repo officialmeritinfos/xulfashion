@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\Department;
 use App\Models\State;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserStoreProduct;
+use App\Notifications\StaffCustomNotification;
 use Carbon\Carbon;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Database\Eloquent\Model;
@@ -501,5 +503,15 @@ if (!function_exists('storeCategoryById')) {
     function storeCategoryById($id)
     {
         return \App\Models\UserStoreCatalogCategory::where('id',$id)->first();
+    }
+}
+if (!function_exists('sendDepartmentMail')) {
+
+    function sendDepartmentMail($departmentSlug,$message,$title)
+    {
+        $department = Department::where('slug',$departmentSlug)->first();
+        if (!empty($department)) {
+            $department->notify(new StaffCustomNotification($department, $message, $title));
+        }
     }
 }
