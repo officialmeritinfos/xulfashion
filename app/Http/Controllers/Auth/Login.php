@@ -89,7 +89,9 @@ class Login extends BaseController
                     $user->loggedIn = 1;
                     $user->save();
                     Auth::login($user);
-                    $this->notifyLogin($request, $user);
+                    if ($settings->emailNotification==1){
+                        $this->notifyLogin($request, $user);
+                    }
                     //since two-factor authentication is off, we redirect to the necessary page
                     $url = $this->userDashboard($user);
                     $message = "Account authenticated. Redirecting soon ...";

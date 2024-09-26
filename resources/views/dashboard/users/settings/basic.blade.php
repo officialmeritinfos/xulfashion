@@ -19,7 +19,8 @@
                                     <label class="form-check-label" for="sales">
                                         Receive email notifications
                                         <i class="ri-information-fill" data-bs-toggle="tooltip"
-                                           title="Receive notifications for activities on your account including logins etc"></i>
+                                           title="Receive notifications for activities on your account including logins etc.
+                                           You will still get a login notification if you have two-factor authentication active on your account."></i>
                                     </label>
                                 </div>
                             </div>
