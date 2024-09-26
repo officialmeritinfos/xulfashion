@@ -76,7 +76,7 @@ class Profile extends Component
                 'model_id'      =>$staff->id
             ]);
 
-            $message = 'You staff password was reently changed. Please login back again to continue your session, or contact
+            $message = 'You staff password was recently changed. Please login back again to continue your session, or contact
             support immediately if this change was not performed by you.';
             $staff->notify(new CustomNotificationNoLink($staff->name,'Password Changed',$message));
 
