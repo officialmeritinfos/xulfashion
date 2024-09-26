@@ -8,13 +8,13 @@
 
                             <div class="col-lg-12 mb-4">
                                 <label for="Email" class="form-label">Email Address*</label>
-                                <input type="email" class="form-control" id="Email" wire:model.live="email">
+                                <input type="email" class="form-control form-control-lg" id="Email" wire:model.live="email">
                                 @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="col-lg-12 mb-4">
                                 <label for="message" class="form-label">Why are you deleting your account?*</label>
-                                <textarea class="form-control" name="reason" id="message" wire:model.live="reason"></textarea>
+                                <textarea class="form-control form-control-lg" name="reason" id="message" wire:model.live="reason"></textarea>
 
                                 @error('reason') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -45,21 +45,18 @@
                     @endif
 
                     @if($showSuccessForm)
-                        <section class="error-section bg-light-2">
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <div class="col-xxl-12 col-lg-12 col-sm-12 col-xs-12 col-12">
-                                        <div class="error-content">
-                                            <div class="error-content__image">
-                                                <img src="{{asset('home/image/confirmed.svg')}}" alt="image alt">
-                                            </div>
-                                            <h2 class="heading-md text-black">Successful</h2>
-                                            <p>Please verify your request from your registered email.</p>
+                            <div class="row justify-content-center">
+                                <div class="col-xxl-12 col-lg-12 col-sm-12 col-xs-12 col-12">
+                                    <div class="error-content">
+                                        <div class="error-content__image">
+                                            <img src="{{asset('home/image/confirmed.svg')}}"
+                                                 alt="image alt" style="width: 150px;">
                                         </div>
+                                        <h2 class="heading-md text-black">Successful</h2>
+                                        <p>Please verify your request from your registered email.</p>
                                     </div>
                                 </div>
                             </div>
-                        </section>
                     @endif
                 </div>
             </div>
