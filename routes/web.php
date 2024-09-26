@@ -9,6 +9,7 @@ use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
 use App\Http\Controllers\Mobile\Home;
+use App\Http\Controllers\Mobile\LegalController;
 use App\Http\Controllers\Mobile\User\Profile;
 use Illuminate\Support\Facades\Route;
 
@@ -81,6 +82,11 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
         ->name('marketplace.catalog.detail');
     Route::get('stores/{store}/product/{product}/detail',[CatalogController::class,'productDetail'])
         ->name('marketplace.store.product.detail');
+
+
+    //LEGAL PAGE
+    Route::get('legal/privacy-policy',[LegalController::class,'privacyPolicy'])->name('legal.privacy-policy');
+    Route::get('legal/delete-my-information',[LegalController::class,'deleteMyInformation'])->name('legal.delete-my-information');
 
 
 

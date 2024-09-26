@@ -42,6 +42,12 @@
                         </a>
                     </li>
                 @endauth
+                <li>
+                    <a href="{{route('mobile.legal.privacy-policy')}}" class="pages">
+                        <h4>Privacy Policy</h4>
+                        <i class="ri-arrow-drop-right-line"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
