@@ -39,7 +39,7 @@ class Profile extends Component
         return [
             'accountPin'=>['required','string','max_digits:6','min_digits:6'],
             'oldPassword'=>['required','current_password:staff'],
-            'password'=>['required','confirmed','current_password:staff',Password::min(8)->uncompromised(1)],
+            'password'=>['required','confirmed',Password::min(8)->uncompromised(1)],
             'password_confirmation'=>['required','same:password'],
         ];
     }
