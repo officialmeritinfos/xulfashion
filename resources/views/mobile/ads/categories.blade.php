@@ -44,8 +44,6 @@
         </div>
     </section>
 
-    <section class="panel-space"></section>
-
     @push('js')
         <!-- jQuery Script to filter categories -->
         <script>

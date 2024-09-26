@@ -20,6 +20,7 @@
     <meta name="msapplication-TileImage" content="{{asset($web->favicon)}}" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    @include('genericCss')
     @stack('css')
     <style>
         .loader-wrapper {
@@ -115,6 +116,8 @@
 
 @yield('content')
 
+<section class="panel-space"></section>
+
 @include('mobile.ads.layout.footerSection')
 
 <!-- swiper js -->
@@ -145,5 +148,6 @@
         })
     });
 </script>
+@include('basicInclude')
 </body>
 </html>

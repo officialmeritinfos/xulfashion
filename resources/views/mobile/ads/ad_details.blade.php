@@ -115,7 +115,7 @@
                     <div class="d-block">
                         <h6>Display Name</h6>
                         <h6><a href="{{route('mobile.marketplace.merchant',['id'=>$merchant->reference])}}">
-                            {{$merchant->displayName??$merchant->username}}
+                            {{ucfirst($merchant->displayName??$merchant->username)}}
                             </a>
                         </h6>
                     </div>

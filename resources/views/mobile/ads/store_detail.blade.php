@@ -96,9 +96,10 @@
                         <div class="dimensions-box delivery-box">
                             <div class="d-block">
                                 <h6>Store-front</h6>
-                                <h6><a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank">
-                                        <img src="https://glenthemes.github.io/iconsax/icons/external-square.svg" style="font-size: 12px;"/>
-                                    </a>
+                                <h6 ><span class="cpy-link" data-clipboard-text="{{route('merchant.store',['subdomain'=>$store->slug])}}"
+                                          style="cursor: pointer;">
+                                        <img src="https://glenthemes.github.io/iconsax/icons/document-copy.svg" style="font-size: 12px;"/>
+                                    </span>
                                 </h6>
                             </div>
                         </div>
@@ -114,20 +115,23 @@
         <div class="custom-container">
             <div class="title">
                 <h2>Store Catalogue</h2>
-                <a href="{{route('merchant.store.catalog',['subdomain'=>$store->slug])}}" target="_blank">View All</a>
+                <span class="cpy-link" data-clipboard-text="{{route('merchant.store.catalog',['subdomain'=>$store->slug])}}" style="cursor: pointer;">View All</span>
             </div>
 
             <div class="row g-4">
                 @foreach($catalogs as $catalog)
-                    <div class="col-6">
+                    <div class="col-6 cpy-link" data-clipboard-text="{{route('merchant.store.category',['subdomain'=>$store->slug,'id'=>$catalog->id])}}"
+                    style="cursor: pointer;">
                         <div class="product-box">
                             <div class="product-box-img">
-                                <a href="{{route('merchant.store.category',['subdomain'=>$store->slug,'id'=>$catalog->id])}}" target="_blank"> <img class="img" src="{{$catalog->photo??asset('customcategory.jpg')}}" alt="p10" /></a>
+                                <span class="cpy-link" data-clipboard-text="{{route('merchant.store.category',['subdomain'=>$store->slug,'id'=>$catalog->id])}}"
+                                      > <img class="img" src="{{$catalog->photo??asset('customcategory.jpg')}}" alt="p10" /></span>
 
                                 <div class="cart-box">
-                                    <a href="{{route('merchant.store.category',['subdomain'=>$store->slug,'id'=>$catalog->id])}}" target="_blank" class="cart-bag">
+                                    <span  data-clipboard-text="{{route('merchant.store.category',['subdomain'=>$store->slug,'id'=>$catalog->id])}}"
+                                           class="cart-bag cpy-link">
                                         <i class="iconsax bag" data-icon="basket-2"></i>
-                                    </a>
+                                    </span>
                                 </div>
                             </div>
                             <div class="product-box-detail">

@@ -107,11 +107,11 @@
                     <div class="dimensions-box delivery-box">
                         <div class="d-block">
                             <h6>Visit Store</h6>
-                            <h6>
+                            <h6 style="cursor: pointer;">
 
-                                <a href="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}">
-                                    <img src="https://glenthemes.github.io/iconsax/icons/external-square.svg" style="font-size: 12px;"/>
-                                </a>
+                                <span class="cpy-link" data-clipboard-text="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}">
+                                    <img src="https://glenthemes.github.io/iconsax/icons/document-copy.svg" style="font-size: 12px;"/>
+                                </span>
                             </h6>
                         </div>
                     </div>
