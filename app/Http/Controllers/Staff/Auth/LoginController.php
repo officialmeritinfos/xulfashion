@@ -13,6 +13,7 @@ use App\Notifications\StaffAccountPasswordSet;
 use App\Notifications\StaffCustomNotification;
 use App\Notifications\StaffTwoFactorAuthentication;
 use App\Notifications\TwoFactorAuthentication;
+use App\Rules\ReCaptcha;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,10 @@ class LoginController extends BaseController
         try {
             $validator = Validator::make($request->all(),[
                 'email'=>['required','email','exists:system_staff,email'],
-                'password'=>['required',Password::min(8)->uncompromised(1)]
+                'password'=>['required',Password::min(8)->uncompromised(1)],
+                'g-recaptcha-response' => ['required', new ReCaptcha]
+            ],[],[
+                'g-recaptcha-response'=>'Recaptcha'
             ])->stopOnFirstFailure();
             if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
 

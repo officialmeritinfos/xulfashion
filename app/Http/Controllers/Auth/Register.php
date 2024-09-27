@@ -11,6 +11,7 @@ use App\Models\GeneralSetting;
 use App\Models\User;
 use App\Notifications\CustomNotification;
 use App\Notifications\EmailVerification;
+use App\Rules\ReCaptcha;
 use App\Traits\Helpers;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -62,9 +63,12 @@ class Register extends BaseController
                 'password' => ['required', Password::min(8)->uncompromised(1)],
                 'password_confirmation' => ['required', 'same:password'],
                 'referral' => ['nullable', 'string', 'exists:users,username'],
-                'phone'    =>['required','numeric']
+                'phone'    =>['required','numeric'],
+                'g-recaptcha-response' => ['required', new ReCaptcha]
             ],[
                 'email.unique'=>'User already exists with this email. Please login instead.'
+            ],[
+                'g-recaptcha-response'=>'Recaptcha'
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {

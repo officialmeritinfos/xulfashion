@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\UserSetting;
 use App\Notifications\EmailVerification;
 use App\Notifications\TwoFactorAuthentication;
+use App\Rules\ReCaptcha;
 use App\Traits\Helpers;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -43,6 +44,9 @@ class Login extends BaseController
                 'email'=>['required','email','exists:users,email'],
                 'password'=>['required',Password::min(8)->uncompromised(1)],
                 'remember'=>['nullable','integer'],
+                'g-recaptcha-response' => ['required', new ReCaptcha]
+            ],[],[
+                'g-recaptcha-response'=>'Recaptcha'
             ])->stopOnFirstFailure();
             if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
 

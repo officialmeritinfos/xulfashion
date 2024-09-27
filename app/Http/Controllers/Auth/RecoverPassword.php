@@ -9,6 +9,7 @@ use App\Models\PasswordReset;
 use App\Models\User;
 use App\Notifications\PasswordChanged;
 use App\Notifications\PasswordRecovery;
+use App\Rules\ReCaptcha;
 use App\Traits\Helpers;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -40,6 +41,9 @@ class RecoverPassword extends BaseController
         try {
             $validator = Validator::make($request->all(), [
                 'email' => ['required', 'email', 'exists:users,email'],
+                'g-recaptcha-response' => ['required', new ReCaptcha]
+            ],[],[
+                'g-recaptcha-response'=>'Recaptcha'
             ])->stopOnFirstFailure();
             if ($validator->fails()){
                 return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
