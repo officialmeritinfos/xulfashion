@@ -21,45 +21,19 @@
     }
 
     .loader {
-        position: relative;
-        display: flex;
+        width: 500px;
+        height: 25px;
+        background: linear-gradient(to right, #ddd 25%, #4285f4 50%, #ddd 75%);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite linear;
     }
 
-    .loader:before,
-    .loader:after {
-        content: '';
-        width: 15px;
-        height: 15px;
-        display: inline-block;
-        position: relative;
-        margin: 0 5px;
-        border-radius: 50%;
-        color: #E8175E;
-        background: currentColor;
-        box-shadow: 50px 0, -50px 0;
-        animation: left 1s infinite ease-in-out;
-    }
-
-    .loader:after {
-        color: #FF3D00;
-        animation: right 1.1s infinite ease-in-out;
-    }
-
-    @keyframes right {
-        0%, 100% {
-            transform: translateY(-10px);
+    @keyframes shimmer {
+        0% {
+            background-position: 200% 0;
         }
-        50% {
-            transform: translateY(10px);
-        }
-    }
-
-    @keyframes left {
-        0%, 100% {
-            transform: translateY(10px);
-        }
-        50% {
-            transform: translateY(-10px);
+        100% {
+            background-position: -200% 0;
         }
     }
 </style>
