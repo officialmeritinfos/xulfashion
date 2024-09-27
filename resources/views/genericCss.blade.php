@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{asset('dashboard/css/selectize.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('dashboard/vendors/lightboxed/lightboxed.css')}}">
 {{--<link rel="stylesheet" href="{{asset('dashboard/vendors/iconpicker/fontawesome-browser.css')}}">--}}
-<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="https://www.google.com/recaptcha/api.js" defer></script>
 
 <link rel="stylesheet" href="{{asset('dashboard/vendors/summernote/summernote-bs5.css')}}">
 <style>
