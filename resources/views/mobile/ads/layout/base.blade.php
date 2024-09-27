@@ -21,7 +21,6 @@
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     @stack('css')
-    <script src="https://www.google.com/recaptcha/api.js" defer></script>
 
     <!--Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
