@@ -117,10 +117,13 @@
                                 <a href="{{route('home.about')}}" class="nav-link-item drop-trigger">About Us</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('home.index')}}#features" class="nav-link-item drop-trigger">Features</a>
+                                <a href="{{route('marketplace.index')}}" class="nav-link-item drop-trigger">Directory</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('home.index')}}#join-waitlist" class="nav-link-item drop-trigger">Join Wait-list</a>
+                                <a href="{{route('home.features')}}" class="nav-link-item drop-trigger">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('register')}}" class="nav-link-item drop-trigger">Get Started</a>
                             </li>
                         </ul>
                     </nav>
@@ -129,8 +132,8 @@
                     <span></span>
                 </div>
                 <div class="header-cta-btn-wrapper">
-                    <a href="{{route('home.index')}}#join-waitlist" class="btn-masco btn--header btn-primary-l03 btn-shadow rounded-pill">
-                        <span>Join wait-list</span>
+                    <a href="{{route('register')}}" class="btn-masco btn--header btn-primary-l03 btn-shadow rounded-pill">
+                        <span>Get Started</span>
                     </a>
                 </div>
             </nav>
@@ -183,16 +186,16 @@
                             <h3 class="footer-title">Company</h3>
                             <ul class="footer-list">
                                 <li>
-                                    <a href="#">About Us</a>
+                                    <a href="{{route('home.about')}}">About Us</a>
                                 </li>
                                 <li>
-                                    <a href="#">Pricing</a>
+                                    <a href="{{route('home.pricing')}}">Pricing</a>
                                 </li>
                                 <li>
-                                    <a href="#">Career</a>
+                                    <a href="{{route('home.career')}}">Career</a>
                                 </li>
                                 <li>
-                                    <a href="#">Contact</a>
+                                    <a href="{{route('home.contact')}}">Contact</a>
                                 </li>
                             </ul>
                         </div>
@@ -200,7 +203,7 @@
                             <h3 class="footer-title">Resources</h3>
                             <ul class="footer-list">
                                 <li>
-                                    <a href="#">Blog</a>
+                                    <a href="{{$web->blogLink}}" target="_blank">Blog</a>
                                 </li>
                                 <li>
                                     <a href="#"> FAQs</a>
@@ -225,9 +228,6 @@
                                 </li>
                                 <li>
                                     <a href="{{route('home.aml')}}"> Anti-money Laundering</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('home.legal')}}"> Addendum Legals</a>
                                 </li>
                             </ul>
                         </div>

@@ -136,7 +136,7 @@
                                 <div class="col-lg-4 col-md-4">
                                     <div class="top-deal-card style1">
                                         <a href="{{route('merchant.store',['subdomain'=>$suggestion->slug])}}" class="top-deal-img bg-f car-bg-1"
-                                           style="background-image:url('{{$store->logo}}');">
+                                           style="background-image:url('{{$suggestion->logo}}');">
                                         </a>
                                         <div class="top-deal-info">
                                             <h4 class="top-deal-title"><a href="{{route('merchant.store',['subdomain'=>$suggestion->slug])}}">{{$suggestion->name}}</a></h4>

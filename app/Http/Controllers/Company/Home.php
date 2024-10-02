@@ -29,4 +29,50 @@ class Home extends BaseController
             'web'           =>$web
         ]);
     }
+
+    public function faq()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.faq')->with([
+            'pageName'      =>'Frequently Asked Questions',
+            'siteName'      =>$web->name,
+            'web'           =>$web
+        ]);
+    }
+    public function pricing()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.pricing')->with([
+            'pageName'      =>'Pricing & Fees',
+            'siteName'      =>$web->name,
+            'web'           =>$web
+        ]);
+    }
+    public function career()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.career')->with([
+            'pageName'      =>'Work with '.$web->name,
+            'siteName'      =>$web->name,
+            'web'           =>$web
+        ]);
+    }
+    public function contact()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.contact')->with([
+            'pageName'      =>'Contact '.$web->name,
+            'siteName'      =>$web->name,
+            'web'           =>$web
+        ]);
+    }
+    public function features()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.features')->with([
+            'pageName'      =>$web->name.' Features',
+            'siteName'      =>$web->name,
+            'web'           =>$web
+        ]);
+    }
 }

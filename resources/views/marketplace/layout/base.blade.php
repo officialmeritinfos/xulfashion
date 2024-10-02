@@ -276,12 +276,13 @@
                             </div>
                             <div id="menu">
                                 <ul class="main-menu list-style">
+                                    <li><a href="{{route('home.index')}}">HOME</a></li>
                                     @if($hasCountry==1)
-                                        <li><a href="{{route('marketplace.index',['country'=>$iso3])}}">HOME</a></li>
+                                        <li><a href="{{route('marketplace.index',['country'=>$iso3])}}">DIRECTORY</a></li>
                                     @else
-                                        <li><a href="{{route('marketplace.index')}}">HOME</a></li>
+                                        <li><a href="{{route('marketplace.index')}}">DIRECTORY</a></li>
                                     @endif
-                                    <li><a href="{{route('marketplace.stores')}}">SHOPS</a></li>
+                                    <li><a href="{{route('marketplace.stores')}}">STORES</a></li>
                                 </ul>
                             </div>
                         </div>

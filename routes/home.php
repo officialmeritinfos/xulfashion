@@ -10,6 +10,16 @@ Route::get('/',[Home::class,'landingPage'])->name('index');
 /*================================ COMPANY CONTROLLER ==============================*/
 Route::get('about',[Home::class,'about'])
     ->name('about');
+Route::get('faq',[Home::class,'about'])
+    ->name('faq');
+Route::get('pricing',[Home::class,'pricing'])
+    ->name('pricing');
+Route::get('contact',[Home::class,'contact'])
+    ->name('contact');
+Route::get('career',[Home::class,'career'])
+    ->name('career');
+Route::get('features',[Home::class,'features'])
+    ->name('features');
 /*================================ LEGAL CONTROLLER  ===============================*/
 Route::get('legal',[LegalController::class,'landingPage'])
     ->name('legal');

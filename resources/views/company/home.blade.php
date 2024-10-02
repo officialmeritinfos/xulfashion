@@ -310,71 +310,71 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Home 3  : Video Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-{{--    <div class="home-3_video-section section-padding">--}}
-{{--        <div class="home-3_video-shape">--}}
-{{--            <img src="{{asset('home/image/home-3/video-shape.svg')}}" alt="">--}}
-{{--        </div>--}}
-{{--        <div class="container">--}}
-{{--            <div class="row justify-content-center text-center">--}}
-{{--                <div class="  col-xl-7 col-lg-8 col-md-10  ">--}}
-{{--                    <div class="section-heading">--}}
-{{--                        <h2 class="section-heading__title heading-md text-black">Discover what you can do with {{$siteName}}</h2>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="row gutter-y-40 justify-content-center">--}}
-{{--                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">--}}
-{{--                    <div class="video-widget">--}}
-{{--                        <div class="video-widget__thumbnail-wrapper">--}}
-{{--                            <div class="video-widget__thumbnail">--}}
-{{--                                <img src="{{asset('home/image/home-3/video-thumbnail-1.png')}}" alt="image alt">--}}
-{{--                                <a href="https://www.youtube.com/watch?v=zo9dJFo8H8g" data-fancybox class="btn-play absolute-center btn-play--outline btn-play--70">--}}
-{{--                                    <i class="fa-solid fa-play"></i>--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <h3 class="video-widget__title">Custom workout plans</h3>--}}
-{{--                        <p>Snaga is fully customizable workout app. Whether you do weightlifting, physical etc.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">--}}
-{{--                    <div class="video-widget">--}}
-{{--                        <div class="video-widget__thumbnail-wrapper">--}}
-{{--                            <div class="video-widget__thumbnail">--}}
-{{--                                <img src="{{asset('home/image/home-3/video-thumbnail-2.png')}}" alt="image alt">--}}
-{{--                                <a href="https://www.youtube.com/watch?v=zo9dJFo8H8g" data-fancybox class="btn-play absolute-center btn-play--outline btn-play--70">--}}
-{{--                                    <i class="fa-solid fa-play"></i>--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <h3 class="video-widget__title">Clearing meditation</h3>--}}
-{{--                        <p>A highly accessible meditation that will create more clarity &amp; space in the body.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">--}}
-{{--                    <div class="video-widget">--}}
-{{--                        <div class="video-widget__thumbnail-wrapper">--}}
-{{--                            <div class="video-widget__thumbnail">--}}
-{{--                                <img src="{{asset('home/image/home-3/video-thumbnail-3.png')}}" alt="image alt">--}}
-{{--                                <a href="https://www.youtube.com/watch?v=zo9dJFo8H8g" data-fancybox class="btn-play absolute-center btn-play--outline btn-play--70">--}}
-{{--                                    <i class="fa-solid fa-play"></i>--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <h3 class="video-widget__title">Daily fitness challenges</h3>--}}
-{{--                        <p>Snaga gives you achieve a specific goal with a specific exercise for daily activities.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="section-button">--}}
-{{--                    <a href="{{route('home.index')}}#join-waitlist" class="btn-masco btn-primary-l03 rounded-pill btn-shadow">--}}
-{{--                        <span>Secure your slot</span>--}}
-{{--                    </a>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    <div class="home-3_video-section section-padding">
+        <div class="home-3_video-shape">
+            <img src="{{asset('home/image/home-3/video-shape.svg')}}" alt="">
+        </div>
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="  col-xl-7 col-lg-8 col-md-10  ">
+                    <div class="section-heading">
+                        <h2 class="section-heading__title heading-md text-black">Discover what you can do with {{$siteName}}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row gutter-y-40 justify-content-center">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="video-widget">
+                        <div class="video-widget__thumbnail-wrapper">
+                            <div class="video-widget__thumbnail">
+                                <img src="{{asset('home/image/home-3/video-thumbnail-1.png')}}" alt="image alt">
+                                <a href="https://www.youtube.com/watch?v=zo9dJFo8H8g" data-fancybox class="btn-play absolute-center btn-play--outline btn-play--70">
+                                    <i class="fa-solid fa-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="video-widget__title">Custom workout plans</h3>
+                        <p>Snaga is fully customizable workout app. Whether you do weightlifting, physical etc.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="video-widget">
+                        <div class="video-widget__thumbnail-wrapper">
+                            <div class="video-widget__thumbnail">
+                                <img src="{{asset('home/image/home-3/video-thumbnail-2.png')}}" alt="image alt">
+                                <a href="https://www.youtube.com/watch?v=zo9dJFo8H8g" data-fancybox class="btn-play absolute-center btn-play--outline btn-play--70">
+                                    <i class="fa-solid fa-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="video-widget__title">Clearing meditation</h3>
+                        <p>A highly accessible meditation that will create more clarity &amp; space in the body.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="video-widget">
+                        <div class="video-widget__thumbnail-wrapper">
+                            <div class="video-widget__thumbnail">
+                                <img src="{{asset('home/image/home-3/video-thumbnail-3.png')}}" alt="image alt">
+                                <a href="https://www.youtube.com/watch?v=zo9dJFo8H8g" data-fancybox class="btn-play absolute-center btn-play--outline btn-play--70">
+                                    <i class="fa-solid fa-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="video-widget__title">Daily fitness challenges</h3>
+                        <p>Snaga gives you achieve a specific goal with a specific exercise for daily activities.</p>
+                    </div>
+                </div>
+                <div class="section-button">
+                    <a href="{{route('home.index')}}#join-waitlist" class="btn-masco btn-primary-l03 rounded-pill btn-shadow">
+                        <span>Secure your slot</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <livewire:company.home/>
+{{--    <livewire:company.home/>--}}
     <!--~~~~~~~~~~~~~~~~~~~~~~~~
     Home 3 : CTA
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~-->

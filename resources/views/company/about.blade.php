@@ -77,7 +77,7 @@
                                 Our vision is to be recognized as the leading digital platform for the fashion industry
                             </h2>
                             <p>
-                                At Xulfashion, we aim to redefine the fashion industry by integrating advanced technology that enhances both
+                                At {{$siteName}}, we aim to redefine the fashion industry by integrating advanced technology that enhances both
                                 creator capabilities and consumer experiences. Our platform is designed to bridge the gap between
                                 traditional fashion commerce and digital innovation, ensuring seamless transactions and expansive
                                 market reach. We are committed to building a trustworthy and innovative community, where fashion
@@ -112,7 +112,7 @@
 
                             <p>As they delved deeper into the industry, they found that many talented designers and boutique
                                 stores lacked the technical resources to effectively showcase their collections online.
-                                This insight led to the development of Xulfashion, designed to empower fashion professionals
+                                This insight led to the development of {{$siteName}}, designed to empower fashion professionals
                                 with a robust, intuitive platform that not only enhances visibility but also fosters direct
                                 engagement with fashion enthusiasts worldwide.</p>
 
@@ -121,13 +121,13 @@
                                 Our platform integrates cutting-edge technology with a deep understanding of the fashion
                                 market's nuances, offering tailored features like virtual try-ons, personalized storefronts,
                                 and real-time fashion analytics.</p>
-                            <p>Today, Xulfashion stands as a beacon for innovation in the fashion industry, bridging geographical
+                            <p>Today, {{$siteName}} stands as a beacon for innovation in the fashion industry, bridging geographical
                                 and cultural divides to bring a diverse range of fashion to a global audience. As we continue
                                 to evolve and expand our offerings, our commitment remains steadfast: to revolutionize the
                                 fashion industry by providing a marketplace that is as dynamic and vibrant as the fashion it hosts.</p>
                         </div>
                         <div class="content-button-block">
-                            <a href="{{route('home.index')}}#join-waitlist" class="btn-masco btn-primary rounded-pill btn-fill--up"><span>Join Us</span></a>
+                            <a href="{{route('register')}}" class="btn-masco btn-primary rounded-pill btn-fill--up"><span>List Your Business</span></a>
                         </div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                         <div class="feature-widget-7__body">
                             <h4 class="feature-widget-7__title">Innovation</h4>
                             <p>
-                                At Xulfashion, innovation is the cornerstone of our operations. We are committed to continually
+                                At {{$siteName}}, innovation is the cornerstone of our operations. We are committed to continually
                                 evolving our platform with cutting-edge technologies and features that not only meet but
                                 exceed the expectations of fashion creators and consumers.
                             </p>
@@ -200,7 +200,7 @@
                         <div class="feature-widget-7__body">
                             <h4 class="feature-widget-7__title">Diversity</h4>
                             <p>
-                                Xulfashion embraces diversity in all its forms—be it in our team, our platform's offerings,
+                                {{$siteName}} embraces diversity in all its forms—be it in our team, our platform's offerings,
                                 or our global user base. We believe that celebrating diverse perspectives and backgrounds
                                 fuels creativity and innovation, which are essential for driving the fashion industry forward.
                             </p>
@@ -260,18 +260,18 @@
                         <!-- FAQ 1 -->
                         <div class="accordion-item">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
-                                Q. What is Xulfashion?
+                                Q. What is {{$siteName}}?
                             </button>
                             <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#home-1-faq">
                                 <div class="accordion-item__body">
-                                    Xulfashion is an innovative platform dedicated to transforming the fashion industry by connecting fashion creators and shoppers worldwide. We provide customizable online storefronts, integrated booking systems, and secure transactions to empower fashion businesses.
+                                    {{$siteName}} is an innovative platform dedicated to transforming the fashion industry by connecting fashion creators and shoppers worldwide. We provide customizable online storefronts, integrated booking systems, and secure transactions to empower fashion businesses.
                                 </div>
                             </div>
                         </div>
                         <!-- FAQ 2 -->
                         <div class="accordion-item">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
-                                Q. How does the booking system work on Xulfashion?
+                                Q. How does the booking system work on {{$siteName}}?
                             </button>
                             <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#home-1-faq">
                                 <div class="accordion-item__body">
@@ -282,29 +282,29 @@
                         <!-- FAQ 3 -->
                         <div class="accordion-item">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
-                                Q. Can I create a customized storefront on Xulfashion?
+                                Q. Can I create a customized storefront on {{$siteName}}?
                             </button>
                             <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#home-1-faq">
                                 <div class="accordion-item__body">
-                                    Yes, Xulfashion allows you to create a customized online storefront. You can choose from a variety of templates, add custom domains, and personalize your shop to match your brand identity.
+                                    Yes, {{$siteName}} allows you to create a customized online storefront. You can choose from a variety of templates, add custom domains, and personalize your shop to match your brand identity.
                                 </div>
                             </div>
                         </div>
                         <!-- FAQ 4 -->
                         <div class="accordion-item">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
-                                Q. What security measures does Xulfashion offer for transactions?
+                                Q. What security measures does {{$siteName}} offer for transactions?
                             </button>
                             <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#home-1-faq">
                                 <div class="accordion-item__body">
-                                    Xulfashion utilizes a secure escrow system for all transactions to ensure that both buyers and sellers are protected. This system helps to build trust and confidence in our platform.
+                                    {{$siteName}} utilizes a secure escrow system for all transactions to ensure that both buyers and sellers are protected. This system helps to build trust and confidence in our platform.
                                 </div>
                             </div>
                         </div>
                         <!-- FAQ 5 -->
                         <div class="accordion-item">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
-                                Q. How do I handle returns and refunds on Xulfashion?
+                                Q. How do I handle returns and refunds on {{$siteName}}?
                             </button>
                             <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#home-1-faq">
                                 <div class="accordion-item__body">
@@ -318,18 +318,18 @@
                         <!-- FAQ 6 -->
                         <div class="accordion-item">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq6" aria-expanded="false" aria-controls="faq6">
-                                Q. How can I track my performance on Xulfashion?
+                                Q. How can I track my performance on {{$siteName}}?
                             </button>
                             <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#home-1-faq">
                                 <div class="accordion-item__body">
-                                    Xulfashion offers advanced analytics tools that allow you to track sales, customer engagement, and other key metrics. These insights can help you make informed decisions to grow your business.
+                                    {{$siteName}} offers advanced analytics tools that allow you to track sales, customer engagement, and other key metrics. These insights can help you make informed decisions to grow your business.
                                 </div>
                             </div>
                         </div>
                         <!-- FAQ 7 -->
                         <div class="accordion-item">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq7" aria-expanded="false" aria-controls="faq7">
-                                Q. What support does Xulfashion offer to its users?
+                                Q. What support does {{$siteName}} offer to its users?
                             </button>
                             <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#home-1-faq">
                                 <div class="accordion-item__body">
@@ -341,7 +341,7 @@
                 </div>
             </div>
             <div class="section-button">
-                <a href="{{route('home.index')}}#join-waitlist" class="btn-masco rounded-pill btn-fill--up">Join the Wait-list now</a>
+                <a href="{{route('register')}}" class="btn-masco rounded-pill btn-fill--up">Join now</a>
             </div>
         </div>
     </div>

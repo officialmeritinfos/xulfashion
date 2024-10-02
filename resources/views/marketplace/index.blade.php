@@ -14,11 +14,13 @@
                     <div class="hero-filter style1">
                         <ul class="nav nav-tabs filter-tablist" role="tablist">
                             <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab_10" type="button" role="tab">Fashion Designer</button>
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab_10" type="button" role="tab">
+                                    SEARCH
+                                </button>
                             </li>
-                            <li class="nav-item">
-                                <button class="nav-link " data-bs-toggle="tab" data-bs-target="#tab_20" type="button" role="tab">Model</button>
-                            </li>
+{{--                            <li class="nav-item">--}}
+{{--                                <button class="nav-link " data-bs-toggle="tab" data-bs-target="#tab_20" type="button" role="tab">Model</button>--}}
+{{--                            </li>--}}
                         </ul>
                         <div class="tab-content filter-tab-content">
                             <div class="tab-pane fade show active" id="tab_10" role="tabpanel">
@@ -122,65 +124,12 @@
     </section>
     <!-- Dealer Section end -->
 
-    <!-- About section start -->
-    <section class="about-wrap ptb-100 bg-wood">
-        <span class="section_subtext style1">ABOUT US</span>
-        <div class="about-shape-1 md-none">
-            <img src="{{asset('marketplace/img/about/about-shape-2.png')}}" alt="Image">
-        </div>
-        <div class="container">
-            <div class="row gx-5 align-items-center">
-                <div class="col-xl-6 col-lg-5">
-                    <div class="about-img-wrap">
-                        <div class="about-img-one bg-f about-bg-1"></div>
-                        <div class="about-img-two bg-f about-bg-2">
-                            <div class="about-shape-2 sm-none">
-                                <img src="{{asset('marketplace/img/about/line-shape-1.png')}}" alt="Image">
-                            </div>
-                            <div class="experience-box">
-{{--                                <h4><span>35</span>Years <br>Experience</h4>--}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-lg-7">
-                    <div class="about-content">
-                        <div class="content-title style1">
-                            <span>About Us</span>
-                            <h2>Your Gateway to Global Fashion Connections</h2>
-                            <h6>We are determined to provide the best fashion designer experience for you. Customer satisfaction is our main goals.</h6>
-                            <p>
-                                At {{$siteName}}, we believe in the power of creativity and the magic of connection. Our platform is
-                                designed to bring together the world's most talented fashion designers and style-savvy clients,
-                                creating a vibrant community where fashion knows no boundaries.
-                            </p>
-                            <p>
-                                {{$siteName}} is more than just a marketplace; it's a movement. We provide an innovative platform
-                                where fashion designers can showcase their work, connect with global clients, and receive bookings
-                                from local fashion enthusiasts. Whether you're a designer looking to expand your reach or a client
-                                seeking unique, high-quality fashion, {{$siteName}} is your go-to destination.
-                            </p>
-                            <ul class="feature-list list-style">
-                                <li><span><i class="flaticon-checkmark"></i></span>Fair Pricing</li>
-                                <li><span><i class="flaticon-checkmark"></i></span>Global Outreach</li>
-                                <li><span><i class="flaticon-checkmark"></i></span>Store-front support</li>
-                                <li><span><i class="flaticon-checkmark"></i></span>24/7 Support Provided</li>
-                            </ul>
-                            <a href="{{route('home.about')}}" class="btn style1">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- About section end -->
-
     <!-- Deal Section start -->
     <section class="deals-wrap pt-100 pb-75">
         <div class="container">
             <div class="row align-items-end  mb-40">
-                <div class="col-xl-6  col-lg-6">
-                    <div class="section-title style1 text-left">
+                <div class="col-xl-12  col-lg-12">
+                    <div class="section-title style1 text-center">
                         <span>Recently Added</span>
                         <h2>Recently Added Designers</h2>
                     </div>
@@ -231,6 +180,33 @@
         </div>
     </section>
     <!-- Deal Section end -->
+
+    <!-- Team section start -->
+    <section class="team-wrap pt-100 pb-75">
+        <div class="container">
+            <div class="section-title style1 mb-40 text-center">
+                <span>Fashion Designers </span>
+                <h2>Best Selling Designers</h2>
+            </div>
+            <div class="row justify-content-center">
+                @foreach($injected->topUsersByView() as $topUser)
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="team-member-card style1">
+                            <div class="member-img">
+                                <img src="{{$topUser->photo}}" alt="Image">
+                            </div>
+                            <div class="member-info">
+                                <h4><a href="{{route('marketplace.merchant',['id'=>$topUser->reference])}}">{{$topUser->name}}</a></h4>
+                                <p>{{$topUser->displayName}}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
+        </div>
+    </section>
+    <!-- Team section end -->
 
     <!-- Why Choose us section start -->
     <div class="why-choose-wrap choose-bg-1 bg-f pt-100 pb-75 pos-rel">
@@ -315,32 +291,7 @@
     </div>
     <!-- Why Choose us section end -->
 
-    <!-- Team section start -->
-    <section class="team-wrap pt-100 pb-75">
-        <div class="container">
-            <div class="section-title style1 mb-40 text-center">
-                <span>Fashion Designers </span>
-                <h2>Best Selling Designers</h2>
-            </div>
-            <div class="row justify-content-center">
-                @foreach($injected->topUsersByView() as $topUser)
-                    <div class="col-xl-3 col-lg-4 col-md-6">
-                        <div class="team-member-card style1">
-                            <div class="member-img">
-                                <img src="{{$topUser->photo}}" alt="Image">
-                            </div>
-                            <div class="member-info">
-                                <h4><a href="{{route('marketplace.merchant',['id'=>$topUser->reference])}}">{{$topUser->name}}</a></h4>
-                                <p>{{$topUser->displayName}}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
 
-            </div>
-        </div>
-    </section>
-    <!-- Team section end -->
 
     @if($testimonials->count()>0)
         <!-- Testimonial section start -->
@@ -395,29 +346,6 @@
         <!-- Testimonial section end -->
     @endif
 
-    <!-- Partner section start -->
-    <section class="partner-wrap bg-hint ptb-100">
-        <div class="container pos-rel">
-            <div class="section-title style1 text-center mb-40">
-                <h2>Powered By Amazing Partners</h2>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="partner-slider swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="partner-img">
-                                    <img src="{{asset('partners/favicon.png')}}" alt="Image" data-bs-toggle="tooltip"
-                                    title="Kopium-Net">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Partner section end -->
 
     @if($hasCountry!=1)
         @push('js')
