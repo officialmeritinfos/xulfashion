@@ -37,8 +37,8 @@
                             </p>
                         </div>
                         <div class="home-3_hero-content-stat-wrapper">
-                            <a href="{{route('home.index')}}#join-waitlist" class="btn-masco btn-primary-l03 btn-shadow rounded-pill">
-                                <span>Join Wait-list</span>
+                            <a href="{{route('register')}}" class="btn-masco btn-primary-l03 btn-shadow rounded-pill">
+                                <span>Get Started</span>
                             </a>
                         </div>
                     </div>
@@ -130,8 +130,8 @@
                             </p>
                         </div>
                         <div class="content-button-block">
-                            <a href="{{route('home.index')}}#join-waitlist" class="btn-masco btn-primary-l03 btn-shadow rounded-pill"><span>
-                                Secure a slot
+                            <a href="{{route('register')}}" class="btn-masco btn-primary-l03 btn-shadow rounded-pill"><span>
+                                Get Started
                                 </span></a>
                         </div>
                     </div>
@@ -366,7 +366,7 @@
                     </div>
                 </div>
                 <div class="section-button">
-                    <a href="{{route('home.index')}}#join-waitlist" class="btn-masco btn-primary-l03 rounded-pill btn-shadow">
+                    <a href="{{route('register')}}" class="btn-masco btn-primary-l03 rounded-pill btn-shadow">
                         <span>Secure your slot</span>
                     </a>
                 </div>

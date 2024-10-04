@@ -521,7 +521,7 @@ class CheckoutController extends BaseController
                     $amountPaid = $amountPaidSubUnit/$fiat->subUnit;
                     $fees = $feesUnit/$fiat->subUnit;
                     $totalCharge = $this->regular->calculateChargeOnAmount($amountPaid,$order->currency);
-                    $amountCredit = $amountPaid-$totalCharge;
+                    $amountCredit = $amountPaid-($totalCharge+$fees);
 
 
                     $dataOrder = [

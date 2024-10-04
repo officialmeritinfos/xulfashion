@@ -515,3 +515,10 @@ if (!function_exists('sendDepartmentMail')) {
         }
     }
 }
+if (!function_exists('getMobileType')) {
+
+    function getMobileType()
+    {
+        return new Agent();
+    }
+}

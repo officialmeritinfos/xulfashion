@@ -125,37 +125,32 @@
                         <div class="f_widget f_link_widget">
                             <h3 class="f_title f_title_dark">Resources</h3>
                             <ul class="list-unstyled link_widget dark_link">
-                                <li><a href="#">Blog</a></li>
+                                <li><a href="{{$web->blogLink}}">Blog</a></li>
                                 <li><a href="{{$web->ticketHelpDesk}}">Help Center</a></li>
                                 <li><a href="{{route('home.legal')}}">Legal</a></li>
-                                <li><a href="#">Pricing</a></li>
+                                <li><a href="{{route('home.pricing')}}">Pricing</a></li>
                             </ul>
                         </div>
                         <div class="f_widget f_link_widget">
                             <h3 class="f_title f_title_dark">Company</h3>
                             <ul class="list-unstyled link_widget dark_link">
                                 <li><a href="{{route('home.about')}}">About</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Price list</a></li>
                                 <li><a href="{{$web->ticketHelpDesk}}">Support</a></li>
                             </ul>
                         </div>
                         <div class="f_widget f_link_widget">
                             <h3 class="f_title f_title_dark">Solution</h3>
                             <ul class="list-unstyled link_widget dark_link">
-                                <li><a href="#">Store-front</a></li>
-                                <li><a href="#">Invoicing</a></li>
-                                <li><a href="#">Inventory</a></li>
-                                <li><a href="#">HR</a></li>
+                                <li><a href="{{route('home.features')}}">Store-front</a></li>
+                                <li><a href="{{route('home.features')}}">Booking</a></li>
+                                <li><a href="{{route('home.features')}}">Offline Sales</a></li>
                             </ul>
                         </div>
                         <div class="f_widget f_link_widget">
                             <h3 class="f_title f_title_dark">Customer</h3>
                             <ul class="list-unstyled link_widget dark_link">
-                                <li><a href="#">Reviews</a></li>
-                                <li><a href="{{route('home.legal')}}">Policy Center</a></li>
-                                <li><a href="#">Status</a></li>
-                                <li><a href="#">Sitemap</a></li>
+                                <li><a href="{{route('home.terms-and-conditions')}}">Terms & Conditions</a></li>
+                                <li><a href="{{route('home.privacy-policy')}}">Privacy Policy</a></li>
                             </ul>
                         </div>
                         <div class="f_widget f_social_widget">

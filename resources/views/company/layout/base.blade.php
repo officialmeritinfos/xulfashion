@@ -86,7 +86,7 @@
     <link rel="stylesheet" href="{{asset('home/css/demo.css')}}">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{asset($web->favicon)}}">
-
+    @stack('css')
 </head>
 <body>
 <div class="page-wrapper overflow-hidden">
@@ -192,10 +192,10 @@
                                     <a href="{{route('home.pricing')}}">Pricing</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('home.career')}}">Career</a>
+                                    <a href="{{route('home.contact')}}">Contact</a>
                                 </li>
                                 <li>
-                                    <a href="{{route('home.contact')}}">Contact</a>
+                                    <a href="{{route('home.download')}}">Download App</a>
                                 </li>
                             </ul>
                         </div>
@@ -206,7 +206,7 @@
                                     <a href="{{$web->blogLink}}" target="_blank">Blog</a>
                                 </li>
                                 <li>
-                                    <a href="#"> FAQs</a>
+                                    <a href="{{route('home.faq')}}"> FAQs</a>
                                 </li>
                                 <li>
                                     <a href="{{$web->ticketHelpDesk}}" target="_blank"> Support</a>
@@ -246,9 +246,10 @@
     </div>
 </div>
 <!-- Vendor Scripts -->
-<script src="{{asset('home/plugins/jquery/jquery.min.js')}}" defer></script>
+<script src="{{asset('home/plugins/jquery/jquery.min.js')}}"></script>
 {{--<script src="{{asset('home/plugins/jquery/jquery-migrate.min.js')}}"></script>--}}
-<script src="{{asset('home/plugins/bootstrap/dist/js/bootstrap.bundle.min.js')}}" defer></script>
+<script src="{{asset('home/plugins/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+@stack('js')
 <!-- Plugin's Scripts -->
 <script src="{{asset('home/plugins/inlineSvg/inlineSvg.min.js')}}" defer></script>
 <script src="{{asset('home/plugins/fancybox/jquery.fancybox.min.js')}}" defer></script>
@@ -275,6 +276,5 @@
     })();
 </script>
 <!--End of Tawk.to Script-->
-<script src="{{asset('sw-register.js')}}"></script>
 </body>
 </html>

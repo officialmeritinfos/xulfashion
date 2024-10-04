@@ -4,6 +4,7 @@ namespace App\Custom;
 
 use App\Models\Country;
 use App\Models\Fiat;
+use App\Models\GeneralSetting;
 use App\Models\Job;
 use App\Models\JobType;
 use App\Models\RateType;
@@ -232,7 +233,7 @@ class Regular
 
         $charge = (($fiat->charge/100)*$amount)+$fiat->transactionCharge;
 
-        if ($charge > $fiat->maxCharge){
+        if ($charge > $fiat->maxCharge && $fiat->maxCharge!=0){
             $charge = $fiat->maxCharge;
         }
 

@@ -39,6 +39,11 @@ class MarketplaceController extends BaseController
             $countryIso = $country->iso3;
         }else{
             $countryIso=Cache::get('hasAdsCountry');
+            $country = Country::where('iso3',$countryIso)->first();
+            Session::put([
+                'country'=>$country->iso2,
+                'iso3'  =>$country->iso3
+            ]);
         }
         $web = GeneralSetting::find(1);
         if ($countryIso==null){
@@ -87,6 +92,20 @@ class MarketplaceController extends BaseController
         $ads = UserAd::where('reference',$id)->where('status',1)->firstOrFail();
 
         $agent = new Agent();
+
+        if (\auth()->check()){
+            $hasViewed = UserAdView::where([
+                'user'=>\auth()->user()->id,
+                'ad'=>$ads->reference
+            ])->first();
+        }else{
+            $hasViewed = UserAdView::where([
+                'ipAddress'=>$request->ip(),
+                'ad'=>$ads->reference
+            ])->first();
+        }
+
+
         //update view
         if (empty($hasViewed)){
             $ads->numberOfViews = $ads->numberOfViews+1;

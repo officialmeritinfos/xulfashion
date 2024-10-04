@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use Illuminate\Http\Request;
 
@@ -39,13 +40,17 @@ class Home extends BaseController
             'web'           =>$web
         ]);
     }
-    public function pricing()
+    public function pricing(Request $request)
     {
+        $currency = $request->get('currency');
+
         $web = GeneralSetting::find(1);
         return view('company.pricing')->with([
             'pageName'      =>'Pricing & Fees',
             'siteName'      =>$web->name,
-            'web'           =>$web
+            'web'           =>$web,
+            'fiat'          =>Fiat::where('code',strtoupper($currency))->orWhere('code','USD')->first(),
+            'fiats'         =>Fiat::where('status',1)->get()
         ]);
     }
     public function career()
@@ -71,6 +76,16 @@ class Home extends BaseController
         $web = GeneralSetting::find(1);
         return view('company.features')->with([
             'pageName'      =>$web->name.' Features',
+            'siteName'      =>$web->name,
+            'web'           =>$web
+        ]);
+    }
+
+    public function download()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.download')->with([
+            'pageName'      =>'Download the app',
             'siteName'      =>$web->name,
             'web'           =>$web
         ]);

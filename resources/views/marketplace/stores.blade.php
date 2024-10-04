@@ -71,10 +71,10 @@
                                 <div class="col-lg-4 col-md-4">
                                     <div class="top-deal-card style1">
                                         <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" class="top-deal-img bg-f car-bg-1"
-                                           style="background-image:url('{{$store->logo}}');">
+                                           style="background-image:url('{{$store->logo}}');" target="_blank">
                                         </a>
                                         <div class="top-deal-info">
-                                            <h4 class="top-deal-title"><a href="{{route('merchant.store',['subdomain'=>$store->slug])}}">{{$store->name}}</a></h4>
+                                            <h4 class="top-deal-title"><a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank">{{$store->name}}</a></h4>
                                             <div class="top-dealer-info">
                                                 <p><i class="flaticon-user-4"></i>
                                                     <a href="{{route('marketplace.merchant',['id'=>$injected->userById($store->user)->reference])}}">

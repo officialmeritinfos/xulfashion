@@ -63,11 +63,8 @@
                 <div class="col-xxl-6 col-lg-5 col-md-6 col-7">
                     <div class="about_content-image-block ">
                         <div class="about_content-image content-image--mobile-width">
-                            <img src="{{asset('home/image/about/video-image.png')}}" alt="alternative text">
+                            <img src="{{asset('marketplace/img/hero/fashion.jpg')}}" alt="alternative text">
                         </div>
-                        <a href="#" data-fancybox class="btn-play absolute-center btn-play">
-                            <i class="fa-solid fa-play"></i>
-                        </a>
                     </div>
                 </div>
                 <div class="col-xxl-6 col-lg-7 col-md-10 col-auto" data-aos-duration="1000" data-aos="fade-left">
@@ -93,7 +90,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~
   About : Fact Section
 ~~~~~~~~~~~~~~~~~~~~~~~-->
-    <div class="about_fact-section  section-padding-120">
+    <div class=" section-padding-120">
         <div class="container">
             <div class="row ">
                 <div class="col-12 col-lg-12 col-md-12">
