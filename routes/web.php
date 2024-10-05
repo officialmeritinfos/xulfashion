@@ -31,6 +31,17 @@ Route::post('account/fund',[Account::class,'fundAccount'])
 Route::post('account/withdraw',[Account::class,'withdrawFromAccount'])
     ->name('account.withdraw');
 
+Route::get('/manifest-marketplace.json', function() {
+    return response()->view('manifest.manifest-marketplace')->header('Content-Type', 'application/json');
+})->name('manifest-marketplace');
+
+Route::get('/manifest/offline-client', function() {
+    return response()->view('manifest.offline-client');
+})->name('manifest-offline.client');
+Route::get('/manifest/offline-business', function() {
+    return response()->view('manifest.offline-business');
+})->name('manifest-offline.business');
+
 
 /* ================================MOBILE WEB PWA ROUTE ===========================*/
 

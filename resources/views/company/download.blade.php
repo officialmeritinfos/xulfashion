@@ -33,12 +33,6 @@
                                 {{$siteName}} is better on the app with richer features to interact with merchants.
                                 Book Merchants, rate and leave review when you use the {{$siteName}}, and more...
                             </p>
-                            <p>
-                                @if(getMobileType()->isPhone() && getMobileType()->isAndroidOS())
-                                    Our APK is available for Android users while we continuously work to get the official
-                                    listing on PlayStore. It has already been vetted and confirmed safe by malware scanners.
-                                @endif
-                            </p>
                         </div>
                         <div class="home-3_hero-content-stat-wrapper">
                             <div class="home-3_hero-content-stat">
@@ -60,10 +54,24 @@
                                     </p>
                                 </div>
                             </div>
-                            @if(getMobileType()->isPhone() && getMobileType()->isAndroidOS())
-                                <button class="btn btn-primary btn-sm  btn-masco btn-primary-l05 download-btn" type="button" id="download-btn">
-                                    Download Marketplace app
-                                </button>
+                            @if(getMobileType()->isPhone())
+                                @if(getMobileType()->isiOS())
+                                    <p>
+                                        To install this app on your iPhone or iPad:
+                                        <ol>
+                                            <li>Tap the <strong>Share</strong> button at the bottom of the Safari browser.</li>
+                                            <li>Select <strong>Add to Home Screen</strong>.</li>
+                                            <li>Confirm by tapping <strong>Add</strong> on the top-right corner.</li>
+                                        </ol>
+                                    </p>
+                                @endif
+                                @if(getMobileType()->isAndroidOS())
+                                        <div class="btn-group android-download-section">
+                                            <button class="btn btn-primary btn-sm btn-masco btn-primary-l05 download-btn" type="button" id="install-client-btn">
+                                                Download Marketplace app
+                                            </button>
+                                        </div>
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -173,52 +181,51 @@
 
 
     @push('js')
-        @include('storeFrontBasicInclude')
         <script>
-            $(document).ready(function() {
-                $('.download-btn').click(function() {
-                    // Display a message to the user
-                    toastr.options = {
-                        "closeButton" : true,
-                        "progressBar" : true,
-                        "positionClass": "toast-top-full-width",
-                    }
-                    toastr.success('Your download is starting in the background. Please wait.');
 
-                    // Make an asynchronous request using AJAX
-                    $.ajax({
-                        url: '{{ route("home.download-page.marketplace") }}',
-                        method: 'GET',
-                        xhrFields: {
-                            responseType: 'blob' // Set the response type to blob
-                        },
-                        success: function(data, status, xhr) {
-                            // Get the file name from the Content-Disposition header
-                            var disposition = xhr.getResponseHeader('Content-Disposition');
-                            var matches = /filename="([^"]*)"/.exec(disposition);
-                            var fileName = (matches != null && matches[1]) ? matches[1] : 'xulfashion.apk';
+            // Variable to store the deferred prompt event for the Marketplace
+            let deferredPrompt;
 
-                            // Create a link element to download the file
-                            var link = document.createElement('a');
-                            var url = window.URL.createObjectURL(data);
-                            link.href = url;
-                            link.download = fileName;
-                            document.body.appendChild(link);
-                            link.click();
-                            window.URL.revokeObjectURL(url);
-                            link.remove(); // Clean up the link
-                        },
-                        error: function() {
-                            toastr.options = {
-                                "closeButton" : true,
-                                "progressBar" : true,
-                                "positionClass": "toast-top-full-width",
-                            }
-                            toastr.error('There was an error downloading the file. Please try again.');
-                        }
+            // Register the service worker for the Xulfashion Marketplace (Client PWA)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw-client.js').then(function(registration) {
+                    navigator.serviceWorker.ready.then(function(activeWorker) {
+                        const startUrlClient = "{{ route('mobile.ads.index') }}"; // Fetch the start URL dynamically for client
+                        activeWorker.active.postMessage({
+                            action: 'cache-start-url',
+                            url: startUrlClient
+                        });
+                        console.log('Xulfashion Client Service Worker registered and ready with scope:', registration.scope);
                     });
+                }).catch(function(error) {
+                    console.error('Xulfashion Client Service Worker registration failed:', error);
                 });
+            }
+
+            // Listen for the `beforeinstallprompt` event and store it
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('beforeinstallprompt event fired');
+                e.preventDefault(); // Prevent the default prompt from showing
+                deferredPrompt = e; // Store the event for Marketplace
+            });
+
+            // Handle the click event for the Marketplace install button
+            document.getElementById('install-client-btn').addEventListener('click', () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt(); // Show the install prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the Marketplace install prompt');
+                        } else {
+                            console.log('User dismissed the Marketplace install prompt');
+                        }
+                        deferredPrompt = null; // Reset the prompt so it can’t be used again
+                    });
+                } else {
+                    console.log('Marketplace install prompt not available');
+                }
             });
         </script>
+
     @endpush
 @endsection

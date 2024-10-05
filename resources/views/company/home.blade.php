@@ -37,7 +37,7 @@
                             </p>
                         </div>
                         <div class="home-3_hero-content-stat-wrapper">
-                            @if(!getMobileType()->isPhone() || !getMobileType()->isAndroidOS())
+                            @if(!getMobileType()->isPhone())
                                 <div class="d-flex flex-wrap gap-3">
                                     <a href="{{route('register')}}" class="btn-masco btn-primary-l02 btn-sm">
                                         <span>Get Started</span>
@@ -48,11 +48,9 @@
                                 </div>
                             @endif
                             @if(getMobileType()->isPhone())
-                                @if(getMobileType()->isAndroidOS())
-                                        <a href="{{route('home.download')}}" class="btn-masco btn-primary-l02 btn-sm">
-                                            <span>Download Android App</span>
-                                        </a>
-                                @endif
+                                    <a href="{{route('home.download')}}" class="btn-masco btn-primary-l02 btn-sm">
+                                        <span>Download App</span>
+                                    </a>
                             @endif
                         </div>
                     </div>

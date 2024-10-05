@@ -27,6 +27,7 @@
     <meta name="twitter:image" content="{{asset($web->favicon)}}">
     <meta name="twitter:site" content="@ {{$siteName}}">
     <meta name="twitter:creator" content="@ {{$siteName}}">
+    @include('genericCss')
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -116,9 +117,16 @@
                             <li class="nav-item">
                                 <a href="{{route('home.about')}}" class="nav-link-item drop-trigger">About Us</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{route('marketplace.index')}}" class="nav-link-item drop-trigger">Directory</a>
-                            </li>
+                            @if(checkIfAccessorIsMobile())
+                                <li class="nav-item">
+                                    <a href="{{route('mobile.ads.index')}}" class="nav-link-item drop-trigger">Directory</a>
+                                </li>
+                            @else
+                                <li class="nav-item">
+                                    <a href="{{route('marketplace.index')}}" class="nav-link-item drop-trigger">Directory</a>
+                                </li>
+                            @endif
+
                             <li class="nav-item">
                                 <a href="{{route('home.features')}}" class="nav-link-item drop-trigger">Features</a>
                             </li>
@@ -249,6 +257,7 @@
 <script src="{{asset('home/plugins/jquery/jquery.min.js')}}"></script>
 {{--<script src="{{asset('home/plugins/jquery/jquery-migrate.min.js')}}"></script>--}}
 <script src="{{asset('home/plugins/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+@include('basicInclude')
 @stack('js')
 <!-- Plugin's Scripts -->
 <script src="{{asset('home/plugins/inlineSvg/inlineSvg.min.js')}}" defer></script>

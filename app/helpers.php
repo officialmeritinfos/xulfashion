@@ -405,7 +405,7 @@ if (!function_exists('trendingInCategory')) {
     {
         return \App\Models\UserAd::where([
             'serviceType'=>$id,'status' => 1
-        ])->orderBy('numberOfViews','desc')->take(10)->get();
+        ])->orderBy('numberOfViews','desc')->orderBy('created_at','desc')->take(15)->get();
     }
 }
 
