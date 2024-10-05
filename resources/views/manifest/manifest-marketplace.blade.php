@@ -1,6 +1,6 @@
 {
-"name": "{{config('app.name')}} Marketplace",
-"short_name": "Xul Marketplace",
+"name": "{{config('app.name')}}",
+"short_name": "{{config('app.name')}}",
 "description": "{{config('app.name')}} Marketplace allows users to browse, book, and purchase fashion items from various creators.",
 "start_url": "{{ route('mobile.marketplace.index') }}",
 "scope": "/",
