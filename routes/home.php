@@ -22,6 +22,12 @@ Route::get('features',[Home::class,'features'])
     ->name('features');
 Route::get('download-page',[Home::class,'download'])
     ->name('download');
+
+//Download marketplace apk
+Route::get('download-page/marketplace',[Home::class,'downloadMarketplaceApp'])
+    ->name('download-page.marketplace');
+
+
 /*================================ LEGAL CONTROLLER  ===============================*/
 Route::get('legal',[LegalController::class,'landingPage'])
     ->name('legal');

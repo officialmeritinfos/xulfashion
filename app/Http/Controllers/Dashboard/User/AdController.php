@@ -234,7 +234,7 @@ class AdController extends BaseController
 
         $ad->delete();
 
-        return back()->with('success','Ad successfully deleted');
+        return to_route('user.ads.index')->with('success','Ad successfully deleted');
     }
     //ad details
     public function adDetails($id)

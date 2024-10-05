@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class Home extends BaseController
 {
@@ -88,6 +89,20 @@ class Home extends BaseController
             'pageName'      =>'Download the app',
             'siteName'      =>$web->name,
             'web'           =>$web
+        ]);
+    }
+
+    //download marketplace app
+    public function downloadMarketplaceApp()
+    {
+        $filePath = public_path('app/XulFashionMarketplace.apk');
+        if (!File::exists($filePath)) {
+            abort(404, 'File not found.');
+        }
+
+        return response()->download($filePath, 'XulfashionMarketplace.apk', [
+            'Content-Type' => 'application/vnd.android.package-archive',
+            'Content-Disposition' => 'attachment; filename="XulfashionMarketplace.apk"',
         ]);
     }
 }
