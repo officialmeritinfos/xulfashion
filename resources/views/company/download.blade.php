@@ -190,7 +190,7 @@
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/sw-client.js').then(function(registration) {
                     navigator.serviceWorker.ready.then(function(activeWorker) {
-                        const startUrlClient = "{{ route('mobile.ads.index') }}"; // Fetch the start URL dynamically for client
+                        const startUrlClient = "{{ route('mobile.marketplace.index') }}"; // Fetch the start URL dynamically for client
                         activeWorker.active.postMessage({
                             action: 'cache-start-url',
                             url: startUrlClient
