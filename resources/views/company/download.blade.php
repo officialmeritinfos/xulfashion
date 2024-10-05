@@ -1,8 +1,5 @@
 @extends('company.layout.base')
 @section('content')
-    @push('css')
-        @include('storeFrontGenericCss')
-    @endpush
 
     <div class="home-3_hero-section">
         <div class="home-3_hero-shape">
@@ -65,13 +62,12 @@
                                         </ol>
                                     </p>
                                 @endif
-                                @if(getMobileType()->isAndroidOS())
-                                        <div class="btn-group android-download-section">
-                                            <button class="btn btn-primary btn-sm btn-masco btn-primary-l05 download-btn" type="button" id="install-client-btn">
-                                                Download Marketplace app
-                                            </button>
-                                        </div>
-                                @endif
+                            @else
+                                <div class="btn-group android-download-section">
+                                    <button class="btn btn-primary btn-sm btn-masco btn-primary-l05 download-btn" type="button" id="install-client-btn">
+                                        Download Now
+                                    </button>
+                                </div>
                             @endif
                         </div>
                     </div>
@@ -179,53 +175,4 @@
     </div>
 
 
-
-    @push('js')
-        <script>
-
-            // Variable to store the deferred prompt event for the Marketplace
-            let deferredPrompt;
-
-            // Register the service worker for the Xulfashion Marketplace (Client PWA)
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw-client.js').then(function(registration) {
-                    navigator.serviceWorker.ready.then(function(activeWorker) {
-                        const startUrlClient = "{{ route('mobile.marketplace.index') }}"; // Fetch the start URL dynamically for client
-                        activeWorker.active.postMessage({
-                            action: 'cache-start-url',
-                            url: startUrlClient
-                        });
-                        console.log('Xulfashion Client Service Worker registered and ready with scope:', registration.scope);
-                    });
-                }).catch(function(error) {
-                    console.error('Xulfashion Client Service Worker registration failed:', error);
-                });
-            }
-
-            // Listen for the `beforeinstallprompt` event and store it
-            window.addEventListener('beforeinstallprompt', (e) => {
-                console.log('beforeinstallprompt event fired');
-                e.preventDefault(); // Prevent the default prompt from showing
-                deferredPrompt = e; // Store the event for Marketplace
-            });
-
-            // Handle the click event for the Marketplace install button
-            document.getElementById('install-client-btn').addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt(); // Show the install prompt
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('User accepted the Marketplace install prompt');
-                        } else {
-                            console.log('User dismissed the Marketplace install prompt');
-                        }
-                        deferredPrompt = null; // Reset the prompt so it can’t be used again
-                    });
-                } else {
-                    console.log('Marketplace install prompt not available');
-                }
-            });
-        </script>
-
-    @endpush
 @endsection

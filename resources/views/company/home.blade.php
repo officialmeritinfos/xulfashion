@@ -37,21 +37,14 @@
                             </p>
                         </div>
                         <div class="home-3_hero-content-stat-wrapper">
-                            @if(!getMobileType()->isPhone())
-                                <div class="d-flex flex-wrap gap-3">
-                                    <a href="{{route('register')}}" class="btn-masco btn-primary-l02 btn-sm">
-                                        <span>Get Started</span>
-                                    </a>
-                                    <a href="{{route('login')}}" class="btn-masco btn-primary-l08 btn-sm">
-                                        <span>Login</span>
-                                    </a>
-                                </div>
-                            @endif
-                            @if(getMobileType()->isPhone())
-                                    <a href="{{route('home.download')}}" class="btn-masco btn-primary-l02 btn-sm">
-                                        <span>Download App</span>
-                                    </a>
-                            @endif
+                            <div class="d-flex flex-wrap gap-3">
+                                <a href="{{route('register')}}" class="btn-masco btn-primary-l02 btn-sm">
+                                    <span>Get Started</span>
+                                </a>
+                                <a href="{{route('login')}}" class="btn-masco btn-primary-l08 btn-sm">
+                                    <span>Login</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
