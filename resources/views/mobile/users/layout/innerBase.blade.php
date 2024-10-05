@@ -98,5 +98,6 @@
     });
 </script>
 @stack('js')
+@include('mobile.general_notifications')
 </body>
 </html>

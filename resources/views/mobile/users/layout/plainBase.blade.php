@@ -93,5 +93,7 @@
     });
 </script>
 @include('basicInclude')
+
+@include('mobile.general_notifications')
 </body>
 </html>

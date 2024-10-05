@@ -4,6 +4,7 @@ use App\Models\Department;
 use App\Models\State;
 use App\Models\User;
 use App\Models\UserActivity;
+use App\Models\UserDevice;
 use App\Models\UserStoreProduct;
 use App\Notifications\StaffCustomNotification;
 use Carbon\Carbon;
@@ -520,5 +521,28 @@ if (!function_exists('getMobileType')) {
     function getMobileType()
     {
         return new Agent();
+    }
+}
+if (!function_exists('sendPushNotification')) {
+
+    function sendPushNotification($user,$title,$message,$url='')
+    {
+        $messaging = app('firebase.messaging');
+
+        $tokens = UserDevice::where('user',$user->id)->get();
+        if ($tokens->count()>0){
+            foreach ($tokens as $token) {
+                $messages = \Kreait\Firebase\Messaging\CloudMessage::fromArray([
+                    'token' => $token->token,
+                    'data' => [
+                        'title' => $title,
+                        'body' => $message,
+                        'icon'=>asset('home/image/xulfashion_client.png'),
+                        'click_action'=>empty($url)?route('mobile.marketplace.categories'):$url
+                    ],
+                ]);
+                $messaging->send($messages);
+            }
+        }
     }
 }

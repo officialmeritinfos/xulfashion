@@ -64,12 +64,8 @@ class SendPushNotification extends Notification
 
             return (new FirebaseMessage())
                 ->withTitle($this->title)
-                ->withIcon(asset('icon.png'))
-                ->withClickAction($this->url)
-                ->withBody($this->message)
-                ->withPriority('high')->asMessage($deviceTokens);
+                ->withBody($this->message)->asMessage($deviceTokens);
         }
-
     }
 
     /**

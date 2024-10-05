@@ -42,6 +42,8 @@ Route::get('/manifest/offline-business', function() {
     return response()->view('manifest.offline-business');
 })->name('manifest-offline.business');
 
+Route::any('push-notification/store/token',[Home::class,'registerToken'])->name('push.store');
+Route::get('push-notification/store/test',[Home::class,'push'])->name('push.test');
 
 /* ================================MOBILE WEB PWA ROUTE ===========================*/
 
@@ -164,7 +166,5 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('app.settings');
         Route::get('profile/help',[Profile::class,'helpCenter'])
             ->name('help');
-
-
     });
 });

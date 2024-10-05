@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,6 +74,8 @@
 <script src="{{asset('mobile/js/script.js')}}"></script>
 @stack('js')
 @livewireScripts
+
+@include('mobile.general_notifications')
 <script>
     $(function (){
         $('.stateAds').on('change',function (){
@@ -82,5 +83,6 @@
         })
     });
 </script>
+@include('mobile.general_notifications')
 </body>
 </html>

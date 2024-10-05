@@ -1,5 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-messaging.js"></script>
 <script>
     $(window).on('load', function() {
         $('.loader-wrapper').fadeOut('slow');
@@ -25,3 +27,4 @@
 </script>
 
 <script src="{{asset('sw-register.js')}}"></script>
+
