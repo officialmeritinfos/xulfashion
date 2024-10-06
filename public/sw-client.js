@@ -1,4 +1,4 @@
-let cacheName = 'xulfashion-client-v1.5';
+let cacheName = 'xulfashion-client-v1.7';
 let assetsToCache = [
     '', // Placeholder for the start URL to be received dynamically
     'manifest/offline-client', // Offline page for client PWA
