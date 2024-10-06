@@ -30,4 +30,15 @@ class SplashScreenController extends Controller
             'country'   =>$country
         ]);
     }
+
+    //splash screen 2
+    public function appStartingPage(Request $request)
+    {
+        $web = GeneralSetting::find(1);
+        return view('mobile.ads.app_starting_page')->with([
+            'web'       =>$web,
+            'pageName'  =>"Welcome to ".$web->name,
+            'siteName'  =>$web->name,
+        ]);
+    }
 }

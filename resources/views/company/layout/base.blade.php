@@ -88,87 +88,6 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{asset($web->favicon)}}">
     @stack('css')
-    <style>
-        /* Styling for the install prompt */
-        .install-prompt {
-            position: fixed;
-            bottom: -100px; /* Initially hidden below the viewport */
-            left: 0;
-            right: 0;
-            background-color: #F0F4FF;
-            padding: 15px 20px;
-            color: #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 8px 8px 0 0; /* Rounded corners at the top */
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: bottom 0.5s ease-in-out;
-        }
-
-        /* App icon styling */
-        .install-prompt img {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            margin-right: 15px;
-        }
-
-        /* App details section */
-        .install-text {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .install-text strong {
-            font-size: 18px;
-            color: #4a4a4a;
-        }
-
-        .install-text .stars {
-            color: #FFD700;
-        }
-
-        /* "Get the App" button */
-        .install-btn {
-            color: #fff;
-            background-color: #4B0076;
-            border: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 25px;
-            text-transform: uppercase;
-        }
-
-        .install-prompt .stars {
-            font-size: 14px;
-        }
-        @media only screen and (min-width: 769px) {
-            .install-prompt {
-                display: none;
-            }
-        }
-        .floating-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 999;
-        }
-
-        /* Ensure the instruction box is styled */
-        .alert-heading {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .collapse-icon {
-            float: right;
-            cursor: pointer;
-            color: #000;
-        }
-    </style>
 </head>
 <body>
 <div class="page-wrapper overflow-hidden">
@@ -230,42 +149,7 @@
     </header>
     @yield('content')
 
-    @if(getMobileType()->isAndroidOS())
-        <div class="install-prompt" id="install-prompt">
-            <!-- App Icon -->
-            <img src="{{asset('home/image/xulfashion_client.png')}}" alt="App Icon">
-            <!-- App Info and Ratings -->
-            <div class="install-text">
-                <strong>{{$siteName}}</strong>
-                <div class="stars">
-                    &#9733; &#9733; &#9733; &#9733; &#9733; <!-- Star ratings -->
-                </div>
-            </div>
-            <!-- Install Button -->
-            <button id="install-client-btn" class="install-btn install-client-btn">Get the App</button>
-        </div>
-    @elseif(getMobileType()->isiOS())
-        <div class="container mt-4 install-prompt" id="install-prompt">
-            <button class="btn btn-info floating-btn" type="button" data-bs-toggle="collapse" data-bs-target="#install-info" aria-expanded="false" aria-controls="install-info">
-                <i class="fas fa-info-circle"></i> How to Install the App on iOS
-            </button>
 
-            <!-- Collapsible Section for Instructions -->
-            <div class="collapse mt-3" id="install-info">
-                <div class="alert alert-info">
-                    <h5 class="alert-heading">Install This App
-                        <i class="fas fa-times collapse-icon" data-bs-toggle="collapse" data-bs-target="#install-info"></i> <!-- Close icon -->
-                    </h5>
-                    <p class="mb-0">To install this app on your iPhone or iPad:</p>
-                    <ol class="pl-3">
-                        <li>Tap the <strong>Share</strong> button at the bottom of the Safari browser.</li>
-                        <li>Select <strong>Add to Home Screen</strong>.</li>
-                        <li>Confirm by tapping <strong>Add</strong> on the top-right corner.</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    @endif
 
     <div class="footer padding-top-100 footer--light footer-l03">
         <div class="container">
@@ -402,52 +286,7 @@
         s0.parentNode.insertBefore(s1,s0);
     })();
 </script>
-<script>
-
-    // Variable to store the deferred prompt event for the Marketplace
-    let deferredPrompt;
-
-    // Register the service worker for the Xulfashion Marketplace (Client PWA)
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw-client.js').then(function(registration) {
-            navigator.serviceWorker.ready.then(function(activeWorker) {
-                const startUrlClient = "{{ route('mobile.marketplace.index') }}"; // Fetch the start URL dynamically for client
-                activeWorker.active.postMessage({
-                    action: 'cache-start-url',
-                    url: startUrlClient
-                });
-                console.log('Xulfashion Client Service Worker registered and ready with scope:', registration.scope);
-            });
-        }).catch(function(error) {
-            console.error('Xulfashion Client Service Worker registration failed:', error);
-        });
-    }
-
-    // Listen for the `beforeinstallprompt` event and store it
-    window.addEventListener('beforeinstallprompt', (e) => {
-        document.getElementById('install-prompt').style.bottom = '0';
-        console.log('beforeinstallprompt event fired');
-        e.preventDefault(); // Prevent the default prompt from showing
-        deferredPrompt = e; // Store the event for Marketplace
-    });
-
-    // Handle the click event for the Marketplace install button
-    document.getElementById('install-client-btn').addEventListener('click', () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt(); // Show the install prompt
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the Marketplace install prompt');
-                } else {
-                    console.log('User dismissed the Marketplace install prompt');
-                }
-                deferredPrompt = null; // Reset the prompt so it can’t be used again
-            });
-        } else {
-            console.log('Marketplace install prompt not available');
-        }
-    });
-</script>
 <!--End of Tawk.to Script-->
+@include('genericJs')
 </body>
 </html>

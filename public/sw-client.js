@@ -1,4 +1,4 @@
-let cacheName = 'xulfashion-client-v1';
+let cacheName = 'xulfashion-client-v1.5';
 let assetsToCache = [
     '', // Placeholder for the start URL to be received dynamically
     'manifest/offline-client', // Offline page for client PWA
@@ -15,9 +15,10 @@ self.addEventListener('install', function(event) {
         })
     );
     console.log('Xulfashion Client Service Worker Installed');
+    self.skipWaiting();
 });
 
-// Message event listener to dynamically cache the start URL
+// Message event listener to dynamically cache the start URL]
 self.addEventListener('message', function(event) {
     if (event.data && event.data.action === 'cache-start-url') {
         let startUrl = event.data.url;
@@ -26,6 +27,7 @@ self.addEventListener('message', function(event) {
         caches.open(cacheName).then(function(cache) {
             cache.add(startUrl); // Cache the start URL dynamically
         });
+        console.log('Start URL dynamically cached:', startUrl);
     }
 });
 
@@ -40,6 +42,7 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
+// Activate event to remove old caches and take control of clients immediately
 self.addEventListener('activate', function(event) {
     event.waitUntil(
         caches.keys().then(function(keyList) {
@@ -50,7 +53,18 @@ self.addEventListener('activate', function(event) {
                     }
                 })
             );
+        }).then(() => {
+            return self.clients.claim(); // Take control of all clients immediately
         })
     );
     console.log('Xulfashion Client Service Worker Activated');
+});
+
+// Controller change event to notify clients about the new service worker
+self.addEventListener('controllerchange', function() {
+    console.log('New service worker detected, reloading...');
+    // Notify all clients to reload or refresh the page
+    self.clients.matchAll().then(clients => {
+        clients.forEach(client => client.postMessage({ action: 'reload' }));
+    });
 });
