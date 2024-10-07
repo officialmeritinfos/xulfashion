@@ -393,52 +393,6 @@ if (!function_exists('textToSlug')) {
     }
 }
 
-if (!function_exists('serviceTypeById')) {
-
-    function serviceTypeById($id)
-    {
-        return \App\Models\ServiceType::where('id',$id)->first();
-    }
-}
-if (!function_exists('trendingInCategory')) {
-
-    function trendingInCategory($id)
-    {
-        return \App\Models\UserAd::where([
-            'serviceType'=>$id,'status' => 1
-        ])->orderBy('numberOfViews','desc')->orderBy('created_at','desc')->take(15)->get();
-    }
-}
-
-if (!function_exists('userById')) {
-
-    function userById($id)
-    {
-        return \App\Models\User::where('id',$id)->first();
-    }
-}
-
-if (!function_exists('adsInService')) {
-
-    function adsInService($id)
-    {
-        return \App\Models\UserAd::where('serviceType',$id)->count();
-    }
-}
-if (!function_exists('shortenText')) {
-
-    function shortenText($text,$length)
-    {
-        return \Illuminate\Support\Str::words($text,$length);
-    }
-}
-if (!function_exists('numberOfProductsInCategory')) {
-    function numberOfProductsInCategory($category)
-    {
-        return UserStoreProduct::where('category', $category)->count();
-    }
-}
-
 if (!function_exists('getStateFromCountryIso3')){
     /**
      * Retrieve a state by its ISO2 code and country code.
@@ -461,7 +415,12 @@ if (!function_exists('getStateFromCountryIso3')){
     }
 }
 if (!function_exists('getCountryFromIso3')){
-
+    /**
+     * Get the country details based on its ISO3 code.
+     *
+     * @param string $countryCodeIso3 The ISO3 code of the country.
+     * @return \App\Models\Country|null The Country model instance if found, otherwise null.
+     */
     function getCountryFromIso3($countryCodeIso3)
     {
         return \App\Models\Country::where('iso3',$countryCodeIso3)->first();
@@ -469,6 +428,11 @@ if (!function_exists('getCountryFromIso3')){
     }
 }
 if (!function_exists('checkIfAccessorIsMobile')){
+    /**
+     * Check if the accessor is using a mobile device.
+     *
+     * @return bool True if the accessor is using a mobile device, otherwise false.
+     */
     function checkIfAccessorIsMobile()
     {
         $agent = new Agent();
@@ -476,6 +440,12 @@ if (!function_exists('checkIfAccessorIsMobile')){
     }
 }
 if (!function_exists('merchantType')){
+    /**
+     * Get the merchant type based on the provided type code.
+     *
+     * @param int $type The type code of the merchant.
+     * @return string The corresponding merchant type as a string.
+     */
     function merchantType($type)
     {
         switch ($type){
@@ -500,14 +470,26 @@ if (!function_exists('merchantType')){
 }
 
 if (!function_exists('storeCategoryById')) {
-
+    /**
+     * Retrieve the store category by its ID.
+     *
+     * @param int $id The ID of the store category.
+     * @return \App\Models\UserStoreCatalogCategory|null The category instance if found, otherwise null.
+     */
     function storeCategoryById($id)
     {
         return \App\Models\UserStoreCatalogCategory::where('id',$id)->first();
     }
 }
 if (!function_exists('sendDepartmentMail')) {
-
+    /**
+     * Send an email notification to a specific department.
+     *
+     * @param string $departmentSlug The slug of the department.
+     * @param string $message The message content for the email.
+     * @param string $title The subject/title of the email.
+     * @return void
+     */
     function sendDepartmentMail($departmentSlug,$message,$title)
     {
         $department = Department::where('slug',$departmentSlug)->first();
@@ -517,14 +499,26 @@ if (!function_exists('sendDepartmentMail')) {
     }
 }
 if (!function_exists('getMobileType')) {
-
+    /**
+     * Retrieve the mobile agent instance to check for device details.
+     *
+     * @return Jenssegers\Agent\Agent The mobile agent instance.
+     */
     function getMobileType()
     {
         return new Agent();
     }
 }
 if (!function_exists('sendPushNotification')) {
-
+    /**
+     * Send a push notification to the specified user.
+     *
+     * @param \App\Models\User $user The user to send the notification to.
+     * @param string $title The title of the notification.
+     * @param string $message The body content of the notification.
+     * @param string $url (Optional) The URL to open when the notification is clicked.
+     * @return void
+     */
     function sendPushNotification($user,$title,$message,$url='')
     {
         $messaging = app('firebase.messaging');
@@ -544,5 +538,108 @@ if (!function_exists('sendPushNotification')) {
                 $messaging->send($messages);
             }
         }
+    }
+}
+
+if (!function_exists('completedProfileMobile')) {
+    /**
+     * Check if the logged-in user's profile is completed. If not, redirect to complete profile.
+     *
+     * @param string $intendedRoute The intended route the user is trying to access.
+     * @return string The route to complete the profile if incomplete, or the intended route if completed.
+     */
+    function completedProfileMobile($intendedRoute)
+    {
+        // Check if the user is logged in
+        if (auth()->check()) {
+            // Get the logged-in user
+            $user = auth()->user();
+            // Check if the profile is completed
+            if ($user->completedProfile == 1) {
+                // Return the intended route if profile is completed
+                return route($intendedRoute);
+            } else {
+                // Return the profile completion route if not completed
+                return route('mobile.user.profile.settings.complete-profile');
+            }
+        }
+    }
+}
+
+if (!function_exists('serviceTypeById')) {
+    /**
+     * Retrieve the service type by its ID.
+     *
+     * @param int $id The ID of the service type.
+     * @return \App\Models\ServiceType|null The service type instance if found, otherwise null.
+     */
+    function serviceTypeById($id)
+    {
+        return \App\Models\ServiceType::where('id',$id)->first();
+    }
+}
+if (!function_exists('trendingInCategory')) {
+    /**
+     * Retrieve the top trending ads within a specific category.
+     *
+     * @param int $id The ID of the service type (category).
+     * @return \Illuminate\Database\Eloquent\Collection The collection of top 15 trending ads.
+     */
+    function trendingInCategory($id)
+    {
+        return \App\Models\UserAd::where([
+            'serviceType'=>$id,'status' => 1
+        ])->orderBy('numberOfViews','desc')->orderBy('created_at','desc')->take(15)->get();
+    }
+}
+
+if (!function_exists('userById')) {
+    /**
+     * Retrieve the user by their ID.
+     *
+     * @param int $id The ID of the user.
+     * @return \App\Models\User|null The user instance if found, otherwise null.
+     */
+    function userById($id)
+    {
+        return \App\Models\User::where('id',$id)->first();
+    }
+}
+
+if (!function_exists('adsInService')) {
+    /**
+     * Get the number of ads within a specific service.
+     *
+     * @param int $id The ID of the service type.
+     * @return int The count of ads within the service.
+     */
+    function adsInService($id)
+    {
+        return \App\Models\UserAd::where('serviceType',$id)->count();
+    }
+}
+if (!function_exists('shortenText')) {
+    /**
+     * Shorten a given text to a specified word length.
+     *
+     * @param string $text The text to shorten.
+     * @param int $length The maximum number of words to allow.
+     * @return string The shortened text.
+     */
+    function shortenText($text,$length)
+    {
+        return \Illuminate\Support\Str::words($text,$length);
+    }
+}
+if (!function_exists('numberOfProductsInCategory')) {
+    /**
+     * Get the number of products within a specific category.
+     *
+     * @param int $category The category ID to count products for.
+     * @return int|null The count of products in the category.
+     */
+    function numberOfProductsInCategory($category)
+    {
+        return UserStoreProduct::where('category', $category)->count();
     }
 }

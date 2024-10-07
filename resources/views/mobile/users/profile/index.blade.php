@@ -5,13 +5,13 @@
         <div class="custom-container">
             <ul class="profile-list">
                 <li>
-                    <a href="{{route('mobile.user.post.ads')}}" class="profile-box">
+                    <a href="{{completedProfileMobile('mobile.user.ads.index')}}" class="profile-box">
                         <div class="profile-img">
                             <i class="iconsax icon" data-icon="box"></i>
                         </div>
                         <div class="profile-details">
                             <h4>ADS</h4>
-                            <h5>Post your ads</h5>
+                            <h5>Post, manage your listings/ads</h5>
                         </div>
                     </a>
                 </li>

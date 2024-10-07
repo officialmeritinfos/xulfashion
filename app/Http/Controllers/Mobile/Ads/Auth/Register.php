@@ -28,13 +28,17 @@ class Register extends BaseController
 {
     use Helpers;
     //landing page
-    public function landingPage()
+    public function landingPage(Request $request)
     {
+        if ($request->has('ref')){
+            Cache::put('ref',$request->get('ref'),now()->addDays(30));
+        }
         $web = GeneralSetting::find(1);
         return view('mobile.ads.auth.register')->with([
             'web'       =>$web,
             'pageName'  =>"Create an account on ".$web->name,
-            'siteName'  =>$web->name
+            'siteName'  =>$web->name,
+            'referral'=>(Cache::has('ref'))?Cache::get('ref'):$request->get('ref'),
         ]);
     }
     //process form
@@ -50,7 +54,8 @@ class Register extends BaseController
                 'username' => ['required', 'alpha_num', 'unique:users,username'],
                 'password' => ['required', Password::min(8)->uncompromised(1)],
                 'password_confirmation' => ['required', 'same:password'],
-                'g-recaptcha-response' => ['required', new ReCaptcha]
+                'g-recaptcha-response' => ['required', new ReCaptcha],
+                'referral' => ['nullable', 'string', 'exists:users,username'],
             ],[
                 'email.unique'=>'User already exists with this email. Please login instead.'
             ],[
@@ -64,6 +69,16 @@ class Register extends BaseController
             $input = $validator->validated();
 
             $country = Cache::get('hasAdsCountry');
+
+            if ($request->filled('referral')){
+                $referrer = User::where('username',$input['referral'])->first();
+                if (empty($referrer)){
+                    return $this->sendError('referral.error',['error'=>'Invalid Referral']);
+                }
+                $refBy = $referrer->id;
+            }else{
+                $refBy=0;
+            }
 
             $reference = $this->generateUniqueId('users','reference');
             //check if the selected country is valid
@@ -79,6 +94,7 @@ class Register extends BaseController
                 'countryCode'=>$countryExists->iso3,
                 'mainCurrency'=>$countryExists->currency,
                 'registrationIp'=>$request->ip(),
+                'referral'=>$refBy,
             ];
             $user = User::create($dataUser);
             if (!empty($user)){

@@ -19,6 +19,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -32,9 +33,7 @@ class Register extends BaseController
     {
         if ($request->has('ref')){
             //let us store it for future purpose
-            $request->session()->put([
-                'ref'=>$request->get('ref'),
-            ]);
+            Cache::put('ref',$request->get('ref'),now()->addDays(30));
         }
         $web = GeneralSetting::find(1);
 
@@ -44,7 +43,7 @@ class Register extends BaseController
            'pageName'   =>'Sign up for an account',
             'countries' =>Country::where('status',1)->get(),
             'fiats'     =>Fiat::where('status',1)->get(),
-            'referral'=>($request->session()->exists('ref'))?$request->session()->get('ref'):$request->get('ref'),
+            'referral'=>(Cache::has('ref'))?Cache::get('ref'):$request->get('ref'),
         ]);
     }
     //process form

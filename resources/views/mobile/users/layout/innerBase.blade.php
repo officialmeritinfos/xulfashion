@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <meta name="description" content="{{$siteName}}" />
     <meta name="keywords" content="{{$siteName}}" />
@@ -54,7 +54,7 @@
         </div>
         <div class="d-flex align-items-center gap-2">
             <div class="profile-pic mt-5">
-                <img class="img-fluid img" src="{{empty($user->photo)?asset('dashboard/images/avatar1.png'):$user->photo}}" alt="profile" />
+                <img class="img-fluid img" src="{{empty($user->photo)?asset('mobile/images/icons/profile.png'):$user->photo}}" alt="profile" />
             </div>
             <div class="profile-name d-flex align-items-center justify-content-between mt-3 w-100">
                 <h4 class="theme-color">{{$user->name}}</h4>

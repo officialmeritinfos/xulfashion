@@ -10,6 +10,7 @@ use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
 use App\Http\Controllers\Mobile\Home;
 use App\Http\Controllers\Mobile\LegalController;
+use App\Http\Controllers\Mobile\User\Ads\AdsIndex;
 use App\Http\Controllers\Mobile\User\Profile;
 use Illuminate\Support\Facades\Route;
 
@@ -152,18 +153,22 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('profile.landing-page');
             Route::get('profile/edit',[Profile::class,'editProfile'])
                 ->name('profile.edit');
-
             Route::post('profile/edit/process',[Profile::class,'updateProfile'])
                 ->name('profile.edit.process');
+            Route::get('profile/settings/complete-profile',[Profile::class,'completeProfile'])
+                ->name('profile.settings.complete-profile');
+            Route::post('profile/settings/complete-profile/process',[Profile::class,'processCompleteProfile'])
+                ->name('profile.settings.complete-profile.process');
+            //Ads
+            Route::get('ads/index',[AdsIndex::class,'landingPage'])
+                ->name('ads.index');
 
 
             //PROFILE PLACEHOLDERS
-            //coming soon
             Route::get('profile/coming-soon',[Profile::class,'comingSoon'])
                 ->name('coming.soon');
-            Route::get('profile/post-ads',[Profile::class,'postAds'])
-                ->name('post.ads');
-            Route::get('profile/settings',[Profile::class,'settings'])
+
+            Route::get('profile/app/settings',[Profile::class,'settings'])
                 ->name('app.settings');
             Route::get('profile/help',[Profile::class,'helpCenter'])
                 ->name('help');

@@ -128,4 +128,63 @@ class Profile extends BaseController
             'user'      =>Auth::user()
         ]);
     }
+    public function completeProfile()
+    {
+        $web = GeneralSetting::find(1);
+
+        return view('mobile.users.profile.complete_profile')->with([
+            'pageName'  =>'Complete Profile',
+            'web'       =>$web,
+            'siteName'  =>$web->name,
+            'user'      =>Auth::user()
+        ]);
+    }
+
+    public function processCompleteProfile(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $web = GeneralSetting::find(1);
+
+            $validator = Validator::make($request->all(),[
+                'bio'                   =>['required','string'],
+                'displayName'           =>['nullable','string'],
+                'gender'                =>['required','string','in:male,female,others'],
+                'dob'                   =>['required','date'],
+                'address'               =>['required','string'],
+                'tutorKeywords'         =>['nullable'],
+                'tutorKeywords.*'       =>['nullable','string'],
+                'image'                 => ['required', 'image','max:1024'],
+                'merchantType'          =>['required','numeric']
+
+            ])->stopOnFirstFailure();
+            if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
+            $input = $validator->validated();
+
+            //upload image
+            $google = new GoogleUpload();
+            $imageResult = $google->uploadGoogle($request->file('image'));
+            $image  = $imageResult['link'];
+
+            //update the user's profile
+            if (User::where('id',$user->id)->update([
+                'bio'=>$input['bio'], 'gender'=>$input['gender'],
+                'tutorKeywords'=>implode(',',$input['tutorKeywords']),
+                'activelyLookingForJob'=>1,
+                'completedProfile'=>1, 'dob'=>$input['dob'],
+                'displayName'=>$input['displayName'],
+                'address'=>$input['address'], 'accountType'=>1,'photo'=>$image,'merchantType' => $input['merchantType']
+            ])){
+                $this->userNotification($user,'Profile setup completed','Your profile setup as a merchant has been completed.',$request->ip());
+                return $this->sendResponse([
+                    'redirectTo'=>route('mobile.user.profile.landing-page'),
+                    'redirects'=>true
+                ],'Profile completely setup.');
+            }
+            return $this->sendError('setup.error',['error'=>'Something went wrong. Please try again']);
+        }catch (\Exception $exception){
+            Log::alert($exception->getMessage());
+            return $this->sendError('tutor.error',['error'=>'Internal Server Error']);
+        }
+    }
 }

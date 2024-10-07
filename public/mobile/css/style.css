@@ -5489,6 +5489,8 @@ body.dark .product-box .product-box-img .cart-box {
 body.dark .horizontal-product-box .horizontal-product-img {
   background-color: rgb(31, 48, 62);
 }
+
+
 body.dark .navbar-menu {
   background-color: rgba(var(--light-bg), 1);
 }
@@ -5503,6 +5505,7 @@ body.dark .order-tracking .order-process.completed span::after {
   -webkit-filter: invert(1);
           filter: invert(1);
 }
+
 body.dark .color-option {
   background-color: rgb(18, 38, 53);
 }
@@ -5563,6 +5566,7 @@ body.dark .delivery-sec .input-group .form-control::placeholder {
 body.dark .delivery-sec .input-group .theme-btn {
   background-color: rgba(var(--theme-color), 0.7);
 }
+
 body.dark .notification-setting {
   background-color: rgb(31, 48, 62);
 }
