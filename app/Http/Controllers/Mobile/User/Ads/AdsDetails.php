@@ -31,7 +31,9 @@ class AdsDetails extends BaseController
             'ad'        =>$ad,
             'views'     =>UserAdView::where('ad',$ad->reference)->paginate(15),
             'photos'    =>UserAdPhoto::where('ad',$ad->id)->get(),
-            'reviews'   =>'',
+            'reviews'   =>UserAdReview::where([
+                'status'=>1,'merchant'=>$user->id
+            ])->paginate(),
             'averageRating'=>UserAdReview::where([
                 'merchant'=>$user->id,'status'=>1
             ])->avg('rating'),

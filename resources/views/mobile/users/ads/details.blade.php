@@ -166,28 +166,29 @@
                             <div class="accordion-body pb-0">
                                 <div class="reviews-display">
                                     <div class="d-flex justify-content-between">
-                                        <h4 class="theme-color">430 Reviews</h4>
+                                        <h4 class="theme-color">{{$totalRatings}} Reviews</h4>
                                         <span href="#reviews" class="theme-color" data-bs-toggle="modal">View all</span>
                                     </div>
-
-                                    @foreach($reviews as $review)
-                                        <div class="reviews-box">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <img class="img-fluid profile-pic" src="{{asset('mobile/images/icons/profile2.png')}}" alt="profile2" />
-                                                <div class="d-flex justify-content-between w-100">
-                                                    <div>
-                                                        <h4 class="theme-color">Rina Jones</h4>
-                                                        <h4 class="light-text mt-1">Just Now</h4>
-                                                    </div>
-                                                    <div class="d-flex align-items-start">
-                                                        <img class="img-fluid stars" src="{{asset('mobile/images/svg/Star.svg')}}" alt="star" />
-                                                        <h4 class="theme-color fw-normal">4.0</h4>
+                                    @if($reviews->count()>0)
+                                        @foreach($reviews as $review)
+                                            <div class="reviews-box">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img class="img-fluid profile-pic" src="{{asset('mobile/images/icons/profile2.png')}}" alt="profile2" />
+                                                    <div class="d-flex justify-content-between w-100">
+                                                        <div>
+                                                            <h4 class="theme-color">Rina Jones</h4>
+                                                            <h4 class="light-text mt-1">Just Now</h4>
+                                                        </div>
+                                                        <div class="d-flex align-items-start">
+                                                            <img class="img-fluid stars" src="{{asset('mobile/images/svg/Star.svg')}}" alt="star" />
+                                                            <h4 class="theme-color fw-normal">4.0</h4>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <p>I adore this item. Just fantastic!! they create the actual seen in the picture !!</p>
                                             </div>
-                                            <p>I adore this item. Just fantastic!! they create the actual seen in the picture !!</p>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    @endif
 
                                     <span href="#my-review" class="my-review back" data-bs-toggle="offcanvas" role="button">+ Write Your Review</span>
                                 </div>
