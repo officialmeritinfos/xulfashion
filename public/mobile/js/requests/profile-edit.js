@@ -1,91 +1,95 @@
-const settingsRequests = function (){
+const settingsRequests = function () {
 
     // Process basic settings
-    const updateBasicSettings = function (){
+    const updateBasicSettings = function () {
         // Process the form submission
-        $('#basicSettings').submit(function(e) {
+        $('#basicSettings').submit(async function(e) {
             e.preventDefault();
-            var baseURL = $('#basicSettings').attr('action');
 
-            var formData = new FormData(this);
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
+            const baseURL = $('#basicSettings').attr('action');
+            const formData = new FormData(this);
+
+            // Set the CSRF token in the headers
+            const headers = {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            };
+
+            // Disable submit button and show loading
+            $('.submit').attr('disabled', true);
+            $("#basicSettings :input").prop("readonly", true);
+            $(".submit").LoadingOverlay("show", {
+                text: "processing...",
+                size: "20"
             });
-            $.ajax({
-                type: 'POST',
-                url: baseURL,
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                beforeSend: function(){
-                    $('.submit').attr('disabled', true);
-                    $("#basicSettings :input").prop("readonly", true);
-                    $(".submit").LoadingOverlay("show",{
-                        text: "processing...",
-                        size: "20"
-                    });
-                },
-                success: function(data) {
+
+            try {
+                const response = await fetch(baseURL, {
+                    method: 'POST',
+                    headers: headers,
+                    body: formData,
+                    cache: 'no-cache',
+                    credentials: 'same-origin'
+                });
+
+                // Check if the response is not ok
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    // Try to capture any error messages sent from the server
+                    throw new Error(errorData.data?.error || "An unexpected error occurred.");
+                }
+
+                const data = await response.json();
+
+                if (data.error === true) {
                     // Handle error response
-                    if (data.error === true) {
-                        toastr.options = {
-                            "closeButton": true,
-                            "progressBar": true,
-                            "positionClass": "toast-top-full-width",
-                        }
-                        toastr.error(data.data.error);
-
-                        // Return to natural stage
-                        setTimeout(function(){
-                            $('.submit').attr('disabled', false);
-                            $(".submit").LoadingOverlay("hide");
-                            $("#basicSettings :input").prop("readonly", false);
-                        }, 3000);
-                    }
-                    // Handle success response
-                    if (data.error === 'ok') {
-                        toastr.options = {
-                            "closeButton": true,
-                            "progressBar": true,
-                            "positionClass": "toast-top-full-width",
-                        }
-                        toastr.success(data.message);
-
-                        // Update the profile picture if available in the response
-                        if (data.data.photo) {
-                            $('#profilePicture').attr('src', data.data.photo); // Assuming the image has an ID of 'profilePicture'
-                        }
-
-                        setTimeout(function(){
-                            $('.submit').attr('disabled', false);
-                            $(".submit").LoadingOverlay("hide");
-                            $("#basicSettings :input").prop("readonly", false);
-
-                            // Redirect only if redirects is true
-                            if (data.data.redirects === true && data.data.redirectTo) {
-                                window.location.replace(data.data.redirectTo);
-                            }
-                        }, 3000); // Adjust the delay as needed
-                    }
-                },
-                error: function (jqXHR){
                     toastr.options = {
                         "closeButton": true,
                         "progressBar": true,
-                        "positionClass": "toast-top-full-width",
+                        "positionClass": "toast-top-full-width"
+                    };
+                    toastr.error(data.data.error);
+                } else if (data.error === 'ok') {
+                    // Handle success response
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-full-width"
+                    };
+                    toastr.success(data.message);
+
+                    // Update the profile picture if available in the response
+                    if (data.data.photo) {
+                        $('#profilePicture').attr('src', data.data.photo);
                     }
-                    toastr.error(jqXHR.responseJSON.data.error);
-                    $("#basicSettings :input").prop("readonly", false);
+
+                    // Redirect if needed
+                    if (data.data.redirects === true && data.data.redirectTo) {
+                        setTimeout(() => {
+                            window.location.replace(data.data.redirectTo);
+                        }, 3000); // Adjust delay as needed
+                    }
+                }
+
+            } catch (error) {
+                // Handle all errors and display an appropriate message
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-full-width"
+                };
+
+                // Display a specific error message if available, otherwise a generic one
+                toastr.error(error.message || "An error occurred. Please try again.");
+            } finally {
+                // Return to normal state
+                setTimeout(() => {
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
-                },
-            });
+                    $("#basicSettings :input").prop("readonly", false);
+                }, 3000);
+            }
         });
-    }
+    };
 
     return {
         init: function() {

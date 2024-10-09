@@ -301,7 +301,7 @@ class KycDetail extends Component
                     and scheduling meetings online.
                 ";
                 $merchant->notify(new CustomNotificationNoLink($merchant->name,'Account activation',$merchantMessage));
-
+                scheduleUserNotification($merchant->id,'KYC approved','Your KYC has been approved and account fully activated.');
                 SystemStaffAction::create([
                     'staff' => $staff->id,
                     'action' => 'Approved Merchant KYC',
@@ -392,6 +392,7 @@ class KycDetail extends Component
                 //send message to compliance department
                 $adminMessage = "The KYC for merchant account for ".$merchant->name." has been rejected. ";
                 $this->sendDepartmentMail('compliance', $adminMessage,'Account KYC Rejection.');
+                scheduleUserNotification($merchant->id,'KYC Rejected','Your KYC has been rejected, please find the reason in the mail sent to your email.');
                 //send mail to the merchant
                 $merchantMessage = "
                     We ran into some challenges while trying to verify your submitted KYC on <b>".$web->name."</b>. You can
@@ -399,6 +400,7 @@ class KycDetail extends Component
                     <p>$this->rejectedReason</p>
                 ";
                 $merchant->notify(new CustomNotificationNoLink($merchant->name,'Something wrong with your KYC',$merchantMessage));
+
 
                 SystemStaffAction::create([
                     'staff' => $staff->id,

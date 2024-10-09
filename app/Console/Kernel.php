@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('location:update')->daily();
 //        $schedule->command('app:welcome-mail')->everyMinute();
         $schedule->command('app:delete-user-data')->everyMinute();
+        $schedule->command('app:run-scheduled-notifications')->everyMinute();
 
 
     }

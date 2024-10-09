@@ -643,3 +643,12 @@ if (!function_exists('numberOfProductsInCategory')) {
         return UserStoreProduct::where('category', $category)->count();
     }
 }
+
+if (!function_exists('scheduleUserNotification')) {
+    function scheduleUserNotification($user,$title,$content,$url=null)
+    {
+        \App\Models\UserNotification::create([
+            'user' => $user,'title' => $title,'content' => $content,'status' => 2,'url' => $url
+        ]);
+    }
+}

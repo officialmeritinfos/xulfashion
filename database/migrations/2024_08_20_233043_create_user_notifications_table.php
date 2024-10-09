@@ -19,7 +19,8 @@ class CreateUserNotificationsTable extends Migration
             $table->string('title', 150)->nullable();
             $table->text('content')->nullable();
             $table->integer('status')->default(2);
-            $table->timestamps(, 150);
+            $table->string('url',225);
+            $table->timestamps(150);
         });
     }
 

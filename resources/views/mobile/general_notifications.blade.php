@@ -1,4 +1,5 @@
 @include('genericJs')
+<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
@@ -22,6 +23,9 @@
 <style>
     .form-label{
         font-size: 12px;
+    }
+    .form-check-label{
+        font-size: 14px;
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -160,5 +164,54 @@
 
     </script>
 @endauth
+<script src="https://kit.fontawesome.com/ba417b72f4.js" crossorigin="anonymous"></script>
+<style>
+    .btn-auto {
+        padding: 0.5rem 0.5rem;
+        font-size: 0.85rem;
+        width: auto;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    body.dark .card {
+        background-color: rgb(18, 38, 54);
+        color: #ffffff;
+    }
 
-
+    /* Styling for .card-body in dark mode */
+    body.dark .card .card-body {
+        background-color: rgb(18, 38, 54);
+        color: #ffffff;
+    }
+</style>
+<script src="{{asset('dashboard/js/selectize.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('dashboard/css/selectize.bootstrap5.css')}}">
+<script>
+    $('.selectize').selectize();
+    $('.selectizeAdd').selectize({
+        create:true,
+        showAddOptionOnCreate:true,
+        createOnBlur:true,
+        highlight:true,
+        hideSelected:true
+    });
+</script>
+<style>
+    body.dark .selectize-input,.selectize-control.single .selectize-input.input-active  {
+        background-color: rgb(18, 38, 54) !important;
+        border-color: rgb(18, 38, 54) !important;
+        color: #ffffff !important;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.85rem;
+        display: inline-block;
+    }
+    body.dark .selectize-dropdown .selected {
+        background-color:rgb(18, 38, 54);
+        color:#fff
+    }
+    .selectize-input,.selectize-control.single .selectize-input.input-active  {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.85rem;
+        display: inline-block;
+    }
+</style>

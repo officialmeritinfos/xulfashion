@@ -81,9 +81,14 @@ class AdController extends BaseController
                 'negotiate'=>['nullable','numeric','in:1,2,3'],
                 'category'=>['nullable'],
                 'category.*'=>['nullable','string'],
-                'photos'=>['nullable'],
-                'photos.*'=>['nullable','image','max:2048'],
-            ],[],[
+                'photos'=>['nullable','array','max:'.$web->fileUploadAllowed],
+                'photos.*'=>['nullable','image','mimes:jpeg,png,jpg,gif,svg','max:2048'],
+            ],[
+                'photos.max'=>'You can only upload a maximum of '.$web->fileUploadAllowed.' images.',
+                'photos.*.image' => 'Each file must be an image.',
+                'photos.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg.',
+                'photos.*.max' => 'Each image may not be larger than 2MB.'
+            ],[
                 'negotiate'=>'Open to Negotiation',
             ])->stopOnFirstFailure();
 

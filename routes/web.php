@@ -10,6 +10,7 @@ use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
 use App\Http\Controllers\Mobile\Home;
 use App\Http\Controllers\Mobile\LegalController;
+use App\Http\Controllers\Mobile\User\Ads\AdsDetails;
 use App\Http\Controllers\Mobile\User\Ads\AdsIndex;
 use App\Http\Controllers\Mobile\User\Profile;
 use Illuminate\Support\Facades\Route;
@@ -159,9 +160,16 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('profile.settings.complete-profile');
             Route::post('profile/settings/complete-profile/process',[Profile::class,'processCompleteProfile'])
                 ->name('profile.settings.complete-profile.process');
-            //Ads
+            //Ads Directory
             Route::get('ads/index',[AdsIndex::class,'landingPage'])
                 ->name('ads.index');
+            Route::get('ads/new',[AdsIndex::class,'createAd'])
+                ->name('ads.new');
+            Route::post('ads/new/process',[AdsIndex::class,'processNewAd'])
+                ->name('ads.new.process');
+
+            Route::get('ads/{id}/detail',[AdsDetails::class,'landingPage'])
+                ->name('ads.detail');
 
 
             //PROFILE PLACEHOLDERS

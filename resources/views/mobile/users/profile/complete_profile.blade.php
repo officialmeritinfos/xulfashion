@@ -92,7 +92,7 @@
                     Keywords <sup><i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Be more visible by tagging your profile with popular search keywords"></i></sup>
                 </label>
                 <div class="form-input mb-3">
-                    <input type="text" class="tagify form-control" id="inputname" name="tutorKeywords[]" value="{{$user->tutorKeywords}}" />
+                    <input type="text" class="selectizeAdd" id="inputname" name="tutorKeywords[]" multiple value="{{$user->tutorKeywords}}" />
                     <i class="iconsax icons" data-icon="ranking"></i>
                 </div>
             </div>

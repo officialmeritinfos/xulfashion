@@ -41,19 +41,21 @@
     @include('genericCss')
 </head>
 
-<body>
+<body class="details-page">
 <div class="loader-wrapper">
     <span class="loader"></span>
 </div>
+<div class="top-image">
+    <img class="product-header img-fluid" src="{{asset('mobile/images/background/header-bg.png')}}" alt="header-bg" />
+</div>
 <!-- header start -->
-<header class="section-t-space">
-    <div class="custom-container">
-        <div class="header-panel">
-            <a onclick="history.back()" class="back">
-                <i class="iconsax back-btn" data-icon="arrow-left"></i>
-            </a>
-            <h3>{{$pageName}}</h3>
-        </div>
+
+<header class="product-page-header">
+    <div class="header-panel">
+        <a onclick="history.back()" class="product-back back">
+            <i class="iconsax back-btn" data-icon="arrow-left"></i>
+        </a>
+        <h3 class="title">{{$pageName}}</h3>
     </div>
 </header>
 

@@ -146,6 +146,8 @@ class Payouts extends Component
             $transaction->status=1;
             $transaction->save();
 
+            scheduleUserNotification($this->user->id,'Payout Processed',"Your payout has been processed and should arrive in your account soon.");
+
 
             SystemStaffAction::create([
                 'staff' => $staff->id,
@@ -283,6 +285,9 @@ class Payouts extends Component
                         Your payout of ".$withdrawal->currency.number_format($withdrawal->amount,2)." failed, and the full
                         amount refunded back into your account balance.
                     ";
+
+                    scheduleUserNotification($this->user->id,'Payout Failed'," Your payout of ".$withdrawal->currency.number_format($withdrawal->amount,2)." failed, and the full
+                        amount refunded back into your account balance.");
                     $merchant->notify(new CustomNotificationNoLink($merchant->name,'Payout failed',$message));
                 }
 

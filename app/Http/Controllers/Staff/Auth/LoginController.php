@@ -42,7 +42,7 @@ class LoginController extends BaseController
             $validator = Validator::make($request->all(),[
                 'email'=>['required','email','exists:system_staff,email'],
                 'password'=>['required',Password::min(8)->uncompromised(1)],
-                'g-recaptcha-response' => ['required', new ReCaptcha]
+                'g-recaptcha-response' => ['nullable', new ReCaptcha]
             ],[],[
                 'g-recaptcha-response'=>'Recaptcha'
             ])->stopOnFirstFailure();

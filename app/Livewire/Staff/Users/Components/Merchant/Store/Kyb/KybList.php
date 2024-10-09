@@ -280,6 +280,7 @@ class KybList extends Component
                     payment and get payout into your main balance without delay. Also, you are qualified for our paid
                     features when available.
                 ";
+                scheduleUserNotification($merchant->id,'Store Activation',"Your store has been successfully verified and the full features activated.");
                 $merchant->notify(new CustomNotificationNoLink($merchant->name,'Store activation',$merchantMessage));
 
                 SystemStaffAction::create([
@@ -376,6 +377,7 @@ class KybList extends Component
                     find the details below:<hr/><br/>
                     <p>$this->rejectReason</p>
                 ";
+                scheduleUserNotification($merchant->id,'Business Verification Failed',"We were unable to verify your business. Please find the reason in the mail sent to your email.");
                 $merchant->notify(new CustomNotificationNoLink($this->store->name,'Business Verification Failed',$merchantMessage));
 
                 SystemStaffAction::create([

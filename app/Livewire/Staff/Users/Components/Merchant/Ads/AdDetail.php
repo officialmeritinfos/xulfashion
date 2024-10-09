@@ -7,6 +7,7 @@ use App\Models\SystemStaffAction;
 use App\Models\User;
 use App\Models\UserAd;
 use App\Models\UserAdPhoto;
+use App\Models\UserNotification;
 use App\Notifications\CustomNotificationNoLink;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -204,6 +205,8 @@ class AdDetail extends Component
                 'model' => get_class($this->ad),
                 'model_id' => $this->ad->reference,
             ]);
+            scheduleUserNotification($merchant->id,'AD Rejected','Your Ad '.$this->ad->title.' has been rejected. Please check your mail for the reason.',
+                route('mobile.user.ads.detail',['id'=>$this->ad->reference]));
             DB::commit();
             $merchant->notify(new CustomNotificationNoLink($merchant->name,'Ad post rejected',$message));
             $this->alert('success', '', [
@@ -294,6 +297,8 @@ class AdDetail extends Component
                 'model' => get_class($this->ad),
                 'model_id' => $this->ad->reference,
             ]);
+            scheduleUserNotification($merchant->id,'AD approved','Your Ad '.$this->ad->title.' has been approved and is now active.',
+                route('mobile.user.ads.detail',['id'=>$this->ad->reference]));
             DB::commit();
             $merchant->notify(new CustomNotificationNoLink($merchant->name,'Ad post approved',$message));
             $this->alert('success', '', [

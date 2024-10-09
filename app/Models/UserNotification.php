@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 
-class PasswordReset extends Model
+class UserNotification extends Model
 {
     use HasFactory,Prunable;
     protected $guarded=[];
+
 
     public function prunable(): Builder
     {

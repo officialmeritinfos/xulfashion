@@ -184,6 +184,7 @@ class BalanceList extends Component
                     $message = "
                         Your account has been credited with ".$merchant->mainCurrency.number_format($this->amount).".
                     ";
+                    scheduleUserNotification($merchant->id,'Credit Notification'," Your account has been credited with ".$merchant->mainCurrency.number_format($this->amount).".");
                     $merchant->notify(new CustomNotificationNoLink($merchant->name,'Credit Notification',$message));
                 }
                 $this->alert('success', '', [
@@ -280,6 +281,7 @@ class BalanceList extends Component
                 $message = "
                         Your account has been debited with ".$merchant->mainCurrency.number_format($this->amount).".
                     ";
+                scheduleUserNotification($merchant->id,'Debit Notification'," Your account has been debited with ".$merchant->mainCurrency.number_format($this->amount).".");
                 $merchant->notify(new CustomNotificationNoLink($merchant->name,'Debit Notification',$message));
             }
             $this->alert('success', '', [
@@ -381,6 +383,7 @@ class BalanceList extends Component
                     $message = "
                         Your account has been credited with a referral earning of ".$merchant->mainCurrency.number_format($this->amount).".
                     ";
+                    scheduleUserNotification($merchant->id,'Referral Earning',"Your account has been credited with a referral earning of ".$merchant->mainCurrency.number_format($this->amount).".");
                     $merchant->notify(new CustomNotificationNoLink($merchant->name,'Referral Earning',$message));
                 }
                 $this->alert('success', '', [
