@@ -201,6 +201,29 @@ class MarketplaceController extends BaseController
             'status'=>1,'user'=>$user->id
         ])->with('service')->orderBy('id','desc')->paginate(30);
 
+        // Calculate ratings and reviews data
+        $totalRating = UserAdReview::where('merchant', $user->id)->count();
+        $averageRating = UserAdReview::where('merchant', $user->id)->avg('rating');
+        $ratingsCount = UserAdReview::where('merchant', $user->id)
+            ->selectRaw('rating, COUNT(*) as count')
+            ->groupBy('rating')
+            ->pluck('count', 'rating')
+            ->toArray();
+
+        // Ensure that each star rating (1-5) has a value even if 0
+        $ratingsCount = array_replace([5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0], $ratingsCount);
+
+        $reviews = UserAdReview::where('merchant', $user->id)->with('reviewers')->paginate(5);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('mobile.ads.components.review_lists', compact('reviews'))->render(),
+                'nextPage' => $reviews->currentPage() + 1,
+                'hasMorePages' => $reviews->hasMorePages()
+            ]);
+        }
+
+
         return view('mobile.ads.merchant_detail')->with([
             'web'           =>$web,
             'siteName'      =>$web->name,
@@ -213,6 +236,11 @@ class MarketplaceController extends BaseController
             'store'         =>UserStore::where('user',$user->id)->first(),
             'merchant'      =>$user,
             'user'          =>Auth::user(),
+            'averageRating' => $averageRating,
+            'totalRatings'  => $totalRating,
+            'totalReviews'  => $totalRating,
+            'ratingsCount'  => $ratingsCount,
+            'reviews'       => $reviews,
         ]);
     }
     //ad by state

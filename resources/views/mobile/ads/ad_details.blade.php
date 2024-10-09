@@ -403,7 +403,7 @@
                     <div class="col-md-12" style="display: none;">
                         <div class="form-group mt-3">
                             <label for="name" class="form-check-label">Ad</label>
-                            <input type="text" class="form-control" id="name" name="ad" value="{{$ad->id}}" required="" />
+                            <input type="text" class="form-control" id="name" name="ad" value="{{$ad->user}}" required="" />
                         </div>
                     </div>
                     <div class="col-md-12">

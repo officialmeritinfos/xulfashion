@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\GeneralSetting;
+use App\Models\User;
 use App\Models\UserAd;
 use App\Models\UserAdReview;
 use App\Traits\Helpers;
@@ -33,7 +34,7 @@ class ReviewController extends BaseController
             $country = Country::where('iso3',$user->countryCode)->first();
 
             $validator = Validator::make($request->all(),[
-                'ad'=>['required','numeric',Rule::exists('user_ads','id')],
+                'ad'=>['required','numeric',Rule::exists('users','id')],
                 'review'=>['required','string','max:2000'],
                 'rating'=>['required','in:1,2,3,4,5']
             ])->stopOnFirstFailure();
@@ -44,25 +45,25 @@ class ReviewController extends BaseController
             $input = $validator->validated();
 
             //fetch ad
-            $ad = UserAd::where('id',$input['ad'])->first();
+            $merchant = User::where('id',$input['ad'])->first();
 
-            if ($ad->user ==$user->id){
+            if ($merchant->id ==$user->id){
                 return $this->sendError('Review.error',[
                     'error'=>'You cannot write a review for your own profile'
                 ]);
             }
             //check if user has written a review for this merchant before
             $hasReviewed = UserAdReview::where([
-                'merchant'=>$ad->id,'reviewer'=>$user->id
+                'merchant'=>$merchant->id,'reviewer'=>$user->id
             ])->count();
             if ($hasReviewed >0){
                 return $this->sendError('Review.error',[
-                    'error'=>'To maintain transparency in our system, you can only review a merchant once. Any other reviewws should be added as an update to the initial review.'
+                    'error'=>'To maintain transparency in our system, you can only review a merchant once. Any other reviews should be added as an update to the initial review.'
                 ]);
             }
 
             $review = UserAdReview::create([
-                'reviewer'=>$user->id,'merchant'=>$ad->user,
+                'reviewer'=>$user->id,'merchant'=>$merchant->id,
                 'reference'=>$this->generateUniqueReference('user_ad_reviews','reference'),
                 'comment'=>$input['review'],'rating'=>$input['rating'],'status'=>1
             ]);
@@ -70,7 +71,7 @@ class ReviewController extends BaseController
                 $message= "
                     A new review has been received on your profile on ".$web->name.". You were rated ".$input['rating']."
                 ";
-                scheduleUserNotification($ad->user,'You just got rated on '.$web->name,$message,route('mobile.user.reviews.index'));
+                scheduleUserNotification($merchant->id,'You just got rated on '.$web->name,$message,route('mobile.user.reviews.index'));
 
                 DB::commit();
 
