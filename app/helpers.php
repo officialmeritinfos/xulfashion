@@ -645,10 +645,39 @@ if (!function_exists('numberOfProductsInCategory')) {
 }
 
 if (!function_exists('scheduleUserNotification')) {
+    /**
+     * Schedule a notification for a specific user.
+     *
+     * This function creates a user notification with the specified title, content, and optional URL.
+     * The notification is set with a default status of 2.
+     *
+     * @param int $user The ID of the user to notify.
+     * @param string $title The title of the notification.
+     * @param string $content The content or message of the notification.
+     * @param string|null $url Optional URL associated with the notification.
+     * @return void
+     */
     function scheduleUserNotification($user,$title,$content,$url=null)
     {
         \App\Models\UserNotification::create([
             'user' => $user,'title' => $title,'content' => $content,'status' => 2,'url' => $url
         ]);
+    }
+}
+if (!function_exists('averageMerchantRatings')) {
+    /**
+     * Calculate the average rating for a merchant.
+     *
+     * This function calculates the average rating for a merchant based on approved reviews
+     * with a status of 1.
+     *
+     * @param int $user The ID of the merchant user.
+     * @return float|null The average rating for the merchant, or null if there are no ratings.
+     */
+    function averageMerchantRatings($user)
+    {
+        return \App\Models\UserAdReview::where([
+            'merchant'=>$user,'status'=>1
+        ])->avg('rating');
     }
 }

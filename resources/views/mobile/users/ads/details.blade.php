@@ -166,31 +166,20 @@
                             <div class="accordion-body pb-0">
                                 <div class="reviews-display">
                                     <div class="d-flex justify-content-between">
-                                        <h4 class="theme-color">{{$totalRatings}} Reviews</h4>
-                                        <span href="#reviews" class="theme-color" data-bs-toggle="modal">View all</span>
+                                        <h4 class="theme-color">{{$totalRatings}} Review(s)</h4>
                                     </div>
                                     @if($reviews->count()>0)
-                                        @foreach($reviews as $review)
-                                            <div class="reviews-box">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <img class="img-fluid profile-pic" src="{{asset('mobile/images/icons/profile2.png')}}" alt="profile2" />
-                                                    <div class="d-flex justify-content-between w-100">
-                                                        <div>
-                                                            <h4 class="theme-color">Rina Jones</h4>
-                                                            <h4 class="light-text mt-1">Just Now</h4>
-                                                        </div>
-                                                        <div class="d-flex align-items-start">
-                                                            <img class="img-fluid stars" src="{{asset('mobile/images/svg/Star.svg')}}" alt="star" />
-                                                            <h4 class="theme-color fw-normal">4.0</h4>
-                                                        </div>
-                                                    </div>
+                                        <div id="product-list">
+                                            @include('mobile.ads.components.review_lists')
+                                        </div>
+                                        @if($reviews->hasMorePages())
+                                            <div class="row g-3">
+                                                <div class="text-center mt-4">
+                                                    <button id="load-more" class="btn btn-light" data-url="{{ url()->full() }}">Load More</button>
                                                 </div>
-                                                <p>I adore this item. Just fantastic!! they create the actual seen in the picture !!</p>
                                             </div>
-                                        @endforeach
+                                        @endif
                                     @endif
-
-                                    <span href="#my-review" class="my-review back" data-bs-toggle="offcanvas" role="button">+ Write Your Review</span>
                                 </div>
                             </div>
                         </div>
@@ -199,5 +188,44 @@
             </div>
         </div>
     </section>
+
+
+    @push('js')
+        <script>
+            $(document).ready(function() {
+                let page = 1;
+                let loadMoreBtn = $('#load-more');
+                let loadMoreUrl = loadMoreBtn.data('url');
+                let originalText = loadMoreBtn.text();
+
+                loadMoreBtn.click(function() {
+                    page++;
+                    //show loading icon
+                    loadMoreBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+                    $.ajax({
+                        url: loadMoreUrl,
+                        type: 'GET',
+                        data: { page: page },
+                        success: function(response) {
+                            if(response.products) {
+                                $('#product-list').append(response.products);
+                                if(!response.hasMorePages) {
+                                    loadMoreBtn.hide();
+                                } else {
+                                    loadMoreBtn.text(originalText);
+                                }
+                            }else {
+                                loadMoreBtn.text(originalText);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error loading more products:', error);
+                            loadMoreBtn.text(originalText);
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 
 @endsection

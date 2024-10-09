@@ -84,11 +84,12 @@ class AdsIndex extends BaseController
                 'description'=>['required','string'],
                 'priceType'=>['required','integer','in:1,2'],
                 'price'=>['nullable','required_if:priceType,2', 'numeric'],
-                'negotiate'=>['nullable','numeric','in:1,2,3'],
+                'negotiate'=>['required','numeric','in:1,2,3'],
                 'tags'=>['nullable'],
                 'tags.*'=>['nullable','string'],
                 'photos'=>['nullable','array','max:'.$web->fileUploadAllowed],
                 'photos.*'=>['nullable','image','mimes:jpeg,png,jpg,gif,svg','max:2048'],
+                'phone'=>['nullable','numeric']
             ],[
                 'photos.max'=>'You can only upload a maximum of '.$web->fileUploadAllowed.' images.',
                 'photos.*.image' => 'Each file must be an image.',
@@ -121,6 +122,10 @@ class AdsIndex extends BaseController
                 'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2
             ]);
             if (!empty($ad)){
+                if (empty($user->phone)){
+                    $user->phone = $input['phone'];
+                    $user->save();
+                }
                 //check if photos were uploaded
                 if ($request->file('photos')){
                     foreach ($request->file('photos') as $index => $item) {

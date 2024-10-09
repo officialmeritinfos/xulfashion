@@ -13,6 +13,7 @@ use App\Models\Testimonial;
 use App\Models\User;
 use App\Models\UserAd;
 use App\Models\UserAdPhoto;
+use App\Models\UserAdReview;
 use App\Models\UserAdView;
 use App\Models\UserStore;
 use Illuminate\Http\Request;
@@ -81,77 +82,106 @@ class MarketplaceController extends BaseController
     public function adDetails(Request $request,$slug, $id)
     {
         $web = GeneralSetting::find(1);
-        //check if the user has a country session and if not, return them back to the main page to choose a country
-        if (!$request->session()->has('country')){
-            return to_route('marketplace.index');
+
+        // Check if the user has a country session and, if not, return to the main page to choose a country
+        if (!$request->session()->has('country')) {
+            return to_route('mobile.marketplace.index');
         }
+
         $country = $request->session()->get('country');
 
+        // Fetch the ad with its service details
         $ads = UserAd::where([
             'reference' => $id,
             'status' => 1
         ])->with('service')->firstOrFail();
-        //if user is logged in
-        if (\auth()->check()){
-            $hasViewed = UserAdView::where([
-                'user'=>\auth()->user()->id,
-                'ad'=>$ads->reference
-            ])->first();
-        }else{
-            $hasViewed = UserAdView::where([
-                'ipAddress'=>$request->ip(),
-                'ad'=>$ads->reference
-            ])->first();
-        }
-        $agent = new Agent();
 
-        //update view
-        if (empty($hasViewed)){
-            $ads->numberOfViews = $ads->numberOfViews+1;
-            $ads->save();
-            $ads->refresh();
+        // Check if the user has viewed the ad (track by user ID or IP address)
+        $hasViewed = \auth()->check() ?
+            UserAdView::where(['user' => \auth()->user()->id, 'ad' => $ads->reference])->first() :
+            UserAdView::where(['ipAddress' => $request->ip(), 'ad' => $ads->reference])->first();
 
+        // Update view count if the ad has not been viewed by the user
+        if (empty($hasViewed)) {
+            $ads->increment('numberOfViews');
             UserAdView::create([
-                'ipAddress'=>$request->ip(),
-                'user'=>\auth()->user()->id??'',
-                'browser'=>$agent->browser(),
-                'ad'=>$ads->reference
+                'ipAddress' => $request->ip(),
+                'user' => \auth()->user()->id ?? null,
+                'browser' => (new Agent())->browser(),
+                'ad' => $ads->reference
             ]);
         }
 
-        $merchant = User::where('id',$ads->user)->first();
-        $store = UserStore::where('user',$merchant->id)->first();
+        // Fetch the merchant and their store
+        $merchant = User::find($ads->user);
+        $store = UserStore::where('user', $merchant->id)->first();
 
+        // Get tags array
         $tagsArray = explode(',', $ads->tags);
 
-        $relatedAds = UserAd::where([
-            'user'=>$merchant->id,'status'=>1
-        ])->whereNot('id',$ads->id)->orderBy('id','desc')->take(10)->get();
-        if ($relatedAds->count()<1){
-            $query = UserAd::whereNot('id',$ads->id)->where(function($query) use ($tagsArray,$ads) {
-                $query->where('serviceType',$ads->serviceType)->where(function ($query) use($tagsArray){
+        // Fetch related ads by the same merchant or by tags and service type
+        $relatedAds = UserAd::where('user', $merchant->id)
+            ->where('status', 1)
+            ->where('id', '!=', $ads->id)
+            ->with('service')
+            ->orderByDesc('id')
+            ->take(10)
+            ->get();
+
+        if ($relatedAds->isEmpty()) {
+            $relatedAds = UserAd::where('id', '!=', $ads->id)
+                ->where('serviceType', $ads->serviceType)
+                ->where('status', 1)
+                ->where(function($query) use ($tagsArray) {
                     foreach ($tagsArray as $tag) {
-                        $query->orWhereRaw('FIND_IN_SET(?, tags)', [$tag])->where('status',1);
+                        $query->orWhereRaw('FIND_IN_SET(?, tags)', [$tag]);
                     }
-                });
-            });
-            $relatedAds = $query->with('service')->paginate(10);
+                })
+                ->with('service')
+                ->paginate(10);
+        }
+
+        // Calculate ratings and reviews data
+        $totalRating = UserAdReview::where('merchant', $ads->user)->count();
+        $averageRating = UserAdReview::where('merchant', $ads->user)->avg('rating');
+        $ratingsCount = UserAdReview::where('merchant', $ads->user)
+            ->selectRaw('rating, COUNT(*) as count')
+            ->groupBy('rating')
+            ->pluck('count', 'rating')
+            ->toArray();
+
+        // Ensure that each star rating (1-5) has a value even if 0
+        $ratingsCount = array_replace([5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0], $ratingsCount);
+
+        $reviews = UserAdReview::where('merchant', $ads->user)->with('reviewers')->paginate(5);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('mobile.ads.components.review_lists', compact('reviews'))->render(),
+                'nextPage' => $reviews->currentPage() + 1,
+                'hasMorePages' => $reviews->hasMorePages()
+            ]);
         }
 
         return view('mobile.ads.ad_details')->with([
-            'web'           =>$web,
-            'siteName'      =>$web->name,
-            'pageName'      =>$ads->title,
-            'serviceTypes'  =>ServiceType::where('status',1)->get(),
-            'country'       =>Country::where('iso2',$country)->first(),
-            'hasCountry'    =>$hasCountry=1,
-            'ad'            =>$ads,
-            'ads'           =>$relatedAds,
-            'store'         =>$store,
-            'photos'        =>UserAdPhoto::where('ad',$ads->id)->get(),
-            'iso3'          =>$request->session()->get('iso3'),
-            'merchant'      =>$merchant,
-            'user'          =>Auth::user(),
+            'web'           => $web,
+            'siteName'      => $web->name,
+            'pageName'      => $ads->title,
+            'serviceTypes'  => ServiceType::where('status', 1)->get(),
+            'country'       => Country::where('iso2', $country)->first(),
+            'hasCountry'    => 1,
+            'ad'            => $ads,
+            'ads'           => $relatedAds,
+            'store'         => $store,
+            'photos'        => UserAdPhoto::where('ad', $ads->id)->get(),
+            'iso3'          => $request->session()->get('iso3'),
+            'merchant'      => $merchant,
+            'user'          => Auth::user(),
+            'averageRating' => $averageRating,
+            'totalRatings'  => $totalRating,
+            'totalReviews'  => $totalRating,
+            'ratingsCount'  => $ratingsCount,
+            'reviews'       => $reviews,
         ]);
     }
     //ad merchant
@@ -160,7 +190,7 @@ class MarketplaceController extends BaseController
         $web = GeneralSetting::find(1);
         //check if the user has a country session and if not, return them back to the main page to choose a country
         if (!$request->session()->has('country')){
-            return to_route('marketplace.index');
+            return to_route('mobile.marketplace.index');
         }
         $country = $request->session()->get('country');
 
@@ -191,7 +221,7 @@ class MarketplaceController extends BaseController
         $web = GeneralSetting::find(1);
         //check if the user has a country session and if not, return them back to the main page to choose a country
         if (!$request->session()->has('country')){
-            return to_route('marketplace.index');
+            return to_route('mobile.marketplace.index');
         }
         $country = $request->session()->get('country');
         $state = State::where('country_code',strtolower($country))->where('iso2',strtoupper($state))->firstOrFail();
@@ -221,7 +251,7 @@ class MarketplaceController extends BaseController
         $web = GeneralSetting::find(1);
         //check if the user has a country session and if not, return them back to the main page to choose a country
         if (!$request->session()->has('country')){
-            return to_route('marketplace.index');
+            return to_route('mobile.marketplace.index');
         }
         $country = $request->session()->get('country');
         $service = ServiceType::where('id',$id)->firstOrFail();
@@ -262,7 +292,7 @@ class MarketplaceController extends BaseController
         $serviceType = $request->input('category');
         $country = Session::get('country');
         if (!$country){
-            return to_route('marketplace.index');
+            return to_route('mobile.marketplace.index');
         }
         $ads = UserAd::where([
             'country'=>$country,'status' => 1
@@ -319,7 +349,7 @@ class MarketplaceController extends BaseController
         $web = GeneralSetting::find(1);
         //check if the user has a country session and if not, return them back to the main page to choose a country
         if (!$request->session()->has('country')){
-            return to_route('marketplace.index');
+            return to_route('mobile.marketplace.index');
         }
         $country = $request->session()->get('country');
 
@@ -335,7 +365,7 @@ class MarketplaceController extends BaseController
             'iso3'          =>$request->session()->get('iso3'),
             'states'        =>State::where('country_code',$country)->orderBy('name','asc')->get(),
             'user'          =>Auth::user(),
-            'categories'    =>ServiceType::where('status',1)->get()
+            'categories'    =>ServiceType::where('status',1)->get(),
         ]);
     }
 }

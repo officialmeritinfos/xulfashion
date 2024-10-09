@@ -9,4 +9,15 @@ class UserAdReview extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
+    public function reviewers()
+    {
+        return $this->belongsTo(User::class, 'reviewer', 'id');
+    }
+
+    // Define the relationship for the merchant
+    public function merchants()
+    {
+        return $this->belongsTo(User::class, 'merchant', 'id');
+    }
 }

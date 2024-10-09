@@ -142,7 +142,7 @@
                         </sup>
                     </label>
                     <div class="form-input">
-                        <input type="text" class="form-control" id="inputusernumber" placeholder="213-534-2345" name="Contact Number"/>
+                        <input type="text" class="form-control" id="inputusernumber" placeholder="213-534-2345" name="phone"/>
                         <i class="fa fa-phone-alt"></i>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
 
 
             <div class="text-center mb-5">
-                <button type="submit" class="btn btn-outline-primary mt-0 w-50 submit mb-3 btn-auto">Send for Review</button>
+                <button type="submit" class="btn btn-outline-primary mt-0 w-50 submit mb-3 btn-auto">Post Ad</button>
             </div>
         </form>
     </div>

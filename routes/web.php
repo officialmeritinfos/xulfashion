@@ -6,6 +6,7 @@ use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
 use App\Http\Controllers\Mobile\Ads\Auth\Register;
 use App\Http\Controllers\Mobile\Ads\CatalogController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
+use App\Http\Controllers\Mobile\Ads\ReviewController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
 use App\Http\Controllers\Mobile\Home;
@@ -171,6 +172,13 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::get('ads/{id}/detail',[AdsDetails::class,'landingPage'])
                 ->name('ads.detail');
 
+
+
+            //REVIEWS
+            Route::get('reviews/index',[ReviewController::class,'landingPage'])
+                ->name('reviews.index');
+            Route::post('reviews/new/process',[ReviewController::class,'processNewRating'])
+                ->name('reviews.new.process');
 
             //PROFILE PLACEHOLDERS
             Route::get('profile/coming-soon',[Profile::class,'comingSoon'])
