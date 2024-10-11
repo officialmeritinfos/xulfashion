@@ -15,6 +15,7 @@ use App\Http\Controllers\Mobile\User\Ads\AdsDetails;
 use App\Http\Controllers\Mobile\User\Ads\AdsEdit;
 use App\Http\Controllers\Mobile\User\Ads\AdsIndex;
 use App\Http\Controllers\Mobile\User\Events\EventIndex;
+use App\Http\Controllers\Mobile\User\Events\TicketIndex;
 use App\Http\Controllers\Mobile\User\Profile;
 use Illuminate\Support\Facades\Route;
 
@@ -102,6 +103,10 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
         Route::get('stores/{store}/product/{product}/detail',[CatalogController::class,'productDetail'])
             ->name('marketplace.store.product.detail');
 
+        //EVENTS
+        Route::get('events/{slug?}',[CatalogController::class,'catalogsInStore'])
+            ->name('marketplace.events.detail');
+
 
         //LEGAL PAGE
         Route::get('legal/privacy-policy',[LegalController::class,'privacyPolicy'])->name('legal.privacy-policy');
@@ -183,12 +188,29 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::post('ads/edit/process',[AdsEdit::class,'processAdUpdate'])
                 ->name('ads.edit.process');
 
-            /*====================ADS DIRECTORY ===========================*/
+            /*====================EVENT DIRECTORY ===========================*/
             Route::get('events/index',[EventIndex::class,'landingPage'])
                 ->name('events.index');
             //Create Event
             Route::get('events/new',[EventIndex::class,'createEvent'])
                 ->name('events.new');
+            Route::get('events/new/online',[EventIndex::class,'createOnlineEvent'])
+                ->name('events.new.online');
+            Route::get('events/new/live',[EventIndex::class,'createLiveEvent'])
+                ->name('events.new.live');
+            Route::post('events/new/live/process',[EventIndex::class,'processLiveEventCreation'])
+                ->name('events.new.live.process');
+            Route::post('events/new/online/process',[EventIndex::class,'processOnlineEventCreation'])
+                ->name('events.new.online.process');
+            //Ticket Index
+            Route::get('events/tickets/{event}/index',[TicketIndex::class,'landingPage'])
+                ->name('events.tickets.index');
+            //Create ticket
+            Route::get('events/tickets/{event}/new',[TicketIndex::class,'createTicket'])
+                ->name('events.tickets.new');
+
+
+
 
             //REVIEWS
             Route::get('reviews/index',[ReviewController::class,'landingPage'])

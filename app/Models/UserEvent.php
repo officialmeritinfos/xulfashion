@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -84,5 +85,20 @@ class UserEvent extends Model
     public function purchases()
     {
         return $this->hasMany(UserEventPurchase::class, 'event_id');
+    }
+    /**
+     * Get combined start date and time as a Carbon instance.
+     *
+     * @return Carbon|null
+     */
+    public function getStartDateTimeAttribute()
+    {
+        // Fetch startDate and startTime, and return combined Carbon instance
+        if ($this->startDate && $this->startTime) {
+            return Carbon::createFromTimestamp($this->startDate, $this->eventTimeZone)
+                ->setTimeFrom(Carbon::createFromTimestamp($this->startTime, $this->eventTimeZone));
+        }
+
+        return null;
     }
 }

@@ -19,6 +19,7 @@ class CreateUserEventTicketsTable extends Migration
             $table->string('ticketType', 150);
             $table->string('name', 225);
             $table->text('description');
+            $table->string('currency')->nullable();
             $table->string('price', 150)->default('0');
             $table->integer('isFree')->default(2);
             $table->integer('inviteOnly')->default(2);
@@ -31,7 +32,7 @@ class CreateUserEventTicketsTable extends Migration
             $table->longText('perks')->nullable();
             $table->longText('questions')->nullable();
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

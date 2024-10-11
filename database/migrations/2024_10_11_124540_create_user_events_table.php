@@ -19,13 +19,15 @@ class CreateUserEventsTable extends Migration
             $table->string('user', 150);
             $table->string('title', 225);
             $table->longText('description');
-            $table->string('customUrl', 150)->nullable();
+            $table->integer('hideVenue')->default(2);
+            $table->string('eventType', 150)->nullable();
             $table->string('category', 150)->nullable();
+            $table->string('featuredImage', 200)->nullable();
             $table->integer('eventScheduleType')->default(1);
             $table->string('startDate', 150);
             $table->string('endDate', 150)->nullable();
             $table->string('eventTimeZone', 150)->nullable();
-            $table->string('eventFrequency', 150);
+            $table->string('eventFrequency', 150)->nullable();
             $table->string('startTime', 150)->nullable();
             $table->string('endTime', 150)->nullable();
             $table->string('recurrenceType', 150)->nullable();
@@ -33,9 +35,16 @@ class CreateUserEventsTable extends Migration
             $table->string('recurrenceEndType', 150)->nullable();
             $table->string('recurrenceEndCount', 150)->nullable();
             $table->string('recurrenceEndDate', 150)->nullable();
+            $table->string('recurrenceEndTime', 150)->nullable();
+            $table->string('currentRecurring', 150)->default(0);
+            $table->text('state')->nullable();
             $table->text('location')->nullable();
             $table->text('locationTip')->nullable();
-            $table->timestamps(, 150);
+            $table->text('facebook')->nullable();
+            $table->text('instagram')->nullable();
+            $table->text('twitter')->nullable();
+            $table->text('website')->nullable();
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

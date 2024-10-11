@@ -29,11 +29,16 @@
     }
     body.dark .form-label{
         font-size: 12px;
+        color:#fff2fe;
     }
     body.dark .form-check-label{
         font-size: 13px;
         color: #fff2fe;
         margin: 2px;
+    }
+    body.dark .form-control{
+        background-color:rgb(18, 38, 54);
+        color: #fff2fe;
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -228,6 +233,44 @@
     body.dark tr{
         color: #ffffff;
     }
+    body.dark .modal-body{
+        background-color:rgb(18, 38, 54);
+        color:#fff
+    }
+    body.dark .modal-header{
+        background-color:rgb(18, 38, 54);
+        color:#fff
+    }
+    body.dark .title{
+        font-size: larger;
+        color:#fff
+    }
+    .modal-content {
+        border-radius: 15px;
+    }
+    body.dark .boxed-check-group .boxed-check .boxed-check-label{
+        background-color:rgb(18, 38, 54);
+        color:#fff
+    }
+
 </style>
 
 @include('noti_js')
+{{--<script src="https://unpkg.com/lite-editor@1.6.39/js/lite-editor.min.js"></script>--}}
+{{--<link rel="stylesheet" href="https://unpkg.com/lite-editor@1.6.39/css/lite-editor.css">--}}
+{{--<script>--}}
+{{--    new LiteEditor('.editor',{--}}
+{{--        minHeight: 200,--}}
+{{--    });--}}
+{{--</script>--}}
+
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+<script>
+    const quill = new Quill('.editor', {
+        theme: 'snow'
+    });
+</script>
+
+<link rel="stylesheet" href="http://127.0.0.1:8000/dashboard/css/boxed-check.min.css">
