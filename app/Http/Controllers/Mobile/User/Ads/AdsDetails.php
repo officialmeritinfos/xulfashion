@@ -47,7 +47,22 @@ class AdsDetails extends BaseController
             ])->avg('rating'),
             'totalRatings'=>UserAdReview::where([
                 'merchant'=>$user->id,'status'=>1
-            ])->count()
+            ])->count(),
         ]);
+    }
+    //delete photo
+    public function deletePhoto($adId,$photoId)
+    {
+        $web = GeneralSetting::find(1);
+        $user = Auth::user();
+        $ad = UserAd::where([
+            'user' => $user->id,'reference' => $adId
+        ])->firstOrFail();
+
+        UserAdPhoto::where([
+            'ad' => $ad->id,'id' => $photoId
+        ])->delete();
+
+        return back()->with('success','Successfully deleted');
     }
 }

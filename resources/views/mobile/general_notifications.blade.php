@@ -25,7 +25,15 @@
         font-size: 12px;
     }
     .form-check-label{
-        font-size: 14px;
+        font-size: 13px;
+    }
+    body.dark .form-label{
+        font-size: 12px;
+    }
+    body.dark .form-check-label{
+        font-size: 13px;
+        color: #fff2fe;
+        margin: 2px;
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -214,4 +222,12 @@
         font-size: 0.85rem;
         display: inline-block;
     }
+    body.dark th{
+        color: #ffffff;
+    }
+    body.dark tr{
+        color: #ffffff;
+    }
 </style>
+
+@include('noti_js')

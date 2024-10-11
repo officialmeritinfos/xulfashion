@@ -37,7 +37,7 @@
             <div class="product-details">
                 <div class="product-name">
                     <h2 class="theme-color">
-                        {{$ad->title}}
+                        {{$ad->title}} <sup><a href="{{route('mobile.user.ads.edit',['id'=>$ad->reference])}}"><i class="fa fa-edit"></i></a> </sup>
                     </h2>
                     <h6>
                         {{serviceTypeById($ad->serviceType)->name}}
@@ -94,6 +94,35 @@
                 <p>
                     {{$ad->description}}
                 </p>
+
+                <section class="reviews-box mb-2">
+                    <div class="card-body">
+                        <div class="title">
+                            Images
+                        </div>
+                        <table class="table table-bordered text-center m-0">
+                            <thead>
+                            <tr>
+                                <th scope="col">Photo</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($photos as $photo)
+                                <tr>
+                                    <td>
+                                        <span class="lightboxed"> <img src="{{$photo->photo}}" data-preload="{{asset('placeholder.jpg')}}" style="width: 100px;"></span>
+                                    </td>
+                                    <td>
+                                        <a href="{{route('mobile.user.ads.photo.delete',['id'=>$ad->reference,'photo'=>$photo->id])}}"
+                                        class="btn btn-auto btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
                 <div class="accordion details-accordion" id="accordionPanelsStayOpenExample">
                     <div class="accordion-item">

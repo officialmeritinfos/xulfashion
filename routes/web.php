@@ -12,6 +12,7 @@ use App\Http\Controllers\Mobile\Ads\StoreController;
 use App\Http\Controllers\Mobile\Home;
 use App\Http\Controllers\Mobile\LegalController;
 use App\Http\Controllers\Mobile\User\Ads\AdsDetails;
+use App\Http\Controllers\Mobile\User\Ads\AdsEdit;
 use App\Http\Controllers\Mobile\User\Ads\AdsIndex;
 use App\Http\Controllers\Mobile\User\Profile;
 use Illuminate\Support\Facades\Route;
@@ -161,16 +162,26 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('profile.settings.complete-profile');
             Route::post('profile/settings/complete-profile/process',[Profile::class,'processCompleteProfile'])
                 ->name('profile.settings.complete-profile.process');
-            //Ads Directory
+
+            /*====================ADS DIRECTORY ===========================*/
             Route::get('ads/index',[AdsIndex::class,'landingPage'])
                 ->name('ads.index');
+            //Post Ads
             Route::get('ads/new',[AdsIndex::class,'createAd'])
                 ->name('ads.new');
             Route::post('ads/new/process',[AdsIndex::class,'processNewAd'])
                 ->name('ads.new.process');
-
+            //ADS DETAILS
             Route::get('ads/{id}/detail',[AdsDetails::class,'landingPage'])
                 ->name('ads.detail');
+            Route::get('ads/{id}/photo/{photo}/delete',[AdsDetails::class,'deletePhoto'])
+                ->name('ads.photo.delete');
+            //Ads Edit
+            Route::get('ads/{id}/edit',[AdsEdit::class,'landingPage'])
+                ->name('ads.edit');
+            Route::post('ads/edit/process',[AdsEdit::class,'processAdUpdate'])
+                ->name('ads.edit.process');
+
 
 
 
