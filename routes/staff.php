@@ -13,7 +13,7 @@ use App\Http\Controllers\Staff\Dashboard\StoreController;
 use App\Http\Controllers\Staff\Dashboard\Users;
 use Illuminate\Support\Facades\Route;
 
-Route::domain('modacore.xulstore.com')->group(function () {
+Route::domain('modacore.localhost')->group(function () {
     //Staff authentication
     Route::get('/',[LoginController::class,'landingPage'])->name('login');//login
     Route::post('login/process',[LoginController::class,'processLogin'])->name('login.process');//process login
@@ -82,6 +82,7 @@ Route::domain('modacore.xulstore.com')->group(function () {
         //APP Settings
         Route::get('settings/general',[SettingController::class, 'generalSettings'])->name('settings.general');
         Route::get('settings/service-types',[ServiceTypeController::class, 'landingPage'])->name('settings.service-types');
+        Route::get('settings/event-categories',[ServiceTypeController::class, 'eventCategory'])->name('settings.event-categories');
 
         //Staff
         Route::get('staffs/list',[StaffController::class,'landingPage'])->name('staffs.list');

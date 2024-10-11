@@ -136,4 +136,9 @@ class UserEventTicket extends Model
     {
         return $this->questions ? json_decode($this->questions, true) : [];
     }
+
+    public function purchases()
+    {
+        return $this->hasMany(UserEventPurchase::class, 'ticket_id');
+    }
 }

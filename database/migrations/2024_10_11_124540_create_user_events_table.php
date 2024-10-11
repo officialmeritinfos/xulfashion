@@ -14,7 +14,7 @@ class CreateUserEventsTable extends Migration
     public function up()
     {
         Schema::create('user_events', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
+            $table->id();
             $table->string('reference', 150);
             $table->string('user', 150);
             $table->string('title', 225);
@@ -35,7 +35,7 @@ class CreateUserEventsTable extends Migration
             $table->string('recurrenceEndDate', 150)->nullable();
             $table->text('location')->nullable();
             $table->text('locationTip')->nullable();
-            $table->timestamps(150);
+            $table->timestamps(, 150);
             $table->string('deleted_at', 150)->nullable();
         });
     }

@@ -76,8 +76,13 @@ class UserEvent extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class, 'user', 'id');
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(UserEventPurchase::class, 'event_id');
     }
 }

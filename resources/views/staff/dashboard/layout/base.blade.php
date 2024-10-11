@@ -236,6 +236,11 @@
                                         class="ri-circle-fill circle-icon text-info-main w-auto"></i>
                                     Service Types</a>
                             </li>
+                            <li>
+                                <a href="{{ route('staff.settings.event-categories') }}" wire:navigate><i
+                                        class="ri-circle-fill circle-icon text-info-main w-auto"></i>
+                                    Event Category</a>
+                            </li>
                         </ul>
                     </li>
                 @endif

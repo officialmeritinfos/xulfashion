@@ -14,6 +14,7 @@ use App\Http\Controllers\Mobile\LegalController;
 use App\Http\Controllers\Mobile\User\Ads\AdsDetails;
 use App\Http\Controllers\Mobile\User\Ads\AdsEdit;
 use App\Http\Controllers\Mobile\User\Ads\AdsIndex;
+use App\Http\Controllers\Mobile\User\Events\EventIndex;
 use App\Http\Controllers\Mobile\User\Profile;
 use Illuminate\Support\Facades\Route;
 
@@ -182,8 +183,12 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::post('ads/edit/process',[AdsEdit::class,'processAdUpdate'])
                 ->name('ads.edit.process');
 
-
-
+            /*====================ADS DIRECTORY ===========================*/
+            Route::get('events/index',[EventIndex::class,'landingPage'])
+                ->name('events.index');
+            //Create Event
+            Route::get('events/new',[EventIndex::class,'createEvent'])
+                ->name('events.new');
 
             //REVIEWS
             Route::get('reviews/index',[ReviewController::class,'landingPage'])

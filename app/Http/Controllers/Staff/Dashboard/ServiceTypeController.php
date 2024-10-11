@@ -24,4 +24,19 @@ class ServiceTypeController extends BaseController
             'user'      =>$staff
         ]);
     }
+
+    //event category
+    public function eventCategory()
+    {
+        $staff = Auth::guard("staff")->user();
+        $web = GeneralSetting::where("id",1)->first();
+
+        return view("staff.dashboard.service-types.event-categories")->with([
+            'staff'     => $staff,
+            'web'       => $web,
+            'pageName'  =>'Event Categories',
+            'siteName'  =>$web->name,
+            'user'      =>$staff
+        ]);
+    }
 }

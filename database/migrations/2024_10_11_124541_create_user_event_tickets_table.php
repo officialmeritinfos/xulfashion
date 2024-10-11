@@ -14,8 +14,8 @@ class CreateUserEventTicketsTable extends Migration
     public function up()
     {
         Schema::create('user_event_tickets', function (Blueprint $table) {
-            $table->integer('id')->primary();
-            $table->bigInteger('event_id');
+            $table->id();
+            $table->unsignedBigInteger('event_id');
             $table->string('ticketType', 150);
             $table->string('name', 225);
             $table->text('description');
@@ -31,7 +31,7 @@ class CreateUserEventTicketsTable extends Migration
             $table->longText('perks')->nullable();
             $table->longText('questions')->nullable();
             $table->integer('status')->default(1);
-            $table->timestamps(150);
+            $table->timestamps(, 150);
             $table->string('deleted_at', 150)->nullable();
         });
     }
