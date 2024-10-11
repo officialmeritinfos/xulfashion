@@ -21,8 +21,8 @@
                             <i class="iconsax icon" data-icon="receipt-2"></i>
                         </div>
                         <div class="profile-details">
-                            <h4>Bookings</h4>
-                            <h5>Ongoing bookings, recent booking, past bookings</h5>
+                            <h4>Events</h4>
+                            <h5>Create & Manage events, buy tickets to fashion events.</h5>
                         </div>
                     </a>
                 </li>

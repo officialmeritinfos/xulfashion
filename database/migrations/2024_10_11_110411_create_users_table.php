@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('accountType', 100)->nullable();
-            $table->string('merchantType', 100)->nullable();
+            $table->integer('merchantType')->nullable();
             $table->string('accountBalance', 150)->default('0');
             $table->string('referralBalance', 100)->default('0');
             $table->string('pendingBalance', 150)->default('0');
@@ -58,7 +58,7 @@ class CreateUsersTable extends Migration
             $table->string('tokenExpire', 100)->nullable();
             $table->integer('accountManager')->nullable();
             $table->integer('requestedForAccountDeletion')->default(2);
-            $table->string('timeToDeleteAccount')->nullable();
+            $table->string('timeToDeleteAccount', 150)->nullable();
             $table->text('reasonForDeleting')->nullable();
             $table->timestamps();
             $table->string('deleted_at', 150)->nullable();

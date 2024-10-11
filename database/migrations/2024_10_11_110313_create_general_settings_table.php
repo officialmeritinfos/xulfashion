@@ -32,7 +32,7 @@ class CreateGeneralSettingsTable extends Migration
             $table->string('onlinePaymentFee', 100)->default('2.5');
             $table->string('ticketHelpDesk', 150)->nullable();
             $table->string('blogLink', 150)->nullable();
-            $table->timestamps( 150);
+            $table->timestamps(, 150);
         });
     }
 

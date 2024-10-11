@@ -34,10 +34,10 @@ class CreateUserStoresTable extends Migration
             $table->string('legalName', 200)->nullable();
             $table->mediumText('returnPolicy')->nullable();
             $table->mediumText('refundPolicy')->nullable();
+            $table->string('numberOfViews', 100)->default('0');
             $table->string('theme', 150)->nullable();
-            $table->string('numberOfViews', 150)->default(0);
             $table->integer('status')->default(1);
-            $table->timestamps();
+            $table->timestamps(, 150);
             $table->string('deleted_at', 150)->nullable();
         });
     }

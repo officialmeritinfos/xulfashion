@@ -17,7 +17,7 @@ class CreateSystemStaffTable extends Migration
             $table->integer('id')->primary();
             $table->string('name', 150)->nullable();
             $table->string('email', 150)->nullable();
-            $table->string('password', 200);
+            $table->string('password', 200)->nullable();
             $table->integer('setPin')->default(2);
             $table->string('accountPin', 150)->nullable();
             $table->string('lastLogin', 200)->nullable();

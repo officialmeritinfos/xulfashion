@@ -16,10 +16,10 @@ class CreateServiceTypesTable extends Migration
         Schema::create('service_types', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('name', 150);
-            $table->string('photo', 250)->nullable();
+            $table->string('photo', 150)->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->default(1);
-            $table->timestamps(150);
+            $table->timestamps(, 150);
         });
     }
 

@@ -34,7 +34,7 @@ class CreateUserAdsTable extends Migration
             $table->integer('openToNegotiation')->default(2);
             $table->string('featuredImage', 200)->nullable();
             $table->integer('status')->default(2);
-            $table->string('numberOfViews', 100)->default('1');
+            $table->float('numberOfViews')->default(0);
             $table->timestamps(, 150);
             $table->integer('approvedBy')->nullable();
             $table->text('rejectReason')->nullable();
