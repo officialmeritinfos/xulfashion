@@ -22,6 +22,9 @@ class CreateUserEventsTable extends Migration
             $table->integer('hideVenue')->default(2);
             $table->string('eventType', 150)->nullable();
             $table->string('category', 150)->nullable();
+            $table->string('platform')->nullable();
+            $table->string('organizer')->nullable();
+            $table->string('link')->nullable();
             $table->string('featuredImage', 200)->nullable();
             $table->integer('eventScheduleType')->default(1);
             $table->string('startDate', 150);
@@ -44,6 +47,7 @@ class CreateUserEventsTable extends Migration
             $table->text('instagram')->nullable();
             $table->text('twitter')->nullable();
             $table->text('website')->nullable();
+            $table->integer('status')->default(2);
             $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });

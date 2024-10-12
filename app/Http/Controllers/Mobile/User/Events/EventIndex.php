@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mobile\User\Events;
 
 use App\Custom\GoogleUpload;
+use App\Enums\EventPlatform;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
@@ -42,17 +43,29 @@ class EventIndex extends BaseController
         ]);
     }
     //create event
-    public function createEvent(Request $request)
+    public function manageEvent(Request $request)
     {
         $web = GeneralSetting::find(1);
         $user = Auth::user();
         $country = Country::where('iso3',$user->countryCode)->first();
 
-        return view('mobile.users.events.new')->with([
-            'pageName'  =>'Create Events',
+        $events = UserEvent::where('user',$user->id)->orderBy('status')->orderBy('updated_at','desc')->paginate(10);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('mobile.users.events.components.merchant_event_list', compact('events'))->render(),
+                'nextPage' => $events->currentPage() + 1,
+                'hasMorePages' => $events->hasMorePages()
+            ]);
+        }
+
+        return view('mobile.users.events.manage')->with([
+            'pageName'  =>'Manage Events',
             'web'       =>$web,
             'siteName'  =>$web->name,
             'user'      =>$user,
+            'country'   =>$country,
+            'events'    =>$events
         ]);
     }
     //create online Events
@@ -111,13 +124,13 @@ class EventIndex extends BaseController
                 'timezone' => ['required','string','timezone'],
                 'startDateOnetime' => ['required','date','after_or_equal:today'],
                 'startTimeOnetime' => ['required','date_format:H:i'],
-                'endDateOnetime' => ['required_if:scheduleType,1','nullable', 'date','after:startDateOnetime'],
-                'endTimeOnetime' => ['required_if:scheduleType,1','nullable','date_format:H:i','after:startTimeOnetime'],
+                'endDateOnetime' => ['required_if:scheduleType,1','nullable', 'date','after_or_equal:startDateOnetime'],
+                'endTimeOnetime' => ['required_if:scheduleType,1','nullable','date_format:H:i'],
                 'frequency' => ['required_if:scheduleType,2','nullable','integer','exists:event_intervals,id'],
                 'interval' => ['required_if:scheduleType,2','nullable','integer'],
                 'recurrenceEndType' => ['required_if:scheduleType,2','nullable','integer'],
                 'endDateRecur' => ['required_if:recurrenceEndType,1','nullable','date','after_or_equal:startDateRecur'],
-                'endTimeRecur' => ['required_if:recurrenceEndType,1','nullable','date_format:H:i','after:startDateRecur'],
+                'endTimeRecur' => ['required_if:recurrenceEndType,1','nullable','date_format:H:i'],
                 'numberOfOccurrence' => ['required_if:recurrenceEndType,2','nullable','integer'],
                 'facebook' => ['nullable','url'],
                 'twitter' => ['nullable','url'],
@@ -155,8 +168,8 @@ class EventIndex extends BaseController
                 'hideVenue' => $request->filled('hideVenue')?1:2, 'category' => $input['category'],
                 'eventScheduleType' => $input['scheduleType'], 'startDate' => $input['startDateOnetime'],
                 'endDate' => ($input['scheduleType']==1)?$input['endDateOnetime']:'', 'eventTimeZone' => $input['timezone'],
-                'eventFrequency' => $input['frequency'], 'startTime' => $input['startDateOnetime'],
-                'endTime' =>($input['scheduleType']==1)?$input['endDateOnetime']:'',
+                'eventFrequency' => $input['frequency'], 'startTime' => $input['startTimeOnetime'],
+                'endTime' =>($input['scheduleType']==1)?$input['endTimeOnetime']:'',
                 'recurrenceInterval'=>($input['scheduleType']!=1)?$interval:'', 'recurrenceEndType'=>($input['scheduleType']!=1)?$input['recurrenceEndType']:'',
                 'recurrenceEndCount'=>($input['scheduleType']!=1 && $input['recurrenceEndType']!=1)?$input['numberOfOccurrence']:'',
                 'recurrenceEndDate'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endDateRecur']:'',
@@ -185,6 +198,96 @@ class EventIndex extends BaseController
     //process online event creation
     public function processOnlineEventCreation(Request $request)
     {
+        DB::beginTransaction();
+        try {
+            $web = GeneralSetting::find(1);
+            $user = Auth::user();
+            $country = Country::where('iso3',$user->countryCode)->first();
 
+            $validator = Validator::make($request->all(),[
+                'title'=>['required','string','max:200'],
+                'description'=>['required','string'],
+                'featuredPhoto'=>['required','image','max:2048'],
+                'organizer'=>['required','string','max:200'],
+                'category'=>['required','integer','exists:event_categories,id'],
+                'scheduleType'=>['required','integer','in:1,2'],
+                'timezone' => ['required','string','timezone'],
+                'startDateOnetime' => ['required','date','after_or_equal:today'],
+                'startTimeOnetime' => ['required','date_format:H:i'],
+                'endDateOnetime' => ['required_if:scheduleType,1','nullable', 'date','after_or_equal::startDateOnetime'],
+                'endTimeOnetime' => ['required_if:scheduleType,1','nullable','date_format:H:i'],
+                'frequency' => ['required_if:scheduleType,2','nullable','integer','exists:event_intervals,id'],
+                'interval' => ['required_if:scheduleType,2','nullable','integer'],
+                'recurrenceEndType' => ['required_if:scheduleType,2','nullable','integer'],
+                'endDateRecur' => ['required_if:recurrenceEndType,1','nullable','date','after_or_equal:startDateRecur'],
+                'endTimeRecur' => ['required_if:recurrenceEndType,1','nullable','date_format:H:i'],
+                'numberOfOccurrence' => ['required_if:recurrenceEndType,2','nullable','integer'],
+                'facebook' => ['nullable','url'],
+                'twitter' => ['nullable','url'],
+                'instagram' => ['nullable','url'],
+                'website' => ['nullable','url'],
+                'platform'=>['required',function ($attribute, $value, $fail) {
+                    if (!EventPlatform::isValid($value)) {
+                        $fail('The selected platform is invalid.');
+                    }
+                }],
+                'link'=>['required','url']
+            ],[],[
+                'startDateOnetime'=>'Start Date for One-time event',
+                'startTimeOnetime'=>'Start Time for One-time event',
+                'endDateOnetime'=>'End Date for One-time event',
+                'endTimeOnetime'=>'End Time for One-time event',
+                'recurrenceEndType'=>'End Type for recurring event',
+                'endDateRecur'=>'End date for recurring event',
+                'endTimeRecur'=>'End time for recurring event',
+            ])->stopOnFirstFailure();
+
+            if ($validator->fails()) {
+                return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
+            }
+            $input = $validator->validated();
+            $reference = $this->generateUniqueReference('user_events','reference',16);
+            $frequency = EventInterval::where('id',$input['frequency'])->first();
+            if ($input['scheduleType']!=1){
+                $interval = $input['interval'].' '.$frequency->period;
+            }
+
+            if ($request->hasFile('featuredPhoto')) {
+                //lets upload the address proof
+                $result = $this->google->uploadGoogle($request->file('featuredPhoto'));
+                $featuredPhoto  = $result['link'];
+            }
+
+            $event = UserEvent::create([
+                'reference' => $reference, 'user' => $user->id, 'eventType' => 2,
+                'title' => $input['title'], 'description' => $input['description'],
+                'hideVenue' => $request->filled('hideVenue')?1:2, 'category' => $input['category'],
+                'eventScheduleType' => $input['scheduleType'], 'startDate' => $input['startDateOnetime'],
+                'endDate' => ($input['scheduleType']==1)?$input['endDateOnetime']:'', 'eventTimeZone' => $input['timezone'],
+                'eventFrequency' => $input['frequency'], 'startTime' => $input['startTimeOnetime'],
+                'endTime' =>($input['scheduleType']==1)?$input['endTimeOnetime']:'',
+                'recurrenceInterval'=>($input['scheduleType']!=1)?$interval:'', 'recurrenceEndType'=>($input['scheduleType']!=1)?$input['recurrenceEndType']:'',
+                'recurrenceEndCount'=>($input['scheduleType']!=1 && $input['recurrenceEndType']!=1)?$input['numberOfOccurrence']:'',
+                'recurrenceEndDate'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endDateRecur']:'',
+                'recurrenceEndTime'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endTimeRecur']:'',
+                'featuredImage'=>$featuredPhoto, 'instagram'=>$input['instagram'],'facebook'=>$input['facebook'],
+                'twitter'=>$input['twitter'], 'website'=>$input['website'],'platform' => $input['platform'],'link' => $input['link']
+            ]);
+
+            if (!empty($event)){
+                DB::commit();
+                $this->userNotification($user,'Event Created','Your event was created successfully and is pending review',$request->ip());
+                return $this->sendResponse([
+                    'redirectTo'=>route('mobile.user.events.tickets.new',['event'=>$event->reference]),
+                    'redirects'=>true
+                ],'Event created successful. Redirecting to add tickets ...');
+            }
+        }catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Error in  ' . __METHOD__ . ' while adding new live event: ' . $exception->getMessage());
+            return $this->sendError('server.error',[
+                'error'=>'A server error occurred while processing your request.'
+            ]);
+        }
     }
 }

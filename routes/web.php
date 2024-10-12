@@ -191,9 +191,9 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             /*====================EVENT DIRECTORY ===========================*/
             Route::get('events/index',[EventIndex::class,'landingPage'])
                 ->name('events.index');
+            Route::get('events/manage',[EventIndex::class,'manageEvent'])
+                ->name('events.manage');
             //Create Event
-            Route::get('events/new',[EventIndex::class,'createEvent'])
-                ->name('events.new');
             Route::get('events/new/online',[EventIndex::class,'createOnlineEvent'])
                 ->name('events.new.online');
             Route::get('events/new/live',[EventIndex::class,'createLiveEvent'])

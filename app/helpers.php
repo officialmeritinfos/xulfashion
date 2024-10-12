@@ -681,3 +681,37 @@ if (!function_exists('averageMerchantRatings')) {
         ])->avg('rating');
     }
 }
+if (!function_exists('eventCategoryById')) {
+    function eventCategoryById($id)
+    {
+        return \App\Models\EventCategory::where('id',$id)->first();
+    }
+}
+if (!function_exists('eventType')) {
+    function eventType($id)
+    {
+        switch ($id){
+            case 1:
+                $type = "One-time Event";
+                break;
+            default:
+                $type = "Recurring Event";
+                break;
+        }
+        return $type;
+    }
+}
+if (!function_exists('mergeDateAndTime')) {
+    function mergeDateAndTime($date,$time)
+    {
+        return strtotime("$date $time");
+    }
+}
+if (!function_exists('getDateAndTime')) {
+    function getDateAndTime($timestamp)
+    {
+        return Carbon::createFromTimestamp($timestamp);
+    }
+}
+
+

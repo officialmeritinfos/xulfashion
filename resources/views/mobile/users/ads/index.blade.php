@@ -56,66 +56,57 @@
     @else
             <section class="section-b-space">
                 <div class="custom-container">
-                    <div class="row g-3">
-                        @foreach($ads as $ad)
-                            <div class="col-6">
-                                <div class="product-box">
-                                    <div class="product-box-img">
-                                        <a href="{{route('mobile.marketplace.detail',[ 'slug'=>textToSlug($ad->title),'id'=>$ad->reference])}}"> <img class="img" src="{{$ad->featuredImage}}" alt="p1" /></a>
-
-                                        <div class="cart-box">
-                                            <a href="{{route('mobile.user.ads.detail',['id'=>$ad->reference])}}" class="cart-bag">
-                                                <i class="fa fa-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-box-detail">
-                                        <h4>{{$ad->title}}</h4>
-                                        <h5>
-                                            {{$ad->service->name}}
-                                        </h5>
-                                        <div class="bottom-panel">
-                                            <div class="price">
-                                                <h4>
-                                                    @if($ad->priceType==1)
-                                                        Contact for price
-                                                    @else
-                                                        {{currencySign($ad->currency)}}{{shorten_number($ad->amount)}}
-                                                    @endif
-                                                </h4>
-                                            </div>
-                                            <div class="rating">
-                                                <h6>Status: </h6>
-                                                <h6>
-                                                    @switch($ad->status)
-                                                        @case(1)
-                                                            <i class="fa fa-check-circle text-success" style="font-size: 14px;"
-                                                            data-bs-toggle="tooltip" title="Active"></i>
-                                                            @break
-                                                        @case(2)
-                                                           <i class="fa fa-rotate-270 fa-rotate text-primary" style="font-size: 14px;"
-                                                              data-bs-toggle="tooltip" title="Review"></i>
-                                                            @break
-                                                        @case(3)
-                                                           <i class="fa fa-ban text-danger" style="font-size: 14px;"
-                                                              data-bs-toggle="tooltip" title="Cancelled"></i>
-                                                            @break
-                                                        @default
-                                                            <i class="fa fa-warning text-danger" style="font-size: 14px;"
-                                                               data-bs-toggle="tooltip" title="Rejected"></i>
-                                                            @break
-                                                    @endswitch
-                                                </h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+                    <div class="row g-3" id="product-list">
+                        @include('mobile.users.ads.components.merchant_ad_list')
                     </div>
+                    @if($ads->hasMorePages())
+                        <div class="row g-3">
+                            <div class="text-center mt-4">
+                                <button id="load-more" class="btn btn-light btn-auto btn-sm" data-url="{{ url()->full() }}">Load More</button>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </section>
     @endif
 
 </div>
+
+    @push('js')
+        <script>
+            $(document).ready(function() {
+                let page = 1;
+                let loadMoreBtn = $('#load-more');
+                let loadMoreUrl = loadMoreBtn.data('url');
+                let originalText = loadMoreBtn.text();
+
+                loadMoreBtn.click(function() {
+                    page++;
+                    //show loading icon
+                    loadMoreBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+                    $.ajax({
+                        url: loadMoreUrl,
+                        type: 'GET',
+                        data: { page: page },
+                        success: function(response) {
+                            if(response.products) {
+                                $('#product-list').append(response.products);
+                                if(!response.hasMorePages) {
+                                    loadMoreBtn.hide();
+                                } else {
+                                    loadMoreBtn.text(originalText);
+                                }
+                            }else {
+                                loadMoreBtn.text(originalText);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error loading more products:', error);
+                            loadMoreBtn.text(originalText);
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection

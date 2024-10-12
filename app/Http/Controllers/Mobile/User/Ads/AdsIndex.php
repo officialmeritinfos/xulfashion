@@ -28,10 +28,22 @@ class AdsIndex extends BaseController
         $this->google = new GoogleUpload();
     }
     //landing page
-    public function landingPage()
+    public function landingPage(Request $request)
     {
         $web = GeneralSetting::find(1);
         $user = Auth::user();
+
+        $ads = UserAd::where('user',$user->id)->with('service')
+            ->orderBy('status')->orderBy('created_at','desc')
+            ->paginate(10);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('mobile.users.ads.components.merchant_ad_list', compact('ads'))->render(),
+                'nextPage' => $ads->currentPage() + 1,
+                'hasMorePages' => $ads->hasMorePages()
+            ]);
+        }
 
         return view('mobile.users.ads.index')->with([
             'pageName'  =>'Landing Page',
@@ -45,9 +57,7 @@ class AdsIndex extends BaseController
             'totalAds'   =>UserAd::where([
                 'user' => $user->id,'status' => 1
             ])->count(),
-            'ads'         =>UserAd::where('user',$user->id)->with('service')
-                ->orderBy('status')->orderBy('created_at','desc')
-                ->paginate(15)
+            'ads'         =>$ads
         ]);
     }
     //create new page
