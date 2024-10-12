@@ -274,3 +274,31 @@
 </script>
 
 <link rel="stylesheet" href="http://127.0.0.1:8000/dashboard/css/boxed-check.min.css">
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+<script>
+    new ClipboardJS('.copy');
+</script>
+<script>
+    var clipboard= new ClipboardJS('.cpy');
+    clipboard.on('success', function(e) {
+        toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.info("Copied");
+
+    });
+</script>
+<script>
+    var clipboard= new ClipboardJS('.cpy-link');
+    clipboard.on('success', function(e) {
+        toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+        toastr.info("Link copied. Visit your browser and paste it to continue.");
+
+    });
+</script>

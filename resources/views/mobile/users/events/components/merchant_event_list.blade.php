@@ -2,10 +2,10 @@
     <div class="col-6">
         <div class="product-box">
             <div class="product-box-img">
-                <a href="product-details.html"> <img class="img" src="{{$event->featuredImage}}" alt="p1" /></a>
+                <a href="{{route('mobile.user.events.detail',['event'=>$event->reference])}}"> <img class="img" src="{{$event->featuredImage}}" alt="p1" /></a>
 
                 <div class="cart-box">
-                    <a href="cart.html" class="cart-bag">
+                    <a href="{{route('mobile.user.events.detail',['event'=>$event->reference])}}" class="cart-bag">
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>

@@ -14,6 +14,7 @@ use App\Http\Controllers\Mobile\LegalController;
 use App\Http\Controllers\Mobile\User\Ads\AdsDetails;
 use App\Http\Controllers\Mobile\User\Ads\AdsEdit;
 use App\Http\Controllers\Mobile\User\Ads\AdsIndex;
+use App\Http\Controllers\Mobile\User\Events\EventDetail;
 use App\Http\Controllers\Mobile\User\Events\EventIndex;
 use App\Http\Controllers\Mobile\User\Events\TicketIndex;
 use App\Http\Controllers\Mobile\User\Profile;
@@ -202,6 +203,18 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('events.new.live.process');
             Route::post('events/new/online/process',[EventIndex::class,'processOnlineEventCreation'])
                 ->name('events.new.online.process');
+            //Event Detail
+            Route::get('events/{event}/detail',[EventDetail::class,'landingPage'])
+                ->name('events.detail');
+            //Event Edit
+            Route::get('events/{event}/edit',[EventDetail::class,'editEvent'])
+                ->name('events.edit');
+            Route::post('events/edit/live/process',[EventDetail::class,'processLiveEventUpdate'])
+                ->name('events.edit.live.process');
+            Route::post('events/edit/online/process',[EventDetail::class,'processOnlineEventUpdate'])
+                ->name('events.edit.online.process');
+
+
             //Ticket Index
             Route::get('events/tickets/{event}/index',[TicketIndex::class,'landingPage'])
                 ->name('events.tickets.index');

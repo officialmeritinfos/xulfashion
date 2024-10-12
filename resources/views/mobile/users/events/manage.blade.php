@@ -53,21 +53,6 @@
                     <div class="modal-body">
                         <!-- Event Type Options -->
                         <div class="row">
-                            <!-- Online Event Card -->
-                            <div class="col-12 mb-3 ">
-                                <div class="card option-card shadow" data-url="{{route('mobile.user.events.new.online')}}" data-value="Online Event" onclick="selectOption(this)">
-                                    <div class="card-body text-center">
-                                        <div class="icon mb-2">
-                                            <i class="fa-solid fa-signal text-warning"  style="width: 40px;"></i>
-                                        </div>
-                                        <h5 class="card-title">Online Event</h5>
-                                        <p class="card-text">Takes place online and attendees join using web conferencing services</p>
-                                        <div class="d-flex justify-content-center mt-3">
-                                            <input type="radio" name="eventType" class="form-check-input" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <!-- Live Event Card -->
                             <div class="col-12 mb-3">
                                 <div class="card option-card shadow" data-url="{{route('mobile.user.events.new.live')}}" data-value="Live Event" onclick="selectOption(this)">
@@ -78,7 +63,22 @@
                                         <h5 class="card-title">Live Event</h5>
                                         <p class="card-text">Takes place at a physical location and attendees join in person</p>
                                         <div class="d-flex justify-content-center mt-3">
-                                            <input type="radio" name="eventType" class="form-check-input" />
+                                            <input type="radio" name="eventType" class="form-check-input" value="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Online Event Card -->
+                            <div class="col-12 mb-3 ">
+                                <div class="card option-card shadow" data-url="{{route('mobile.user.events.new.online')}}" data-value="Online Event" onclick="selectOption(this)">
+                                    <div class="card-body text-center">
+                                        <div class="icon mb-2">
+                                            <i class="fa-solid fa-signal text-warning"  style="width: 40px;"></i>
+                                        </div>
+                                        <h5 class="card-title">Online Event</h5>
+                                        <p class="card-text">Takes place online and attendees join using web conferencing services</p>
+                                        <div class="d-flex justify-content-center mt-3">
+                                            <input type="radio" name="eventType" class="form-check-input" value="2" />
                                         </div>
                                     </div>
                                 </div>

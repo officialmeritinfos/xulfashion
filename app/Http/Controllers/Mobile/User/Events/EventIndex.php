@@ -271,7 +271,8 @@ class EventIndex extends BaseController
                 'recurrenceEndDate'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endDateRecur']:'',
                 'recurrenceEndTime'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endTimeRecur']:'',
                 'featuredImage'=>$featuredPhoto, 'instagram'=>$input['instagram'],'facebook'=>$input['facebook'],
-                'twitter'=>$input['twitter'], 'website'=>$input['website'],'platform' => $input['platform'],'link' => $input['link']
+                'twitter'=>$input['twitter'], 'website'=>$input['website'],'platform' => $input['platform'],'link' => $input['link'],
+                'organizer'=>$input['organizer']
             ]);
 
             if (!empty($event)){

@@ -692,10 +692,10 @@ if (!function_exists('eventType')) {
     {
         switch ($id){
             case 1:
-                $type = "One-time Event";
+                $type = "Live Event";
                 break;
             default:
-                $type = "Recurring Event";
+                $type = "Online Event";
                 break;
         }
         return $type;
@@ -713,5 +713,17 @@ if (!function_exists('getDateAndTime')) {
         return Carbon::createFromTimestamp($timestamp);
     }
 }
-
-
+if (!function_exists('eventEndTime')) {
+    function eventEndTime(\App\Models\UserEvent $event)
+    {
+        if ($event->eventScheduleType==1){
+            return $event->endDate.' '.$event->endTime;
+        }else{
+            if ($event->recurrenceEndType==1){
+                return $event->recurrenceEndDate.' '.$event->recurrenceEndTime;
+            }else{
+                return "Ends after ".$event->recurrenceEndCount." Occurrences";
+            }
+        }
+    }
+}
