@@ -60,7 +60,7 @@
 </header>
 <!-- header end -->
 @yield('content')
-
+<section class="panel-space"></section>
 @include('mobile.users.layout.footerSection')
 
 <!-- swiper js -->

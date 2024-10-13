@@ -20,6 +20,8 @@ class CreateUserEventTicketsTable extends Migration
             $table->string('name', 225);
             $table->text('description');
             $table->string('currency')->nullable();
+            $table->string('kindOfTicket')->default(2);
+            $table->string('isGroup')->default(2);
             $table->string('price', 150)->default('0');
             $table->integer('isFree')->default(2);
             $table->integer('inviteOnly')->default(2);

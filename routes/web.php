@@ -14,7 +14,9 @@ use App\Http\Controllers\Mobile\LegalController;
 use App\Http\Controllers\Mobile\User\Ads\AdsDetails;
 use App\Http\Controllers\Mobile\User\Ads\AdsEdit;
 use App\Http\Controllers\Mobile\User\Ads\AdsIndex;
+use App\Http\Controllers\Mobile\User\Events\Attendees;
 use App\Http\Controllers\Mobile\User\Events\EventDetail;
+use App\Http\Controllers\Mobile\User\Events\EventEdit;
 use App\Http\Controllers\Mobile\User\Events\EventIndex;
 use App\Http\Controllers\Mobile\User\Events\TicketIndex;
 use App\Http\Controllers\Mobile\User\Profile;
@@ -206,21 +208,33 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //Event Detail
             Route::get('events/{event}/detail',[EventDetail::class,'landingPage'])
                 ->name('events.detail');
+            Route::get('events/{event}/sales',[EventDetail::class,'sales'])
+                ->name('events.sales');
             //Event Edit
-            Route::get('events/{event}/edit',[EventDetail::class,'editEvent'])
+            Route::get('events/{event}/edit',[EventEdit::class,'landingPage'])
                 ->name('events.edit');
-            Route::post('events/edit/live/process',[EventDetail::class,'processLiveEventUpdate'])
+            Route::post('events/edit/live/process',[EventEdit::class,'processLiveEventUpdate'])
                 ->name('events.edit.live.process');
-            Route::post('events/edit/online/process',[EventDetail::class,'processOnlineEventUpdate'])
+            Route::post('events/edit/online/process',[EventEdit::class,'processOnlineEventUpdate'])
                 ->name('events.edit.online.process');
-
-
             //Ticket Index
             Route::get('events/tickets/{event}/index',[TicketIndex::class,'landingPage'])
                 ->name('events.tickets.index');
+            Route::get('events/tickets/{event}/email',[TicketIndex::class,'landingPage'])
+                ->name('events.tickets.email');
+            Route::post('events/ticket/email/process',[TicketIndex::class,'processOnlineEventUpdate'])
+                ->name('events.tickets.email.process');
             //Create ticket
             Route::get('events/tickets/{event}/new',[TicketIndex::class,'createTicket'])
                 ->name('events.tickets.new');
+            //Event Attendees
+            Route::get('events/{event}/attendees',[Attendees::class,'landingPage'])
+                ->name('events.attendees');
+            Route::get('events/{event}/attendees/check-in-list',[Attendees::class,'checkInList'])
+                ->name('events.attendees.check-in-list');
+            Route::get('events/{event}/attendees/notify',[Attendees::class,'notifyAttendees'])
+                ->name('events.attendees.notify');
+
 
 
 

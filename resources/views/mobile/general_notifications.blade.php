@@ -266,12 +266,25 @@
 
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="{{asset('tinymce/tinymce.min.js')}}"></script>
 
 <script>
-    const quill = new Quill('.editor', {
-        theme: 'snow'
+    tinymce.init({
+        selector: ".editor",
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table paste",
+        ],
+        toolbar:
+            "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
     });
 </script>
+<style>
+    .tox .tox-promotion{
+        display: none;
+    }
+</style>
 
 <link rel="stylesheet" href="http://127.0.0.1:8000/dashboard/css/boxed-check.min.css">
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
@@ -302,3 +315,11 @@
 
     });
 </script>
+
+<style>
+    .scrollable-box {
+        max-height: 100px; /* Adjust this value as needed */
+        overflow-y: auto;  /* Enables vertical scrolling if content exceeds max height */
+        padding-right: 10px; /* Optional padding to avoid scrollbar overlap */
+    }
+</style>

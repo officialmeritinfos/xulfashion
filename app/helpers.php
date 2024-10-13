@@ -727,3 +727,11 @@ if (!function_exists('eventEndTime')) {
         }
     }
 }
+if (!function_exists('extractIntervalFromRecurrenceInterval')) {
+    function extractIntervalFromRecurrenceInterval($text)
+    {
+        $arr = explode(' ',$text);
+
+        return $arr[0];
+    }
+}

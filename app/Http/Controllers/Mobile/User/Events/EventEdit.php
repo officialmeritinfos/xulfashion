@@ -10,7 +10,6 @@ use App\Models\Country;
 use App\Models\EventCategory;
 use App\Models\EventInterval;
 use App\Models\GeneralSetting;
-use App\Models\ServiceType;
 use App\Models\State;
 use App\Models\UserEvent;
 use App\Traits\Helpers;
@@ -21,7 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class EventIndex extends BaseController
+class EventEdit extends BaseController
 {
     public $google;
     use Helpers;
@@ -29,83 +28,34 @@ class EventIndex extends BaseController
     {
         $this->google = new GoogleUpload();
     }
-    //landing page
-    public function landingPage()
+    //edit event
+    public function landingPage(Request $request, $eventId)
     {
         $web = GeneralSetting::find(1);
         $user = Auth::user();
 
-        return view('mobile.users.events.index')->with([
+        $event = UserEvent::where([
+            'reference' => $eventId,
+            'user' => $user->id
+        ])->firstOrFail();
+
+        $country = Country::where('iso3',$user->countryCode)->first();
+
+        return view('mobile.users.events.edit')->with([
             'web' => $web,
             'user' => $user,
             'siteName'=>$web->name,
-            'pageName' =>'Events Landing Page',
-        ]);
-    }
-    //create event
-    public function manageEvent(Request $request)
-    {
-        $web = GeneralSetting::find(1);
-        $user = Auth::user();
-        $country = Country::where('iso3',$user->countryCode)->first();
-
-        $events = UserEvent::where('user',$user->id)->orderBy('status')->orderBy('updated_at','desc')->paginate(10);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'products' => view('mobile.users.events.components.merchant_event_list', compact('events'))->render(),
-                'nextPage' => $events->currentPage() + 1,
-                'hasMorePages' => $events->hasMorePages()
-            ]);
-        }
-
-        return view('mobile.users.events.manage')->with([
-            'pageName'  =>'Manage Events',
-            'web'       =>$web,
-            'siteName'  =>$web->name,
-            'user'      =>$user,
-            'country'   =>$country,
-            'events'    =>$events
-        ]);
-    }
-    //create online Events
-    public function createOnlineEvent(Request $request)
-    {
-        $web = GeneralSetting::find(1);
-        $user = Auth::user();
-        $country = Country::where('iso3',$user->countryCode)->first();
-
-        return view('mobile.users.events.components.online_events')->with([
-            'pageName'  =>'Create Online Event',
-            'web'       =>$web,
-            'siteName'  =>$web->name,
-            'user'      =>$user,
+            'pageName' =>'Edit Event',
+            'event' => $event,
             'states'    =>State::where('country_code',$country->iso2)->orderBy('name')->get(),
             'categories'=>EventCategory::where('status',1)->get(),
             'timezones' =>\DateTimeZone::listIdentifiers(),
             'intervals' =>EventInterval::where('status',1)->get()
         ]);
     }
-    //create live Events
-    public function createLiveEvent(Request $request)
-    {
-        $web = GeneralSetting::find(1);
-        $user = Auth::user();
-        $country = Country::where('iso3',$user->countryCode)->first();
 
-        return view('mobile.users.events.components.live_events')->with([
-            'pageName'  =>'Create Live Event',
-            'web'       =>$web,
-            'siteName'  =>$web->name,
-            'user'      =>$user,
-            'states'    =>State::where('country_code',$country->iso2)->orderBy('name')->get(),
-            'categories'=>EventCategory::where('status',1)->get(),
-            'timezones' =>\DateTimeZone::listIdentifiers(),
-            'intervals' =>EventInterval::where('status',1)->get()
-        ]);
-    }
-    //process live event creation
-    public function processLiveEventCreation(Request $request)
+    //process edit live event
+    public function processLiveEventUpdate(Request $request)
     {
         DB::beginTransaction();
         try {
@@ -129,13 +79,28 @@ class EventIndex extends BaseController
                 'frequency' => ['required_if:scheduleType,2','nullable','integer','exists:event_intervals,id'],
                 'interval' => ['required_if:scheduleType,2','nullable','integer'],
                 'recurrenceEndType' => ['required_if:scheduleType,2','nullable','integer'],
-                'endDateRecur' => ['required_if:recurrenceEndType,1','nullable','date','after_or_equal:startDateRecur'],
-                'endTimeRecur' => ['required_if:recurrenceEndType,1','nullable','date_format:H:i'],
+                'endDateRecur' => [
+                    function ($attribute, $value, $fail) use ($request) {
+                        if ($request->input('recurrenceEndType') == 1 && $request->input('scheduleType') != 1 && empty($value)) {
+                            $fail('The end date for recurring events is required when the event schedule type is recurrent and end type is specific date.');
+                        }
+                    },
+                    'nullable','date','after_or_equal:startDateRecur'
+                ],
+                'endTimeRecur' => [
+                    function ($attribute, $value, $fail) use ($request) {
+                        if ($request->input('recurrenceEndType') == 1 && $request->input('scheduleType') != 1 && empty($value)) {
+                            $fail('The end time for recurring events is required when the event schedule type is recurrent and end type is specific date.');
+                        }
+                    },
+                    'nullable','date_format:H:i'
+                ],
                 'numberOfOccurrence' => ['required_if:recurrenceEndType,2','nullable','integer'],
                 'facebook' => ['nullable','url'],
                 'twitter' => ['nullable','url'],
                 'instagram' => ['nullable','url'],
                 'website' => ['nullable','url'],
+                'event'=>['required','string',Rule::exists('user_events','reference')->where('user',$user->id)]
             ],[],[
                 'startDateOnetime'=>'Start Date for One-time event',
                 'startTimeOnetime'=>'Start Time for One-time event',
@@ -150,7 +115,15 @@ class EventIndex extends BaseController
                 return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
             }
             $input = $validator->validated();
-            $reference = $this->generateUniqueReference('user_events','reference',16);
+            $event = UserEvent::where([
+                'user' => $user->id,
+                'reference' => $input['event'],
+            ])->first();
+
+            if (empty($event)) {
+                return $this->sendError('event.error',['error'=>'Event not found']);
+            }
+
             $frequency = EventInterval::where('id',$input['frequency'])->first();
             if ($input['scheduleType']!=1){
                 $interval = $input['interval'].' '.$frequency->period;
@@ -160,10 +133,11 @@ class EventIndex extends BaseController
                 //lets upload the address proof
                 $result = $this->google->uploadGoogle($request->file('featuredPhoto'));
                 $featuredPhoto  = $result['link'];
+            }else{
+                $featuredPhoto = $event->featuredImage;
             }
 
-            $event = UserEvent::create([
-                'reference' => $reference, 'user' => $user->id, 'eventType' => 1,
+            $updated = UserEvent::where('id',$event->id)->update([
                 'title' => $input['title'], 'description' => $input['description'],
                 'hideVenue' => $request->filled('hideVenue')?1:2, 'category' => $input['category'],
                 'eventScheduleType' => $input['scheduleType'], 'startDate' => $input['startDateOnetime'],
@@ -179,24 +153,24 @@ class EventIndex extends BaseController
                 'website'=>$input['website']
             ]);
 
-            if (!empty($event)){
+            if ($updated){
                 DB::commit();
-                $this->userNotification($user,'Event Created','Your event was created successfully and is pending review',$request->ip());
+                $this->userNotification($user,'Event Created','Your event was updated successfully and has been sent for review',$request->ip());
                 return $this->sendResponse([
-                    'redirectTo'=>route('mobile.user.events.tickets.new',['event'=>$event->reference]),
+                    'redirectTo'=>route('mobile.user.events.detail',['event'=>$event->reference]),
                     'redirects'=>true
-                ],'Event created successful. Redirecting to add tickets ...');
+                ],'Event updated successful. Redirecting to event page ...');
             }
         }catch (\Exception $exception){
             DB::rollBack();
-            Log::info('Error in  ' . __METHOD__ . ' while adding new live event: ' . $exception->getMessage());
+            Log::info('Error in  ' . __METHOD__ . ' while updating live event: ' . $exception->getMessage());
             return $this->sendError('server.error',[
                 'error'=>'A server error occurred while processing your request.'
             ]);
         }
     }
-    //process online event creation
-    public function processOnlineEventCreation(Request $request)
+    //process edit online event
+    public function processOnlineEventUpdate(Request $request)
     {
         DB::beginTransaction();
         try {
@@ -207,7 +181,7 @@ class EventIndex extends BaseController
             $validator = Validator::make($request->all(),[
                 'title'=>['required','string','max:200'],
                 'description'=>['required','string'],
-                'featuredPhoto'=>['required','image','max:2048'],
+                'featuredPhoto'=>['nullable','image','max:2048'],
                 'organizer'=>['required','string','max:200'],
                 'category'=>['required','integer','exists:event_categories,id'],
                 'scheduleType'=>['required','integer','in:1,2'],
@@ -219,8 +193,22 @@ class EventIndex extends BaseController
                 'frequency' => ['required_if:scheduleType,2','nullable','integer','exists:event_intervals,id'],
                 'interval' => ['required_if:scheduleType,2','nullable','integer'],
                 'recurrenceEndType' => ['required_if:scheduleType,2','nullable','integer'],
-                'endDateRecur' => ['required_if:recurrenceEndType,1','nullable','date','after_or_equal:startDateRecur'],
-                'endTimeRecur' => ['required_if:recurrenceEndType,1','nullable','date_format:H:i'],
+                'endDateRecur' => [
+                    function ($attribute, $value, $fail) use ($request) {
+                        if ($request->input('recurrenceEndType') == 1 && $request->input('scheduleType') != 1 && empty($value)) {
+                            $fail('The end date for recurring events is required when the event schedule type is recurrent and end type is specific date.');
+                        }
+                    },
+                    'nullable','date','after_or_equal:startDateRecur'
+                ],
+                'endTimeRecur' => [
+                    function ($attribute, $value, $fail) use ($request) {
+                        if ($request->input('recurrenceEndType') == 1 && $request->input('scheduleType') != 1 && empty($value)) {
+                            $fail('The end time for recurring events is required when the event schedule type is recurrent and end type is specific date.');
+                        }
+                    },
+                    'nullable','date_format:H:i'
+                ],
                 'numberOfOccurrence' => ['required_if:recurrenceEndType,2','nullable','integer'],
                 'facebook' => ['nullable','url'],
                 'twitter' => ['nullable','url'],
@@ -231,7 +219,8 @@ class EventIndex extends BaseController
                         $fail('The selected platform is invalid.');
                     }
                 }],
-                'link'=>['required','url']
+                'link'=>['required','url'],
+                'event'=>['required','string',Rule::exists('user_events','reference')->where('user',$user->id)]
             ],[],[
                 'startDateOnetime'=>'Start Date for One-time event',
                 'startTimeOnetime'=>'Start Time for One-time event',
@@ -246,7 +235,16 @@ class EventIndex extends BaseController
                 return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
             }
             $input = $validator->validated();
-            $reference = $this->generateUniqueReference('user_events','reference',16);
+
+            $event = UserEvent::where([
+                'user' => $user->id,
+                'reference' => $input['event'],
+            ])->first();
+
+            if (empty($event)) {
+                return $this->sendError('event.error',['error'=>'Event not found']);
+            }
+
             $frequency = EventInterval::where('id',$input['frequency'])->first();
             if ($input['scheduleType']!=1){
                 $interval = $input['interval'].' '.$frequency->period;
@@ -256,10 +254,11 @@ class EventIndex extends BaseController
                 //lets upload the address proof
                 $result = $this->google->uploadGoogle($request->file('featuredPhoto'));
                 $featuredPhoto  = $result['link'];
+            }else{
+                $featuredPhoto = $event->featuredImage;
             }
 
-            $event = UserEvent::create([
-                'reference' => $reference, 'user' => $user->id, 'eventType' => 2,
+            $updated = UserEvent::where('id',$event->id)->update([
                 'title' => $input['title'], 'description' => $input['description'],
                 'hideVenue' => $request->filled('hideVenue')?1:2, 'category' => $input['category'],
                 'eventScheduleType' => $input['scheduleType'], 'startDate' => $input['startDateOnetime'],
@@ -275,17 +274,17 @@ class EventIndex extends BaseController
                 'organizer'=>$input['organizer']
             ]);
 
-            if (!empty($event)){
+            if ($updated){
                 DB::commit();
-                $this->userNotification($user,'Event Created','Your event was created successfully and is pending review',$request->ip());
+                $this->userNotification($user,'Event Updated','Your event was updated successfully and has been sent for review',$request->ip());
                 return $this->sendResponse([
-                    'redirectTo'=>route('mobile.user.events.tickets.new',['event'=>$event->reference]),
+                    'redirectTo'=>route('mobile.user.events.detail',['event'=>$event->reference]),
                     'redirects'=>true
-                ],'Event created successful. Redirecting to add tickets ...');
+                ],'Event updated successful');
             }
         }catch (\Exception $exception){
             DB::rollBack();
-            Log::info('Error in  ' . __METHOD__ . ' while adding new online event: ' . $exception->getMessage());
+            Log::info('Error in  ' . __METHOD__ . ' while updating online event: ' . $exception->getMessage());
             return $this->sendError('server.error',[
                 'error'=>'A server error occurred while processing your request.'
             ]);

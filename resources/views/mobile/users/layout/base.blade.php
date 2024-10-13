@@ -59,6 +59,8 @@
 
 @yield('content')
 
+<section class="panel-space"></section>
+
 @include('mobile.ads.layout.footerSection')
 
 <!-- swiper js -->
