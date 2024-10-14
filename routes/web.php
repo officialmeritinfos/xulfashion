@@ -18,6 +18,7 @@ use App\Http\Controllers\Mobile\User\Events\Attendees;
 use App\Http\Controllers\Mobile\User\Events\EventDetail;
 use App\Http\Controllers\Mobile\User\Events\EventEdit;
 use App\Http\Controllers\Mobile\User\Events\EventIndex;
+use App\Http\Controllers\Mobile\User\Events\TicketEdit;
 use App\Http\Controllers\Mobile\User\Events\TicketIndex;
 use App\Http\Controllers\Mobile\User\Profile;
 use Illuminate\Support\Facades\Route;
@@ -234,6 +235,13 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //Delete Ticket
             Route::post('events/ticket/{event}/delete',[TicketIndex::class,'deleteTicket'])
                 ->name('events.ticket.delete');
+            //Edit Ticket
+            Route::get('events/tickets/{ticket}/edit',[TicketEdit::class,'landingPage'])
+                ->name('events.tickets.edit');
+            Route::post('events/tickets/{event}/{ticket}/edit/single/process',[TicketEdit::class,'processSingleTicketUpdate'])
+                ->name('events.tickets.edit.single.process');
+            Route::post('events/tickets/{event}/{ticket}/edit/group/process',[TicketEdit::class,'processGroupTicketUpdate'])
+                ->name('events.tickets.edit.group.process');
 
 
             //Event Attendees

@@ -59,7 +59,7 @@
                                         <i class="fa fa-ellipsis-v" style="font-size: 18px;"></i>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
+                                        <li><a class="dropdown-item" href="{{route('mobile.user.events.tickets.edit',['ticket'=>$ticket->reference])}}">Edit</a></li>
                                         <li><span class="dropdown-item text-danger" data-id="{{$ticket->id}}" data-name="{{$ticket->name}}"
                                             data-bs-toggle="modal" data-bs-target="#deleteTicket">Delete</span></li>
                                     </ul>

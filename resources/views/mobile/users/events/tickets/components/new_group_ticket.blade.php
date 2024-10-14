@@ -75,7 +75,11 @@
     </div>
     <div class="priceComponent" style="display: none;">
         <div class="form-group d-block">
-            <label for="inputusernumber" class="form-label">Group Price<sup class="text-danger">*</sup></label>
+            <label for="inputusernumber" class="form-label">Group Price<sup class="text-danger">*</sup>
+                <i class="fa fa-info-circle" data-bs-toggle="tooltip"
+                   title="If the selected currency is not your default account currency, all payments received will be
+                   converted to your account currency before settlement"></i>
+            </label>
             <div class="input-group mb-3">
                 <select class="form-control selectize" name="groupCurrency">
                     @foreach($fiats as $fiat)

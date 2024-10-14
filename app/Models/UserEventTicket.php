@@ -131,15 +131,11 @@ class UserEventTicket extends Model
         return $this->isGroupTicket() ? (int) $this->groupSize : 1;
     }
 
-    /**
-     * Get the perks associated with the ticket as an array.
-     *
-     * @return array
-     */
-    public function getPerks()
+    public function getPerksAttribute($value)
     {
-        return $this->perks ? json_decode($this->perks, true) : [];
+        return $value ? explode(',', $value) : [];
     }
+
 
     /**
      * Get the questions associated with the ticket as an array.

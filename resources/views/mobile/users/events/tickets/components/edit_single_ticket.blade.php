@@ -1,5 +1,5 @@
 
-<form class="theme-form profile-setting" action="{{route('mobile.user.events.ticket.single.process',['event'=>$event->reference])}}"
+<form class="theme-form profile-setting" action="{{route('mobile.user.events.tickets.edit.single.process',['event'=>$event->reference,'ticket'=>$ticket->reference])}}"
       method="post" id="basicSettings"
       enctype="multipart/form-data">
     @csrf
@@ -9,7 +9,7 @@
             <div class="boxed-check-group boxed-check-primary row">
                 <div class="col-md-4 mt-2 col-4" data-bs-toggle="tooltip" title="Free">
                     <label class="boxed-check">
-                        <input class="boxed-check-input" type="radio" name="ticketKind" value="1">
+                        <input class="boxed-check-input" type="radio" name="ticketKind" value="1" {{($ticket->kindOfTicket==1)?'checked':''}}>
                         <div class="boxed-check-label" style="text-align:center;">
                             <h2>Free </h2>
                         </div>
@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-md-4 mt-2 col-4" data-bs-toggle="tooltip" title="Paid">
                     <label class="boxed-check">
-                        <input class="boxed-check-input" type="radio" name="ticketKind" value="2">
+                        <input class="boxed-check-input" type="radio" name="ticketKind" value="2" {{($ticket->kindOfTicket!=1)?'checked':''}}>
                         <div class="boxed-check-label" style="text-align:center;">
                             <h2>Paid </h2>
                         </div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-md-4 mt-2 col-4" data-bs-toggle="tooltip" title="Will not be listed on your Event page.Invites only.">
                     <label class="boxed-check">
-                        <input class="boxed-check-input" type="checkbox" name="inviteOnly">
+                        <input class="boxed-check-input" type="checkbox" name="inviteOnly" {{($ticket->inviteOnly==1)?'checked':''}}>
                         <div class="boxed-check-label" style="text-align:center;">
                             <h2>Unlisted</h2>
                         </div>
@@ -43,7 +43,8 @@
             </sup>
         </label>
         <div class="form-input">
-            <input type="text" class="form-control" id="inputusernumber" placeholder="Free Ticket" name="title"/>
+            <input type="text" class="form-control" id="inputusernumber" placeholder="Free Ticket" name="title"
+            value="{{$ticket->name}}"/>
             <i class="fa fa-note-sticky"></i>
         </div>
     </div>
@@ -53,10 +54,10 @@
             <label for="inputusernumber" class="form-label">Ticket Stock<sup class="text-danger">*</sup></label>
             <div class="input-group mb-3">
                 <select class="form-control" name="stock">
-                   <option value="1">Limited</option>
-                   <option value="2">Unlimited</option>
+                    <option value="1"  {{(!$ticket->hasUnlimitedStock())?'selected':''}}>Limited</option>
+                    <option value="2"  {{($ticket->hasUnlimitedStock())?'selected':''}}>Unlimited</option>
                 </select>
-                <input type="number" class="form-control" placeholder="2" aria-label="2" name="quantity" value="0">
+                <input type="number" class="form-control" placeholder="2" aria-label="2" name="quantity" value="{{$ticket->quantity}}">
             </div>
         </div>
     </div>
@@ -70,10 +71,10 @@
             <div class="input-group mb-3">
                 <select class="form-control selectize" name="currency">
                     @foreach($fiats as $fiat)
-                        <option value="{{$fiat->code}}" {{($fiat->code==$user->mainCurrency)?'selected':''}}>{{$fiat->code}}</option>
+                        <option value="{{$fiat->code}}" {{($fiat->code==$ticket->currency)?'selected':''}}>{{$fiat->code}}</option>
                     @endforeach
                 </select>
-                <input type="number" class="form-control" placeholder="2" aria-label="2" name="price" step="0.01">
+                <input type="number" class="form-control" placeholder="2" aria-label="2" name="price" step="0.01" value="{{$ticket->price}}">
             </div>
         </div>
     </div>
@@ -85,32 +86,41 @@
             </sup>
         </label>
         <div class="form-input">
-            <input type="number" class="form-control" id="inputusernumber" name="purchaseLimit" min="1"/>
+            <input type="number" class="form-control" id="inputusernumber" name="purchaseLimit" min="1" value="{{$ticket->purchaseLimit}}"/>
             <i class="fa fa-note-sticky"></i>
         </div>
     </div>
     <div class="form-group d-block mb-3">
         <label for="inputname" class="form-label">
             Ticket Description <sup><i class="fa fa-info-circle" data-bs-toggle="tooltip"
-                                      title="Describe the ticket"></i></sup>
+                                       title="Describe the ticket"></i></sup>
             <sup class="text-danger">*</sup>
         </label>
         <div class="mb-3">
-            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            <textarea class="form-control" id="description" name="description" rows="3">{{$ticket->description}}</textarea>
         </div>
     </div>
 
     <div class="form-group d-block mb-3">
         <label class="form-label">Ticket Perks <sup><i class="fa fa-info-circle" data-bs-toggle="tooltip"
                                                        title="What perks does the buyer enjoy in your event with this ticket?"></i></sup></label>
-        <div id="perksList"></div>
+        <div id="perksList">
+            @foreach($ticket->perks as $key=>$perk)
+                <div class="input-group mb-2 perk-item" id="perk-{{$key}}">
+                    <input type="text" class="form-control" name="perks[]" placeholder="Perks for this ticket" value="{{$perk}}">
+                    <button type="button" class="btn btn-remove" data-id="{{$key}}">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            @endforeach
+        </div>
         <button type="button" class="btn btn-add btn-auto" id="addPerk">
             <i class="fa fa-plus"></i> Add
         </button>
     </div>
     <div class="form-group mb-3" id="transferFee" style="display: none">
         <div class="form-check"  >
-            <input class="form-check-input" type="checkbox" name="transferFee" id="flexCheckChecked" >
+            <input class="form-check-input" type="checkbox" name="transferFee" id="flexCheckChecked" {{($ticket->guestsShouldPayFee==1)?'checked':''}}>
             <label class="form-check-label" for="flexCheckChecked"
                    data-bs-toggle="tooltip"
                    title="Guest will pay the fee for paid tickets">
@@ -128,26 +138,45 @@
 
 @push('js')
     <script>
-        $(function (){
-            $('input[name="ticketKind"]').on('click',function (){
-                let values = $(this).val();
-                if (Number(values)===2 ){
+        $(function () {
+            // Function to show/hide priceComponent and transferFee based on ticketKind value
+            function togglePriceComponent() {
+                let values = $('input[name="ticketKind"]:checked').val();
+                if (Number(values) === 2) {
                     $('.priceComponent').show();
                     $('#transferFee').show();
-                }else{
+                } else {
                     $('.priceComponent').hide();
                     $('#transferFee').hide();
                 }
-            })
+            }
+
+            // Call function on page load
+            togglePriceComponent();
+
+            // Call function on click
+            $('input[name="ticketKind"]').on('click', function () {
+                togglePriceComponent();
+            });
         });
+
         $(function () {
-            $('select[name="stock"]').on('change', function () {
-                let stock = $(this).val();
+            // Function to show/hide quantity based on stock value
+            function toggleQuantityInput() {
+                let stock = $('select[name="stock"]').val();
                 if (Number(stock) === 2) {
                     $('input[name="quantity"]').attr('disabled', true).val('').attr('placeholder', '∞');
                 } else {
                     $('input[name="quantity"]').removeAttr('disabled').attr('placeholder', '2');
                 }
+            }
+
+            // Call function on page load
+            toggleQuantityInput();
+
+            // Call function on change
+            $('select[name="stock"]').on('change', function () {
+                toggleQuantityInput();
             });
         });
     </script>
