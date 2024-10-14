@@ -183,7 +183,7 @@ class EventIndex extends BaseController
                 DB::commit();
                 $this->userNotification($user,'Event Created','Your event was created successfully and is pending review',$request->ip());
                 return $this->sendResponse([
-                    'redirectTo'=>route('mobile.user.events.tickets.new',['event'=>$event->reference]),
+                    'redirectTo'=>route('mobile.user.events.tickets.index',['event'=>$event->reference]),
                     'redirects'=>true
                 ],'Event created successful. Redirecting to add tickets ...');
             }
@@ -279,7 +279,7 @@ class EventIndex extends BaseController
                 DB::commit();
                 $this->userNotification($user,'Event Created','Your event was created successfully and is pending review',$request->ip());
                 return $this->sendResponse([
-                    'redirectTo'=>route('mobile.user.events.tickets.new',['event'=>$event->reference]),
+                    'redirectTo'=>route('mobile.user.events.tickets.index',['event'=>$event->reference]),
                     'redirects'=>true
                 ],'Event created successful. Redirecting to add tickets ...');
             }

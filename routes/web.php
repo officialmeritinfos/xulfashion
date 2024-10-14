@@ -227,6 +227,15 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //Create ticket
             Route::get('events/tickets/{event}/new',[TicketIndex::class,'createTicket'])
                 ->name('events.tickets.new');
+            Route::post('events/ticket/single/{event}/process',[TicketIndex::class,'processSingleTicketCreation'])
+                ->name('events.ticket.single.process');
+            Route::post('events/ticket/group/{event}/process',[TicketIndex::class,'processGroupTicketCreation'])
+                ->name('events.ticket.group.process');
+            //Delete Ticket
+            Route::post('events/ticket/{event}/delete',[TicketIndex::class,'deleteTicket'])
+                ->name('events.ticket.delete');
+
+
             //Event Attendees
             Route::get('events/{event}/attendees',[Attendees::class,'landingPage'])
                 ->name('events.attendees');

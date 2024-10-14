@@ -59,6 +59,20 @@ class UserEventTicket extends Model
     {
         return $this->allowBulkPurchase === 1;
     }
+    /**
+     * Check if bulk purchase is allowed.
+     *
+     * @return bool
+     */
+    public function price()
+    {
+        // Free ticket
+        if ($this->isFree()) {
+            return 0;
+        }
+
+        return $this->price;
+    }
 
     /**
      * Check if the ticket type is a group.

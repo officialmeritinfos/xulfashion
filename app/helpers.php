@@ -330,30 +330,34 @@ if (!function_exists('shorten_number')){
      */
     function shorten_number($n, $precision = 1)
     {
-        // Define suffixes and corresponding multipliers
-        $suffixes = [
-            12 => 'T',  // Trillion
-            9  => 'B',  // Billion
-            6  => 'M',  // Million
-            3  => 'K',  // Thousand
-            0  => ''    // No suffix
-        ];
+        if ($n>0) {
+            // Define suffixes and corresponding multipliers
+            $suffixes = [
+                12 => 'T',  // Trillion
+                9 => 'B',  // Billion
+                6 => 'M',  // Million
+                3 => 'K',  // Thousand
+                0 => ''    // No suffix
+            ];
 
-        // Determine the appropriate suffix and formatted number
-        foreach ($suffixes as $power => $suffix) {
-            if ($n >= pow(10, $power)) {
-                $n_format = number_format($n / pow(10, $power), $precision);
-                break;
+            // Determine the appropriate suffix and formatted number
+            foreach ($suffixes as $power => $suffix) {
+                if ($n >= pow(10, $power)) {
+                    $n_format = number_format($n / pow(10, $power), $precision);
+                    break;
+                }
             }
-        }
 
-        // Remove unnecessary zeroes after decimal
-        if ($precision > 0) {
-            $dotzero = '.' . str_repeat('0', $precision);
-            $n_format = str_replace($dotzero, '', $n_format);
-        }
+            // Remove unnecessary zeroes after decimal
+            if ($precision > 0) {
+                $dotzero = '.' . str_repeat('0', $precision);
+                $n_format = str_replace($dotzero, '', $n_format);
+            }
 
-        return $n_format . $suffix;
+            return $n_format . $suffix;
+        }else{
+            return  number_format($n, $precision);
+        }
     }
 }
 

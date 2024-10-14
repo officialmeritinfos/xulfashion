@@ -24,7 +24,7 @@ class CreateUserStoreTicketsTable extends Migration
             $table->integer('status')->default(2);
             $table->string('department', 150)->nullable();
             $table->string('systemDepartment', 150)->nullable();
-            $table->timestamps();
+            $table->timestamps(, 150);
         });
     }
 

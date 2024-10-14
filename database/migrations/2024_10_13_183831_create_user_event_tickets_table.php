@@ -17,11 +17,12 @@ class CreateUserEventTicketsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('event_id');
             $table->string('ticketType', 150);
+            $table->string('reference', 150)->nullable();
             $table->string('name', 225);
             $table->text('description');
-            $table->string('currency')->nullable();
-            $table->string('kindOfTicket')->default(2);
-            $table->string('isGroup')->default(2);
+            $table->string('kindOfTicket', 100)->default('1');
+            $table->integer('isGroup')->default(2);
+            $table->string('currency', 150)->nullable();
             $table->string('price', 150)->default('0');
             $table->integer('isFree')->default(2);
             $table->integer('inviteOnly')->default(2);
@@ -31,11 +32,15 @@ class CreateUserEventTicketsTable extends Migration
             $table->string('bulkPrice', 150)->default('0');
             $table->string('bulkQuantity', 50)->nullable();
             $table->string('groupSize', 150)->nullable();
+            $table->string('groupPrice', 150)->nullable();
             $table->longText('perks')->nullable();
             $table->longText('questions')->nullable();
+            $table->string('ticketSold', 100)->default('0');
+            $table->integer('purchaseLimit', 100)->default('0');
+            $table->integer('guestsShouldPayFee')->default(2);
             $table->integer('status')->default(1);
             $table->timestamps();
-            $table->string('deleted_at', 150)->nullable();
+            $table->softDeletes();
         });
     }
 

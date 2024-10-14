@@ -26,7 +26,7 @@ class UserEventPurchase extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function event()
+    public function events()
     {
         return $this->belongsTo(UserEvent::class, 'event_id');
     }
@@ -36,7 +36,7 @@ class UserEventPurchase extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ticket()
+    public function tickets()
     {
         return $this->belongsTo(UserEventTicket::class, 'ticket_id');
     }

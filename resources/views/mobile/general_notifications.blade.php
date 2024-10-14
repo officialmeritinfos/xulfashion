@@ -323,3 +323,12 @@
         padding-right: 10px; /* Optional padding to avoid scrollbar overlap */
     }
 </style>
+<style>
+    body.dark .page-link{
+        background-color:rgb(18, 38, 54);
+        color: #f0f0f0;
+    }
+    body.dark .text-muted{
+        color: #f0f0f0 !important;
+    }
+</style>
