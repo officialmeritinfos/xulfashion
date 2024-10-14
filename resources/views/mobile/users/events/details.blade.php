@@ -56,7 +56,7 @@
                                     Description
                                 </div>
                             </div>
-                            <div id="panelsStayOpen-p4" class="accordion-collapse collapse show" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                            <div id="panelsStayOpen-p4" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                 <div class="accordion-body pb-0">
                                     <div class="reviews-display">
                                         <div class="fw-normal mt-1 card">

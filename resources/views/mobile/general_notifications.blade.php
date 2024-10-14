@@ -19,6 +19,9 @@
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
+    $(function () {
+        $('[data-bs-toggle="popover"]').popover();
+    });
 </script>
 <style>
     .form-label{

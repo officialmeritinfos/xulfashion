@@ -739,3 +739,46 @@ if (!function_exists('extractIntervalFromRecurrenceInterval')) {
         return $arr[0];
     }
 }
+if (!function_exists('extractPeriodFromRecurrenceInterval')) {
+    function extractPeriodFromRecurrenceInterval($text)
+    {
+        $arr = explode(' ',$text);
+
+        return $arr[1];
+    }
+}
+if (!function_exists('handleTicketEndTime')) {
+    function handleTicketEndTime(\App\Models\UserEvent $event)
+    {
+        if ($event->eventScheduleType==1){
+            return $event->endTime;
+        }else{
+            if ($event->recurrenceEndType==1){
+                return $event->recurrenceEndTime;
+            }else{
+                return "Ends after ".$event->recurrenceEndCount*extractIntervalFromRecurrenceInterval($event->recurrenceInterval)." ".extractPeriodFromRecurrenceInterval($event->recurrenceInterval);
+            }
+        }
+    }
+}
+if (!function_exists('handleTicketEndDate')) {
+    function handleTicketEndDate(\App\Models\UserEvent $event)
+    {
+        if ($event->eventScheduleType==1){
+            return $event->endDate;
+        }else{
+            if ($event->recurrenceEndType==1){
+                return $event->recurrenceEndDate;
+            }else{
+                return "Ends after ".$event->recurrenceEndCount*extractIntervalFromRecurrenceInterval($event->recurrenceInterval)." ".extractPeriodFromRecurrenceInterval($event->recurrenceInterval);
+            }
+        }
+    }
+}
+
+if (!function_exists('fetchEventIntervalById')) {
+    function fetchEventIntervalById($id)
+    {
+        return \App\Models\EventInterval::where('id',$id)->first();
+    }
+}

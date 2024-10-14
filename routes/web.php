@@ -211,6 +211,10 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('events.detail');
             Route::get('events/{event}/sales',[EventDetail::class,'sales'])
                 ->name('events.sales');
+            Route::get('events/tickets/{event}/email',[EventDetail::class,'eventEmail'])
+                ->name('events.tickets.email');
+            Route::post('events/tickets/{event}/email/process',[EventDetail::class,'processEmail'])
+                ->name('events.tickets.email.process');
             //Event Edit
             Route::get('events/{event}/edit',[EventEdit::class,'landingPage'])
                 ->name('events.edit');
@@ -221,10 +225,6 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //Ticket Index
             Route::get('events/tickets/{event}/index',[TicketIndex::class,'landingPage'])
                 ->name('events.tickets.index');
-            Route::get('events/tickets/{event}/email',[TicketIndex::class,'landingPage'])
-                ->name('events.tickets.email');
-            Route::post('events/ticket/email/process',[TicketIndex::class,'processOnlineEventUpdate'])
-                ->name('events.tickets.email.process');
             //Create ticket
             Route::get('events/tickets/{event}/new',[TicketIndex::class,'createTicket'])
                 ->name('events.tickets.new');
@@ -255,6 +255,9 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
 
 
 
+            //View Ticket
+            Route::get('events/{event}/view-ticket',[EventDetail::class,'viewTicket'])
+                ->name('events.view-ticket');
 
             //REVIEWS
             Route::get('reviews/index',[ReviewController::class,'landingPage'])

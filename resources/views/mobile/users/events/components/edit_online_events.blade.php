@@ -200,6 +200,20 @@
             </div>
         </div>
     </div>
+    <div class="form-group d-block mb-3">
+        <label for="inputusernumber" class="form-label">
+            Support Email<sup>
+                <i class="fa fa-info-circle" data-bs-toggle="tooltip"
+                   title="This is the email we will use to contact you if we need anything. This is also the
+                   email your buyers will reach out to for help."></i> <span class="text-danger">*</span>
+            </sup>
+        </label>
+        <div class="form-input">
+            <input type="email" class="form-control" id="inputusernumber"  name="supportEmail"
+                   value="{{$event->supportEmail}}"/>
+            <i class="fa fa-envelope"></i>
+        </div>
+    </div>
     <h3 class="title">Social Details</h3>
     <div class="form-group d-block">
         <div class="form-input mb-4 position-relative">

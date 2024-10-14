@@ -136,6 +136,7 @@ class EventIndex extends BaseController
                 'twitter' => ['nullable','url'],
                 'instagram' => ['nullable','url'],
                 'website' => ['nullable','url'],
+                'supportEmail'=>['required','email']
             ],[],[
                 'startDateOnetime'=>'Start Date for One-time event',
                 'startTimeOnetime'=>'Start Time for One-time event',
@@ -176,7 +177,7 @@ class EventIndex extends BaseController
                 'recurrenceEndTime'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endTimeRecur']:'',
                 'state'=>$input['state'],'location'=>$input['location'],'featuredImage'=>$featuredPhoto,
                 'instagram'=>$input['instagram'],'facebook'=>$input['facebook'],'twitter'=>$input['twitter'],
-                'website'=>$input['website']
+                'website'=>$input['website'],'supportEmail'=>$input['supportEmail']
             ]);
 
             if (!empty($event)){
@@ -231,7 +232,8 @@ class EventIndex extends BaseController
                         $fail('The selected platform is invalid.');
                     }
                 }],
-                'link'=>['required','url']
+                'link'=>['required','url'],
+                'supportEmail'=>['required','email']
             ],[],[
                 'startDateOnetime'=>'Start Date for One-time event',
                 'startTimeOnetime'=>'Start Time for One-time event',
@@ -272,7 +274,7 @@ class EventIndex extends BaseController
                 'recurrenceEndTime'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endTimeRecur']:'',
                 'featuredImage'=>$featuredPhoto, 'instagram'=>$input['instagram'],'facebook'=>$input['facebook'],
                 'twitter'=>$input['twitter'], 'website'=>$input['website'],'platform' => $input['platform'],'link' => $input['link'],
-                'organizer'=>$input['organizer']
+                'organizer'=>$input['organizer'],'supportEmail'=>$input['supportEmail']
             ]);
 
             if (!empty($event)){

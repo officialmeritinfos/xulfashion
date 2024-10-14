@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Ticket Card</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f7f7f7;
+        }
+
+        /* Ticket card styling */
+        .ticket-card {
+            width: 100%;
+            max-width: 600px;
+            background:rgb(18, 38, 54);
+            border-radius: 12px;
+            color: #fff;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin: 20px;
+            border: 1px solid #444;
+        }
+
+        .ticket-header {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #f7f7f7;
+        }
+
+        .ticket-body {
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: rgb(18, 38, 54);
+        }
+
+        .ticket-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: rgb(18, 38, 54);
+            margin-bottom: 15px;
+        }
+
+        .ticket-info div {
+            flex: 1 1 45%;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .ticket-info span {
+            font-weight: bold;
+            color: #ddd;
+        }
+
+        .ticket-footer {
+            padding: 15px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.1);
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .action-buttons button {
+            background-color: #fff;
+            color: #333;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            .action-buttons {
+                display: none;
+            }
+        }
+
+        @media (min-width: 600px) {
+            .ticket-body {
+                flex-direction: row;
+            }
+            .ticket-info {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ticket-card" id="ticketCard">
+    <div class="ticket-header">Event Ticket</div>
+    <div class="ticket-body">
+        <div class="ticket-info">
+            <div>
+                <span>Event:</span> <br> Exploring Nigerian Textile Design
+            </div>
+            <div>
+                <span>Date:</span> <br> October 25, 2024
+            </div>
+            <div>
+                <span>Time:</span> <br> 11:00 AM - 3:00 PM
+            </div>
+            <div>
+                <span>Location:</span> <br> Lagos Arts Center
+            </div>
+        </div>
+    </div>
+    <div class="ticket-footer">
+        <p>Present this ticket at the entrance. For inquiries, contact support@event.com</p>
+    </div>
+    <div class="action-buttons">
+        <button onclick="window.print()">Print</button>
+        <button id="downloadBtn">Download</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#downloadBtn').click(function() {
+            var ticketCard = document.getElementById('ticketCard');
+
+            if (ticketCard) {
+                // Hide the action buttons temporarily
+                $('.action-buttons').hide();
+
+                // Capture the card without the buttons
+                html2canvas(ticketCard, {
+                    allowTaint: true,
+                    useCORS: true,
+                    scale: 2
+                }).then(function(canvas) {
+                    // Create download link for the image
+                    var link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'Event-Ticket.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    // Show the action buttons again
+                    $('.action-buttons').show();
+                }).catch(function(error) {
+                    console.error('Error capturing the ticket:', error);
+
+                    // Show the action buttons if there was an error
+                    $('.action-buttons').show();
+                });
+            } else {
+                console.error('The ticket element was not found.');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
