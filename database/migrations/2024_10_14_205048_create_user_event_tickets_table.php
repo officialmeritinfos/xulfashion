@@ -16,8 +16,8 @@ class CreateUserEventTicketsTable extends Migration
         Schema::create('user_event_tickets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('event_id');
-            $table->string('ticketType', 150);
             $table->string('reference', 150)->nullable();
+            $table->string('ticketType', 150);
             $table->string('name', 225);
             $table->text('description');
             $table->string('kindOfTicket', 100)->default('1');
@@ -36,11 +36,11 @@ class CreateUserEventTicketsTable extends Migration
             $table->longText('perks')->nullable();
             $table->longText('questions')->nullable();
             $table->string('ticketSold', 100)->default('0');
-            $table->integer('purchaseLimit', 100)->default('0');
+            $table->integer('purchaseLimit')->default(1);
             $table->integer('guestsShouldPayFee')->default(2);
             $table->integer('status')->default(1);
-            $table->timestamps();
-            $table->softDeletes();
+            $table->timestamps(, 150);
+            $table->string('deleted_at', 150)->nullable();
         });
     }
 

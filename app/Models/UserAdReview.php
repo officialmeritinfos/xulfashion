@@ -20,4 +20,11 @@ class UserAdReview extends Model
     {
         return $this->belongsTo(User::class, 'merchant', 'id');
     }
+    /**
+     * Get the responses for the review.
+     */
+    public function responses()
+    {
+        return $this->hasMany(UserAdReviewResponse::class, 'review', 'id');
+    }
 }

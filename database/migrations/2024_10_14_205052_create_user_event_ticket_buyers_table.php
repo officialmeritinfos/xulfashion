@@ -27,7 +27,7 @@ class CreateUserEventTicketBuyersTable extends Migration
             $table->longText('questions');
             $table->longText('answers');
             $table->integer('isFree')->default(2);
-            $table->timestamps();
+            $table->timestamps(, 150);
         });
     }
 

@@ -6,7 +6,6 @@ use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
 use App\Http\Controllers\Mobile\Ads\Auth\Register;
 use App\Http\Controllers\Mobile\Ads\CatalogController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
-use App\Http\Controllers\Mobile\Ads\ReviewController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
 use App\Http\Controllers\Mobile\Home;
@@ -21,6 +20,7 @@ use App\Http\Controllers\Mobile\User\Events\EventIndex;
 use App\Http\Controllers\Mobile\User\Events\TicketEdit;
 use App\Http\Controllers\Mobile\User\Events\TicketIndex;
 use App\Http\Controllers\Mobile\User\Profile;
+use App\Http\Controllers\Mobile\User\Reviews\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -251,10 +251,6 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('events.attendees.check-in-list');
             Route::get('events/{event}/attendees/notify',[Attendees::class,'notifyAttendees'])
                 ->name('events.attendees.notify');
-
-
-
-
             //View Ticket
             Route::get('events/{event}/view-ticket',[EventDetail::class,'viewTicket'])
                 ->name('events.view-ticket');
@@ -264,11 +260,14 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('reviews.index');
             Route::post('reviews/new/process',[ReviewController::class,'processNewRating'])
                 ->name('reviews.new.process');
+            Route::get('reviews/{review}/detail',[ReviewController::class,'reviewDetail'])
+                ->name('reviews.detail');
+            Route::post('reviews/{review}/reply/process',[ReviewController::class,'processReviewResponse'])
+                ->name('reviews.reply.process');
 
             //PROFILE PLACEHOLDERS
             Route::get('profile/coming-soon',[Profile::class,'comingSoon'])
                 ->name('coming.soon');
-
             Route::get('profile/app/settings',[Profile::class,'settings'])
                 ->name('app.settings');
             Route::get('profile/help',[Profile::class,'helpCenter'])

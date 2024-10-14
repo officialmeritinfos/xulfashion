@@ -40,13 +40,25 @@
                 </li>
 
                 <li>
-                    <a href="{{route('mobile.user.coming.soon')}}" class="profile-box">
+                    <a href="{{route('mobile.user.reviews.index')}}" class="profile-box">
                         <div class="profile-img">
                             <i class="iconsax icon" data-icon="star"></i>
                         </div>
                         <div class="profile-details">
                             <h4>Reviews</h4>
                             <h5>All your reviews</h5>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('mobile.user.coming.soon')}}" class="profile-box">
+                        <div class="profile-img">
+                            <i class="iconsax icon" data-icon="shop"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Store</h4>
+                            <h5>Create & Manage Your Store</h5>
                         </div>
                     </a>
                 </li>
