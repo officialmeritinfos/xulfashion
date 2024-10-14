@@ -159,7 +159,7 @@ class EventDetail extends BaseController
             'pageName' =>$event->title,
             'event' => $event,
             'country' => $country,
-            'template'=>'coral',
+            'template'=>$event->theme,
             'merchant'=>User::where('id',$event->user)->first()
         ]);
     }

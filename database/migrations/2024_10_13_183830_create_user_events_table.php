@@ -50,6 +50,8 @@ class CreateUserEventsTable extends Migration
             $table->string('nextSettlement', 150)->nullable();
             $table->string('balanceCleared', 250)->default('0');
             $table->longText('successMail')->nullable();
+            $table->text('supportEmail')->nullable();
+            $table->string('theme')->default('default');
             $table->integer('status')->default(2);
             $table->timestamps();
             $table->string('deleted_at', 150)->nullable();

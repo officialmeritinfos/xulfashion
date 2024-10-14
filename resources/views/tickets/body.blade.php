@@ -17,14 +17,19 @@
                 </div>
                 <div>
                     <span>Date:</span> <br>
-                    {{$event->startDate}} - {{handleTicketEndTime($event)}}
+                    <small>
+                        {{$event->startDate}} - {{handleTicketEndTime($event)}}
+                    </small>
                 </div>
                 <div>
-                    <span>Time:</span> <br> {{$event->startTime}} - {{handleTicketEndTime($event)}}
+                    <span>Time:</span> <br>
+                    <small>
+                        {{$event->startTime}} - {{handleTicketEndTime($event)}}
+                    </small>
                 </div>
                 @if($event->eventScheduleType!=1)
                     <div>
-                        <span>Repeats:</span> <br> Every {{$event->recurrenceInterval}}
+                        <span>Repeats:</span> <br> <small>Every {{$event->recurrenceInterval}}</small>
                     </div>
                 @endif
                 <div>
