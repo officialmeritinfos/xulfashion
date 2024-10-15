@@ -25,6 +25,6 @@ class UserAdReview extends Model
      */
     public function responses()
     {
-        return $this->hasMany(UserAdReviewResponse::class, 'review', 'id');
+        return $this->hasMany(UserAdReviewResponse::class, 'review', 'id')->with('users');
     }
 }

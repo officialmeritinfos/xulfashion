@@ -153,7 +153,9 @@ class MarketplaceController extends BaseController
         // Ensure that each star rating (1-5) has a value even if 0
         $ratingsCount = array_replace([5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0], $ratingsCount);
 
-        $reviews = UserAdReview::where('merchant', $ads->user)->with('reviewers')->paginate(5);
+        $reviews = UserAdReview::where('merchant', $ads->user)->with([
+            'reviewers','merchants','responses.users'
+        ])->paginate(5);
 
         if ($request->ajax()) {
             return response()->json([
@@ -213,7 +215,9 @@ class MarketplaceController extends BaseController
         // Ensure that each star rating (1-5) has a value even if 0
         $ratingsCount = array_replace([5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0], $ratingsCount);
 
-        $reviews = UserAdReview::where('merchant', $user->id)->with('reviewers')->paginate(5);
+        $reviews = UserAdReview::where('merchant', $user->id)->with([
+            'reviewers','merchants','responses.users'
+        ])->paginate(5);
 
         if ($request->ajax()) {
             return response()->json([
