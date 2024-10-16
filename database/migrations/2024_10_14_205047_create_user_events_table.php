@@ -53,8 +53,10 @@ class CreateUserEventsTable extends Migration
             $table->text('supportEmail')->nullable();
             $table->string('theme', 150)->default('default');
             $table->integer('status')->default(2);
-            $table->timestamps(, 150);
-            $table->string('deleted_at', 150)->nullable();
+            $table->string('approvedBy', 150)->nullable();
+            $table->text('reason')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

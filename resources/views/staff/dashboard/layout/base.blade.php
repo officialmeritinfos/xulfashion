@@ -198,6 +198,12 @@
                         <span>Ads</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('staff.events.list')}}" wire:navigate style="font-size: 20px;">
+                        <iconify-icon icon="mdi:events" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                        <span>Events</span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="{{route('staff.stores.list')}}" wire:navigate style="font-size: 20px;">

@@ -72,11 +72,11 @@ class EventDetail extends BaseController
             'purchases'=>UserEventPurchase::where([
                 'event_id' => $event->id,
             ])->with(
-                ['events','tickets']
+                ['events','tickets','buyers']
             )->paginate(15),
             'settlements'=>UserEventSettlement::where([
                 'user' => $user->id,'event' => $event->id,
-            ])->with('bank')->paginate(15,'*','settlements')
+            ])->with('banks')->paginate(15,'*','settlements')
         ]);
     }
 

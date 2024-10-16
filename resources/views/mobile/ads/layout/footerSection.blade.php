@@ -87,6 +87,15 @@
                 <p>Categories</p>
             </a>
         </li>
+        <li class="{{(url()->current()==route('mobile.marketplace.events'))?'active':''}}">
+            <a href="{{route('mobile.marketplace.events')}}">
+                <div class="icon">
+                    <img class="unactive" src="{{asset('mobile/images/svg/event.png')}}" alt="bag" style="width: 30px;"/>
+                    <img class="active" src="{{asset('mobile/images/svg/event.png')}}" alt="bag" style="width: 30px;" />
+                </div>
+                <p>Events</p>
+            </a>
+        </li>
         <li class="{{(url()->current()==route('mobile.marketplace.stores'))?'active':''}}">
             <a href="{{route('mobile.marketplace.stores')}}">
                 <div class="icon">

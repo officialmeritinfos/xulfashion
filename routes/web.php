@@ -5,6 +5,7 @@ use App\Http\Controllers\Mobile\Ads\Auth\Login;
 use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
 use App\Http\Controllers\Mobile\Ads\Auth\Register;
 use App\Http\Controllers\Mobile\Ads\CatalogController;
+use App\Http\Controllers\Mobile\Ads\EventController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
@@ -82,7 +83,6 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('marketplace.state');
         Route::get('/ads/{id}/service',[MarketplaceController::class,'adsByService'])
             ->name('marketplace.service');
-
         Route::get('ads/filter/search',[MarketplaceController::class,'filterAds'])
             ->name('marketplace.search');
 
@@ -108,7 +108,9 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('marketplace.store.product.detail');
 
         //EVENTS
-        Route::get('events/{slug?}',[CatalogController::class,'catalogsInStore'])
+        Route::get('events',[EventController::class,'landingPage'])
+            ->name('marketplace.events');
+        Route::get('events/{slug?}',[EventController::class,'eventDetail'])
             ->name('marketplace.events.detail');
 
 

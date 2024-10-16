@@ -15,7 +15,7 @@ class UserEventSettlement extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function bank()
+    public function banks()
     {
         return $this->belongsTo(UserBank::class, 'payoutAccount', 'id');
     }

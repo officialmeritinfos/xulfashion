@@ -4,6 +4,7 @@ use App\Http\Controllers\Staff\Auth\LoginController;
 use App\Http\Controllers\Staff\Auth\TwoFactorController;
 use App\Http\Controllers\Staff\Dashboard\ActivityController;
 use App\Http\Controllers\Staff\Dashboard\AdController;
+use App\Http\Controllers\Staff\Dashboard\EventController;
 use App\Http\Controllers\Staff\Dashboard\Home;
 use App\Http\Controllers\Staff\Dashboard\OrderController;
 use App\Http\Controllers\Staff\Dashboard\ServiceTypeController;
@@ -90,5 +91,8 @@ Route::domain('modacore.localhost')->group(function () {
         //Roles & Permissions
         Route::get('roles',[StaffController::class,'roles'])->name('roles');
         Route::get('permissions',[StaffController::class,'permissions'])->name('permissions');
+        //Events
+        Route::get('events/list',[EventController::class,'landingPage'])->name('events.list');
+        Route::get('events/{event}/detail',[EventController::class,'eventDetail'])->name('events.detail');
     });
 });

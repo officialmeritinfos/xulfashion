@@ -75,7 +75,9 @@
                             <tr>
                                 <td>{{$purchases->firstItem()+1}}</td>
                                 <td>{{$purchase->tickets->name}}</td>
-                                <td></td>
+                                <td>
+                                    {{$purchase->buyers->name}}
+                                </td>
                                 <td>{{$purchase->quantity}}</td>
                                 <td>
                                     @if($purchase->tickets->ticketType==1)
@@ -147,7 +149,7 @@
                                     {{$settlement->reference}}
                                 </td>
                                 <td>
-                                    <span style="font-size: 12px;">{{$purchase->bank->accountName}} ({{$settlement->bank->bankName}})</span>
+                                    <span style="font-size: 12px;">{{$purchase->banks->accountName}} ({{$settlement->banks->bankName}})</span>
                                 </td>
                                 <td>
                                     {{currencySign($settlement->currency)}}{{number_format($settlement->amount,2)}}
