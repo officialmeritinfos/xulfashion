@@ -782,3 +782,4 @@ if (!function_exists('fetchEventIntervalById')) {
         return \App\Models\EventInterval::where('id',$id)->first();
     }
 }
+

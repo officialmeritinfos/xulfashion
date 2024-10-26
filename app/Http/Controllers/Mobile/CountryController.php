@@ -17,4 +17,12 @@ class CountryController extends Controller
         return response()->json($states);
     }
 
+    public function fetchStates(Request $request)
+    {
+        $countryIso = $request->input('country');
+        $states = State::where('country_code', $countryIso)->orderBy('name')->get(['iso2', 'name']);
+        return response()->json(['states' => $states]);
+    }
+
+
 }

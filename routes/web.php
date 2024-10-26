@@ -59,6 +59,7 @@ Route::get('push-notification/store/test',[Home::class,'push'])->name('push.test
 
 //Country controller
 Route::get('get-states', [CountryController::class, 'getStatesByCountry'])->name('get.states');
+Route::get('get-states-event', [CountryController::class, 'fetchStates'])->name('get.states.event');
 
 /* ================================MOBILE WEB PWA ROUTE ===========================*/
 

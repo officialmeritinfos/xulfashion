@@ -57,14 +57,19 @@
 </header>
 <section>
     <div class="custom-container">
-        <form class="theme-form search-head" id="search-form" action="{{route('mobile.marketplace.store.search.result')}}">
+        <form class="theme-form search-head" id="search-form" action="{{route('mobile.marketplace.events')}}">
             <div class="form-group">
                 <div class="form-input">
-                    <select class="form-control form-control-lg stateAds" id="state-select" aria-label="Default select example" name="state">
-                        <option value="" data-value="{{route('mobile.marketplace.index')}}">All of {{$country->name}}</option>
-                        @foreach($states as $state)
-                            <option value="{{$state->iso2}}" {{(isset($params['state']) && $params['state']==$state->iso2)?'selected':''}} >{{$state->name}}</option>
+                    <select class="form-control form-control-lg" id="state-select" aria-label="Default select example" name="country">
+                        <option value="{{$country->iso2}}" selected>All of {{$country->name}}</option>
+                        @foreach($countries as $count)
+                            <option value="{{$count->iso2}}">{{$count->name}}</option>
                         @endforeach
+                    </select>
+                </div>
+                <div class="form-input">
+                    <select class="form-control form-control-lg stateAds" id="state-select" aria-label="Default select example" name="state">
+                        <option value="">Select State</option>
                     </select>
                 </div>
                 <div class="form-input">

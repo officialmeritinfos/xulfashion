@@ -36,4 +36,13 @@ class UserEvent extends Model
     {
         return $this->hasMany(UserEventPurchase::class, 'event_id');
     }
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'state', 'iso2');
+    }
+
+    public function country()
+    {
+        return $this->hasOneThrough(Country::class, State::class, 'iso2', 'iso2', 'state', 'country_code');
+    }
 }
