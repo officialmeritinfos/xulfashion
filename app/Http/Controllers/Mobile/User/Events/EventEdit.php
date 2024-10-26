@@ -50,7 +50,8 @@ class EventEdit extends BaseController
             'states'    =>State::where('country_code',$country->iso2)->orderBy('name')->get(),
             'categories'=>EventCategory::where('status',1)->get(),
             'timezones' =>\DateTimeZone::listIdentifiers(),
-            'intervals' =>EventInterval::where('status',1)->get()
+            'intervals' =>EventInterval::where('status',1)->get(),
+            'countries'=>Country::where('status',1)->get()
         ]);
     }
 
@@ -66,8 +67,9 @@ class EventEdit extends BaseController
             $validator = Validator::make($request->all(),[
                 'title'=>['required','string','max:200'],
                 'description'=>['required','string'],
-                'featuredPhoto'=>['required','image','max:2048'],
-                'state'=>['required','alpha',Rule::exists('states','iso2')->where('country_code',$country->iso2)],
+                'featuredPhoto'=>['nullable','image','max:2048'],
+                'country'=>['required','alpha',Rule::exists('countries','iso2')],
+                'state'=>['required','alpha',Rule::exists('states','iso2')->where('country_code',$request->country)],
                 'location'=>['required','string','max:1000'],
                 'category'=>['required','integer','exists:event_categories,id'],
                 'scheduleType'=>['required','integer','in:1,2'],
@@ -151,7 +153,7 @@ class EventEdit extends BaseController
                 'recurrenceEndTime'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endTimeRecur']:'',
                 'state'=>$input['state'],'location'=>$input['location'],'featuredImage'=>$featuredPhoto,
                 'instagram'=>$input['instagram'],'facebook'=>$input['facebook'],'twitter'=>$input['twitter'],
-                'website'=>$input['website'],'supportEmail'=>$input['supportEmail']
+                'website'=>$input['website'],'supportEmail'=>$input['supportEmail'],'country'=>$input['country']
             ]);
 
             if ($updated){
@@ -184,6 +186,8 @@ class EventEdit extends BaseController
                 'description'=>['required','string'],
                 'featuredPhoto'=>['nullable','image','max:2048'],
                 'organizer'=>['required','string','max:200'],
+                'country'=>['required','alpha',Rule::exists('countries','iso2')],
+                'state'=>['required','alpha',Rule::exists('states','iso2')->where('country_code',$request->country)],
                 'category'=>['required','integer','exists:event_categories,id'],
                 'scheduleType'=>['required','integer','in:1,2'],
                 'timezone' => ['required','string','timezone'],
@@ -273,7 +277,7 @@ class EventEdit extends BaseController
                 'recurrenceEndTime'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endTimeRecur']:'',
                 'featuredImage'=>$featuredPhoto, 'instagram'=>$input['instagram'],'facebook'=>$input['facebook'],
                 'twitter'=>$input['twitter'], 'website'=>$input['website'],'platform' => $input['platform'],'link' => $input['link'],
-                'organizer'=>$input['organizer'],'supportEmail'=>$input['supportEmail']
+                'organizer'=>$input['organizer'],'supportEmail'=>$input['supportEmail'],'state' => $input['state'],'country'=>$input['country']
             ]);
 
             if ($updated){

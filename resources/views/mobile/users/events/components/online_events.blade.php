@@ -28,6 +28,32 @@
                     <textarea class="form-control editor" id="description" name="description" rows="10"></textarea>
                 </div>
             </div>
+            <div class="form-group d-block">
+                <label for="inputusernumber" class="form-label">Country<sup class="text-danger">*</sup></label>
+                <div class="form-input mb-4 position-relative">
+                    <select class="selectize" name="country">
+                        <option value="">Select a Country</option>
+                        @foreach($countries as $count)
+                            <option value="{{$count->iso2}}">{{$count->name}}</option>
+                        @endforeach
+                    </select>
+                    <i class="iconsax icons" data-icon="map-2"></i>
+                </div>
+            </div>
+
+            <div class="form-group d-block">
+                <label for="inputusernumber" class="form-label">State<sup class="text-danger">*</sup></label>
+                <div class="form-input mb-4 position-relative">
+                    <select class="form-control" name="state">
+                        <option value="">Select a Location</option>
+                    </select>
+                    <i class="iconsax icons" data-icon="map-2"></i>
+                    <!-- Add this spinner icon here -->
+                    <span id="loading-spinner" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </div>
+            </div>
             <div class="form-group d-block mb-3">
                 <label for="inputusernumber" class="form-label">
                     Organizer<sup>
@@ -210,7 +236,7 @@
                 </label>
                 <div class="form-input">
                     <input type="email" class="form-control" id="inputusernumber"  name="supportEmail"
-                           value="{{$event->supportEmail}}"/>
+                           value=""/>
                     <i class="fa fa-envelope"></i>
                 </div>
             </div>
@@ -280,5 +306,59 @@
             });
         </script>
         <script src="{{asset('mobile/js/requests/profile-edit.js')}}"></script>
+        <script>
+            $(document).ready(function () {
+                // Function to fetch states based on country code
+                function fetchStates(countryCode) {
+
+                    let loadingSpinner = $('#loading-spinner'); // Reference to the spinner
+
+                    // Show the spinner
+                    loadingSpinner.show();
+
+                    $.ajax({
+                        url: "{{ route('get.states') }}",  // URL to fetch states
+                        type: "GET",
+                        data: { country_code: countryCode },
+                        success: function (states) {
+                            let stateSelect = $('select[name="state"]');
+
+                            if (stateSelect[0].selectize) {
+                                stateSelect[0].selectize.destroy();
+                            }
+
+                            stateSelect.empty();  // Clear existing options
+
+
+                            // Populate with new options
+                            $.each(states, function (index, state) {
+                                stateSelect.append('<option value="' + state.iso2 + '">' + state.name + '</option>');
+                            });
+                            stateSelect.removeClass('form-control');
+                            stateSelect.selectize()
+                        },
+                        complete: function () {
+                            loadingSpinner.hide();
+                        }
+                    });
+                }
+
+                // Trigger state population on country change
+                $('select[name="country"]').on('change', function () {
+                    let countryCode = $(this).val();
+                    if (countryCode) {
+                        fetchStates(countryCode);
+                    } else {
+                        $('select[name="state"]').empty().append('<option value="">Select a Location</option>');
+                    }
+                });
+
+                // Trigger the function on page load if a country is already selected
+                let initialCountryCode = $('select[name="country"]').val();
+                if (initialCountryCode) {
+                    fetchStates(initialCountryCode);
+                }
+            });
+        </script>
     @endpush
 @endsection

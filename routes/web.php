@@ -9,6 +9,7 @@ use App\Http\Controllers\Mobile\Ads\EventController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
+use App\Http\Controllers\Mobile\CountryController;
 use App\Http\Controllers\Mobile\Home;
 use App\Http\Controllers\Mobile\LegalController;
 use App\Http\Controllers\Mobile\User\Ads\AdsDetails;
@@ -55,6 +56,9 @@ Route::get('/manifest/offline-business', function() {
 
 Route::any('push-notification/store/token',[Home::class,'registerToken'])->name('push.store');
 Route::get('push-notification/store/test',[Home::class,'push'])->name('push.test');
+
+//Country controller
+Route::get('get-states', [CountryController::class, 'getStatesByCountry'])->name('get.states');
 
 /* ================================MOBILE WEB PWA ROUTE ===========================*/
 

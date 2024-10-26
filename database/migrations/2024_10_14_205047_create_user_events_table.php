@@ -38,6 +38,7 @@ class CreateUserEventsTable extends Migration
             $table->string('recurrenceEndDate', 150)->nullable();
             $table->string('recurrenceEndTime', 150)->nullable();
             $table->string('state', 150)->nullable();
+            $table->string('country', 150)->nullable();
             $table->text('location')->nullable();
             $table->string('featuredImage', 200)->nullable();
             $table->string('currentRecurring', 100)->default('0');

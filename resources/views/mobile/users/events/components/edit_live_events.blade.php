@@ -37,15 +37,32 @@
         </div>
     </div>
     <div class="form-group d-block">
+        <label for="inputusernumber" class="form-label">Country<sup class="text-danger">*</sup></label>
+        <div class="form-input mb-4 position-relative">
+            <select class="selectize" name="country">
+                <option value="">Select a Country</option>
+                @foreach($countries as $count)
+                    <option value="{{$count->iso2}}" {{($count->iso2==$event->country)?'selected':''}}>{{$count->name}}</option>
+                @endforeach
+            </select>
+            <i class="iconsax icons" data-icon="map-2"></i>
+        </div>
+    </div>
+
+    <div class="form-group d-block">
         <label for="inputusernumber" class="form-label">State<sup class="text-danger">*</sup></label>
         <div class="form-input mb-4 position-relative">
-            <select class="selectize" name="state">
+            <select class="form-control" name="state">
                 <option value="">Select a Location</option>
                 @foreach($states as $state)
                     <option value="{{$state->iso2}}" {{($state->iso2==$event->state)?'selected':''}}>{{$state->name}}</option>
                 @endforeach
             </select>
             <i class="iconsax icons" data-icon="map-2"></i>
+            <!-- Add this spinner icon here -->
+            <span id="loading-spinner" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+            </span>
         </div>
     </div>
     <div class="form-group d-block">
@@ -301,6 +318,7 @@
                 }
             }
         });
+
     </script>
     <script src="{{asset('mobile/js/requests/profile-edit.js')}}"></script>
 
