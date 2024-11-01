@@ -107,17 +107,6 @@
                         }
                     });
                 }
-
-                // Submit search on typing or changing select fields
-                // $('#search-input').on('keyup', submitSearch);
-                // $('select[name="country"], select[name="state"]').on('change', submitSearch);
-                // $('#search-form input[name="search"]').on('keydown', function(event) {
-                //     if (event.key === 'Enter' || event.keyCode === 13) {
-                //         event.preventDefault();
-                //         // Optionally, trigger the search function
-                //         submitSearch() // Reset results and load based on search input
-                //     }
-                // });
             });
         </script>
 

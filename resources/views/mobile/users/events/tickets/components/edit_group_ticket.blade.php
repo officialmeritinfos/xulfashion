@@ -82,11 +82,6 @@
                    converted to your account currency before settlement"></i>
             </label>
             <div class="input-group mb-3">
-                <select class="form-control selectize" name="groupCurrency">
-                    @foreach($fiats as $fiat)
-                        <option value="{{$fiat->code}}" {{($fiat->code==$ticket->currency)?'selected':''}}>{{$fiat->code}}</option>
-                    @endforeach
-                </select>
                 <input type="number" class="form-control" placeholder="2" aria-label="2" name="groupPrice" step="0.01"
                 value="{{$ticket->groupPrice}}">
             </div>
@@ -94,7 +89,7 @@
         <div class="form-group d-block">
             <label for="inputusernumber" class="form-label">Price Per Ticket<sup class="text-danger">*</sup></label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="2" aria-label="2" name="currency" readonly>
+                <input type="text" class="form-control" value="{{$event->currency}}" name="currency" readonly>
                 <input type="number" class="form-control" placeholder="2" aria-label="2" name="price" step="0.01" readonly>
             </div>
         </div>
@@ -227,12 +222,7 @@
 
 
         $(function () {
-            let curr = $('select[name="groupCurrency"]').val();
-            $('input[name="currency"]').val(curr);
-            $('select[name="groupCurrency"]').on('change', function () {
-                let curr = $(this).val();
-                $('input[name="currency"]').val(curr);
-            });
+
             function updateMainPrice() {
                 let price = parseFloat($('input[name="groupPrice"]').val()) || 0;
                 let size = parseFloat($('input[name="groupSize"]').val()) || 1;

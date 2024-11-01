@@ -68,11 +68,6 @@
                    converted to your account currency before settlement"></i>
             </label>
             <div class="input-group mb-3">
-                <select class="form-control selectize" name="currency">
-                    @foreach($fiats as $fiat)
-                        <option value="{{$fiat->code}}" {{($fiat->code==$user->mainCurrency)?'selected':''}}>{{$fiat->code}}</option>
-                    @endforeach
-                </select>
                 <input type="number" class="form-control" placeholder="2" aria-label="2" name="price" step="0.01">
             </div>
         </div>

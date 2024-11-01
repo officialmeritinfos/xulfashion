@@ -83,7 +83,6 @@ class TicketEdit extends BaseController
                 'perks'=>['nullable','array'],
                 'perks.*'=>['required','string','max:150'],
                 'transferFee'=>['nullable','string'],
-                'currency'=>['required_if:ticketKind,2','string','max:3',Rule::exists('fiats','code')],
                 'price'=>['required_if:ticketKind,2','nullable', 'numeric'],
                 'groupSize'=>['required','integer','min:2'],
                 'groupPrice'=>['required_if:ticketKind,2','nullable', 'numeric'],
@@ -99,7 +98,7 @@ class TicketEdit extends BaseController
             $updated = UserEventTicket::where('id',$ticket->id)->update([
                 'event_id' => $event->id,'name'=>$input['title'],'description'=>$input['description'],
                 'kindOfTicket' => $input['ticketKind'], 'isGroup' => 2,
-                'currency'=>($input['ticketKind']!=1)?$input['currency']:'','price'=>($input['ticketKind']!=1)?$input['groupPrice']/$input['groupSize']:'',
+                'price'=>($input['ticketKind']!=1)?$input['groupPrice']/$input['groupSize']:'',
                 'isFree' => ($input['ticketKind']==1)?1:2, 'inviteOnly' => $request->has('inviteOnly')?1:2,
                 'quantity' => ($input['stock']==1)?$input['quantity']:0,'unlimited' => ($input['stock']!=1)?1:2,
                 'purchaseLimit' => $input['purchaseLimit'],'guestsShouldPayFee'=>($input['ticketKind']==2 && $request->has('transferFee'))?1:2,
@@ -158,7 +157,6 @@ class TicketEdit extends BaseController
                 'perks'=>['nullable','array'],
                 'perks.*'=>['required','string','max:150'],
                 'transferFee'=>['nullable','string'],
-                'currency'=>['required_if:ticketKind,2','string','max:3',Rule::exists('fiats','code')],
                 'price'=>['required_if:ticketKind,2','nullable', 'numeric']
             ],[],[
                 'ticketKind'=>'Kind of Ticket',
@@ -172,7 +170,7 @@ class TicketEdit extends BaseController
             $updated = UserEventTicket::where('id',$ticket->id)->update([
                 'event_id' => $event->id,'name'=>$input['title'],'description'=>$input['description'],
                 'kindOfTicket' => $input['ticketKind'], 'isGroup' => 2,
-                'currency'=>($input['ticketKind']!=1)?$input['currency']:'','price'=>($input['ticketKind']!=1)?$input['price']:'',
+                'price'=>($input['ticketKind']!=1)?$input['price']:'',
                 'isFree' => ($input['ticketKind']==1)?1:2, 'inviteOnly' => $request->has('inviteOnly')?1:2,
                 'quantity' => ($input['stock']==1)?$input['quantity']:0,'unlimited' => ($input['stock']!=1)?1:2,
                 'purchaseLimit' => $input['purchaseLimit'],'guestsShouldPayFee'=>($input['ticketKind']==2 && $request->has('transferFee'))?1:2,

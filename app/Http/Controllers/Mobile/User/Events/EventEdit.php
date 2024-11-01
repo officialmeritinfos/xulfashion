@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\EventCategory;
 use App\Models\EventInterval;
+use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\State;
 use App\Models\UserEvent;
@@ -51,7 +52,8 @@ class EventEdit extends BaseController
             'categories'=>EventCategory::where('status',1)->get(),
             'timezones' =>\DateTimeZone::listIdentifiers(),
             'intervals' =>EventInterval::where('status',1)->get(),
-            'countries'=>Country::where('status',1)->get()
+            'countries'=>Country::where('status',1)->get(),
+            'fiats'=>Fiat::where('status',1)->get()
         ]);
     }
 
@@ -103,7 +105,8 @@ class EventEdit extends BaseController
                 'instagram' => ['nullable','url'],
                 'website' => ['nullable','url'],
                 'event'=>['required','string',Rule::exists('user_events','reference')->where('user',$user->id)],
-                'supportEmail'=>['required','email']
+                'supportEmail'=>['required','email'],
+                'currency' => ['required', 'string', 'max:3', Rule::exists('fiats', 'code')],
             ],[],[
                 'startDateOnetime'=>'Start Date for One-time event',
                 'startTimeOnetime'=>'Start Time for One-time event',
@@ -153,7 +156,8 @@ class EventEdit extends BaseController
                 'recurrenceEndTime'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endTimeRecur']:'',
                 'state'=>$input['state'],'location'=>$input['location'],'featuredImage'=>$featuredPhoto,
                 'instagram'=>$input['instagram'],'facebook'=>$input['facebook'],'twitter'=>$input['twitter'],
-                'website'=>$input['website'],'supportEmail'=>$input['supportEmail'],'country'=>$input['country']
+                'website'=>$input['website'],'supportEmail'=>$input['supportEmail'],'country'=>$input['country'],
+                'currency'=>$input['currency']
             ]);
 
             if ($updated){
@@ -226,7 +230,8 @@ class EventEdit extends BaseController
                 }],
                 'link'=>['required','url'],
                 'event'=>['required','string',Rule::exists('user_events','reference')->where('user',$user->id)],
-                'supportEmail'=>['required','email']
+                'supportEmail'=>['required','email'],
+                'currency' => ['required', 'string', 'max:3', Rule::exists('fiats', 'code')],
             ],[],[
                 'startDateOnetime'=>'Start Date for One-time event',
                 'startTimeOnetime'=>'Start Time for One-time event',
@@ -277,7 +282,8 @@ class EventEdit extends BaseController
                 'recurrenceEndTime'=>($input['scheduleType']!=1 && $input['recurrenceEndType']==1)?$input['endTimeRecur']:'',
                 'featuredImage'=>$featuredPhoto, 'instagram'=>$input['instagram'],'facebook'=>$input['facebook'],
                 'twitter'=>$input['twitter'], 'website'=>$input['website'],'platform' => $input['platform'],'link' => $input['link'],
-                'organizer'=>$input['organizer'],'supportEmail'=>$input['supportEmail'],'state' => $input['state'],'country'=>$input['country']
+                'organizer'=>$input['organizer'],'supportEmail'=>$input['supportEmail'],'state' => $input['state'],'country'=>$input['country'],
+                'currency'=>$input['currency']
             ]);
 
             if ($updated){

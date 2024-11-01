@@ -86,7 +86,5 @@
             $('.loader-wrapper').fadeIn('fast');
         }
     });
-    $(window).on('beforeunload', function() {
-        $('.loader-wrapper').show();
-    });
+
 </script>

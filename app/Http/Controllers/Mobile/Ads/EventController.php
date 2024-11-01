@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\GeneralSetting;
 use App\Models\UserEvent;
+use App\Models\UserEventTicket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -47,7 +48,7 @@ class EventController extends BaseController
             ->when($state, fn($q) => $q->where('state', $state))
             ->when($query, fn($q) => $q->where('title', 'like', '%' . $query . '%'))
             ->latest()
-            ->paginate(1);
+            ->paginate(30);
 
         // Handle AJAX Request
         if ($request->ajax()) {
@@ -67,11 +68,6 @@ class EventController extends BaseController
             'countries'     =>Country::where('status',1)->get(),
             'countrySearch' =>$countrySearch
         ]);
-    }
-    //event detail
-    public function eventDetail(Request $request, $eventId)
-    {
-
     }
 
     /**
@@ -111,5 +107,50 @@ class EventController extends BaseController
             'country' => $country->iso2,
             'iso3' => $country->iso3,
         ]);
+    }
+
+    //event detail
+    public function eventDetail(Request $request, $eventId)
+    {
+        // Fetch General Settings
+        $web = GeneralSetting::find(1);
+        if (!$request->has('id')){
+            return back()->with('error', 'Event not found');
+        }
+
+        $event = UserEvent::where('reference',$request->id)->with('tickets') ->first();
+        if (empty($event)){
+            return back()->with('error', 'Event not found');
+        }
+
+
+        return view('mobile.ads.events.details')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>$event->title,
+            'event'         =>$event,
+            'others'        =>UserEvent::where('status',1)->inRandomOrder()->take(6)->get(),
+        ]);
+
+    }
+    //event tickets
+    public function eventTickets(Request $request, $eventRef)
+    {
+        // Fetch General Settings
+        $web = GeneralSetting::find(1);
+
+        $event = UserEvent::where('reference',$eventRef)->first();
+        if (empty($event)){
+            return back()->with('error', 'Event not found');
+        }
+
+        return view('mobile.ads.events.tickets')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>$event->title.' Tickets',
+            'event'         =>$event,
+            'tickets'       =>UserEventTicket::where('event_id',$event->id)->where('inviteOnly','!=',1)->get(),
+        ]);
+
     }
 }

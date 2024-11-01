@@ -48,7 +48,7 @@
                                 @if($ticket->isFree())
                                     Free
                                 @else
-                                    {{currencySign($ticket->currency)}}{{$ticket->price()}}
+                                    {{currencySign($event->currency)}}{{$ticket->price()}}
                                 @endif
 
                             </td>

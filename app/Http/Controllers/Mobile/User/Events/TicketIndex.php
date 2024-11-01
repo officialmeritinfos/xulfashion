@@ -94,7 +94,6 @@ class TicketIndex extends BaseController
                 'perks' => ['nullable', 'array'],
                 'perks.*' => ['required', 'string', 'max:150'],
                 'transferFee' => ['nullable', 'string'],
-                'currency' => ['required_if:ticketKind,2', 'string', 'max:3', Rule::exists('fiats', 'code')],
                 'price' => ['required_if:ticketKind,2', 'nullable', 'numeric']
             ], [], [
                 'ticketKind' => 'Kind of Ticket',
@@ -112,7 +111,6 @@ class TicketIndex extends BaseController
                 'name' => $input['title'],
                 'description' => $input['description'],
                 'kindOfTicket' => $input['ticketKind'],
-                'currency' => $input['ticketKind'] == 2 ? $input['currency'] : '',
                 'price' => $input['ticketKind'] == 2 ? $input['price'] : '',
                 'isFree' => $input['ticketKind'] == 1 ? 1 : 2,
                 'inviteOnly' => $request->has('inviteOnly') ? 1 : 2,
@@ -161,7 +159,6 @@ class TicketIndex extends BaseController
                 'perks' => ['nullable', 'array'],
                 'perks.*' => ['required', 'string', 'max:150'],
                 'transferFee' => ['nullable', 'string'],
-                'currency' => ['required_if:ticketKind,2', 'string', 'max:3', Rule::exists('fiats', 'code')],
                 'price' => ['required_if:ticketKind,2', 'nullable', 'numeric'],
                 'groupSize' => ['required', 'integer', 'min:2'],
                 'groupPrice' => ['required_if:ticketKind,2', 'nullable', 'numeric']
@@ -181,7 +178,6 @@ class TicketIndex extends BaseController
                 'name' => $input['title'],
                 'description' => $input['description'],
                 'kindOfTicket' => $input['ticketKind'],
-                'currency' => $input['ticketKind'] == 2 ? $input['currency'] : '',
                 'price' => $input['ticketKind'] == 2 ? $input['groupPrice'] / $input['groupSize'] : '',
                 'isFree' => $input['ticketKind'] == 1 ? 1 : 2,
                 'inviteOnly' => $request->has('inviteOnly') ? 1 : 2,

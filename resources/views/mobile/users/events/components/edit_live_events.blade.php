@@ -65,6 +65,22 @@
             </span>
         </div>
     </div>
+    <div class="priceComponent">
+        <div class="form-group d-block">
+            <label for="inputusernumber" class="form-label">Event Currency<sup class="text-danger">*</sup>
+                <i class="fa fa-info-circle" data-bs-toggle="tooltip"
+                   title="This is the currency which the tickets for this event will be valued on. If it is not oyur account currency, all payments
+                           will be converted using the conversion exchange rate."></i>
+            </label>
+            <div class="input-group mb-3">
+                <select class="form-control selectize" name="currency">
+                    @foreach($fiats as $fiat)
+                        <option value="{{$fiat->code}}" {{($fiat->code==$event->currency)?'selected':''}}>{{$fiat->code}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="form-group d-block">
         <label for="inputusernumber" class="form-label">Venue<sup class="text-danger">*</sup></label>
         <div class="form-input mb-4 position-relative">

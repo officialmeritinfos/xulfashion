@@ -69,11 +69,6 @@
                    converted to your account currency before settlement"></i>
             </label>
             <div class="input-group mb-3">
-                <select class="form-control selectize" name="currency">
-                    @foreach($fiats as $fiat)
-                        <option value="{{$fiat->code}}" {{($fiat->code==$ticket->currency)?'selected':''}}>{{$fiat->code}}</option>
-                    @endforeach
-                </select>
                 <input type="number" class="form-control" placeholder="2" aria-label="2" name="price" step="0.01" value="{{$ticket->price}}">
             </div>
         </div>
@@ -131,7 +126,7 @@
 
 
     <div class="text-center mb-5">
-        <button type="submit" class="btn btn-outline-primary mt-0 w-50 submit mb-3 btn-auto">Add Ticket</button>
+        <button type="submit" class="btn btn-outline-primary mt-0 w-50 submit mb-3 btn-auto">Update Ticket</button>
     </div>
 </form>
 

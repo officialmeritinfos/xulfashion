@@ -5,6 +5,7 @@ use App\Http\Controllers\Mobile\Ads\Auth\Login;
 use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
 use App\Http\Controllers\Mobile\Ads\Auth\Register;
 use App\Http\Controllers\Mobile\Ads\CatalogController;
+use App\Http\Controllers\Mobile\Ads\EventCartController;
 use App\Http\Controllers\Mobile\Ads\EventController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
@@ -117,6 +118,21 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('marketplace.events');
         Route::get('events/{slug?}',[EventController::class,'eventDetail'])
             ->name('marketplace.events.detail');
+        Route::get('events/{id}/tickets',[EventController::class,'eventTickets'])
+            ->name('marketplace.events.tickets');
+        //EVENT CART
+        Route::post('events/ticket/cart-manager',[EventCartController::class,'updateCart'])
+            ->name('marketplace.events.cart.manager');
+        Route::get('events/ticket/cart-total',[EventCartController::class,'getCartTotal'])
+            ->name('marketplace.events.cart.total');
+        Route::get('events/ticket/cart-delete',[EventCartController::class,'deleteCart'])
+            ->name('marketplace.events.cart.delete');
+        Route::get('events/ticket/cart-list',[EventCartController::class,'renderCartList'])
+            ->name('marketplace.events.cart.list');
+        //EVENT CHECKOUT
+        Route::get('events/ticket/show-checkout',[EventCartController::class,'showCart'])
+            ->name('marketplace.events.cart.show-checkout');
+
 
 
         //LEGAL PAGE

@@ -151,4 +151,13 @@ class UserEventTicket extends Model
     {
         return $this->hasMany(UserEventPurchase::class, 'ticket_id');
     }
+    /**
+     * Define the relationship between UserEventTicket and TicketCartItem.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ticketCartItems()
+    {
+        return $this->hasMany(TicketCartItem::class, 'user_event_ticket_id');
+    }
 }
