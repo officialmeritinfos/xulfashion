@@ -40,10 +40,30 @@
             margin-left: 5px;
         }
 
+        #floating-back{
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 1000;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+        }
     </style>
 @endpush
     <section class="mt-4">
         <div class="custom-container">
+            <div id="floating-back">
+                <i class="fa fa-close" style="color: #721c24;"></i>
+            </div>
             @if($tickets->count()>0)
                 <ul class="horizontal-product-list">
                     @foreach($tickets as $ticket)
@@ -123,6 +143,7 @@
         <div class=""></div>
     </section>
 
+
     @if($tickets->count() >0)
 
         @push('js')
@@ -157,7 +178,11 @@
                     <h6>Total Cart</h6>
                     <h2><span id="currency"></span><span id="total-price">0.00</span></h2>
                 </div>
-                <a href="#" class="btn btn-lg theme-btn pay-btn mt-0">Checkout</a>
+                @if(!auth()->check())
+                    <a href="#" class="btn btn-lg theme-btn pay-btn mt-0">Register/Sign-in to Checkout</a>
+                @else
+                    <a href="#" class="btn btn-lg theme-btn pay-btn mt-0">Checkout</a>
+                @endif
             </div>
             <!-- // Fetch the cart on page load -->
             <script>
@@ -312,27 +337,18 @@
             <!--   // Release Tickets -->
             <script>
                 $(document).ready(function() {
-                    let reloadConfirmed = false;
+                    // Hide the global anchor with class "back" on page load
+                    $('a.back').hide();
 
-                    // Show custom modal when reload is attempted
-                    function showReloadConfirmation(event) {
-                        event.preventDefault();
-                        $('#reload-confirm-modal').modal('show');
-                    }
-
-                    // Intercept clicks or key presses for reload
-                    $(document).on('keydown', function(event) {
-                        if ((event.which === 116) || (event.which === 82 && event.ctrlKey)) {
-                            event.preventDefault();
-                            showReloadConfirmation(event);
-                        }
+                    // Handle click on the floating back "X" icon
+                    $('#floating-back').on('click', function(event) {
+                        event.preventDefault(); // Prevent any navigation
+                        $('#reload-confirm-modal').modal('show'); // Show the confirmation modal
                     });
 
-                    // Handle confirmation button click
+                    // Handle "Proceed" button in the modal
                     $('#confirm-reload').on('click', function() {
-                        reloadConfirmed = true;
-
-                        // Show the loading spinner
+                        // Show the loading spinner and update button text
                         $('#loading-spinner').show();
                         $('.button-text').text("Processing...");
 
@@ -345,23 +361,30 @@
                             },
                             success: function(response) {
                                 if (response.success) {
-                                    location.reload();
+                                    // Navigate back to the previous page after successful deletion
+                                    window.history.back();
                                 } else {
                                     toastr.error(response.message || "Failed to delete cart.");
                                 }
                             },
                             error: function() {
                                 toastr.error("An error occurred while deleting the cart.");
+                            },
+                            complete: function() {
+                                // Hide the modal and reset the button text and spinner
+                                $('#reload-confirm-modal').modal('hide');
+                                $('#loading-spinner').hide();
+                                $('.button-text').text("Proceed");
                             }
                         });
                     });
 
-                    // Handle cancel button click
+                    // Handle "Cancel" button in the modal
                     $('#reload-confirm-modal .btn-light').on('click', function() {
-                        reloadConfirmed = false;
-                        $('#reload-confirm-modal').modal('hide');
+                        $('#reload-confirm-modal').modal('hide'); // Close the modal if canceled
                     });
                 });
+
             </script>
             <!-- TOggle See More -->
             <script>
@@ -384,6 +407,33 @@
                         });
                     });
                 });
+            </script>
+            <script>
+                $(document).ready(function() {
+                    // Check if the user is authenticated
+                    @if(auth()->check())
+                    // Send AJAX request to merge the cart on page load
+                    $.ajax({
+                        url: "{{ route('mobile.marketplace.events.cart.merge') }}",
+                        method: "GET",
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                console.log("Cart successfully merged.");
+                                // Optionally, update any cart elements on the page
+                            } else {
+                                console.log("Failed to merge cart: " + response.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error("An error occurred while merging the cart.");
+                        }
+                    });
+                    @endif
+                });
+
             </script>
         @endpush
     @endif

@@ -1,4 +1,6 @@
 
+@if(count($cartItems) >0)
+
     <div class="custom-container">
         <div class="total-detail">
             @foreach($cartItems as $item)
@@ -20,4 +22,10 @@
                 <h4 class="fw-semibold amount">{{ $currency . $grandTotal }}</h4>
             </div>
         </div>
+        @if(!auth()->check())
+            <a href="shipping-address.html" class="btn theme-btn w-100">Login/Register to Checkout</a>
+        @else
+            <a href="shipping-address.html" class="btn theme-btn w-100">Continue to Payment</a>
+        @endif
     </div>
+@endif

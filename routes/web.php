@@ -129,6 +129,8 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('marketplace.events.cart.delete');
         Route::get('events/ticket/cart-list',[EventCartController::class,'renderCartList'])
             ->name('marketplace.events.cart.list');
+        Route::get('events/ticket/cart-merge',[EventCartController::class,'mergeGuestCart'])
+            ->name('marketplace.events.cart.merge');
         //EVENT CHECKOUT
         Route::get('events/ticket/show-checkout',[EventCartController::class,'showCart'])
             ->name('marketplace.events.cart.show-checkout');

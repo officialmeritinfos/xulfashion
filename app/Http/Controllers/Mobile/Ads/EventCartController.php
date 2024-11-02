@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class EventCartController extends BaseController
 {
@@ -29,9 +30,9 @@ class EventCartController extends BaseController
      *
      * @return TicketCart
      */
-    protected function getOrCreateCart()
+    protected function getOrCreateCart($checkGuestOnly=false)
     {
-        if (Auth::check()) {
+        if (Auth::check() & !$checkGuestOnly) {
             return TicketCart::firstOrCreate(['user_id' => Auth::id()]);
         } else {
             $guestToken = Cookie::get('guest_token') ?: Str::uuid();
@@ -160,11 +161,6 @@ class EventCartController extends BaseController
         return response()->json(['success' => true, 'message' => 'Cart cleared successfully.']);
     }
 
-    /**
-     * Merge the guest cart with the user's cart on login.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function mergeGuestCart()
     {
         $guestToken = Cookie::get('guest_token');
@@ -172,28 +168,45 @@ class EventCartController extends BaseController
 
         if ($guestCart) {
             $userCart = $this->getOrCreateCart();
+            try {
+                DB::transaction(function () use ($guestCart, $userCart) {
+                    foreach ($guestCart->items as $item) {
+                        $userCartItem = $userCart->items()->where('user_event_ticket_id', $item->user_event_ticket_id)->first();
 
-            DB::transaction(function () use ($guestCart, $userCart) {
-                foreach ($guestCart->items as $item) {
-                    $userCartItem = $userCart->items()->where('user_event_ticket_id', $item->user_event_ticket_id)->first();
-
-                    if ($userCartItem) {
-                        $userCartItem->quantity += $item->quantity;
-                        $userCartItem->save();
-                    } else {
-                        $userCart->items()->create([
-                            'user_event_ticket_id' => $item->user_event_ticket_id,
-                            'quantity' => $item->quantity
-                        ]);
+                        if ($userCartItem) {
+                            $userCartItem->quantity += $item->quantity;
+                            $userCartItem->save();
+                        } else {
+                            $userCart->items()->create([
+                                'user_event_ticket_id' => $item->user_event_ticket_id,
+                                'quantity' => $item->quantity
+                            ]);
+                        }
                     }
-                }
 
-                // Delete the guest cart after merging
-                $guestCart->delete();
-            });
+                    // Delete the guest cart after merging
+                    $guestCart->delete();
+                });
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Cart successfully merged.'
+                ]);
+
+            } catch (\Exception $e) {
+                logger($e->getMessage());
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to merge cart: ' . $e->getMessage()
+                ], 500);
+            }
         }
 
-        return redirect()->route('mobile.marketplace.events.cart.show-checkout');
+        return response()->json([
+            'success' => false,
+            'message' => 'No guest cart found to merge.'
+        ]);
     }
     /**
      * Remove a specific item from the cart.
