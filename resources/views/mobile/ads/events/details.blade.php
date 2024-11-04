@@ -154,16 +154,18 @@
 </section>
 
     @push('js')
-        <!-- cart box starts -->
-        <section class="fixed-cart-btn section-b-space ">
-            <div class="custom-container text-center">
-                <a href="{{route('mobile.marketplace.events.tickets',['id'=>$event->reference])}}" class="cart-box-sec text-center">
-                    <div class="d-flex align-items-center text-center gap-2 ">
-                        <i class="iconsax bag" data-icon="ticket-2"></i>
-                        <h2>Get A Ticket</h2>
-                    </div>
-                </a>
-            </div>
-        </section>
+        @if($event->tickets->count()>0)
+            <!-- cart box starts -->
+            <section class="fixed-cart-btn section-b-space ">
+                <div class="custom-container text-center">
+                    <a href="{{route('mobile.marketplace.events.tickets',['id'=>$event->reference])}}" class="cart-box-sec text-center">
+                        <div class="d-flex align-items-center text-center gap-2 ">
+                            <i class="iconsax bag" data-icon="ticket-2"></i>
+                            <h2>Get A Ticket</h2>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        @endif
     @endpush
 @endsection

@@ -45,4 +45,12 @@ class UserEvent extends Model
     {
         return $this->hasOneThrough(Country::class, State::class, 'iso2', 'iso2', 'state', 'country_code');
     }
+    public function purchaseTickets()
+    {
+        return $this->hasMany(UserEventPurchaseTicket::class, 'event_id');
+    }
+    public function guests()
+    {
+        return $this->hasMany(UserEventGuest::class, 'event');
+    }
 }

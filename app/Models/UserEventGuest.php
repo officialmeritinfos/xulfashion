@@ -11,4 +11,20 @@ class UserEventGuest extends Model
     use HasFactory,Notifiable;
     protected $guarded=[];
 
+    public function purchase()
+    {
+        return $this->belongsTo(UserEventPurchase::class, 'purchase_id');
+    }
+
+    // Relationship with UserEvent
+    public function event()
+    {
+        return $this->belongsTo(UserEvent::class, 'event');
+    }
+
+    // Relationship with UserEventTicket
+    public function ticket()
+    {
+        return $this->belongsTo(UserEventTicket::class, 'ticket_id');
+    }
 }

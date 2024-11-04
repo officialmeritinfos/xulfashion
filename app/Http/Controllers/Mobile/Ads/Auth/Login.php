@@ -18,6 +18,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -27,9 +28,14 @@ class Login extends BaseController
 {
     use Helpers;
     //landing page
-    public function landingPage()
+    public function landingPage(Request $request)
     {
         $web = GeneralSetting::find(1);
+
+        if ($request->has('redirect')) {
+            Cache::put('redirect', $request->redirect, now()->addDay(30));
+        }
+
         return view('mobile.ads.auth.login')->with([
             'web'       =>$web,
             'pageName'  =>"Sign in to ".$web->name,
@@ -89,7 +95,12 @@ class Login extends BaseController
                         $this->notifyLogin($request, $user);
                     }
                     //since two-factor authentication is off, we redirect to the necessary page
-                    $url = route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)]);
+                    if (Cache::has('redirect')) {
+                        $url = Cache::get('redirect');
+                        Cache::forget('redirect');
+                    }else{
+                        $url = route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)]);
+                    }
                     $message = "Account authenticated. Redirecting soon ...";
                 }
                 return $this->sendResponse([
@@ -153,8 +164,14 @@ class Login extends BaseController
 
                 TwoFactor::where('user',$user->id)->delete();
 
+                if (Cache::has('redirect')) {
+                    $url = Cache::get('redirect');
+                    Cache::forget('redirect');
+                }else{
+                    $url = route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)]);
+                }
                 return $this->sendResponse([
-                    'redirectTo'=> route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)])
+                    'redirectTo'=> $url
                 ],'Login successfully verified.');
             }
             return $this->sendError('account.error',['error'=>'Unable to verify login']);

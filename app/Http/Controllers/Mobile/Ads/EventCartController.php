@@ -55,11 +55,18 @@ class EventCartController extends BaseController
         ]);
 
         try {
-
             $userEventTicket = UserEventTicket::findOrFail($request->user_event_ticket_id);
             $cart = $this->getOrCreateCart();
 
-            // Check if quantity is zero - if so, remove the item from the cart directly
+            // Check if the cart contains items from a different event
+            $existingEventId = $cart->items->first()?->userEventTicket->event_id;
+
+            if ($existingEventId && $existingEventId !== $userEventTicket->event_id) {
+                // Clear the cart if it contains items from a different event
+                $cart->items()->delete();
+            }
+
+            // If quantity is zero, remove the item from the cart
             if ($request->quantity == 0) {
                 $cartItem = $cart->items()->where('user_event_ticket_id', $userEventTicket->id)->first();
 
@@ -72,14 +79,14 @@ class EventCartController extends BaseController
                     return calculateTotalCostOnTicket($item->user_event_ticket_id) * $item->quantity;
                 });
 
-                $event = UserEvent::where('id',$userEventTicket->event_id)->first();
+                $event = UserEvent::find($userEventTicket->event_id);
 
                 return response()->json([
                     'success' => true,
                     'cartItem' => null,
                     'totalPrice' => $totalPrice,
                     'message' => 'Item removed from cart.',
-                    'currency'=>currencySign($event->currency),
+                    'currency' => currencySign($event->currency),
                 ]);
             }
 
@@ -91,7 +98,7 @@ class EventCartController extends BaseController
                     'maxQuantity' => min($userEventTicket->purchaseLimit, $userEventTicket->quantity)
                 ], 400);
             }
-            if ($request->quantity > $userEventTicket->quantity) {
+            if (($request->quantity > $userEventTicket->quantity) && ($userEventTicket->unlimited!=1)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Quantity exceeds available quantity.',
@@ -99,21 +106,13 @@ class EventCartController extends BaseController
                 ], 400);
             }
 
-            // Check if quantity is zero - if so, remove the item from the cart
-            if ($request->quantity === 0) {
-                $cartItem = $cart->items()->where('user_event_ticket_id', $userEventTicket->id)->first();
-                if ($cartItem) {
-                    $cartItem->delete(); // Remove the item from the cart
-                }
-            } else {
-                // Update or add the ticket to the cart with the new quantity
-                $cartItem = $cart->items()->updateOrCreate(
-                    ['user_event_ticket_id' => $userEventTicket->id],
-                    ['quantity' => $request->quantity]
-                );
-            }
+            // Update or add the ticket to the cart with the new quantity
+            $cartItem = $cart->items()->updateOrCreate(
+                ['user_event_ticket_id' => $userEventTicket->id],
+                ['quantity' => $request->quantity]
+            );
 
-            $event = UserEvent::where('id',$userEventTicket->event_id)->first();
+            $event = UserEvent::find($userEventTicket->event_id);
 
             // Calculate total cart price
             $totalPrice = $cart->items->sum(function ($item) {
@@ -121,14 +120,16 @@ class EventCartController extends BaseController
             });
 
             return response()->json([
-                'success' => true, 'cartItem' => $cartItem, 'totalPrice' => $totalPrice,
-                'currency'=>currencySign($event->currency),
+                'success' => true,
+                'cartItem' => $cartItem,
+                'totalPrice' => $totalPrice,
+                'currency' => currencySign($event->currency),
             ]);
-        }catch (\Exception $exception){
-            Log::info($exception->getMessage().' on line '.$exception->getLine());
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage() . ' on line ' . $exception->getLine());
             return response()->json([
                 'success' => false,
-                'message' => 'An Error occurred: please try again.',
+                'message' => 'An error occurred: please try again.',
             ], 400);
         }
     }
@@ -275,13 +276,12 @@ class EventCartController extends BaseController
     }
     public function renderCartList(Request $request)
     {
-
         if (!$request->has('ref')){
             return response()->json(['success' => false, 'message' => 'Something went wrong'], 404);
         }
 
         $cart = $this->getOrCreateCart();
-        $cartItems = $cart->items()->with('userEventTicket.events')->get(); // Eager load event with each ticket
+        $cartItems = $cart->items()->with('userEventTicket.events')->get();
 
         $event = UserEvent::where('reference', $request->ref)->first();
 
@@ -300,6 +300,7 @@ class EventCartController extends BaseController
             'subTotal' => number_format($subTotal, 2),
             'grandTotal' => number_format($grandTotal, 2),
             'currency' => currencySign($currency),
+            'event'=>$event
         ])->render();
 
         return response()->json(['cartComponent' => $cartComponent]);

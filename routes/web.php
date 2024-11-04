@@ -6,6 +6,7 @@ use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
 use App\Http\Controllers\Mobile\Ads\Auth\Register;
 use App\Http\Controllers\Mobile\Ads\CatalogController;
 use App\Http\Controllers\Mobile\Ads\EventCartController;
+use App\Http\Controllers\Mobile\Ads\EventCheckoutController;
 use App\Http\Controllers\Mobile\Ads\EventController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
@@ -132,8 +133,13 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
         Route::get('events/ticket/cart-merge',[EventCartController::class,'mergeGuestCart'])
             ->name('marketplace.events.cart.merge');
         //EVENT CHECKOUT
-        Route::get('events/ticket/show-checkout',[EventCartController::class,'showCart'])
-            ->name('marketplace.events.cart.show-checkout');
+        Route::middleware(['web','auth','auth.session','lockedOut','twoFactor'])->group(function(){
+            //Checkout Group - must be authenticated first.
+            Route::get('events/ticket/{event}/show-checkout',[EventCheckoutController::class,'checkoutLandingPage'])
+                ->name('marketplace.events.cart.show-checkout');
+            Route::post('events/ticket/{event}/process-checkout',[EventCheckoutController::class,'processCheckout'])
+                ->name('marketplace.events.cart.process.checkout');
+        });
 
 
 

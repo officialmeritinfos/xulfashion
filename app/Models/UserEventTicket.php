@@ -160,4 +160,17 @@ class UserEventTicket extends Model
     {
         return $this->hasMany(TicketCartItem::class, 'user_event_ticket_id');
     }
+    public function event()
+    {
+        return $this->belongsTo(UserEvent::class,'event_id');
+    }
+    public function purchaseTickets()
+    {
+        return $this->hasMany(UserEventPurchaseTicket::class, 'ticket_id');
+    }
+    public function guests()
+    {
+        return $this->hasMany(UserEventGuest::class, 'ticket_id');
+    }
+
 }

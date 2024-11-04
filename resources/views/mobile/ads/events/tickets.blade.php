@@ -93,7 +93,7 @@
                                     <div class="d-flex align-items-center justify-content-between mt-3">
                                         <div class="d-flex align-items-center gap-2 text-start">
                                             <h3 class="fw-bold">
-                                                <li>Qty : {{$ticket->quantity}}</li>
+                                                <li>Qty :  {{($ticket->unlimited==1?'Unlimited':$ticket->quantity)}}</li>
                                             </h3>
                                         </div>
                                         <div class="plus-minus">
@@ -179,45 +179,40 @@
                     <h2><span id="currency"></span><span id="total-price">0.00</span></h2>
                 </div>
                 @if(!auth()->check())
-                    <a href="#" class="btn btn-lg theme-btn pay-btn mt-0">Register/Sign-in to Checkout</a>
+                    <a href="{{route('mobile.login',['redirect'=>url()->current()])}}"
+                       class="btn btn-lg theme-btn pay-btn mt-0">Login/Register </a>
                 @else
-                    <a href="#" class="btn btn-lg theme-btn pay-btn mt-0">Checkout</a>
+                    <a href="{{route('mobile.marketplace.events.cart.show-checkout',['event'=>$event->reference])}}" class="btn btn-lg theme-btn pay-btn mt-0">Checkout</a>
                 @endif
             </div>
-            <!-- // Fetch the cart on page load -->
             <script>
                 $(document).ready(function() {
-                    // Fetch current ticket amount on page load
-                    fetchCartTotal();
-
-                    function fetchCartTotal() {
-                        $('.pay-popup-loader').show();
-                        $('.pay-popup').hide();
-
-                        $.ajax({
-                            url: "{{ route('mobile.marketplace.events.cart.total') }}",
-                            method: "GET",
-                            success: function(response) {
-                                $('.pay-popup-loader').hide();
-                                $('.pay-popup').show();
-                                $('#total-price').text(response.totalPrice.toFixed(2));
-                                $('#currency').text(response.currency);
-                            },
-                            error: function() {
-                                toastr.error("Failed to load cart total.");
-                                $('.pay-popup-loader').hide();
-                                $('.pay-popup').show();
-                            },
-                            complete: function() {
-                                // Hide loader and show the pay-popup div again
-                                $('.pay-popup-loader').hide();
-                                $('.pay-popup').show();
+                    // Check if the user is authenticated
+                    @if(auth()->check())
+                    // Send AJAX request to merge the cart on page load
+                    $.ajax({
+                        url: "{{ route('mobile.marketplace.events.cart.merge') }}",
+                        method: "GET",
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                console.log("Cart successfully merged.");
+                                // Optionally, update any cart elements on the page
+                            } else {
+                                console.log("Failed to merge cart: " + response.message);
                             }
-                        });
-                    }
+                        },
+                        error: function(xhr) {
+                            console.error("An error occurred while merging the cart.");
+                        }
+                    });
+                    @endif
                 });
+
             </script>
-            <!-- cart bottom end -->
+
             <!--// Update cart -->
             <script>
                 $(document).ready(function() {
@@ -280,6 +275,7 @@
                                         $('#total-price').text(response.totalPrice.toFixed(2));
                                         $('#currency').text(response.currency);
                                         // Replace .cart-list content with the updated component
+                                        fetchCartTotal();
                                         updateCartComponent();
                                         if (quantity === 0) {
                                             // Remove item from cart display if quantity is zero
@@ -330,6 +326,34 @@
                         });
                     }
 
+                    function fetchCartTotal() {
+                        $('.pay-popup-loader').show();
+                        $('.pay-popup').hide();
+
+                        $.ajax({
+                            url: "{{ route('mobile.marketplace.events.cart.total') }}",
+                            method: "GET",
+                            success: function(response) {
+                                $('.pay-popup-loader').hide();
+                                $('.pay-popup').show();
+                                $('#total-price').text(response.totalPrice.toFixed(2));
+                                $('#currency').text(response.currency);
+                            },
+                            error: function() {
+                                toastr.error("Failed to load cart total.");
+                                $('.pay-popup-loader').hide();
+                                $('.pay-popup').show();
+                            },
+                            complete: function() {
+                                // Hide loader and show the pay-popup div again
+                                $('.pay-popup-loader').hide();
+                                $('.pay-popup').show();
+                            }
+                        });
+                    }
+
+                    //fetch cart on load
+                    fetchCartTotal();
                     // Load cart component on page load if items are in cart
                     updateCartComponent();
                 });
@@ -384,7 +408,6 @@
                         $('#reload-confirm-modal').modal('hide'); // Close the modal if canceled
                     });
                 });
-
             </script>
             <!-- TOggle See More -->
             <script>
@@ -408,33 +431,7 @@
                     });
                 });
             </script>
-            <script>
-                $(document).ready(function() {
-                    // Check if the user is authenticated
-                    @if(auth()->check())
-                    // Send AJAX request to merge the cart on page load
-                    $.ajax({
-                        url: "{{ route('mobile.marketplace.events.cart.merge') }}",
-                        method: "GET",
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                console.log("Cart successfully merged.");
-                                // Optionally, update any cart elements on the page
-                            } else {
-                                console.log("Failed to merge cart: " + response.message);
-                            }
-                        },
-                        error: function(xhr) {
-                            console.error("An error occurred while merging the cart.");
-                        }
-                    });
-                    @endif
-                });
 
-            </script>
         @endpush
     @endif
     <div class="panel-space"></div>

@@ -2,6 +2,7 @@
 
 use App\Models\Department;
 use App\Models\State;
+use App\Models\TicketCart;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserDevice;
@@ -880,5 +881,14 @@ if (!function_exists('calculateTotalCostOnTicket')) {
                 return  $ticket->price;
             }
         }
+    }
+}
+if (!function_exists('calculateTicketCart')) {
+    function calculateTicketCart(){
+        $cart =  TicketCart::firstOrCreate(['user_id' => Auth::id()]);
+
+        return $cart->items->sum(function ($item) {
+            return calculateTotalCostOnTicket($item->user_event_ticket_id) * $item->quantity;
+        });
     }
 }

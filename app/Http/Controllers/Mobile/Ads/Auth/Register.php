@@ -106,7 +106,12 @@ class Register extends BaseController
                     $user->save();
 
                     $message = 'Account successfully created. Redirecting to complete account setup.';
-                    $urlTo = route('complete-account-setup');
+                    if (Cache::has('redirect')) {
+                        $urlTo = Cache::get('redirect');
+                        Cache::forget('redirect');
+                    }else{
+                        $urlTo = route('complete-account-setup');
+                    }
                 }else{
                     Auth::login($user);
                     //send email verification
@@ -175,8 +180,15 @@ class Register extends BaseController
 
                 Email::where('user',$user->id)->delete();
 
+                if (Cache::has('redirect')) {
+                    $urlTo = Cache::get('redirect');
+                    Cache::forget('redirect');
+                }else{
+                    $urlTo = route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)]);
+                }
+
                 return $this->sendResponse([
-                    'redirectTo'=>route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)]),
+                    'redirectTo'=>$urlTo,
                     'token'=>$request->bearerToken()
                 ],'Email successfully verified.');
             }

@@ -258,14 +258,12 @@
 
 </style>
 
-@include('noti_js')
-{{--<script src="https://unpkg.com/lite-editor@1.6.39/js/lite-editor.min.js"></script>--}}
-{{--<link rel="stylesheet" href="https://unpkg.com/lite-editor@1.6.39/css/lite-editor.css">--}}
-{{--<script>--}}
-{{--    new LiteEditor('.editor',{--}}
-{{--        minHeight: 200,--}}
-{{--    });--}}
-{{--</script>--}}
+
+
+@once
+    @include('noti_js')
+@endonce
+
 
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>

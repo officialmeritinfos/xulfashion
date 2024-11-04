@@ -31,15 +31,6 @@ class UserEventPurchase extends Model
         return $this->belongsTo(UserEvent::class, 'event_id');
     }
 
-    /**
-     * Define the relationship between UserEventPurchase and UserEventTicket.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function tickets()
-    {
-        return $this->belongsTo(UserEventTicket::class, 'ticket_id');
-    }
 
     /**
      * Define the relationship between UserEventPurchase and UserEventBuyer.
@@ -89,6 +80,15 @@ class UserEventPurchase extends Model
     public function getTotalCharge()
     {
         return $this->charge + $this->processorFee;
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(UserEventPurchaseTicket::class, 'user_event_purchase_id');
+    }
+    public function guests()
+    {
+        return $this->hasMany(UserEventGuest::class, 'purchase_id');
     }
 
 }
