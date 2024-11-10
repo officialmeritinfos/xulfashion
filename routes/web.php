@@ -7,6 +7,7 @@ use App\Http\Controllers\Mobile\Ads\Auth\Register;
 use App\Http\Controllers\Mobile\Ads\CatalogController;
 use App\Http\Controllers\Mobile\Ads\EventCartController;
 use App\Http\Controllers\Mobile\Ads\EventCheckoutController;
+use App\Http\Controllers\Mobile\Ads\EventCheckoutPaymentController;
 use App\Http\Controllers\Mobile\Ads\EventController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Mobile\User\Ads\AdsDetails;
 use App\Http\Controllers\Mobile\User\Ads\AdsEdit;
 use App\Http\Controllers\Mobile\User\Ads\AdsIndex;
 use App\Http\Controllers\Mobile\User\Events\Attendees;
+use App\Http\Controllers\Mobile\User\Events\BuyerPurchaseController;
 use App\Http\Controllers\Mobile\User\Events\EventDetail;
 use App\Http\Controllers\Mobile\User\Events\EventEdit;
 use App\Http\Controllers\Mobile\User\Events\EventIndex;
@@ -139,6 +141,16 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('marketplace.events.cart.show-checkout');
             Route::post('events/ticket/{event}/process-checkout',[EventCheckoutController::class,'processCheckout'])
                 ->name('marketplace.events.cart.process.checkout');
+
+            //process payment redirect and verify
+            Route::get('events/ticket/{event}/{payment}/process-checkout-payment',[EventCheckoutPaymentController::class,'processCheckSuccessfulPayment'])
+                ->name('marketplace.events.cart.process.checkout.payment');
+            //process payment redirect and cancel
+            Route::get('events/ticket/{event}/{payment}/process-checkout-payment-cancel',[EventCheckoutPaymentController::class,'processCheckoutCancelledPayment'])
+                ->name('marketplace.events.cart.process.checkout.payment.cancel');
+            //Check Payment Status
+            Route::get('events/ticket/purchase/checkout/{purchaseRef}/{transactionId}/payment-status',[EventCheckoutPaymentController::class,'checkStatus'])
+                ->name('marketplace.events.ticket.purchase.checkout.payment.status');
         });
 
 
@@ -226,6 +238,11 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             /*====================EVENT DIRECTORY ===========================*/
             Route::get('events/index',[EventIndex::class,'landingPage'])
                 ->name('events.index');
+            //Manage Event - Buyer Dashboard
+            Route::get('events/purchase/{purchase}/add-guests',[BuyerPurchaseController::class,'addGuest'])
+                ->name('events.purchase.add-guests');
+
+            //Manage Event - Organizer Dashboard
             Route::get('events/manage',[EventIndex::class,'manageEvent'])
                 ->name('events.manage');
             //Create Event

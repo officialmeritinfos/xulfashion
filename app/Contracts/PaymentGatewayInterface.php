@@ -4,6 +4,6 @@ namespace App\Contracts;
 
 interface PaymentGatewayInterface
 {
-    public function initializePayment(array $data);
+    public function initializePayment(array $data, array $options);
     public function verifyPayment(string $reference);
 }

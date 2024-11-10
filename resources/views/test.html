@@ -3,167 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Ticket Card</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Ticket Purchase Confirmation</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             font-family: Arial, sans-serif;
-            padding: 20px;
+            line-height: 1.6;
+            color: #333;
         }
-
-        .ticket-container {
+        .container {
             max-width: 600px;
-            width: 100%;
-            text-align: left;
-        }
-
-        .ticket-card {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+            margin: auto;
             padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .header {
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            border-radius: 10px 10px 0 0;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            min-width: 400px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #f1f1f1;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #ddd;
+            border-radius: 0 0 10px 10px;
+        }
+        .contact-info {
+            margin-top: 20px;
+        }
+        .social-media {
+            list-style: none;
+            padding: 0;
             display: flex;
-            gap: 15px;
-            align-items: flex-start;
+            gap: 10px;
+            justify-content: center;
         }
-
-        .qr-section {
-            flex-shrink: 0;
-            text-align: center;
-        }
-
-        .qr-section img, .qr-section #qrcode canvas {
-            width: 100px;
-            height: 100px;
-        }
-
-        .ticket-info {
-            flex-grow: 1;
-            padding-left: 15px;
-            border-left: 1px dashed #ddd;
-        }
-
-        .ticket-header {
-            font-weight: bold;
-            font-size: 1.5em;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .ticket-details p {
-            margin-bottom: 0.5rem;
-            font-size: 14px;
-            color: #555;
-            line-height: 1.4;
-        }
-
-        .ticket-details p span {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .action-buttons {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .action-buttons button {
-            background-color: #333;
-            color: #fff;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .action-buttons button:hover {
-            background-color: #555;
-        }
-
-        /* Print-specific styles */
-        @media print {
-            .action-buttons {
-                display: none;
-            }
+        .social-media li {
+            display: inline-block;
         }
     </style>
 </head>
 <body>
+<div class="container">
+    <div class="header">
+        <h2>Ticket Purchase Confirmation</h2>
+    </div>
+    <div class="content">
+        <p>Dear {{ $buyer->name }},</p>
+        <p>Thank you for your purchase. Below are the details of your tickets and the event:</p>
 
-<div class="ticket-container">
-    <div class="ticket-card" id="ticketCard">
-        <div class="qr-section">
-            <!-- QR code will be generated here by JavaScript -->
-            <div id="qrcode"></div>
-            <p class="small text-muted mb-1">#794460377</p>
-            <p class="small text-muted mb-1">Ticket Type: VIP</p>
-            <p class="small text-muted mb-1">Price: $700.00</p>
+        <h3>Event Details</h3>
+        <p><strong>Event Name:</strong> {{ $event->title }}</p>
+        <p><strong>Event Start Date:</strong> {{ \Carbon\Carbon::parse($event->startDate)->format('l, F j, Y') }}</p>
+        <p><strong>Event Start Time:</strong> {{ \Carbon\Carbon::parse($event->startTime)->format('g:i A') }}</p>
+        <p><strong>Event End Date:</strong> {{ \Carbon\Carbon::parse($event->endDate)->format('l, F j, Y') }}</p>
+        <p><strong>Event End Time:</strong> {{ \Carbon\Carbon::parse($event->endTime)->format('g:i A') }}</p>
+        @if($event->recurrenceEndType && $event->recurrenceEndCount)
+        <p><strong>Number of Recurrences:</strong> {{ $event->recurrenceEndCount }}</p>
+        @endif
+
+        <h3>Ticket Details</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Ticket Name</th>
+                    <th>Quantity</th>
+                    <th>Admits</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($purchase->tickets as $ticket)
+                <tr>
+                    <td>{{ $ticket->userEventTicket->name }}</td>
+                    <td>{{ $ticket->quantity }}</td>
+                    <td>{{ $ticket->number_admits }}</td>
+                    <td>{{ $purchase->currency }} {{ number_format($ticket->price * $ticket->quantity, 2) }}</td>
+                </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
-        <div class="ticket-info">
-            <div class="ticket-header">Conference</div>
-            <div class="ticket-details">
-                <p>November 16, 2022 09:00 a.m. SAST - 05:00 a.m. SAST</p>
-                <p><a href="#" style="color: #007bff;">Add to calendar</a></p>
-                <p><span>Ticket Holder:</span> Susan Smith</p>
-                <p><span>Telephone Number:</span> 012 345 6789</p>
-                <p><span>Company:</span> Newco</p>
-                <p><span>Designation:</span> CEO</p>
-                <p><span>T-shirt size:</span> S</p>
-                <p><span>Dietary requirements:</span> None</p>
-            </div>
+
+        <p>We look forward to seeing you at the event!</p>
+
+        <div class="contact-info">
+            <h3>Contact the Organizer</h3>
+            <p><strong>Email:</strong> {{ $event->organizer_email }}</p>
+            @if(!empty($event->organizer_phone))
+            <p><strong>Phone:</strong> {{ $event->organizer_phone }}</p>
+            @endif
+            <ul class="social-media">
+                @if(!empty($event->organizer_facebook))
+                <li><a href="{{ $event->organizer_facebook }}" target="_blank">Facebook</a></li>
+                @endif
+                @if(!empty($event->organizer_twitter))
+                <li><a href="{{ $event->organizer_twitter }}" target="_blank">Twitter</a></li>
+                @endif
+                @if(!empty($event->organizer_instagram))
+                <li><a href="{{ $event->organizer_instagram }}" target="_blank">Instagram</a></li>
+                @endif
+            </ul>
         </div>
     </div>
-
-    <div class="action-buttons mt-3">
-        <button id="downloadBtn">Download Ticket as Image</button>
+    <div class="footer">
+        <p>If you have any questions, please contact our support team.</p>
+        <p><em>Thank you for choosing our platform.</em></p>
     </div>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-    // Generate the QR code
-    new QRCode(document.getElementById("qrcode"), {
-        text: "Ticket123456",
-        width: 100,
-        height: 100,
-    });
-
-    $(document).ready(function() {
-        $('#downloadBtn').click(function() {
-            // Hide the download button before capture
-            $('#downloadBtn').hide();
-
-            html2canvas(document.querySelector("#ticketCard"), {
-                allowTaint: true,
-                useCORS: true,
-                scale: 2
-            }).then(canvas => {
-                let link = document.createElement('a');
-                link.href = canvas.toDataURL("image/png");
-                link.download = 'Event_Ticket.png';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                // Show the download button again after capture
-                $('#downloadBtn').show();
-            }).catch(error => {
-                console.error('Error capturing the ticket:', error);
-                // Show the download button if an error occurs
-                $('#downloadBtn').show();
-            });
-        });
-    });
-</script>
-
 </body>
 </html>

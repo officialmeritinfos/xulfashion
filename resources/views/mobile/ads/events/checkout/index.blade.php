@@ -107,9 +107,13 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                toastr.success(response.message || 'Payment processed successfully.');
-                                // Redirect to success page or perform other actions
-                                window.location.href = '';
+                                // Redirect to the payment URL
+                                if (response.payment_url) {
+                                    toastr.success(response.message || 'Payment initialized successfully.');
+                                    window.location.href = response.payment_url;
+                                } else {
+                                    toastr.error('Payment URL not found. Please contact support.');
+                                }
                             } else {
                                 toastr.error(response.message || 'Checkout failed. Please try again.');
                             }

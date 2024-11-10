@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Department;
+use App\Models\Fiat;
 use App\Models\State;
 use App\Models\TicketCart;
 use App\Models\User;
@@ -762,6 +763,7 @@ if (!function_exists('handleTicketEndTime')) {
         }
     }
 }
+
 if (!function_exists('handleTicketEndDate')) {
     function handleTicketEndDate(\App\Models\UserEvent $event)
     {
@@ -820,6 +822,7 @@ if (!function_exists('eventShowCaseTimeFormat')) {
      *
      * @see formatOnlyDateToReadableDate() For date formatting in recurrence end dates.
      */
+
     function eventShowCaseTimeFormat(\App\Models\UserEvent $event): string
     {
         $timezone = new DateTimeZone($event->eventTimeZone);
@@ -843,6 +846,104 @@ if (!function_exists('eventShowCaseTimeFormat')) {
         }
     }
 }
+if (!function_exists('displayEventStartDate')) {
+    /**
+     * Formats and returns the start date of an event in a readable format.
+     *
+     * This function converts the event's start date to a readable date format,
+     * adjusted to the event's timezone.
+     *
+     * @param \App\Models\UserEvent $event The event model instance, containing the start date and timezone information.
+     * @return string A formatted string of the event's start date in a readable format, adjusted to the event's timezone.
+     */
+    function displayEventStartDate(\App\Models\UserEvent $event): string
+    {
+        return formatOnlyDateToReadableDate($event->startDate, $event->eventTimeZone);
+    }
+}
+if (!function_exists('displayEventStartTime')) {
+    /**
+     * Formats and returns the start and end time range of an event in a readable format.
+     *
+     * This function takes an event model instance and formats its start and end times
+     * into a readable time range string, adjusted for the event's timezone.
+     *
+     * @param \App\Models\UserEvent $event The event model instance containing the start date, start time,
+     *                                     end date, end time, and timezone information.
+     * @return string A formatted string showing the event's start and end times in a readable format,
+     *                adjusted to the event's timezone.
+     */
+    function displayEventStartTime(\App\Models\UserEvent $event): string
+    {
+        $timezone = new DateTimeZone($event->eventTimeZone);
+
+        // Single event with specific start and end times
+        $start = new DateTime("{$event->startDate} {$event->startTime}", $timezone);
+
+        return $start->format('h:i A') ;
+    }
+}
+
+if (!function_exists('displayEventEndDate')) {
+    function displayEventEndDate(\App\Models\UserEvent $event): string
+    {
+        return formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone);
+    }
+}
+if (!function_exists('displayEventEndTime')) {
+
+    function displayEventEndTime(\App\Models\UserEvent $event): string
+    {
+        $timezone = new DateTimeZone($event->eventTimeZone);
+
+        // Single event with specific start and end times
+        $end = new DateTime("{$event->endDate} {$event->endTime}", $timezone);
+
+        return $end->format('h:i A') ;
+    }
+}
+
+
+if (!function_exists('eventShowCaseFullDateFormat')) {
+    /**
+     * Formats and returns the full date and time range for an event.
+     *
+     * This function provides a readable date and time format for both single and recurring events,
+     * taking into account the event's timezone, start and end dates, and recurrence details.
+     * For single events, it displays the start and end times on the event date.
+     * For recurring events, it displays the recurrence end date or count as applicable.
+     *
+     * @param \App\Models\UserEvent $event The event model instance, containing start and end dates,
+     *                                     event timezone, schedule type, and recurrence details.
+     * @return string A formatted string showing the event's full date and time range,
+     *                adjusted to the event's timezone.
+     * @see formatOnlyDateToReadableDate() For date formatting in recurrence end dates.
+     */
+
+    function eventShowCaseFullDateFormat(\App\Models\UserEvent $event): string
+    {
+        $timezone = new DateTimeZone($event->eventTimeZone);
+
+        if ($event->eventScheduleType == 1) {
+            // Single event with specific start and end times
+            $start = new DateTime("{$event->startDate} {$event->startTime}", $timezone);
+            $end = new DateTime("{$event->endDate} {$event->endTime}", $timezone);
+
+            return formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone).' '.$start->format('h:i A') . ' - ' .formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone).' '.$end->format('h:i A');
+        } else {
+            // Recurring event
+            $start = new DateTime("{$event->startDate} {$event->startTime}", $timezone);
+
+            if ($event->recurrenceEndType == 1) {
+                $end = new DateTime("{$event->recurrenceEndDate} {$event->recurrenceEndTime}", $timezone);
+                return formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone).' '.$start->format('h:i A') . ' - ' . formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone) . ' ' . $end->format('h:i A');
+            } else {
+                return $start->format('h:i A') . " till " . $event->recurrenceEndCount . " Occurrences";
+            }
+        }
+    }
+}
+
 if (!function_exists('displayChargeOnTicketIfAny')) {
     function displayChargeOnTicketIfAny($id){
         $ticket = \App\Models\UserEventTicket::find($id);
@@ -852,9 +953,10 @@ if (!function_exists('displayChargeOnTicketIfAny')) {
             //check if the customer pays
             if ($ticket->guestsShouldPayFee==1){
                 $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
-                $fiat = \App\Models\Fiat::where('code',$event->currency)->first();
+                $fiat = Fiat::where('code',$event->currency)->first();
                 $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
-                $dynamicCharge = $ticket->price*($fiat->ticketCharge/100);
+                $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
+                $dynamicCharge = $price*($fiat->ticketCharge/100);
                 $totalCharge = $fixedCharge+$dynamicCharge;
                 return " includes ".$fiat->sign.$totalCharge.' fee';
             }else{
@@ -872,17 +974,73 @@ if (!function_exists('calculateTotalCostOnTicket')) {
             //check if the customer pays
             if ($ticket->guestsShouldPayFee==1){
                 $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
-                $fiat = \App\Models\Fiat::where('code',$event->currency)->first();
+                $fiat = Fiat::where('code',$event->currency)->first();
                 $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
-                $dynamicCharge = $ticket->price*($fiat->ticketCharge/100);
+                $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
+                $dynamicCharge = $price*($fiat->ticketCharge/100);
                 $totalCharge = $fixedCharge+$dynamicCharge;
-                return $totalCharge+$ticket->price;
+                return $totalCharge+$price;
             }else{
-                return  $ticket->price;
+                $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
+                $fiat = Fiat::where('code',$event->currency)->first();
+                $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
+                $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
+                $dynamicCharge = $price*($fiat->ticketCharge/100);
+                $charge = $fixedCharge+$dynamicCharge;
+                if ($price<$fiat->ticketAmountToAddToCharge){
+                    $totalCharge = $price+$charge;
+                }else{
+                    $totalCharge = $price;
+                }
+                return  $totalCharge;
             }
         }
     }
 }
+if (!function_exists('calculateCostOnTicketWithoutCharge')) {
+    function calculateCostOnTicketWithoutCharge($id,$quantity){
+        $ticket = \App\Models\UserEventTicket::find($id);
+        if ($ticket->isFree()){
+            return 0;
+        }else{
+            $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
+            //check if the customer pays
+            if ($ticket->guestsShouldPayFee==1){
+                return $price*$quantity;
+            }else{
+                $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
+                $fiat = Fiat::where('code',$event->currency)->first();
+                $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
+                $dynamicCharge = $price*($fiat->ticketCharge/100);
+                $charge = $dynamicCharge+$fixedCharge;
+
+                if ($price < $fiat->ticketAmountToAddToCharge){
+                    $totalCharge = $price*$quantity;
+                }else{
+                    $totalCharge = ($price-$charge)*$quantity;
+                }
+                return  $totalCharge;
+            }
+        }
+    }
+}
+if (!function_exists('calculateChargeOnTicket')) {
+    function calculateChargeOnTicket($id,$quantity){
+        $ticket = \App\Models\UserEventTicket::find($id);
+        if ($ticket->isFree()){
+            return 0;
+        }else{
+            $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
+            $fiat = Fiat::where('code',$event->currency)->first();
+            $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
+            $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
+            $dynamicCharge = $price*($fiat->ticketCharge/100);
+            $totalCharge = $fixedCharge+$dynamicCharge;
+            return $totalCharge*$quantity;
+        }
+    }
+}
+
 if (!function_exists('calculateTicketCart')) {
     function calculateTicketCart(){
         $cart =  TicketCart::firstOrCreate(['user_id' => Auth::id()]);
@@ -892,3 +1050,22 @@ if (!function_exists('calculateTicketCart')) {
         });
     }
 }
+if (!function_exists('calculateTicketCartCharge')) {
+    function calculateTicketCartCharge(){
+        $cart =  TicketCart::firstOrCreate(['user_id' => Auth::id()]);
+
+        return $cart->items->sum(function ($item) {
+            return calculateChargeOnTicket($item->user_event_ticket_id,$item->quantity);
+        });
+    }
+}
+if (!function_exists('calculateTicketCartCostOnly')) {
+    function calculateTicketCartCostOnly(){
+        $cart =  TicketCart::firstOrCreate(['user_id' => Auth::id()]);
+
+        return $cart->items->sum(function ($item) {
+            return calculateCostOnTicketWithoutCharge($item->user_event_ticket_id,$item->quantity);
+        });
+    }
+}
+

@@ -34,6 +34,7 @@ class CreateFiatsTable extends Migration
             $table->string('ticketCharge', 100)->default('1.5');
             $table->string('ticketFixedCharge', 100)->default('1');
             $table->boolean('hasTicketFixedCharge')->default(1);
+            $table->string('ticketAmountToAddToCharge')->default('2500')->comment('this is the amount which when below it, the fixed charge is added to the cost instead of debiting it from amount.');
             $table->integer('status')->default(1);
             $table->timestamps();
         });

@@ -214,5 +214,6 @@ return [
             'apple'=>env('APP_STORE_CLIENT_LINK',null),
             'google'=>env('PLAY_STORE_CLIENT_LINK',null)
         ]
-    ]
+    ],
+    'settlementDay'=>env('TICKET_SETTLEMENT_DAY',5),
 ];

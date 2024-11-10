@@ -95,12 +95,15 @@
 
         <h3>Event Details</h3>
         <p><strong>Event Name:</strong> {{ $event->title }}</p>
-        <p><strong>Event Start Date:</strong> {{ \Carbon\Carbon::parse($event->startDate)->format('l, F j, Y') }}</p>
-        <p><strong>Event Start Time:</strong> {{ \Carbon\Carbon::parse($event->startTime)->format('g:i A') }}</p>
-        <p><strong>Event End Date:</strong> {{ \Carbon\Carbon::parse($event->endDate)->format('l, F j, Y') }}</p>
-        <p><strong>Event End Time:</strong> {{ \Carbon\Carbon::parse($event->endTime)->format('g:i A') }}</p>
-        @if($event->recurrenceEndType && $event->recurrenceEndCount)
-        <p><strong>Number of Recurrences:</strong> {{ $event->recurrenceEndCount }}</p>
+        <p><strong>Event Type:</strong> {{ eventType($event->id) }}</p>
+        <p><strong>Event Start Date:</strong> {{ displayEventStartDate($event) }}</p>
+        <p><strong>Event Start Time:</strong> {{displayEventStartTime($event) }}</p>
+        @if($event->eventScheduleType!=1 && $event->recurrenceEndType!=1)
+            <p><strong>Recurs:</strong> Every {{ $event->recurrenceInterval }}</p>
+            <p><strong>Event Ends:</strong> After {{ $event->recurrenceEndCount*extractIntervalFromRecurrenceInterval($event->recurrenceInterval).' '.extractPeriodFromRecurrenceInterval($event->recurrenceInterval) }}</p>
+        @else
+            <p><strong>Event End Date:</strong> {{ displayEventEndDate($event) }}</p>
+            <p><strong>Event End Time:</strong> {{ displayEventEndTime($event) }}</p>
         @endif
 
         <h3>Ticket Details</h3>
@@ -116,39 +119,35 @@
                 </thead>
                 <tbody>
                 @foreach($purchase->tickets as $ticket)
-                <tr>
-                    <td>{{ $ticket->userEventTicket->name }}</td>
-                    <td>{{ $ticket->quantity }}</td>
-                    <td>{{ $ticket->number_admits }}</td>
-                    <td>{{ $purchase->currency }} {{ number_format($ticket->price * $ticket->quantity, 2) }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ $ticket->ticket->name }}</td>
+                        <td>{{ $ticket->quantity }}</td>
+                        <td>{{ $ticket->number_admits }}</td>
+                        <td>{{ currencySign($event->currency) }} {{ number_format($ticket->price * $ticket->quantity, 2) }}</td>
+                    </tr>
                 @endforeach
                 </tbody>
             </table>
         </div>
 
         <div class="button-container">
-            <a href="{{ route('download.tickets', ['purchase' => $purchase->id]) }}" class="button">Download Your Tickets</a>
-            <a href="{{ route('add.guests', ['purchase' => $purchase->id]) }}" class="button" style="background-color: #FF5722;">Add Guest Details</a>
+            <a href="{{ route('mobile.user.events.purchase.add-guests', ['purchase' => $purchase->reference]) }}" class="button" style="background-color: #FF5722;">Add Guest Details</a>
         </div>
 
         <p>If you have any questions or need further assistance, please feel free to reach out to the event organizer using the contact information below.</p>
 
         <div class="contact-info">
             <h3>Contact the Organizer</h3>
-            <p><strong>Email:</strong> {{ $event->organizer_email }}</p>
-            @if(!empty($event->organizer_phone))
-            <p><strong>Phone:</strong> {{ $event->organizer_phone }}</p>
-            @endif
+            <p><strong>Email:</strong> {{ $event->supportEmail }}</p>
             <ul class="social-media">
-                @if(!empty($event->organizer_facebook))
-                <li><a href="{{ $event->organizer_facebook }}" target="_blank">Facebook</a></li>
+                @if(!empty($event->facebook))
+                    <li><a href="{{ $event->facebook }}" target="_blank">Facebook</a></li>
                 @endif
-                @if(!empty($event->organizer_twitter))
-                <li><a href="{{ $event->organizer_twitter }}" target="_blank">Twitter</a></li>
+                @if(!empty($event->twitter))
+                    <li><a href="{{ $event->twitter }}" target="_blank">Twitter</a></li>
                 @endif
-                @if(!empty($event->organizer_instagram))
-                <li><a href="{{ $event->organizer_instagram }}" target="_blank">Instagram</a></li>
+                @if(!empty($event->instagram))
+                    <li><a href="{{ $event->instagram }}" target="_blank">Instagram</a></li>
                 @endif
             </ul>
         </div>

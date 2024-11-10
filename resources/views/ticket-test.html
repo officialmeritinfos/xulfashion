@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Ticket Card</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .ticket-container {
+            max-width: 600px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .ticket-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .qr-section {
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .qr-section img, .qr-section #qrcode canvas {
+            width: 100px;
+            height: 100px;
+        }
+
+        .ticket-info {
+            flex-grow: 1;
+            padding-left: 15px;
+            border-left: 1px dashed #ddd;
+        }
+
+        .ticket-header {
+            font-weight: bold;
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .ticket-details p {
+            margin-bottom: 0.5rem;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .ticket-details p span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .action-buttons {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .action-buttons button {
+            background-color: #333;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #555;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            .action-buttons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ticket-container">
+    <div class="ticket-card" id="ticketCard">
+        <div class="qr-section">
+            <!-- QR code will be generated here by JavaScript -->
+            <div id="qrcode"></div>
+            <p class="small text-muted mb-1">#794460377</p>
+            <p class="small text-muted mb-1">Ticket Type: VIP</p>
+            <p class="small text-muted mb-1">Price: $700.00</p>
+        </div>
+        <div class="ticket-info">
+            <div class="ticket-header">Conference</div>
+            <div class="ticket-details">
+                <p>November 16, 2022 09:00 a.m. SAST - 05:00 a.m. SAST</p>
+                <p><a href="#" style="color: #007bff;">Add to calendar</a></p>
+                <p><span>Ticket Holder:</span> Susan Smith</p>
+                <p><span>Telephone Number:</span> 012 345 6789</p>
+                <p><span>Company:</span> Newco</p>
+                <p><span>Designation:</span> CEO</p>
+                <p><span>T-shirt size:</span> S</p>
+                <p><span>Dietary requirements:</span> None</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons mt-3">
+        <button id="downloadBtn">Download Ticket as Image</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    // Generate the QR code
+    new QRCode(document.getElementById("qrcode"), {
+        text: "Ticket123456",
+        width: 100,
+        height: 100,
+    });
+
+    $(document).ready(function() {
+        $('#downloadBtn').click(function() {
+            // Hide the download button before capture
+            $('#downloadBtn').hide();
+
+            html2canvas(document.querySelector("#ticketCard"), {
+                allowTaint: true,
+                useCORS: true,
+                scale: 2
+            }).then(canvas => {
+                let link = document.createElement('a');
+                link.href = canvas.toDataURL("image/png");
+                link.download = 'Event_Ticket.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Show the download button again after capture
+                $('#downloadBtn').show();
+            }).catch(error => {
+                console.error('Error capturing the ticket:', error);
+                // Show the download button if an error occurs
+                $('#downloadBtn').show();
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
