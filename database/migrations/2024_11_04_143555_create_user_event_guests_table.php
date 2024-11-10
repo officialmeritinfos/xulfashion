@@ -24,6 +24,7 @@ class CreateUserEventGuestsTable extends Migration
             $table->string('email', 150)->nullable();
             $table->string('name', 150)->nullable();
             $table->string('phone', 150)->nullable();
+            $table->tinyInteger('sameAsBuyer')->default(false);
             $table->integer('status')->default(1);
             $table->timestamps();
         });
