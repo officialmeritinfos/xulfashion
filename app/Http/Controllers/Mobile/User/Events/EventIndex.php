@@ -14,6 +14,7 @@ use App\Models\GeneralSetting;
 use App\Models\ServiceType;
 use App\Models\State;
 use App\Models\UserEvent;
+use App\Models\UserEventPurchase;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,16 +32,29 @@ class EventIndex extends BaseController
         $this->google = new GoogleUpload();
     }
     //landing page
-    public function landingPage()
+    public function landingPage(Request $request)
     {
         $web = GeneralSetting::find(1);
         $user = Auth::user();
+
+        $purchases = UserEventPurchase::where('user_id',$user->id)->with([
+            'events','guests'
+        ])->orderBy('id','desc')->paginate(10);
+
+        if ($request->ajax()) {
+            $html = view('mobile.users.events.components.users_ticket_list', compact('purchases'))->render();
+            return response()->json([
+                'html' => $html,
+                'nextPageUrl' => $purchases->nextPageUrl(),
+            ]);
+        }
 
         return view('mobile.users.events.index')->with([
             'web' => $web,
             'user' => $user,
             'siteName'=>$web->name,
             'pageName' =>'Events Landing Page',
+            'purchases' => $purchases,
         ]);
     }
     //create event

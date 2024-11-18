@@ -902,7 +902,39 @@ if (!function_exists('displayEventEndTime')) {
         return $end->format('h:i A') ;
     }
 }
+if (!function_exists('displayEventEndPeriod')) {
+    /**
+     * Generates a formatted time range for an event, applying the specified timezone.
+     *
+     * For single events, this function returns the start and end times in the format "hh:mm AM/PM - hh:mm AM/PM".
+     * For recurring events, it either displays a time range with a readable end date or notes the number of occurrences.
+     * When the recurrence end type is date-based, it leverages `formatOnlyDateToReadableDate` for a human-readable date format.
+     *
+     * @param \App\Models\UserEvent $event The event instance containing details like timezone, schedule, and recurrence.
+     * @return string The formatted event time range or recurrence information.
+     *
+     * @see formatOnlyDateToReadableDate() For date formatting in recurrence end dates.
+     */
 
+    function displayEventEndPeriod(\App\Models\UserEvent $event): string
+    {
+        $timezone = new DateTimeZone($event->eventTimeZone);
+
+        if ($event->eventScheduleType == 1) {
+            // Single event with specific start and end times
+            $end = new DateTime("{$event->recurrenceEndDate} {$event->recurrenceEndTime}", $timezone);
+            return formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone) . ' -  ' . $end->format('h:i A');
+        } else {
+            // Recurring event
+            if ($event->recurrenceEndType == 1) {
+                $end = new DateTime("{$event->recurrenceEndDate} {$event->recurrenceEndTime}", $timezone);
+                return formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone) . ' -  ' . $end->format('h:i A');
+            } else {
+                return "Ends after ".$event->recurrenceEndCount*extractIntervalFromRecurrenceInterval($event->recurrenceInterval)." ".extractPeriodFromRecurrenceInterval($event->recurrenceInterval);
+            }
+        }
+    }
+}
 
 if (!function_exists('eventShowCaseFullDateFormat')) {
     /**

@@ -33,9 +33,6 @@ class PaystackGateway implements PaymentGatewayInterface
         $this->url = config('constant.paystack.url');
         $this->pubKey = $pubKey;
         $this->secretKey = $secKey;
-
-        logger('Paystack PubKey:'.$pubKey );
-        logger('Paystack SecKey:'.$secKey );
     }
 
     public function initializePayment(array $data, array $options): array

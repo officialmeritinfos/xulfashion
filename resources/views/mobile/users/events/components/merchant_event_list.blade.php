@@ -35,6 +35,10 @@
                                     <i class="fa fa-ban text-danger" style="font-size: 14px;"
                                        data-bs-toggle="tooltip" title="Cancelled"></i>
                                     @break
+                                @case(5)
+                                    <i class="fa fa-ban text-danger" style="font-size: 14px;"
+                                       data-bs-toggle="tooltip" title="Concluded"></i>
+                                    @break
                                 @default
                                     <i class="fa fa-warning text-danger" style="font-size: 14px;"
                                        data-bs-toggle="tooltip" title="Rejected"></i>

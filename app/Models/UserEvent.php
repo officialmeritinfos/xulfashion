@@ -53,4 +53,9 @@ class UserEvent extends Model
     {
         return $this->hasMany(UserEventGuest::class, 'event');
     }
+    //hide venue or not
+    public function hideVenue()
+    {
+        return $this->hideVenue==1;
+    }
 }

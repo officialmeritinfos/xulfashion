@@ -33,4 +33,12 @@ class UserEventPurchaseTicket extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Get the guests associated with the ticket.
+     */
+    public function guests()
+    {
+        return $this->hasMany(UserEventGuest::class, 'ticket_id', 'id');
+    }
 }

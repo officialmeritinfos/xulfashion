@@ -88,7 +88,7 @@ class UserEventPurchase extends Model
     }
     public function guests()
     {
-        return $this->hasMany(UserEventGuest::class, 'purchase_id');
+        return $this->hasMany(UserEventGuest::class, 'purchase');
     }
 
 }

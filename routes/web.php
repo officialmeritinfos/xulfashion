@@ -239,6 +239,8 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::get('events/index',[EventIndex::class,'landingPage'])
                 ->name('events.index');
             //Manage Event - Buyer Dashboard
+            Route::get('events/purchase/{purchase}/detail',[BuyerPurchaseController::class,'purchaseDetail'])
+                ->name('events.purchase.detail');
             Route::get('events/purchase/{purchase}/add-guests',[BuyerPurchaseController::class,'addGuest'])
                 ->name('events.purchase.add-guests');
 

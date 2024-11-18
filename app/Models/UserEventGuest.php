@@ -13,7 +13,7 @@ class UserEventGuest extends Model
 
     public function purchase()
     {
-        return $this->belongsTo(UserEventPurchase::class, 'purchase_id');
+        return $this->belongsTo(UserEventPurchase::class, 'purchase');
     }
 
     // Relationship with UserEvent
