@@ -24,7 +24,7 @@ return [
     ],
     'paystack'=>[
         'testSecKey'    =>env('PAYSTACK_TEST_SECRET_KEY'),
-        'testPubKey'    =>env('PAYSTACK_TEST_SECRET_KEY'),
+        'testPubKey'    =>env('PAYSTACK_TEST_PUBLIC_KEY'),
         'liveSecKey'    =>env('PAYSTACK_SECRET_KEY'),
         'livePubKey'    =>env('PAYSTACK_PUBLIC_KEY'),
         'live'          =>false,

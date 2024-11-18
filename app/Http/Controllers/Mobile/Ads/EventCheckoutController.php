@@ -121,6 +121,7 @@ class EventCheckoutController extends BaseController
                 ]
             );
 
+
             // Create a purchase record
             $purchase = UserEventPurchase::create([
                 'reference'=>$reference,'user_id'=>$user->id,
