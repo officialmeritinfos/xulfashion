@@ -18,7 +18,7 @@ use App\Models\UserAdView;
 use App\Models\UserStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Jenssegers\Agent\Agent;
 use Stevebauman\Location\Facades\Location;
@@ -28,27 +28,37 @@ class MarketplaceController extends BaseController
     //landing Page
     public function landingPage(Request $request)
     {
-        if (!Cache::has('hasAdsCountry')){
-            $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
-            $country = Country::where('iso2',$position->countryCode)->first();
-            Cache::put('hasAdsCountry',$country->iso3,now()->addDays(7));
-            $countryIso = $country->iso3;
-        }else{
-            $countryIso = Cache::get('hasAdsCountry');
-        }
 
         $web = GeneralSetting::find(1);
-        if ($countryIso==null){
-            $hasCountry=2;
-            $country = Country::where('status',1)->get();
-        }else{
+        if (\auth()->check()) {
             $hasCountry=1;
-            $country = Country::where('iso3',strtoupper($countryIso))->first();
-            //let us store the country variable
+            $country = Country::where('iso3',strtoupper(\auth()->user()->countryCode))->first();
             Session::put([
                 'country'=>$country->iso2,
                 'iso3'  =>$country->iso3
             ]);
+        }else{
+            if (!Cookie::has('hasAdsCountry')){
+                $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
+                $country = Country::where('iso2',$position->countryCode)->first();
+                Cookie::queue('hasAdsCountry',$country->iso3,7 * 24 * 60 * 60);
+                $countryIso = $country->iso3;
+            }else{
+                $countryIso = Cookie::get('hasAdsCountry');
+            }
+
+            if ($countryIso==null){
+                $hasCountry=2;
+                $country = Country::where('status',1)->get();
+            }else{
+                $hasCountry=1;
+                $country = Country::where('iso3',strtoupper($countryIso))->first();
+                //let us store the country variable
+                Session::put([
+                    'country'=>$country->iso2,
+                    'iso3'  =>$country->iso3
+                ]);
+            }
         }
 
         $pageName = 'Find the Best Tailors, Fashion Designers, Models & Fashion Stores in your area';

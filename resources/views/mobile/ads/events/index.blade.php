@@ -37,11 +37,9 @@
             <div class="row g-3" id="product-list">
                 @include('mobile.ads.events.components.event_lists')
             </div>
-            @if($events->hasMorePages())
-                <div class="text-center mt-4">
-                    <button id="load-more" class="btn btn-light" data-url="{{ url()->full() }}">Load More</button>
-                </div>
-            @endif
+            <div class="text-center mt-4">
+                <button id="load-more" class="btn btn-light" data-url="{{ url()->full() }}">Load More</button>
+            </div>
         @else
             <div class="empty-tab">
                 <img class="img-fluid empty-img w-100" src="{{asset('mobile/images/gif/search.gif')}}" alt="empty-search" />
@@ -115,6 +113,7 @@
                 let page = 1;
                 let loadMoreBtn = $('#load-more');
                 let loadMoreUrl = loadMoreBtn.data('url');
+
                 let originalText = loadMoreBtn.text();
 
                 function getFilterParams() {

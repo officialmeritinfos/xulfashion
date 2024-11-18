@@ -8,7 +8,7 @@ use App\Models\UserDevice;
 use App\Notifications\SendPushNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\File;
 use Jenssegers\Agent\Agent;
 
@@ -17,7 +17,7 @@ class Home extends Controller
     //landing page
     public function landingPage()
     {
-        if (Cache::has('base')){
+        if (Cookie::has('base')){
             return redirect()->to(route('mobile.base'));
         }
 
@@ -31,8 +31,8 @@ class Home extends Controller
 
     public function base()
     {
-        //check if a cache had been stored
-        Cache::put('base','yes',now()->addDays(7));
+        //check if a cookie had been stored
+        Cookie::queue('base','yes',7 * 24 * 60 * 60);
 
         //check if it is mobile
         $agent = new Agent();

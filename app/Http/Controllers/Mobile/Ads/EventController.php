@@ -9,7 +9,7 @@ use App\Models\GeneralSetting;
 use App\Models\UserEvent;
 use App\Models\UserEventTicket;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Stevebauman\Location\Facades\Location;
 
@@ -71,7 +71,7 @@ class EventController extends BaseController
     }
 
     /**
-     * Resolve Country ISO based on request or cache
+     * Resolve Country ISO based on request or cookie
      */
     private function resolveCountryIso(Request $request)
     {
@@ -80,15 +80,20 @@ class EventController extends BaseController
             $country = Country::where('iso2', $request->input('country'))->first();
             return $country->iso3 ?? null;
         }
-        // If country not in cache, get from Location API
-        if (!Cache::has('hasAdsCountry')) {
+        //if user is authenticated
+        if (auth()->check()) {
+            $country = Country::where('iso3', auth()->user()->countryCode)->first();
+            return $country->iso3;
+        }
+        // If country not in cookie, get from Location API
+        if (!Cookie::has('hasAdsCountry')) {
             $position = config('location.testing.enabled') ? Location::get() : Location::get($request->ip());
             $countryIso = optional(Country::where('iso2', $position->countryCode)->first())->iso3;
-            Cache::put('hasAdsCountry', $countryIso, now()->addDays(7));
+            Cookie::queue('hasAdsCountry', $countryIso, 7 * 24 * 60 * 60);
             return $countryIso;
         }
-        // Retrieve country from cache
-        return Cache::get('hasAdsCountry');
+        // Retrieve country from cookie
+        return Cookie::get('hasAdsCountry');
     }
     /**
      * Get Country by ISO

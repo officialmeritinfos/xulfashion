@@ -58,7 +58,28 @@ class EventCheckoutPaymentController extends BaseController
     //process checkout cancelled payment
     public function processCheckoutCancelledPayment(Request $request,$eventRef,$purchaseRef)
     {
+        $user = Auth::user();
+        $web = GeneralSetting::first();
 
+        $event = UserEvent::where('reference',$eventRef)->firstOrFail();
+
+        $purchase = UserEventPurchase::where([
+            'event_id' => $event->id,
+            'reference' => $purchaseRef,
+            'user_id' => $user->id,
+        ])->firstOrFail();
+
+        $transactionId = $request->has('transaction_id')?$request->get('transaction_id'):$request->get('trxref');
+
+        return view('mobile.ads.events.checkout.cancel_page')->with([
+            'user' => $user,
+            'web' => $web,
+            'pageName'=>'Payment Status',
+            'siteName'=>$web->name,
+            'purchase'=>$purchase,
+            'event'=>$event,
+            'transactionId'=>$transactionId
+        ]);
     }
 
     public function checkStatus(Request $request, $purchaseRef,$transactionId)

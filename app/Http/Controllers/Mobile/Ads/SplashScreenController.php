@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\GeneralSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Stevebauman\Location\Facades\Location;
 
 class SplashScreenController extends Controller
@@ -14,12 +14,12 @@ class SplashScreenController extends Controller
     //splash screen
     public function landingPage(Request $request)
     {
-        if (Cache::has('hasAdsCountry')){
-            return redirect()->to(route('mobile.marketplace.index',['country'=>Cache::get('hasAdsCountry')]));
+        if (Cookie::has('hasAdsCountry')){
+            return redirect()->to(route('mobile.marketplace.index',['country'=>Cookie::get('hasAdsCountry')]));
         }else{
             $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
             $country = Country::where('iso2',$position->countryCode)->first();
-            Cache::put('hasAdsCountry',$country->iso3,now()->addDays(7));
+            Cookie::queue('hasAdsCountry',$country->iso3,7 * 24 * 60 * 60);
         }
 
         $web = GeneralSetting::find(1);

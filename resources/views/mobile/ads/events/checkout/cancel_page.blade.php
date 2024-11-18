@@ -25,13 +25,9 @@
 
     <div class="container status-container">
         <div>
-            <div id="loading" class="loading-spinner">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Checking payment status...</p>
-            </div>
-            <div id="failure" class="d-none">
+            <div id="failure">
                 <i class="fas fa-times-circle text-danger status-icon"></i>
-                <p class="status-message text-danger">Payment Failed. Please try again.</p>
+                <p class="status-message text-danger">Payment Cancelled. Please try again.</p>
             </div>
         </div>
     </div>
