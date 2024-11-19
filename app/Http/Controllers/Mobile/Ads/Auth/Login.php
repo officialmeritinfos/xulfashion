@@ -18,7 +18,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -33,7 +33,7 @@ class Login extends BaseController
         $web = GeneralSetting::find(1);
 
         if ($request->has('redirect')) {
-            Cache::put('redirect', $request->redirect, now()->addDay(30));
+            Cookie::queue('redirect', $request->redirect, 30 * 24 * 60 * 60);
         }
 
         return view('mobile.ads.auth.login')->with([
@@ -95,9 +95,9 @@ class Login extends BaseController
                         $this->notifyLogin($request, $user);
                     }
                     //since two-factor authentication is off, we redirect to the necessary page
-                    if (Cache::has('redirect')) {
-                        $url = Cache::get('redirect');
-                        Cache::forget('redirect');
+                    if (Cookie::has('redirect')) {
+                        $url = Cookie::get('redirect');
+                        Cookie::forget('redirect');
                     }else{
                         $url = route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)]);
                     }
@@ -164,9 +164,9 @@ class Login extends BaseController
 
                 TwoFactor::where('user',$user->id)->delete();
 
-                if (Cache::has('redirect')) {
-                    $url = Cache::get('redirect');
-                    Cache::forget('redirect');
+                if (Cookie::has('redirect')) {
+                    $url = Cookie::get('redirect');
+                    Cookie::forget('redirect');
                 }else{
                     $url = route('mobile.marketplace.index',['country'=>strtolower($user->countryCode)]);
                 }
