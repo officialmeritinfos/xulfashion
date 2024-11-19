@@ -131,7 +131,7 @@
         </div>
 
         <div class="button-container">
-            <a href="{{ route('mobile.user.events.purchase.add-guests', ['purchase' => $purchase->reference]) }}" class="button" style="background-color: #FF5722;">Add Guest Details</a>
+            <a href="{{ route('mobile.user.events.purchase.detail', ['purchase' => $purchase->reference]) }}" class="button" style="background-color: #FF5722;">Add Guest Details</a>
         </div>
 
         <p>If you have any questions or need further assistance, please feel free to reach out to the event organizer using the contact information below.</p>

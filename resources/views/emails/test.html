@@ -3,160 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Purchase Confirmation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-        }
-        .header {
-            text-align: center;
-            background-color: #4CAF50;
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            border-radius: 10px 10px 0 0;
-            color: #fff;
-        }
-        .content {
-            margin: 20px 0;
-        }
-        .table-wrapper {
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            min-width: 400px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            word-wrap: break-word;
-        }
-        th {
-            background-color: #f1f1f1;
-        }
-        .button-container {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .button {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-            font-size: 16px;
-            margin: 5px;
-        }
-        .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #ddd;
-            border-radius: 0 0 10px 10px;
-        }
-        .contact-info {
-            margin-top: 20px;
-        }
-        .social-media {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        .social-media li {
-            display: inline-block;
-        }
-    </style>
+    <title>Your Event Ticket</title>
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        <h2>Ticket Purchase Confirmation</h2>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+<div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h1 style="color: #333333;">🎉 Welcome to {{ $guest->event->title }} 🎉</h1>
     </div>
-    <div class="content">
-        <p>Dear {{ $buyer->name }},</p>
-        <p>Thank you for purchasing tickets for the event "<strong>{{ $event->title }}</strong>". We are excited to have you join us!</p>
-        <p>Below are the details of your tickets and the event. Please keep this email as it contains important information regarding your purchase and event entry.</p>
 
-        <h3>Event Details</h3>
-        <p><strong>Event Name:</strong> {{ $event->title }}</p>
-        <p><strong>Event Start Date:</strong> {{ \Carbon\Carbon::parse($event->startDate)->format('l, F j, Y') }}</p>
-        <p><strong>Event Start Time:</strong> {{ \Carbon\Carbon::parse($event->startTime)->format('g:i A') }}</p>
-        <p><strong>Event End Date:</strong> {{ \Carbon\Carbon::parse($event->endDate)->format('l, F j, Y') }}</p>
-        <p><strong>Event End Time:</strong> {{ \Carbon\Carbon::parse($event->endTime)->format('g:i A') }}</p>
-        @if($event->recurrenceEndType && $event->recurrenceEndCount)
-        <p><strong>Number of Recurrences:</strong> {{ $event->recurrenceEndCount }}</p>
+    <!-- Personalized Message -->
+    <p style="font-size: 16px; line-height: 1.5; color: #333333;">
+        Dear <strong>{{ $guest->name }}</strong>,
+    </p>
+    <p style="font-size: 16px; line-height: 1.5; color: #333333;">
+        You have been successfully registered for the event <strong>{{ $guest->event->title }}</strong>. Below are the details of the event and your ticket information:
+    </p>
+
+    <!-- Ticket Information -->
+    <h3 style="color: #007bff;">🎟️ Your Ticket Details</h3>
+    <ul style="font-size: 16px; line-height: 1.5; color: #333333; padding-left: 20px;">
+        <li><strong>Ticket Code:</strong> {{ $guest->ticketCode }}</li>
+        <li><strong>Ticket Name:</strong> {{ $guest->ticket->name }}</li>
+        <li><strong>Price:</strong> {{ $guest->ticket->currency . ' ' . number_format($guest->ticket->price, 2) }}</li>
+    </ul>
+
+    <!-- Event Information -->
+    <h3 style="color: #007bff;">📅 Event Details</h3>
+    <ul style="font-size: 16px; line-height: 1.5; color: #333333; padding-left: 20px;">
+        <li><strong>Event Title:</strong> {{ $guest->event->title }}</li>
+        <li><strong>Description:</strong> {{ $guest->event->description }}</li>
+        <li><strong>Start Date:</strong> {{ displayEventStartDate($guest->event) }}</li>
+        <li><strong>Start Time:</strong> {{ displayEventStartTime($guest->event) }}</li>
+        <li><strong>End Date:</strong> {{ formatOnlyDateToReadableDate($guest->event->endDate, $guest->event->eventTimeZone) }}</li>
+        <li><strong>End Time:</strong> {{ date('h:i A', strtotime($guest->event->endTime)) }}</li>
+        <li><strong>Location:</strong> {{ $guest->event->location ?? 'Online Event' }}</li>
+    </ul>
+
+    <p style="font-size: 16px; line-height: 1.5; color: #333333;">
+        Please keep this email safe as it contains your unique ticket code and event details. You’ll need your ticket to check into the event.
+    </p>
+
+    <!-- Action Button -->
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ $downloadUrl }}" style="display: inline-block; background-color: #28a745; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-size: 16px;">🎟️ Download Your Ticket</a>
+    </div>
+
+    <!-- Organizer Contact -->
+    <p style="font-size: 16px; line-height: 1.5; color: #333333;">
+        If you have any questions or concerns, feel free to reach out to the event organizer:
+    </p>
+    <ul style="font-size: 16px; line-height: 1.5; color: #333333; padding-left: 20px;">
+        @if($guest->event->supportEmail)
+        <li><strong>Email:</strong> <a href="mailto:{{ $guest->event->supportEmail }}">{{ $guest->event->supportEmail }}</a></li>
         @endif
+        @if($guest->event->facebook)
+        <li><strong>Facebook:</strong> <a href="{{ $guest->event->facebook }}" target="_blank">{{ $guest->event->facebook }}</a></li>
+        @endif
+        @if($guest->event->instagram)
+        <li><strong>Instagram:</strong> <a href="{{ $guest->event->instagram }}" target="_blank">{{ $guest->event->instagram }}</a></li>
+        @endif
+        @if($guest->event->twitter)
+        <li><strong>Twitter:</strong> <a href="{{ $guest->event->twitter }}" target="_blank">{{ $guest->event->twitter }}</a></li>
+        @endif
+    </ul>
 
-        <h3>Ticket Details</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                <tr>
-                    <th>Ticket Name</th>
-                    <th>Quantity</th>
-                    <th>Admits</th>
-                    <th>Price</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($purchase->tickets as $ticket)
-                <tr>
-                    <td>{{ $ticket->userEventTicket->name }}</td>
-                    <td>{{ $ticket->quantity }}</td>
-                    <td>{{ $ticket->number_admits }}</td>
-                    <td>{{ $purchase->currency }} {{ number_format($ticket->price * $ticket->quantity, 2) }}</td>
-                </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+    <!-- Closing Note -->
+    <p style="font-size: 16px; line-height: 1.5; color: #333333;">
+        We look forward to seeing you at <strong>{{ $guest->event->title }}</strong>! Thank you for being a part of this event.
+    </p>
 
-        <div class="button-container">
-            <a href="{{ route('download.tickets', ['purchase' => $purchase->id]) }}" class="button">Download Your Tickets</a>
-            <a href="{{ route('add.guests', ['purchase' => $purchase->id]) }}" class="button" style="background-color: #FF5722;">Add Guest Details</a>
-        </div>
+    <p style="font-size: 16px; line-height: 1.5; color: #333333;">
+        Best regards,<br>
+        <strong>{{ $guest->event->organizer }}</strong><br>
+        Event Organizer
+    </p>
 
-        <p>If you have any questions or need further assistance, please feel free to reach out to the event organizer using the contact information below.</p>
-
-        <div class="contact-info">
-            <h3>Contact the Organizer</h3>
-            <p><strong>Email:</strong> {{ $event->organizer_email }}</p>
-            @if(!empty($event->organizer_phone))
-            <p><strong>Phone:</strong> {{ $event->organizer_phone }}</p>
-            @endif
-            <ul class="social-media">
-                @if(!empty($event->organizer_facebook))
-                <li><a href="{{ $event->organizer_facebook }}" target="_blank">Facebook</a></li>
-                @endif
-                @if(!empty($event->organizer_twitter))
-                <li><a href="{{ $event->organizer_twitter }}" target="_blank">Twitter</a></li>
-                @endif
-                @if(!empty($event->organizer_instagram))
-                <li><a href="{{ $event->organizer_instagram }}" target="_blank">Instagram</a></li>
-                @endif
-            </ul>
-        </div>
-    </div>
-    <div class="footer">
-        <p>We look forward to seeing you at the event. Enjoy the experience!</p>
-        <p><em>Thank you for choosing our platform.</em></p>
-    </div>
+    <hr style="border: none; border-top: 1px solid #dddddd; margin: 20px 0;">
+    <p style="font-size: 12px; line-height: 1.5; color: #999999; text-align: center;">
+        This email was sent to {{ $guest->email }} because you were added as a guest for {{ $guest->event->title }}. If you believe this email was sent to you by mistake, please contact the event organizer at <a href="mailto:{{ $guest->event->supportEmail }}">{{ $guest->event->supportEmail }}</a>.
+    </p>
 </div>
 </body>
 </html>

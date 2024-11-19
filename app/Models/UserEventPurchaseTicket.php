@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserEventPurchaseTicket extends Model
 {
     use HasFactory;
+
     protected $guarded=[];
 
     // Relationship with UserEventTicket

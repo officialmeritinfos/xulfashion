@@ -433,6 +433,19 @@ if (!function_exists('getCountryFromIso3')){
 
     }
 }
+if (!function_exists('getCountryFromIso2')){
+    /**
+     * Get the country details based on its ISO3 code.
+     *
+     * @param string $countryCodeIso2 The ISO3 code of the country.
+     * @return \App\Models\Country|null The Country model instance if found, otherwise null.
+     */
+    function getCountryFromIso2($countryCodeIso2)
+    {
+        return \App\Models\Country::where('iso2',$countryCodeIso2)->first();
+
+    }
+}
 if (!function_exists('checkIfAccessorIsMobile')){
     /**
      * Check if the accessor is using a mobile device.
@@ -961,16 +974,32 @@ if (!function_exists('eventShowCaseFullDateFormat')) {
             $start = new DateTime("{$event->startDate} {$event->startTime}", $timezone);
             $end = new DateTime("{$event->endDate} {$event->endTime}", $timezone);
 
-            return formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone).' '.$start->format('h:i A') . ' - ' .formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone).' '.$end->format('h:i A');
+            return formatOnlyDateToReadableDate($event->startDate, $event->eventTimeZone).' '.$start->format('h:i A') .
+                ' - ' . formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone) .' '. $end->format('h:i A');
         } else {
             // Recurring event
             $start = new DateTime("{$event->startDate} {$event->startTime}", $timezone);
 
             if ($event->recurrenceEndType == 1) {
                 $end = new DateTime("{$event->recurrenceEndDate} {$event->recurrenceEndTime}", $timezone);
-                return formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone).' '.$start->format('h:i A') . ' - ' . formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone) . ' ' . $end->format('h:i A');
+                return formatOnlyDateToReadableDate($event->startDate, $event->eventTimeZone).' '.$start->format('h:i A') .
+                    ' - ' . formatOnlyDateToReadableDate($event->endDate, $event->eventTimeZone) .' '. $end->format('h:i A');
             } else {
-                return $start->format('h:i A') . " till " . $event->recurrenceEndCount . " Occurrences";
+                $intervalValue = extractIntervalFromRecurrenceInterval($event->recurrenceInterval);
+                $intervalPeriod = extractPeriodFromRecurrenceInterval($event->recurrenceInterval);
+
+                $occurrences = $event->recurrenceEndCount;
+
+                // Convert to a valid DateInterval spec
+                $intervalPeriodShort = strtoupper(substr($intervalPeriod, 0, 1));
+                $dateIntervalSpec = 'P' . ($intervalValue * $occurrences) . $intervalPeriodShort;
+                // Add the interval to the start date
+                $end = clone $start;
+                $end->add(new DateInterval($dateIntervalSpec));
+
+                return formatOnlyDateToReadableDate($event->startDate, $event->eventTimeZone) . ' ' . $start->format('h:i A') .
+                    ' - ' . formatOnlyDateToReadableDate($end->format('Y-m-d'), $event->eventTimeZone) . ' ' . $end->format('h:i A');
+
             }
         }
     }
@@ -1101,3 +1130,96 @@ if (!function_exists('calculateTicketCartCostOnly')) {
     }
 }
 
+if (!function_exists('determineEventEndDate')) {
+    /**
+     * Determine the end date of an event based on its schedule type and recurrence settings.
+     *
+     * This function calculates the end date for both single and recurring events. For single events,
+     * it uses the provided end date and time. For recurring events, it calculates the end date based
+     * on the recurrence interval and the number of occurrences or a specific recurrence end date.
+     *
+     * @param \App\Models\UserEvent $event The event model containing event details.
+     * @param bool $returnAsString Optional. If true, the function returns the end date as a formatted string (Y-m-d H:i:s).
+     *                             Defaults to false, which returns a DateTime object or null.
+     *
+     * @return \DateTime|string|null Returns the calculated end date as a DateTime object,
+     *                               a formatted string if $returnAsString is true, or null if no end date can be determined.
+     *
+     * @throws \Exception If invalid DateTime or DateInterval specifications are encountered.
+     *
+     * Example usage:
+     * $endDate = determineEventEndDate($event, true);
+     * echo $endDate ?: 'No end date available.';
+     */
+    function determineEventEndDate(\App\Models\UserEvent $event, $returnAsString = false): DateTime|string|null
+    {
+        $timezone = new DateTimeZone($event->eventTimeZone);
+        $startDate = new DateTime("{$event->startDate} {$event->startTime}", $timezone);
+
+        $endDate = null;
+
+        if ($event->eventScheduleType == 1) {
+            // Single event, return the provided end date and time
+            $endDate = new DateTime("{$event->endDate} {$event->endTime}", $timezone);
+        } elseif ($event->recurrenceEndType == 1) {
+            // End by a specific date
+            $endDate = new DateTime("{$event->recurrenceEndDate} {$event->recurrenceEndTime}", $timezone);
+        } elseif ($event->recurrenceEndType == 2 && $event->recurrenceEndCount) {
+            // End after a certain number of occurrences
+            $intervalValue = extractIntervalFromRecurrenceInterval($event->recurrenceInterval);
+            $intervalPeriod = extractPeriodFromRecurrenceInterval($event->recurrenceInterval);
+            $occurrences = $event->recurrenceEndCount;
+
+            // Convert to a valid DateInterval spec
+            $intervalPeriodShort = strtoupper(substr($intervalPeriod, 0, 1));
+            $dateIntervalSpec = 'P' . ($intervalValue * $occurrences) . $intervalPeriodShort;
+
+            // Add the interval to the start date
+            $endDate = clone $startDate;
+            $endDate->add(new DateInterval($dateIntervalSpec));
+        }
+
+        if ($returnAsString && $endDate instanceof DateTime) {
+            return $endDate->format('Y-m-d H:i:s');
+        }
+
+        return $endDate;
+    }
+}
+if (!function_exists('generateGoogleCalendarLink')) {
+    /**
+     * Generate a Google Calendar link for an event.
+     *
+     * This function creates a Google Calendar URL that allows users to add an event to their Google Calendar.
+     * It includes the event's start and end date, title, description, and location.
+     *
+     * @param \App\Models\UserEvent $event The event for which to generate the Google Calendar link.
+     *
+     * @return string The generated Google Calendar URL.
+     *
+     * @throws \Exception If the event's date or time data is invalid.
+     */
+    function generateGoogleCalendarLink(\App\Models\UserEvent $event): string
+    {
+
+        $startDateTime = new DateTime("{$event->startDate} {$event->startTime}", new DateTimeZone($event->eventTimeZone));
+        $endDateTime = determineEventEndDate($event);
+
+        $details = $event->description;
+
+        // Add platform and link to event details
+        if ($event->eventType != 1) {
+            $details .= "\nPlatform: " . $event->platform;
+            $details .= "\nEvent Link: " . $event->link;
+        }
+
+        $params = [
+            'action' => 'TEMPLATE',
+            'text' => $event->title,
+            'details' => $details,
+            'location' => $event->eventType!=1 ? 'Online Event' :$event->location.','.getStateFromIso2($event->state,$event->country)->name.' '.getCountryFromIso2($event->country)->name,
+            'dates' => $startDateTime->format('Ymd\THis\Z') . '/' . $endDateTime->format('Ymd\THis\Z'),
+        ];
+        return 'https://www.google.com/calendar/render?' . http_build_query($params);
+    }
+}

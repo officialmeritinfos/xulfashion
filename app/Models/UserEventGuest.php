@@ -13,18 +13,22 @@ class UserEventGuest extends Model
 
     public function purchase()
     {
-        return $this->belongsTo(UserEventPurchase::class, 'purchase');
+        return $this->belongsTo(UserEventPurchase::class, 'purchase','id');
     }
 
     // Relationship with UserEvent
     public function event()
     {
-        return $this->belongsTo(UserEvent::class, 'event');
+        return $this->belongsTo(UserEvent::class, 'event', 'id');
+    }
+    public function events()
+    {
+        return $this->belongsTo(UserEvent::class, 'event', 'id');
     }
 
     // Relationship with UserEventTicket
     public function ticket()
     {
-        return $this->belongsTo(UserEventTicket::class, 'ticket_id');
+        return $this->belongsTo(UserEventPurchaseTicket::class, 'ticket_id');
     }
 }

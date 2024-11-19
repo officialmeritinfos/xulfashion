@@ -110,7 +110,7 @@ class TicketEdit extends BaseController
                 return $this->sendResponse([
                     'redirectTo'=>route('mobile.user.events.tickets.index',['event'=>$event->reference]),
                     'redirects'=>true
-                ],'Ticked successfully updated.');
+                ],'Ticket successfully updated.');
             }
         }catch (\Exception $exception){
             DB::rollBack();

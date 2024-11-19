@@ -155,7 +155,7 @@ class EventCheckoutPaymentController extends BaseController
                         return response()->json([
                             'status' => 'success',
                             'message' => 'Payment successful',
-                            'url'   =>route('mobile.user.events.purchase.add-guests',['purchase'=>$purchase->reference])
+                            'url'   =>route('mobile.user.events.purchase.detail',['purchase'=>$purchase->reference])
                         ]);
                     }else{
                         return response()->json([

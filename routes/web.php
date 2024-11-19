@@ -12,6 +12,7 @@ use App\Http\Controllers\Mobile\Ads\EventController;
 use App\Http\Controllers\Mobile\Ads\MarketplaceController;
 use App\Http\Controllers\Mobile\Ads\SplashScreenController;
 use App\Http\Controllers\Mobile\Ads\StoreController;
+use App\Http\Controllers\Mobile\Ads\TicketController;
 use App\Http\Controllers\Mobile\CountryController;
 use App\Http\Controllers\Mobile\Home;
 use App\Http\Controllers\Mobile\LegalController;
@@ -241,8 +242,20 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //Manage Event - Buyer Dashboard
             Route::get('events/purchase/{purchase}/detail',[BuyerPurchaseController::class,'purchaseDetail'])
                 ->name('events.purchase.detail');
-            Route::get('events/purchase/{purchase}/add-guests',[BuyerPurchaseController::class,'addGuest'])
+            //Guest Management
+            Route::get('events/purchase/{purchase}/{purchaseTicket}/add-guests',[BuyerPurchaseController::class,'addGuest'])
                 ->name('events.purchase.add-guests');
+            Route::post('events/purchase/{purchase}/{purchaseTicket}/process-add-guests',[BuyerPurchaseController::class,'processGuestAddition'])
+                ->name('events.purchase.add-guests.process');
+            //Send Ticket to Guest
+            Route::post('events/purchase/{purchase}/{purchaseTicket}/{guestId}/send-ticket',[BuyerPurchaseController::class,'sendMailToGuest'])
+                ->name('events.purchase.guest.send-ticket');
+            //View and Download ticket
+            Route::get('event/{event}/ticket/{ticket}/guest/{guest}/view-ticket',[TicketController::class,'displayTicket'])
+                ->name('event.purchase.guest.ticket.view');
+            Route::get('event/{event}/ticket/{ticket}/general/view-ticket',[TicketController::class,'displayTicketGeneral'])
+                ->name('event.purchase.guest.ticket.view.general');
+
 
             //Manage Event - Organizer Dashboard
             Route::get('events/manage',[EventIndex::class,'manageEvent'])
@@ -323,5 +336,12 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::get('profile/help',[Profile::class,'helpCenter'])
                 ->name('help');
         });
+
+        //EVENT TICKET DOWNLOAD
+        Route::get('event/{event}/ticket/{ticket}/guest/{guest}/download',[TicketController::class,'displayTicket'])
+            ->name('event.ticket.guest.download')->middleware('signed');
+        Route::get('event/{event}/{guest}/download-ics',[TicketController::class,'generateICSFile'])
+            ->name('event.download-ics');
+
     });
 });

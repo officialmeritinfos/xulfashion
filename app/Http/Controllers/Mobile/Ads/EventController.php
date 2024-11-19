@@ -156,6 +156,5 @@ class EventController extends BaseController
             'event'         =>$event,
             'tickets'       =>UserEventTicket::where('event_id',$event->id)->where('inviteOnly','!=',1)->get(),
         ]);
-
     }
 }

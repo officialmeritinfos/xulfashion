@@ -26,7 +26,7 @@ class CreateUserEventGuestsTable extends Migration
             $table->string('phone', 150)->nullable();
             $table->boolean('sameAsBuyer')->default(0);
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 
