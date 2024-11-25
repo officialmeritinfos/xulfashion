@@ -57,7 +57,7 @@ class CreateUserEventsTable extends Migration
             $table->integer('status')->default(2);
             $table->string('approvedBy', 150)->nullable();
             $table->text('reason')->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

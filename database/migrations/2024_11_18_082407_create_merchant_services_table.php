@@ -22,7 +22,7 @@ class CreateMerchantServicesTable extends Migration
             $table->string('currency', 50);
             $table->longText('description');
             $table->integer('status')->default(1);
-            $table->timestamps(, 200);
+            $table->timestamps();
             $table->string('deleted_at', 200);
         });
     }

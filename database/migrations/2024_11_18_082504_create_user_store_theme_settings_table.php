@@ -29,7 +29,7 @@ class CreateUserStoreThemeSettingsTable extends Migration
             $table->text('perkContent')->nullable();
             $table->string('perkIcon', 150)->nullable();
             $table->text('workingDay')->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

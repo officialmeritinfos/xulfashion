@@ -21,7 +21,7 @@ class CreateUserEventTicketBuyersTable extends Migration
             $table->string('name', 150)->nullable();
             $table->string('phone', 150)->nullable();
             $table->string('country', 150)->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

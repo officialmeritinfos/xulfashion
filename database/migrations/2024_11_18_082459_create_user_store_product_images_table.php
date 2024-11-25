@@ -17,7 +17,7 @@ class CreateUserStoreProductImagesTable extends Migration
             $table->bigInteger('id')->primary();
             $table->string('product', 100);
             $table->string('image', 200);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

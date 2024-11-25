@@ -34,7 +34,7 @@ class CreateStoreThemesTable extends Migration
             $table->text('workingDay');
             $table->integer('comingSoon')->default(2);
             $table->longText('customCSS')->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

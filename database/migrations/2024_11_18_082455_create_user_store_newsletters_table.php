@@ -20,7 +20,7 @@ class CreateUserStoreNewslettersTable extends Migration
             $table->longText('content');
             $table->text('receipients');
             $table->string('timeToSend', 150)->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

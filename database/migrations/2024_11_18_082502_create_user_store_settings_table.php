@@ -27,7 +27,7 @@ class CreateUserStoreSettingsTable extends Migration
             $table->string('defaultBuyText', 150)->default('Buy Now');
             $table->integer('whatsappSupport')->default(2);
             $table->string('whatsappSupportNumber', 150)->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

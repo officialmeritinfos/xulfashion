@@ -23,7 +23,7 @@ class CreateUserStoreOrderBreakdownsTable extends Migration
             $table->string('colorVariant', 150)->nullable();
             $table->string('amount', 100)->default('0');
             $table->string('totalAmount', 100)->default('0');
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

@@ -21,7 +21,7 @@ class CreateSystemStaffActionsTable extends Migration
             $table->integer('isSuper')->default(2);
             $table->string('model', 150);
             $table->string('model_id', 150);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

@@ -19,7 +19,7 @@ class CreateUserStoresViewsTable extends Migration
             $table->string('ipAddress', 150)->nullable();
             $table->text('browser')->nullable();
             $table->string('store', 150);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

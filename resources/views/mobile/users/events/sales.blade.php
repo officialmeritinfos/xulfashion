@@ -45,7 +45,7 @@
             <div class="stat-item col-6 mt-3">
                 @if($event->currentBalance >0)
                     <h2>
-                        {{date('d M, Y H:i',$event->nextSettlement)}}
+                        {{date('d M, Y H:i',strtotime($event->nextSettlement))}}
                     </h2>
                 @else
                     <h2>-</h2>
@@ -61,50 +61,46 @@
                 <div class="table-responsive border">
                     <table class="table">
                        <thead>
-                        <th>S/N</th>
-                        <th>Ticket</th>
+                        <th>#</th>
                         <th>Buyer</th>
-                        <th>Quantity</th>
-                        <th>Type</th>
+                        <th>ID</th>
+                        <th>Payment ID</th>
                         <th>Total</th>
                         <th>Status</th>
                         <th></th>
                        </thead>
                         <tbody>
-                        @foreach($purchases as $purchase)
+                        @foreach($purchases as $key => $purchase)
                             <tr>
-                                <td>{{$purchases->firstItem()+1}}</td>
-                                <td>{{$purchase->tickets->name}}</td>
+                                <td>{{$key+1}}</td>
                                 <td>
-                                    {{$purchase->buyers->name}}
-                                </td>
-                                <td>{{$purchase->quantity}}</td>
-                                <td>
-                                    @if($purchase->tickets->ticketType==1)
-                                        Single Ticket
-                                    @else
-                                        Group Ticket
-                                    @endif
+                                    {{$purchase->users->name}}
                                 </td>
                                 <td>
-                                    {{currencySign($purchase->purchaseCurrency)}}{{number_format($purchase->totalPrice,2)}}
+                                    {{$purchase->reference}}
+                                </td>
+                                <td>
+                                    {{$purchase->paymentReference??'N/A'}}
+                                </td>
+                                <td>
+                                    {{currencySign($purchase->purchaseCurrency)}}{{number_format($purchase->price,2)}}
                                 </td>
 
                                 <td>
-                                    @switch($purchase->status)
-                                        @case(1):
+                                    @switch($purchase->paymentStatus)
+                                        @case(1)
                                         <span class="badge bg-success">Completed</span>
                                         @break
-                                        @case(2):
+                                        @case(2)
                                         <span class="badge bg-primary">Pending</span>
                                         @break
-                                        @case(4):
+                                        @case(4)
                                         <span class="badge bg-info">Processing</span>
                                         @break
-                                        @case(3):
+                                        @case(3)
                                         <span class="badge bg-warning">Cancelled</span>
                                         @break
-                                        @case(5):
+                                        @case(5)
                                         <span class="badge bg-warning">Cancelled By Compliance</span>
                                         @break
                                         @default
@@ -113,7 +109,9 @@
                                     @endswitch
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-auto">Detail</a>
+                                    <a href="{{route('mobile.user.events.sales.purchase-detail',['event'=>$event->reference,'purchase'=>$purchase->reference])}}">
+                                        <i class="fa fa-eye text-primary"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -177,7 +175,7 @@
                                     @endswitch
                                 </td>
                                 <td>
-                                    <button href="#" class="btn btn-primary btn-auto">Detail</button>
+                                    <button href="#" class="btn btn-primary">Detail</button>
                                 </td>
                             </tr>
                         @endforeach

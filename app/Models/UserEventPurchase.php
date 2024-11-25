@@ -31,17 +31,6 @@ class UserEventPurchase extends Model
         return $this->belongsTo(UserEvent::class, 'event_id');
     }
 
-
-    /**
-     * Define the relationship between UserEventPurchase and UserEventBuyer.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function buyers()
-    {
-        return $this->hasOne(UserEventTicketBuyer::class, 'purchaseId');
-    }
-
     /**
      * Check if the purchase is a bulk purchase.
      *

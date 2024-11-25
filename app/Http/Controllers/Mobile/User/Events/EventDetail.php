@@ -57,6 +57,8 @@ class EventDetail extends BaseController
         $event = UserEvent::where([
             'reference' => $eventId,
             'user' => $user->id
+        ])->with([
+            'purchaseTickets','purchases'
         ])->firstOrFail();
 
         return view('mobile.users.events.sales')->with([
@@ -72,7 +74,7 @@ class EventDetail extends BaseController
             'purchases'=>UserEventPurchase::where([
                 'event_id' => $event->id,
             ])->with(
-                ['events','tickets','buyers']
+                ['events','tickets']
             )->paginate(15),
             'settlements'=>UserEventSettlement::where([
                 'user' => $user->id,'event' => $event->id,

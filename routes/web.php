@@ -24,6 +24,7 @@ use App\Http\Controllers\Mobile\User\Events\BuyerPurchaseController;
 use App\Http\Controllers\Mobile\User\Events\EventDetail;
 use App\Http\Controllers\Mobile\User\Events\EventEdit;
 use App\Http\Controllers\Mobile\User\Events\EventIndex;
+use App\Http\Controllers\Mobile\User\Events\MerchantPurchaseController;
 use App\Http\Controllers\Mobile\User\Events\TicketEdit;
 use App\Http\Controllers\Mobile\User\Events\TicketIndex;
 use App\Http\Controllers\Mobile\User\Profile;
@@ -278,6 +279,10 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('events.tickets.email');
             Route::post('events/tickets/{event}/email/process',[EventDetail::class,'processEmail'])
                 ->name('events.tickets.email.process');
+            //Event Purchase Detail
+            Route::get('events/{event}/sales/{purchase}/purchase-detail',[MerchantPurchaseController::class,'purchaseDetail'])
+                ->name('events.sales.purchase-detail');
+
             //Event Edit
             Route::get('events/{event}/edit',[EventEdit::class,'landingPage'])
                 ->name('events.edit');
@@ -314,6 +319,15 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('events.attendees.check-in-list');
             Route::get('events/{event}/attendees/notify',[Attendees::class,'notifyAttendees'])
                 ->name('events.attendees.notify');
+            //Event Attendees action
+            Route::post('events/{event}/attendees/{guest}/checkin',[Attendees::class,'checkInGuest'])
+                ->name('events.attendees.checkin');//check-in guest
+            Route::get('events/{event}/attendees/search', [Attendees::class, 'searchGuests'])
+                ->name('events.attendees.search');//search attendees
+            Route::get('events/{event}/attendees/checkin/search', [Attendees::class, 'searchCheckedInGuests'])
+                ->name('events.attendees.checkin.search');//search attendees
+
+
             //View Ticket
             Route::get('events/{event}/view-ticket',[EventDetail::class,'viewTicket'])
                 ->name('events.view-ticket');

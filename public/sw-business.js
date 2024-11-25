@@ -1,7 +1,6 @@
 const cacheName = 'xulfashion-business-v1';
 const assetsToCache = [
     '', // Placeholder for the start URL for business
-    'manifest/offline-business',
     'mobile/css/style.css', // Main CSS for the client
     'mobile/js/script.js', // Main JS for the client
     'xulfashion_business.png', // PWA icon

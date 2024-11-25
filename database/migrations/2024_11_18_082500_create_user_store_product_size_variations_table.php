@@ -17,7 +17,7 @@ class CreateUserStoreProductSizeVariationsTable extends Migration
             $table->bigInteger('id')->primary();
             $table->string('product', 100);
             $table->string('name', 150);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

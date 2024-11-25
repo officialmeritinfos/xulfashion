@@ -22,7 +22,7 @@ class CreateProductRatingsTable extends Migration
             $table->string('likes', 100)->default('0');
             $table->string('dislikes', 100)->default('0');
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

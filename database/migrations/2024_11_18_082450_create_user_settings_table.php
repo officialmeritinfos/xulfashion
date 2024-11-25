@@ -23,7 +23,7 @@ class CreateUserSettingsTable extends Migration
             $table->integer('depositNotification')->default(1);
             $table->integer('collectPayment')->default(1);
             $table->integer('notifications')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

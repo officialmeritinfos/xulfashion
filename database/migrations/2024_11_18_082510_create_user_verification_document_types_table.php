@@ -20,7 +20,7 @@ class CreateUserVerificationDocumentTypesTable extends Migration
             $table->string('country', 150)->nullable();
             $table->integer('hasBack')->default(2);
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

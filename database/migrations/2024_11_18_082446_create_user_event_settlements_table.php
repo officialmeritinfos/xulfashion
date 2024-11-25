@@ -25,7 +25,7 @@ class CreateUserEventSettlementsTable extends Migration
             $table->string('transactionId', 150);
             $table->string('payoutStatus', 150);
             $table->integer('status')->default(2);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

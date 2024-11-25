@@ -39,7 +39,7 @@ class CreateUserEventTicketsTable extends Migration
             $table->integer('purchaseLimit')->default(1);
             $table->integer('guestsShouldPayFee')->default(2);
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

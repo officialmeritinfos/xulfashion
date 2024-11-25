@@ -46,7 +46,7 @@ class CreateUserStoreOrdersTable extends Migration
             $table->integer('reported')->default(2);
             $table->text('supportDecision')->nullable();
             $table->string('settlementTime', 150)->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

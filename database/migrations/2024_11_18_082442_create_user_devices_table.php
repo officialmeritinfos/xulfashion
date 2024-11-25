@@ -17,7 +17,7 @@ class CreateUserDevicesTable extends Migration
             $table->integer('id')->primary();
             $table->bigInteger('user');
             $table->text('token');
-            $table->timestamps(, 200);
+            $table->timestamps();
         });
     }
 

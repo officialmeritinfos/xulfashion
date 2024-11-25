@@ -25,7 +25,7 @@ class CreateUserBanksTable extends Migration
             $table->string('accountName', 150);
             $table->integer('isPrimary')->default(2);
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

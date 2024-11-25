@@ -18,7 +18,7 @@ class CreateUserAdsPhotosTable extends Migration
             $table->string('ad', 100)->nullable();
             $table->string('photo', 200)->nullable();
             $table->string('photoId', 150)->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

@@ -29,7 +29,7 @@ class CreateUserStoreCustomersTable extends Migration
             $table->string('subscribedToNewletter', 150)->nullable();
             $table->integer('loggedIn')->default(2);
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

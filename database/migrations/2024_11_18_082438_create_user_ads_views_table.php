@@ -19,7 +19,7 @@ class CreateUserAdsViewsTable extends Migration
             $table->string('ipAddress', 150)->nullable();
             $table->text('browser')->nullable();
             $table->string('ad', 150);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

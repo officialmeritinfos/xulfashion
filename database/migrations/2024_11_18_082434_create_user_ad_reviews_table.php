@@ -21,7 +21,7 @@ class CreateUserAdReviewsTable extends Migration
             $table->text('comment');
             $table->string('rating', 150);
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

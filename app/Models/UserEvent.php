@@ -53,9 +53,18 @@ class UserEvent extends Model
     {
         return $this->hasMany(UserEventGuest::class, 'event');
     }
+    public function checkIns()
+    {
+        return $this->hasMany(UserEventGuestCheckinList::class, 'event_id');
+    }
     //hide venue or not
     public function hideVenue()
     {
         return $this->hideVenue==1;
     }
+    public function notifications()
+    {
+        return $this->hasMany(UserEventNotification::class, 'event_id');
+    }
+
 }

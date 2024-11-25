@@ -45,7 +45,7 @@ class CreateUserStoreInvoicesTable extends Migration
             $table->text('supportDecision')->nullable();
             $table->string('settlementTime', 150)->nullable();
             $table->string('datePaid', 150)->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

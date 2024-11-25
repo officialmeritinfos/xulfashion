@@ -29,7 +29,7 @@ class CreateUserStoreCouponsTable extends Migration
             $table->string('usageDeadline', 150)->nullable();
             $table->integer('status')->default(1);
             $table->string('deleted_at', 150)->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

@@ -37,7 +37,7 @@ class CreateUserStoresTable extends Migration
             $table->string('numberOfViews', 100)->default('0');
             $table->string('theme', 150)->nullable();
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

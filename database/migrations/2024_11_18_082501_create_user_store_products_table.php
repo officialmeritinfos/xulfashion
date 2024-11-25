@@ -36,7 +36,7 @@ class CreateUserStoreProductsTable extends Migration
             $table->integer('numberOfOrder')->default(0);
             $table->string('numberOfViews', 100)->default('0');
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
             $table->string('deleted_at', 150)->nullable();
         });
     }

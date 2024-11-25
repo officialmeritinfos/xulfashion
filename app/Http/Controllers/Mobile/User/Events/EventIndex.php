@@ -64,7 +64,7 @@ class EventIndex extends BaseController
         $user = Auth::user();
         $country = Country::where('iso3',$user->countryCode)->first();
 
-        $events = UserEvent::where('user',$user->id)->orderBy('status')->orderBy('updated_at','desc')->paginate(10);
+        $events = UserEvent::where('user',$user->id)->orderBy('status')->orderBy('id','desc')->paginate(10);
 
         if ($request->ajax()) {
             return response()->json([
@@ -75,7 +75,7 @@ class EventIndex extends BaseController
         }
 
         return view('mobile.users.events.manage')->with([
-            'pageName'  =>'Manage Events',
+            'pageName'  =>'Event Organizer Dashboard',
             'web'       =>$web,
             'siteName'  =>$web->name,
             'user'      =>$user,

@@ -20,7 +20,7 @@ class CreateUserBalancesTable extends Migration
             $table->string('availableBalance', 150)->default('0');
             $table->string('pendingBalance', 150)->default('0');
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

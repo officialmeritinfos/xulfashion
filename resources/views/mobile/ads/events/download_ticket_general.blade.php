@@ -103,6 +103,7 @@
             <div id="qrcode"></div>
             <p class="small text-muted mb-1 mt-4"><strong>Ticket</strong>: {{$ticket->ticket->name}}</p>
             <p class="small text-muted mb-1"><strong>Price</strong>: {{currencySign($event->currency).number_format($ticket->price ,2) }}</p>
+            <p class="small text-muted mb-1"><strong>Number Admits</strong>: {{$ticket->quantity*$ticket->number_admits}} </p>
         </div>
         <div class="ticket-info">
             <div class="ticket-header">{{$event->title}}</div>

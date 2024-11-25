@@ -22,7 +22,7 @@ class CreateTeamsTable extends Migration
             $table->string('twitter', 200)->nullable();
             $table->text('about')->nullable();
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

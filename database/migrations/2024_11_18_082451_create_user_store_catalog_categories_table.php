@@ -20,7 +20,7 @@ class CreateUserStoreCatalogCategoriesTable extends Migration
             $table->string('photo', 150)->nullable();
             $table->integer('isDefault')->default(2);
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

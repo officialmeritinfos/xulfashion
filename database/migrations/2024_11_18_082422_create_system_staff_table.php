@@ -29,7 +29,7 @@ class CreateSystemStaffTable extends Migration
             $table->string('photo', 150)->nullable();
             $table->integer('status')->default(1);
             $table->rememberToken();
-            $table->timestamps(, 200);
+            $table->timestamps();
         });
     }
 

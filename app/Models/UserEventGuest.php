@@ -31,4 +31,22 @@ class UserEventGuest extends Model
     {
         return $this->belongsTo(UserEventPurchaseTicket::class, 'ticket_id');
     }
+    public function checkinDetails()
+    {
+        return $this->hasOne(UserEventGuestCheckinList::class, 'guest_id');
+    }
+
+    protected static function booted()
+    {
+        static::updated(function ($guest) {
+            if ($guest->isDirty('checkedIn') && $guest->checkedIn == 1) {
+                UserEventGuestCheckinList::create([
+                    'guest_id' => $guest->id,
+                    'checkin_time' => now(),
+                    'event_id' => $guest->event,
+                ]);
+            }
+        });
+    }
+
 }

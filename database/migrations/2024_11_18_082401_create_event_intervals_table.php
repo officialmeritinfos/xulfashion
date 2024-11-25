@@ -18,7 +18,7 @@ class CreateEventIntervalsTable extends Migration
             $table->string('name', 150)->nullable();
             $table->string('period', 150)->nullable();
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

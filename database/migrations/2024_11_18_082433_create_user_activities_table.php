@@ -20,7 +20,7 @@ class CreateUserActivitiesTable extends Migration
             $table->longText('content');
             $table->integer('status')->default(2);
             $table->integer('isStaff')->default(2);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

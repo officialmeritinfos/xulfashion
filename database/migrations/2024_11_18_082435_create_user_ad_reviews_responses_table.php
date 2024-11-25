@@ -18,7 +18,7 @@ class CreateUserAdReviewsResponsesTable extends Migration
             $table->string('review', 150);
             $table->string('user', 150);
             $table->text('comment')->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

@@ -26,7 +26,7 @@ class CreateUserVerificationsTable extends Migration
             $table->integer('status')->default(2);
             $table->string('approvedBy', 100)->nullable();
             $table->text('rejectReason')->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

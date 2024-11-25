@@ -21,7 +21,7 @@ class CreateUserStoreTicketResponsesTable extends Migration
             $table->string('agent', 150)->nullable();
             $table->integer('storeAgent')->default(1);
             $table->integer('responder')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

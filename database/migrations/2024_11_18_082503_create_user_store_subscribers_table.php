@@ -20,7 +20,7 @@ class CreateUserStoreSubscribersTable extends Migration
             $table->string('email', 150)->nullable();
             $table->integer('status')->default(2);
             $table->text('verificationCode')->nullable();
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

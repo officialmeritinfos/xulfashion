@@ -23,7 +23,7 @@ class CreateTransactionsTable extends Migration
             $table->string('currency', 150)->nullable();
             $table->string('newBalance', 100);
             $table->integer('status')->default(2);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 

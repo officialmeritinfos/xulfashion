@@ -20,7 +20,7 @@ class CreateTestimonialsTable extends Migration
             $table->string('photo', 200)->nullable();
             $table->text('comment');
             $table->integer('status')->default(1);
-            $table->timestamps(, 150);
+            $table->timestamps();
         });
     }
 
