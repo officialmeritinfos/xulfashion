@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mobile\User\Events;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendEventGuestNotifications;
 use App\Mail\GuestNotificationMail;
 use App\Models\Country;
 use App\Models\GeneralSetting;
@@ -203,11 +204,6 @@ class Attendees extends BaseController
             }),
         ]);
     }
-    //notify attendees
-    public function notifyAttendees(Request $request,$eventId)
-    {
-        $user = Auth::user();
-    }
     //process notify attendees
     public function processNotifyAttendees(Request $request,$eventId)
     {
@@ -231,7 +227,7 @@ class Attendees extends BaseController
         }
 
         foreach ($event->guests as $guest) {
-            Mail::to($guest->email)->queue(new GuestNotificationMail($guest,$default=true,$message=null));
+            Mail::to($guest->email)->queue(new GuestNotificationMail($guest,$request->has('message')?false:true,$request->message));
         }
 
         // Log the notification in the database
@@ -239,12 +235,115 @@ class Attendees extends BaseController
             'event_id' => $event->id,
             'merchant_id' => $user->id,
             'sent_at' => now(),
+            'message'=>$request->has('message')?$request->message:null
         ]);
 
         return response()->json([
             'status' => 'success',
             'message' => 'Notification sent successfully to all guests.',
         ]);
+    }
+    //notify attendees
+    public function notifyAttendees(Request $request,$eventId)
+    {
+        $web = GeneralSetting::find(1);
+        $user = Auth::user();
+
+        $event = UserEvent::where([
+            'reference' => $eventId,
+            'user' => $user->id
+        ])->with('notifications')->firstOrFail();
+
+        return view('mobile.users.events.attendees.notify')->with([
+            'web' => $web,
+            'user' => $user,
+            'siteName'=>$web->name,
+            'pageName' =>'Notify '.$event->title.' Guests',
+            'event' => $event,
+        ]);
+    }
+    //process attendee notification
+    public function processAttendeeNotification(Request $request, $eventReference)
+    {
+        $user = Auth::user();
+
+        try {
+            // Validate input
+            $request->validate([
+                'notification_type' => 'required|string|in:reminder,custom',
+                'message' => 'nullable|string|max:500',
+                'event_id' => 'required|exists:user_events,id',
+            ]);
+
+            // Fetch the event based on the reference
+            $event = UserEvent::where([
+                'reference' => $eventReference,
+                'user' => $user->id
+            ])->firstOrFail();
+
+            // Check if a notification was sent in the past 12 hours
+            $lastNotification = UserEventNotification::where('event_id', $event->id)
+                ->where('sent_at', '>=', now()->subHours(12))
+                ->first();
+
+            if ($lastNotification) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'A notification for this event has already been sent in the last 12 hours.',
+                ], 400);
+            }
+
+            // Prevent race conditions using DB transaction
+            DB::beginTransaction();
+
+            // Fetch the event and guests
+            $guests = UserEventGuest::where('event', $event->id)->get();
+
+            if ($guests->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No guests found for this event.',
+                ], 404);
+            }
+
+            // Create the notification
+            $notification = UserEventNotification::create([
+                'event_id' => $event->id,
+                'merchant_id' => Auth::id(),
+                'message' => $request->notification_type === 'custom' ? $request->message : null,
+                'sent_at' => now(),
+            ]);
+
+            // Dispatch the job
+            SendEventGuestNotifications::dispatch($guests, $request->notification_type === 'reminder', $request->message);
+
+            // Commit transaction
+            DB::commit();
+
+            // Return success response
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'id' => $notification->id,
+                    'message' => $notification->message,
+                    'sent_at' => $notification->sent_at->format('d M Y, h:i A'),
+                    'merchant_name' => Auth::user()->name,
+                ],
+            ]);
+
+        } catch (\Exception $e) {
+            // Rollback transaction if something goes wrong
+            DB::rollBack();
+
+            // Log error for debugging
+            logger('Notification Error: ' . $e->getMessage());
+
+            // Return error response
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while sending the notification. Please try again.',
+            ], 500);
+        }
     }
     //send link to verify ticket
     public function sendTicketVerificationLink(Request $request,$eventId)

@@ -319,6 +319,8 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('events.attendees.check-in-list');
             Route::get('events/{event}/attendees/notify',[Attendees::class,'notifyAttendees'])
                 ->name('events.attendees.notify');
+            Route::post('events/{event}/attendees/notify/process',[Attendees::class,'processAttendeeNotification'])
+                ->name('events.attendees.notify.process');
             //Event Attendees action
             Route::post('events/{event}/attendees/{guest}/checkin',[Attendees::class,'checkInGuest'])
                 ->name('events.attendees.checkin');//check-in guest

@@ -3,26 +3,7 @@
 
     <section class="section-b-space">
         <div class="custom-container">
-            <form id="basicSettings" action="{{ route('mobile.user.events.purchase.add-guests.process',['purchase'=>$purchase->reference,'purchaseTicket'=>$ticket->id]) }}" method="POST">
-                @csrf
-                <div id="guest-fields-container">
-                    <!-- Dynamic Guest Fields will be appended here -->
-                </div>
-
-                <!-- Add Guest Button -->
-                <div class="form-group mt-4">
-                    <button type="button" id="add-guest-button" class="btn btn-primary w-100">
-                        Add Guest
-                    </button>
-                </div>
-
-                <!-- Submit Form -->
-                <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-success w-100 submit">
-                        Submit Guests
-                    </button>
-                </div>
-            </form>
+           x
         </div>
     </section>
 

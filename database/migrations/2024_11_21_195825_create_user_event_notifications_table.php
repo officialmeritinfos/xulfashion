@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('merchant_id'); // The user who sends the notification
+            $table->longText('message')->nullable();
             $table->timestamp('sent_at');
             $table->timestamps();
 

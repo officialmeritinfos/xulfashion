@@ -7,44 +7,49 @@ use Illuminate\Support\Facades\Http;
 
 class PaystackGateway implements PaymentGatewayInterface
 {
-    protected mixed $secretKey;
-    public mixed $url;
-    public mixed $pubKey;
+    protected string $secretKey;
+    protected string $url;
+    protected string $pubKey;
 
-    protected $amount;
-    protected $currency;
-    protected $callbackUrl;
-    protected $paymentReference;
-    protected $email;
-    protected $channels;
-    protected $metaData;
-
+    protected ?int $amount = null;
+    protected ?string $currency = null;
+    protected ?string $callbackUrl = null;
+    protected ?string $paymentReference = null;
+    protected ?string $email = null;
+    protected ?array $channels = null;
+    protected ?array $metaData = null;
 
     public function __construct()
     {
-        $pubKey = config('constant.paystack.live')
-            ? config('constant.paystack.livePubKey')
-            : config('constant.paystack.testPubKey');
-
-        $secKey = config('constant.paystack.live')
-            ? config('constant.paystack.liveSecKey')
-            : config('constant.paystack.testSecKey');
-
-        $this->url = config('constant.paystack.url');
-        $this->pubKey = $pubKey;
-        $this->secretKey = $secKey;
+        $this->initializeConfig();
     }
 
+    /**
+     * Initialize configuration values for Paystack.
+     */
+    protected function initializeConfig(): void
+    {
+        $isLive = config('constant.paystack.live');
+
+        $this->url = config('constant.paystack.url');
+        $this->pubKey = $isLive
+            ? config('constant.paystack.livePubKey')
+            : config('constant.paystack.testPubKey');
+        $this->secretKey = $isLive
+            ? config('constant.paystack.liveSecKey')
+            : config('constant.paystack.testSecKey');
+    }
+
+    /**
+     * Initialize payment on Paystack.
+     *
+     * @param array $data
+     * @param array $options
+     * @return array
+     */
     public function initializePayment(array $data, array $options): array
     {
-        $this->amount = $data['amount'] * 100;
-        $this->currency = $data['currency'];
-        $this->paymentReference = $data['reference'];
-        $this->email = $data['email'];
-        $this->callbackUrl = $data['callback_url'];
-        $this->channels = $options['channels'];
-        $this->channels=str_replace('transfer','bank_transfer',$this->channels);
-        $this->metaData = $options['metadata'];
+        $this->preparePaymentData($data, $options);
 
         $dataToSend = [
             'amount' => $this->amount,
@@ -53,41 +58,76 @@ class PaystackGateway implements PaymentGatewayInterface
             'email' => $this->email,
             'callback_url' => $this->callbackUrl,
             'channels' => $this->channels,
-            'metadata' => $this->metaData
+            'metadata' => $this->metaData,
         ];
 
         $response = Http::withToken($this->secretKey)
-            ->post($this->url.'transaction/initialize', $dataToSend);
-        $response->json();
+            ->post("{$this->url}transaction/initialize", $dataToSend);
 
-        return [
-            'status' => $response['status']==true,
-            'message' => $response['message'] ?? '',
-            'data' => [
-                'payment_url' => $response['data']['authorization_url'] ?? null,
-            ],
-            'error'=>$response
-        ];
+        return $this->formatResponse($response, ['payment_url' => 'data.authorization_url']);
     }
 
+    /**
+     * Verify payment by reference.
+     *
+     * @param string $reference
+     * @return array
+     */
     public function verifyPayment(string $reference): array
     {
         $response = Http::withToken($this->secretKey)
-            ->get($this->url."transaction/verify/{$reference}");
+            ->get("{$this->url}transaction/verify/{$reference}");
 
-        $response->json();
+        return $this->formatResponse($response, [
+            'id' => 'data.id',
+            'status' => 'data.status',
+            'amount' => fn($data) => $data['data']['amount'] / 100,
+            'channel' => 'data.channel',
+            'currency' => 'data.currency',
+            'fees' => fn($data) => ($data['data']['fees'] ?? 0) / 100,
+        ]);
+    }
 
-        return [
-            'status' => $response['status']=='success',
+    /**
+     * Prepare payment data for initialization.
+     *
+     * @param array $data
+     * @param array $options
+     */
+    protected function preparePaymentData(array $data, array $options): void
+    {
+        $this->amount = $data['amount'] * 100; // Convert to kobo
+        $this->currency = $data['currency'];
+        $this->paymentReference = $data['reference'];
+        $this->email = $data['email'];
+        $this->callbackUrl = $data['callback_url'];
+        $this->channels = str_replace('transfer', 'bank_transfer', $options['channels']);
+        $this->metaData = $options['metadata'] ?? [];
+    }
+
+    /**
+     * Format the HTTP response.
+     *
+     * @param \Illuminate\Http\Client\Response $response
+     * @param array $fields
+     * @return array
+     */
+    protected function formatResponse($response, array $fields): array
+    {
+        $data = [
+            'status' => $response->ok() && ($response['status'] === true || $response['status'] === 'success'),
             'message' => $response['message'] ?? '',
-            'data' => [
-                'id' => $response['data']['id'] ?? null,
-                'status'=>$response['data']['status']=='success',
-                'amount'=>($response['data']['amount']/100) ?? null,
-                'channel'=>$response['data']['channel'] ?? null,
-                'currency'=>$response['data']['currency'] ?? null,
-                'fees'=>($response['data']['fees']/100) ?? null,
-            ],
+            'data' => [],
         ];
+
+        foreach ($fields as $key => $pathOrCallback) {
+            if (is_callable($pathOrCallback)) {
+                $data['data'][$key] = $pathOrCallback($response->json());
+            } else {
+                $data['data'][$key] = data_get($response->json(), $pathOrCallback);
+            }
+        }
+
+        return $data;
     }
 }

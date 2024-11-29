@@ -149,25 +149,17 @@ class EventCartController extends BaseController
         return view('mobile.ads.events.checkout.index', compact('cart', 'totalPrice'));
     }
 
-    /**
-     * Clear the cart, usually after checkout.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function clearCart()
-    {
-        $cart = $this->getOrCreateCart();
-        $cart->items()->delete();
-
-        return response()->json(['success' => true, 'message' => 'Cart cleared successfully.']);
-    }
-
     public function mergeGuestCart()
     {
-        $guestToken = Cookie::get('guest_token');
-        $guestCart = TicketCart::where('guest_token', $guestToken)->first();
 
-        if ($guestCart) {
+        $guestToken = Cookie::get('guest_token');
+        $guestCart = TicketCart::where([
+            'guest_token' =>$guestToken
+        ])->whereNot('guest_token',null) ->first();
+
+        logger($guestCart);
+
+        if (!empty($guestCart)) {
             $userCart = $this->getOrCreateCart();
             try {
                 DB::transaction(function () use ($guestCart, $userCart) {
@@ -209,30 +201,7 @@ class EventCartController extends BaseController
             'message' => 'No guest cart found to merge.'
         ]);
     }
-    /**
-     * Remove a specific item from the cart.
-     *
-     * @param int $userEventTicketId
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function removeCartItem($userEventTicketId)
-    {
-        $cart = $this->getOrCreateCart();
-        $cartItem = $cart->items()->where('user_event_ticket_id', $userEventTicketId)->first();
 
-        if ($cartItem) {
-            $cartItem->delete();
-
-            // Recalculate the total cart price after removal
-            $totalPrice = $cart->items->sum(function ($item) {
-                return calculateTotalCostOnTicket($item->user_event_ticket_id) * $item->quantity;
-            });
-
-            return response()->json(['success' => true, 'totalPrice' => $totalPrice, 'message' => 'Item removed from cart.']);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Item not found in cart.'], 404);
-    }
     public function deleteCart()
     {
         try {

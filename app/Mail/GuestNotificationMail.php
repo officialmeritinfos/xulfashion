@@ -35,7 +35,7 @@ class GuestNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Notification About your registered Event: Importan',
+            subject: 'Notification About your registered Event: Important Reminder',
         );
     }
 

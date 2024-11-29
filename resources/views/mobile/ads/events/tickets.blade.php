@@ -82,7 +82,7 @@
                                         <h4>{{$ticket->name}} <sup>({{ucfirst($ticket->ticketType)}})</sup></h4>
                                     </div>
                                     <ul class="product-info fw-bold">
-                                        <span>
+                                        <span class="fw-bold text-primary">
                                             {{$ticket->isFree() ? '' : currencySign($ticket->currency)}}{{$ticket->isFree() ? 'Free' : calculateTotalCostOnTicket($ticket->id)}}
                                             <small class="fw-light">
                                                 {{displayChargeOnTicketIfAny($ticket->id)}}
@@ -199,7 +199,6 @@
                         success: function(response) {
                             if (response.success) {
                                 console.log("Cart successfully merged.");
-                                // Optionally, update any cart elements on the page
                             } else {
                                 console.log("Failed to merge cart: " + response.message);
                             }
@@ -219,13 +218,13 @@
                     // Handle plus button click
                     $('.add').on('click', function() {
                         const ticketEl = $(this).closest('.cart-product-box');
-                        updateTicketQuantity(ticketEl, 0);
+                        updateTicketQuantity(ticketEl, 1);
                     });
 
                     // Handle minus button click
                     $('.sub').on('click', function() {
                         const ticketEl = $(this).closest('.cart-product-box');
-                        updateTicketQuantity(ticketEl, -0);
+                        updateTicketQuantity(ticketEl, -1);
                     });
 
                     function updateTicketQuantity(ticketEl, change) {

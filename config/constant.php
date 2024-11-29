@@ -29,5 +29,14 @@ return [
         'livePubKey'    =>env('PAYSTACK_PUBLIC_KEY'),
         'live'          =>false,
         'url'           =>'https://api.paystack.co/'
+    ],
+    'nomba'=>[
+        'testSecKey'    =>env('NOMBA_TEST_SECRET_KEY'),
+        'testPubKey'    =>env('NOMBA_TEST_CLIENT_KEY'),
+        'liveSecKey'    =>env('NOMBA_SECRET_KEY'),
+        'livePubKey'    =>env('NOMBA_CLIENT_KEY'),
+        'clientId'      =>env('NOMBA_CLIENT_ID'),
+        'live'          =>false,
+        'url'           =>config('constant.nomba.live')?'https://api.nomba.com/v1/':'https://sandbox.nomba.com/v1/'
     ]
 ];
