@@ -166,9 +166,9 @@
                     <span class="nav-link dropdown-toggle active" id="ticketsDropdown" data-bs-toggle="dropdown" role="button" aria-expanded="false">Tickets</span>
                     <ul class="dropdown-menu" aria-labelledby="ticketsDropdown">
                         <li><a class="dropdown-item" href="{{route('mobile.user.events.tickets.index',['event'=>$event->reference])}}"
-                               role="tab" aria-controls="tickets">Tickets</a></li>
-                        <li><a class="dropdown-item" href="{{route('mobile.user.events.tickets.email',['event'=>$event->reference])}}"
-                               role="tab" aria-controls="ticketEmail">Ticket email</a></li>
+                               role="tab" aria-controls="tickets">Manage Tickets</a></li>
+                        <li><a class="dropdown-item" href="{{route('mobile.user.events.sales',['event'=>$event->reference])}}"
+                               role="tab" aria-controls="tickets">Ticket Sales</a></li>
                     </ul>
                 </li>
 
@@ -181,12 +181,6 @@
                         <li><a class="dropdown-item" href="{{route('mobile.user.events.attendees.check-in-list',['event'=>$event->reference])}}"
                                role="tab" aria-controls="discounts">Check-in Lists</a></li>
                     </ul>
-                </li>
-
-                <!-- Single Tab for Sales -->
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" href="{{route('mobile.user.events.sales',['event'=>$event->reference])}}"
-                       role="tab" aria-controls="sales" aria-selected="false">Sales</a>
                 </li>
             </ul>
         </div>

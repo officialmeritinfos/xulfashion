@@ -17,14 +17,11 @@
                             <option value="custom">Custom Notification</option>
                         </select>
                     </div>
-                    <div class="input-group mb-2" id="custom-message-group" style="display: none;">
-                        <span class="input-group-text">
-                            <i class="fa fa-message"></i>
-                        </span>
+                    <div class="mb-2" id="custom-message-group" style="display: none;">
                         <textarea
                             type="text"
                             name="message"
-                            class="form-control"
+                            class="form-control editor"
                             placeholder="Message"
                         ></textarea>
                     </div>
@@ -126,15 +123,14 @@
                 $('#notification_type').on('change', function () {
                     if ($(this).val() === 'custom') {
                         $('#custom-message-group').show();
-                        $('#custom-message-group textarea').attr('required', 'required');
                     } else {
                         $('#custom-message-group').hide();
-                        $('#custom-message-group textarea').removeAttr('required');
                     }
                 });
             });
 
 
         </script>
+
     @endpush
 @endsection

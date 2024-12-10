@@ -123,7 +123,6 @@
 
         <!-- Custom Message -->
         <div class="custom-message">
-            <p><strong>Message:</strong></p>
             {!! $message !!}
         </div>
 
