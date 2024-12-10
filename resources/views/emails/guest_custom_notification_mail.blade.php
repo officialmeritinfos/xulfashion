@@ -112,7 +112,7 @@
 <div class="email-container">
     <!-- Header -->
     <div class="header">
-        <h1>{{ $event->name }} - Custom Notification</h1>
+        <h1>{{ $event->title }} - {{ $title }}</h1>
     </div>
 
     <!-- Content -->
@@ -123,7 +123,7 @@
 
         <!-- Custom Message -->
         <div class="custom-message">
-            {!! $message !!}
+            {!! $messages !!}
         </div>
 
 

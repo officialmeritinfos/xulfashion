@@ -271,7 +271,8 @@ class Attendees extends BaseController
             // Validate input
             $request->validate([
                 'notification_type' => 'required|string|in:reminder,custom',
-                'message' => 'nullable|string|max:500',
+                'message' => 'nullable|string',
+                'title' => 'nullable|string|max:500',
                 'event_id' => 'required|exists:user_events,id',
             ]);
 
@@ -315,7 +316,7 @@ class Attendees extends BaseController
             ]);
 
             // Dispatch the job
-            SendEventGuestNotifications::dispatch($guests, $request->notification_type === 'reminder', $request->message);
+            SendEventGuestNotifications::dispatch($guests, $request->notification_type === 'reminder', $request->message,$request->title);
 
             // Commit transaction
             DB::commit();

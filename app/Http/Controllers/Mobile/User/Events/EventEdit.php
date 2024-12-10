@@ -144,7 +144,7 @@ class EventEdit extends BaseController
             }
 
             $updated = UserEvent::where('id',$event->id)->update([
-                'title' => $input['title'], 'description' => $input['description'],
+                'title' => $input['title'], 'description' => clean($input['description']),
                 'hideVenue' => $request->filled('hideVenue')?1:2, 'category' => $input['category'],
                 'eventScheduleType' => $input['scheduleType'], 'startDate' => $input['startDateOnetime'],
                 'endDate' => ($input['scheduleType']==1)?$input['endDateOnetime']:'', 'eventTimeZone' => $input['timezone'],
@@ -270,7 +270,7 @@ class EventEdit extends BaseController
             }
 
             $updated = UserEvent::where('id',$event->id)->update([
-                'title' => $input['title'], 'description' => $input['description'],
+                'title' => $input['title'], 'description' => clean($input['description']),
                 'hideVenue' => $request->filled('hideVenue')?1:2, 'category' => $input['category'],
                 'eventScheduleType' => $input['scheduleType'], 'startDate' => $input['startDateOnetime'],
                 'endDate' => ($input['scheduleType']==1)?$input['endDateOnetime']:'', 'eventTimeZone' => $input['timezone'],

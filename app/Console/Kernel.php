@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\MovePendingBalanceToMain;
+use App\Console\Commands\SendEventReminders;
 
 class Kernel extends ConsoleKernel
 {
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('app:delete-user-data')->everyMinute();
 //        $schedule->command('app:run-scheduled-notifications')->everyMinute();
 
+        $schedule->command('app:send-event-reminders')->everyMinute();
         $schedule->command('queue:retry all')->everyMinute();
         $schedule->command('queue:work --stop-when-empty')->everyMinute();
 

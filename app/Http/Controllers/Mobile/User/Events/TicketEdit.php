@@ -96,7 +96,7 @@ class TicketEdit extends BaseController
             $input = $validator->validated();
 
             $updated = UserEventTicket::where('id',$ticket->id)->update([
-                'event_id' => $event->id,'name'=>$input['title'],'description'=>$input['description'],
+                'event_id' => $event->id,'name'=>$input['title'],'description'=>clean($input['description']),
                 'kindOfTicket' => $input['ticketKind'], 'isGroup' => 2,
                 'price'=>($input['ticketKind']!=1)?$input['groupPrice']/$input['groupSize']:'',
                 'isFree' => ($input['ticketKind']==1)?1:2, 'inviteOnly' => $request->has('inviteOnly')?1:2,
@@ -168,7 +168,7 @@ class TicketEdit extends BaseController
             $input = $validator->validated();
 
             $updated = UserEventTicket::where('id',$ticket->id)->update([
-                'event_id' => $event->id,'name'=>$input['title'],'description'=>$input['description'],
+                'event_id' => $event->id,'name'=>$input['title'],'description'=>clean($input['description']),
                 'kindOfTicket' => $input['ticketKind'], 'isGroup' => 2,
                 'price'=>($input['ticketKind']!=1)?$input['price']:'',
                 'isFree' => ($input['ticketKind']==1)?1:2, 'inviteOnly' => $request->has('inviteOnly')?1:2,

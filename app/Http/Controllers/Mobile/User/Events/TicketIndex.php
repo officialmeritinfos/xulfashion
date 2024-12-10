@@ -109,7 +109,7 @@ class TicketIndex extends BaseController
             $ticket = UserEventTicket::create([
                 'event_id' => $event->id,
                 'name' => $input['title'],
-                'description' => $input['description'],
+                'description' => clean($input['description']),
                 'kindOfTicket' => $input['ticketKind'],
                 'price' => $input['ticketKind'] == 2 ? $input['price'] : '',
                 'isFree' => $input['ticketKind'] == 1 ? 1 : 2,
@@ -176,7 +176,7 @@ class TicketIndex extends BaseController
             $ticket = UserEventTicket::create([
                 'event_id' => $event->id,
                 'name' => $input['title'],
-                'description' => $input['description'],
+                'description' => clean($input['description']),
                 'kindOfTicket' => $input['ticketKind'],
                 'price' => $input['ticketKind'] == 2 ? $input['groupPrice'] / $input['groupSize'] : '',
                 'isFree' => $input['ticketKind'] == 1 ? 1 : 2,

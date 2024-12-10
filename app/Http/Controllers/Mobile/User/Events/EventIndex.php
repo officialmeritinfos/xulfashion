@@ -186,7 +186,7 @@ class EventIndex extends BaseController
 
             $event = UserEvent::create([
                 'reference' => $reference, 'user' => $user->id, 'eventType' => 1,
-                'title' => $input['title'], 'description' => $input['description'],
+                'title' => $input['title'], 'description' => clean($input['description']),
                 'hideVenue' => $request->filled('hideVenue')?1:2, 'category' => $input['category'],
                 'eventScheduleType' => $input['scheduleType'], 'startDate' => $input['startDateOnetime'],
                 'endDate' => ($input['scheduleType']==1)?$input['endDateOnetime']:'', 'eventTimeZone' => $input['timezone'],
@@ -287,7 +287,7 @@ class EventIndex extends BaseController
 
             $event = UserEvent::create([
                 'reference' => $reference, 'user' => $user->id, 'eventType' => 2,
-                'title' => $input['title'], 'description' => $input['description'],
+                'title' => $input['title'], 'description' => clean($input['description']),
                 'hideVenue' => $request->filled('hideVenue')?1:2, 'category' => $input['category'],
                 'eventScheduleType' => $input['scheduleType'], 'startDate' => $input['startDateOnetime'],
                 'endDate' => ($input['scheduleType']==1)?$input['endDateOnetime']:'', 'eventTimeZone' => $input['timezone'],

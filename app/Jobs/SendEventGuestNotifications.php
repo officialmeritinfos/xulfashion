@@ -16,14 +16,16 @@ class SendEventGuestNotifications implements ShouldQueue
     public $guests;
     public $default;
     public $message;
+    public $title;
     /**
      * Create a new job instance.
      */
-    public function __construct($guests, $default = true, $message = null)
+    public function __construct($guests, $default = true, $message = null,$title = null)
     {
         $this->guests = $guests;
         $this->default = $default;
         $this->message = $message;
+        $this->title = $title;
     }
 
     /**
@@ -33,7 +35,7 @@ class SendEventGuestNotifications implements ShouldQueue
     {
         foreach ($this->guests as $guest) {
             // Send email to each guest
-            Mail::to($guest->email)->send(new GuestNotificationMail($guest, $this->default, $this->message));
+            Mail::to($guest->email)->send(new GuestNotificationMail($guest, $this->default, $this->message,$this->title));
         }
     }
 }

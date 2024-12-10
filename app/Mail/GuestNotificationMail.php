@@ -17,15 +17,17 @@ class GuestNotificationMail extends Mailable
     public UserEventGuest $guest;
     public mixed $default;
     public mixed $message;
+    public mixed $title;
     public UserEvent $event;
     /**
      * Create a new message instance.
      */
-    public function __construct(UserEventGuest $guest,$default=true,$message=null)
+    public function __construct(UserEventGuest $guest,$default=true,$message=null,$title=null)
     {
         $this->guest = $guest;
         $this->default = $default;
         $this->message = $message;
+        $this->title = $title;
         $this->event = UserEvent::where('id',$this->guest->event)->first();
     }
 
@@ -35,7 +37,7 @@ class GuestNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Notification About your registered Event: Important Reminder',
+            subject: $this->title??'Notification About your registered Event: Important Reminder',
         );
     }
 
@@ -52,16 +54,17 @@ class GuestNotificationMail extends Mailable
                     'event'=>$this->event,
                 ]
             );
+        }else{
+            return new Content(
+                view: 'emails.guest_custom_notification_mail',
+                with: [
+                    'guest'=>$this->guest,
+                    'event'=>$this->event,
+                    'messages'=>$this->message,
+                    'title'=>$this->title??'Notification About your registered Event: Important Reminder'
+                ]
+            );
         }
-
-        return new Content(
-            view: 'emails.guest_custom_notification_mail',
-            with: [
-                'guest'=>$this->guest,
-                'event'=>$this->event,
-                'message'=>$this->message,
-            ]
-        );
     }
 
     /**

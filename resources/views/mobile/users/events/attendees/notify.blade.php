@@ -17,13 +17,19 @@
                             <option value="custom">Custom Notification</option>
                         </select>
                     </div>
-                    <div class="mb-2" id="custom-message-group" style="display: none;">
-                        <textarea
-                            type="text"
-                            name="message"
-                            class="form-control editor"
-                            placeholder="Message"
-                        ></textarea>
+                    <div id="custom-message-group" style="display: none;">
+                        <div class="mb-2">
+                            <label for="notification_type" class="form-label">Title</label>
+                            <input class="form-select form-control form-control-lg" id="notification_type" name="title"/>
+                        </div>
+                        <div class="mb-2">
+                            <textarea
+                                type="text"
+                                name="message"
+                                class="form-control editor"
+                                placeholder="Message"
+                            ></textarea>
+                        </div>
                     </div>
 
                     <input type="hidden" name="event_id" value="{{ $event->id }}">
@@ -58,7 +64,7 @@
                         @forelse ($event->notifications as $notification)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $notification->message ?? 'Default Reminder' }}</td>
+                                <td>{!! $notification->message ?? 'Default Reminder' !!}</td>
                                 <td>{{ $notification->created_at->format('d M Y, h:i A') }}</td>
                                 <td>{{ $notification->merchant->name }}</td>
                             </tr>
