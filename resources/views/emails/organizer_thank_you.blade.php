@@ -20,7 +20,7 @@
                 <!-- Introductory Message -->
                 <tr>
                     <td align="left" style="padding: 20px;">
-                        <p style="font-size: 18px; margin: 0 0 10px;"><strong>Dear {{ $event->organizer ?? 'Organizer' }},</strong></p>
+                        <p style="font-size: 18px; margin: 0 0 10px;"><strong>Dear {{ $event->organizer ?? $event->users->name }},</strong></p>
                         <p style="font-size: 16px; line-height: 1.6;">
                             We deeply appreciate you for using <strong>{{ config('app.name') }}</strong> to host your event, <strong>{{ $event->title }}</strong>. Your trust in our platform motivates us to continuously provide top-notch services.
                         </p>
@@ -42,7 +42,7 @@
                             </tr>
                             <tr>
                                 <td style="padding: 5px 0;"><strong>Time:</strong></td>
-                                <td style="padding: 5px 0;">{{ \Carbon\Carbon::parse($event->startTime)->setTimezone($event->eventTimeZone)->format('h:i A') }} - {{ \Carbon\Carbon::parse($event->endTime)->setTimezone($event->eventTimeZone)->format('h:i A') }}</td>
+                                <td style="padding: 5px 0;">{{ \Carbon\Carbon::parse($event->startTime)->setTimezone($event->eventTimeZone)->format('h:i A') }} - {{ determineEventEndDate($event,true) }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 5px 0;"><strong>Location:</strong></td>
@@ -60,8 +60,8 @@
                             Your event has concluded successfully. Below are the current revenue details:
                         </p>
                         <ul style="font-size: 16px; line-height: 1.6; padding-left: 20px;">
-                            <li><strong>Total Sales:</strong> {{ $event->currency ?? 'USD' }} {{ number_format($event->totalSales, 2) }}</li>
-                            <li><strong>Current Balance:</strong> {{ $event->currency ?? 'USD' }} {{ number_format($event->currentBalance, 2) }}</li>
+                            <li><strong>Total Sales:</strong> {{  currencySign($event->currency) }}{{ number_format($event->totalSales, 2) }}</li>
+                            <li><strong>Current Balance:</strong> {{ currencySign( $event->currency)  }}{{ number_format($event->currentBalance, 2) }}</li>
                             <li><strong>Next Settlement:</strong> {{ $event->nextSettlement ?? 'N/A' }}</li>
                         </ul>
                         <p style="font-size: 16px; line-height: 1.6;">
@@ -84,7 +84,7 @@
                 <tr>
                     <td align="center" style="padding: 20px; background-color: #0047ba; color: #ffffff;">
                         <p style="font-size: 16px; margin: 0;">Looking forward to hosting your next event!</p>
-                        <a href="{{ url('/') }}" style="background-color: #ffffff; color: #0047ba; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Create a New Event</a>
+                        <a href="{{ route('mobile.user.events.index') }}" style="background-color: #ffffff; color: #0047ba; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Create a New Event</a>
                     </td>
                 </tr>
 
