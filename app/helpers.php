@@ -749,17 +749,27 @@ if (!function_exists('eventEndTime')) {
 if (!function_exists('extractIntervalFromRecurrenceInterval')) {
     function extractIntervalFromRecurrenceInterval($text)
     {
-        $arr = explode(' ',$text);
+        if (!is_string($text) || empty($text)) {
+            return null; // Return null for invalid or empty input
+        }
 
-        return $arr[0];
+        $arr = explode(' ', $text);
+
+        // Ensure the first part is numeric
+        return isset($arr[0]) && is_numeric($arr[0]) ? (int)$arr[0] : null;
     }
 }
 if (!function_exists('extractPeriodFromRecurrenceInterval')) {
     function extractPeriodFromRecurrenceInterval($text)
     {
-        $arr = explode(' ',$text);
+        if (!is_string($text) || empty($text)) {
+            return null;
+        }
 
-        return $arr[1];
+        $arr = explode(' ', $text);
+
+        // Ensure the second part exists
+        return isset($arr[1]) ? strtolower($arr[1]) : null;
     }
 }
 if (!function_exists('handleTicketEndTime')) {

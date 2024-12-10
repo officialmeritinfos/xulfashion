@@ -26,35 +26,48 @@
                 </tr>
                 <tr>
                     <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Next Date:</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $nextOccurrence->format('l, F j, Y') }}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $nextOccurrence }}</td>
                 </tr>
                 <tr>
                     <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Time:</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $nextOccurrence->format('h:i A') }}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $nextOccurrence }}</td>
                 </tr>
-                <tr>
-                    <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Location:</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $event->location ?? 'Virtual' }}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px; font-weight: bold;">Organizer:</td>
-                    <td style="padding: 10px;">{{ $event->organizer ?? 'Not Provided' }}</td>
-                </tr>
+
+                @if($guest->events->eventType!=1)
+                    <tr>
+                        <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Platform:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $event->platform }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Link:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">
+                            <a href="{{$guest->events->link}}" class="btn btn-primary">
+                                {{$guest->events->link}}
+                            </a>
+                        </td>
+                    </tr>
+                @else
+                    <tr>
+                        <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Venue:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $event->location  }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Location:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">
+                            {{getStateFromIso2($guest->events->state,$guest->events->country)->name??'N/A'}} {{ getCountryFromIso2($guest->events->country)->name }}
+                        </td>
+                    </tr>
+                @endif
             </table>
             <p style="font-size: 16px; line-height: 1.5;">
                 Please mark your calendar and join us for this event. If you have any questions or need further details, feel free to reach out to us.
             </p>
-            <div style="text-align: center; margin-top: 30px;">
-                <a href="{{ $event->link }}" target="_blank" style="display: inline-block; background-color: #0047ba; color: #ffffff; padding: 12px 20px; font-size: 16px; text-decoration: none; border-radius: 5px;">
-                    View Event Details
-                </a>
-            </div>
         </td>
     </tr>
     <tr>
         <td style="background-color: #f4f4f4; text-align: center; padding: 20px; font-size: 14px; color: #555;">
             <p style="margin: 0;">Need help? <a href="mailto:{{ $event->supportEmail }}" style="color: #0047ba; text-decoration: none;">Contact Support</a></p>
-            <p style="margin: 0;">&copy; {{ date('Y') }} {{ $event->organizer ?? 'Our Team' }}. All rights reserved.</p>
+            <p style="margin: 0;">&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
         </td>
     </tr>
 </table>

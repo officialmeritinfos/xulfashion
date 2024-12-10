@@ -42,6 +42,7 @@ class CreateUserEventsTable extends Migration
             $table->text('location')->nullable();
             $table->string('featuredImage', 200)->nullable();
             $table->string('currentRecurring', 100)->default('0');
+            $table->string('nextOccurrence', 100)->nullable();
             $table->string('facebook', 150)->nullable();
             $table->string('instagram', 150)->nullable();
             $table->string('twitter', 150)->nullable();
