@@ -287,7 +287,10 @@ class Regular
             ->get();
 
         $userIds = $topUserViews->pluck('user');
-        $users = User::whereIn('id', $userIds)->get();
+        $users = User::whereIn('id', $userIds)->where([
+            'completedProfile' => 1,
+            'accountType' => 1
+        ]) ->get();
 
         $usersWithViews = $users->map(function ($user) use ($topUserViews) {
             $user->totalViews = $topUserViews->firstWhere('user', $user->id)->totalViews;
