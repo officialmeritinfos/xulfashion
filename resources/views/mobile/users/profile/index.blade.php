@@ -28,7 +28,7 @@
                 </li>
 
                 <li>
-                    <a href="{{route('mobile.user.coming.soon')}}" class="profile-box">
+                    <a href="{{route('mobile.user.payments.index')}}" class="profile-box">
                         <div class="profile-img">
                             <i class="iconsax icon" data-icon="wallet-open"></i>
                         </div>

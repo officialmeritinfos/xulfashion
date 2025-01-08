@@ -1233,3 +1233,14 @@ if (!function_exists('generateGoogleCalendarLink')) {
         return 'https://www.google.com/calendar/render?' . http_build_query($params);
     }
 }
+
+if (!function_exists('merchantTotalAvailableBalance')){
+    function merchantTotalAvailableBalance(\App\Models\User $user): string
+    {
+        $accountBalance = $user->accountBalance;
+        $referralBalance = $user->referralBalance;
+        $totalEventBalance = \App\Models\UserEvent::where('user',$user->id)->sum('currentBalance');
+
+        return bcadd($accountBalance+$referralBalance,$totalEventBalance,2);
+    }
+}

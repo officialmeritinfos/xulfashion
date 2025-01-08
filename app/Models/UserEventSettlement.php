@@ -19,4 +19,7 @@ class UserEventSettlement extends Model
     {
         return $this->belongsTo(UserBank::class, 'payoutAccount', 'id');
     }
+    public function events(){
+        return $this->belongsTo(UserEvent::class, 'event', 'id');
+    }
 }

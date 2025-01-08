@@ -27,6 +27,7 @@ use App\Http\Controllers\Mobile\User\Events\EventIndex;
 use App\Http\Controllers\Mobile\User\Events\MerchantPurchaseController;
 use App\Http\Controllers\Mobile\User\Events\TicketEdit;
 use App\Http\Controllers\Mobile\User\Events\TicketIndex;
+use App\Http\Controllers\Mobile\User\Payments\PaymentController;
 use App\Http\Controllers\Mobile\User\Profile;
 use App\Http\Controllers\Mobile\User\Reviews\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -311,7 +312,6 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::post('events/tickets/{event}/{ticket}/edit/group/process',[TicketEdit::class,'processGroupTicketUpdate'])
                 ->name('events.tickets.edit.group.process');
 
-
             //Event Attendees
             Route::get('events/{event}/attendees',[Attendees::class,'landingPage'])
                 ->name('events.attendees');
@@ -343,6 +343,12 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('reviews.detail');
             Route::post('reviews/{review}/reply/process',[ReviewController::class,'processReviewResponse'])
                 ->name('reviews.reply.process');
+
+            //PAYMENTS FOLDER ROUTE
+            Route::get('payments/index',[PaymentController::class,'landingPage'])->name('payments.index');
+            Route::get('payments/merchant/index',[PaymentController::class,'merchantDashboard'])->name('payments.merchant.index');
+
+
 
             //PROFILE PLACEHOLDERS
             Route::get('profile/coming-soon',[Profile::class,'comingSoon'])

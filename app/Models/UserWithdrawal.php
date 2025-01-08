@@ -9,4 +9,9 @@ class UserWithdrawal extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
+    public function banks()
+    {
+        return $this->belongsTo(UserBank::class, 'payoutAccount', 'id');
+    }
 }
