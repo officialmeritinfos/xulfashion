@@ -24,7 +24,7 @@
         <div class="row">
             <div class="main mt-2 mb-5">
                 <div class="container-fluid text-center">
-                    <a href="{{completedProfileMobile('mobile.user.events.manage')}}" class="btn theme-btn w-100 mt-3 mb-3 btn-auto" role="button">
+                    <a href="{{completedProfileMobile('mobile.user.settlement.account.index')}}" class="btn theme-btn w-100 mt-3 mb-3 btn-auto" role="button">
                         Settlement Accounts
                     </a>
                 </div>

@@ -27,7 +27,10 @@ use App\Http\Controllers\Mobile\User\Events\EventIndex;
 use App\Http\Controllers\Mobile\User\Events\MerchantPurchaseController;
 use App\Http\Controllers\Mobile\User\Events\TicketEdit;
 use App\Http\Controllers\Mobile\User\Events\TicketIndex;
+use App\Http\Controllers\Mobile\User\Payments\BankFetchingController;
 use App\Http\Controllers\Mobile\User\Payments\PaymentController;
+use App\Http\Controllers\Mobile\User\Payments\SettlementAccountController;
+use App\Http\Controllers\Mobile\User\Payments\SettlementAccountProcessorController;
 use App\Http\Controllers\Mobile\User\Profile;
 use App\Http\Controllers\Mobile\User\Reviews\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -347,6 +350,24 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //PAYMENTS FOLDER ROUTE
             Route::get('payments/index',[PaymentController::class,'landingPage'])->name('payments.index');
             Route::get('payments/merchant/index',[PaymentController::class,'merchantDashboard'])->name('payments.merchant.index');
+            //Settlement accounts
+            Route::get('settlement/account/index',[SettlementAccountController::class,'landingPage'])->name('settlement.account.index');
+            //Process settlement accounts
+            Route::post('settlement/account/local-account/process',[SettlementAccountProcessorController::class,'processLocalSettlementAccount'])
+                ->name('settlement.account.local-account.process');
+
+
+
+
+            //Bank fetching controller
+            Route::get('payments/payout-method/fetch-bank-by-country/{country?}',[BankFetchingController::class,'fetchBanksByCountry'])
+                ->name('payments.payout-method.fetch-bank-by-country');
+            Route::get('payments/payout-method/fetch-bank-branch-code/{bankId?}',[BankFetchingController::class,'fetchBankBranchCode'])
+                ->name('payments.payout-method.fetch-bank-branch-code');
+            Route::get('payments/payout-method/fetch-account-detail/{bankCode?}/{accountNumber?}',[BankFetchingController::class,'retrieveAccountDetail'])
+                ->name('payments.payout-method.fetch-account-detail');
+            Route::post('payments/payout-method/send-otp',[BankFetchingController::class,'sendOTP'])->name('payments.payout-method.send-otp');
+            Route::post('payments/payout-method/verify-otp',[BankFetchingController::class,'verifyOTP'])->name('payments.payout-method.verify-otp');
 
 
 
