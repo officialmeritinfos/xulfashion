@@ -14,8 +14,9 @@
                         <div class="col-md-12 mt-2" style="display: none;">
                             <label for="inputEmail4" class="form-label"></label>
                             <input value="{{ route('mobile.user.payments.payout-method.fetch-bank-by-country',['country'=>strtoupper($fiat->iso2)]) }}" class="bankLink">
-                            <input value="{{$payoutCurrency->requires_destination_branch_code}}" class="hasBranch">
-                            <input value="{{$payoutCurrency->currency=='NGN'}}" class="validateAccount" data-url="{{route('mobile.user.payments.payout-method.fetch-account-detail')}}">
+                            <input value="{{$payoutCurrency->requires_destination_branch_code}}" class="hasBranch"
+                                   name="hasBranch">
+                            <input value="{{($payoutCurrency->currency=='NGN')?1:0}}" class="validateAccount" name="validateAccount" data-url="{{route('mobile.user.payments.payout-method.fetch-account-detail')}}">
                         </div>
                         {{-- Account Bank --}}
                         @if($payoutCurrency->requires_account_bank)
@@ -25,6 +26,7 @@
 
                                 </select>
                             </div>
+                            <input class="bankName" name="bankName" style="display: none;">
                         @endif
                         <div class="destination-inputs" style="display: none;">
                             {{-- Destination Branch Code --}}
@@ -34,6 +36,8 @@
                                     <select class="form-control" id="destination_branch_code" name="destination_branch_code" required>
                                     </select>
                                 </div>
+
+                                <input class="destinationName" name="destinationName" style="display: none;">
                             @endif
                         </div>
                         <div class="other-inputs" style="display: none;">

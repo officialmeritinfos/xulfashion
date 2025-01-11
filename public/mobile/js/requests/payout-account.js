@@ -64,7 +64,7 @@ const payoutAccountRequests =function (){
                         // Populate the dropdown with new options
                         $.each(data.data.banks, function (index, option) {
                             selectInput.append(
-                                '<option value="' + option.code + '" data-bank-url="' + option.url + '">' + option.name + '</option>'
+                                '<option value="' + option.code + '" data-bank-url="' + option.url + '" data-bank-name="' + option.name + '">' + option.name + '</option>'
                             );
                         });
 
@@ -104,6 +104,7 @@ const payoutAccountRequests =function (){
             const selectedBankValue = $(this).val(); // Get the value of the selected bank
             const selectedBank = $(this).find(':selected'); // Get the selected bank option object
             const branchUrl = selectedBank.data('bank-url'); // Get the data-bank-url from the selected option
+            const bankName = selectedBank.data('bank-name'); // Get the data-bank-name from the selected option
 
             // Hide other inputs if an empty field for the bank is selected
             if (!selectedBankValue || selectedBankValue === '') {
@@ -111,6 +112,8 @@ const payoutAccountRequests =function (){
                 $('.destination-inputs').hide();
                 return;
             }
+
+            $('.bankName').val(bankName)
             // Check if the bank requires destination branch code
             if (hasBranch !== '1') {
                 // Hide the branch code input and exit if not required
@@ -149,7 +152,7 @@ const payoutAccountRequests =function (){
                     );
                     $.each(response.data.branches, function (index, branch) {
                         branchSelect.append(
-                            `<option value="${branch.branch_code}">${branch.branch_name}</option>`
+                            `<option value="${branch.branch_code}" data-destination="${branch.branch_name}">${branch.branch_name}</option>`
                         );
                     });
 
@@ -166,6 +169,9 @@ const payoutAccountRequests =function (){
         });
         $(document).on('change', '#destination_branch_code', function () {
             $('.other-inputs').show();
+            const selectedDestination = $(this).find(':selected'); // Get the selected destination option object
+            const destinationName = selectedDestination.data('destination'); // Get the data-destination from the selected option
+            $('.destinationName').val(destinationName);
         });
     };
     const validateAccountNumber = function () {
@@ -293,10 +299,10 @@ const payoutAccountRequests =function (){
                         if (response.status) {
                             toastr.success('OTP verified successfully.');
                             verifyOtpButton.hide();
-                            resendOtpButton.hide();
-                            otpInput.hide();
-                            $('.otpSection').hide();
-                            otpVerified = true; // Mark OTP as verified
+                            // resendOtpButton.hide();
+                            // otpInput.hide();
+                            otpVerified = true;
+                            $('.submit-btn').show();
                         } else {
                             toastr.error(response.message || 'Failed to verify OTP.');
                         }
@@ -345,20 +351,6 @@ const payoutAccountRequests =function (){
                     }
                 });
             });
-
-            //make the submit button visible
-            const updateSubmitButtonVisibility = function () {
-                const passwordInput = $('input[name="password"]').val().trim(); // Get password input value
-                const submitBtnContainer = $('.submit-btn'); // Reference to the submit button container
-
-                // Show the submit button only if OTP is verified and password is not empty
-                if (otpVerified && passwordInput !== '') {
-                    submitBtnContainer.show();
-                } else {
-                    submitBtnContainer.hide();
-                }
-            };
-
 
         });
     }

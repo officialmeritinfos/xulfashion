@@ -110,7 +110,7 @@
     <!-- Header with Logo -->
     <div class="header">
         <a href="{{ config('app.url') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }} Logo" class="logo">
+            <img src="{{ asset($web->logo) }}" alt="{{ config('app.name') }} Logo" class="logo">
         </a>
     </div>
 
@@ -118,20 +118,35 @@
     <div class="content">
         <h2>Hello {{ $user->name }},</h2>
         <p>
-            A new <strong>Payout Account</strong> has been successfully added to your account on **{{ config('app.name') }}**.
+            A new <strong>Payout Account</strong> has been successfully added to your account on {{ config('app.name') }}.
         </p>
 
         <!-- Account Details -->
         <div class="details">
-            <p><strong>Bank Name:</strong> {{ $accountDetails['bank_name'] ?? 'N/A' }}</p>
-            <p><strong>Account Number:</strong> {{ $accountDetails['account_number'] ?? 'N/A' }}</p>
-            <p><strong>Account Name:</strong> {{ $accountDetails['account_name'] ?? 'N/A' }}</p>
-            <p><strong>Currency:</strong> {{ $accountDetails['currency'] ?? 'N/A' }}</p>
+            <p><strong>Bank Name:</strong> {{ $accountDetails->bankName ?? 'N/A' }}</p>
+            <p><strong>Account Number:</strong> {{ $accountDetails->accountNumber ?? 'N/A' }}</p>
+            <p><strong>Account Name:</strong> {{ $accountDetails->accountName ?? 'N/A' }}</p>
+            <p><strong>Currency:</strong> {{ $accountDetails->currency ?? 'N/A' }}</p>
+
+            @if(!empty($accountDetails->meta))
+                @php
+                    $metaData = is_array($accountDetails->meta)
+                                ? $accountDetails->meta
+                                : json_decode($accountDetails->meta, true);
+                @endphp
+
+                <hr>
+                <h4 style="margin-top: 10px;">Additional Information</h4>
+
+                @foreach($metaData as $key => $value)
+                    <p><strong>{{ ucwords(str_replace('_', ' ', $key)) }}:</strong> {{ $value ?? 'N/A' }}</p>
+                @endforeach
+            @endif
         </div>
+
 
         <p>If you did not authorize this action, please contact our support team immediately.</p>
 
-        <a href="{{ route('user.security') }}" class="btn">Secure Your Account</a>
 
         <p>Thank you for choosing {{ config('app.name') }}!</p>
     </div>

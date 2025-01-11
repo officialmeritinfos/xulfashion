@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Custom\Flutterwave;
+use App\Custom\NombaPayment;
 use App\Models\Department;
 use App\Models\GeneralSetting;
 use App\Models\Login;
@@ -278,4 +280,83 @@ trait Helpers
             'perkIcon'=>$theme->perkIcon,'workingDay'=>$theme->workingDay
         ]);
     }
+    /**
+     * Validates bank account details by verifying the account number and bank code.
+     *
+     * This method dynamically selects the appropriate payment provider (Nomba for NGN or Flutterwave for other currencies)
+     * to validate the provided bank account details. It sends a request to the selected provider and
+     * standardizes the response to ensure consistency across different providers.
+     *
+     * @param string $bank The bank code or identifier of the bank to validate against.
+     * @param string $accountNumber The bank account number to be validated.
+     * @param string $default The currency code used to determine the payment provider (defaults to 'NGN').
+     *
+     * @return array
+     *         Returns a structured array with the validation result:
+     *         - 'success' (boolean): Indicates if the validation was successful.
+     *         - 'account' (array|null): Contains 'account_number' and 'account_name' if validation is successful.
+     *         - 'message' (string): Descriptive message about the result.
+     *
+     * Success Response Example:
+     * [
+     *     'success' => true,
+     *     'account' => [
+     *         'account_number' => '1234567890',
+     *         'account_name' => 'John Doe'
+     *     ],
+     *     'message' => 'Retrieve'
+     * ]
+     *
+     * Failure Response Example:
+     * [
+     *     'success' => false,
+     *     'message' => 'Invalid account details received.'
+     * ]
+     */
+    public function validateBankDetails(string $bank, string $accountNumber, string $default = 'NGN')
+    {
+        // Determine the payment provider based on the currency (Nomba for NGN, Flutterwave for others)
+        $provider = $default === 'NGN' ? new NombaPayment() : new Flutterwave();
+
+        // Prepare request payload depending on the provider's expected structure
+        $data = $default === 'NGN'
+            ? ['bankCode' => $bank, 'accountNumber' => $accountNumber]
+            : ['account_number' => $accountNumber, 'account_bank' => $bank];
+
+        // Call the appropriate method to fetch account details
+        $response = $default === 'NGN'
+            ? $provider->retrieveAccountDetail($data)  // For Nomba (NGN)
+            : $provider->verifyAccountNumber($data);   // For Flutterwave (other currencies)
+
+        if ($response && $response->ok()) {
+            // Extract and normalize account details from the response
+            $responseData = $response->json()['data'] ?? [];
+            $accountDetails = [
+                'account_number' => $responseData['accountNumber'] ?? $responseData['account_number'] ?? null,
+                'account_name'   => $responseData['accountName'] ?? $responseData['account_name'] ?? null,
+            ];
+
+            // Ensure both account number and account name are present
+            if (!empty($accountDetails['account_number']) && !empty($accountDetails['account_name'])) {
+                return [
+                    'success' => true,
+                    'account' => $accountDetails,
+                    'message' => 'Retrieve'
+                ];
+            }
+
+            // Return failure if the required account details are missing
+            return [
+                'success' => false,
+                'message' => 'Invalid account details received.'
+            ];
+        }
+
+        // Return failure if the API request itself failed
+        return [
+            'success' => false,
+            'message' => 'Unable to validate account.'
+        ];
+    }
+
 }

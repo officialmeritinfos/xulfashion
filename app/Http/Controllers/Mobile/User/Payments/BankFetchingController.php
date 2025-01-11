@@ -123,7 +123,7 @@ class BankFetchingController extends BaseController
      * - Returns an error response if the API request fails or if invalid data
      *   is returned by the provider.
      */
-    public function retrieveAccountDetail($bank, $accountNumber, $default = 'NG')
+    public function retrieveAccountDetail(string $bank, string $accountNumber, string $default = 'NG')
     {
         // Determine the payment provider based on the country
         $provider = $default === 'NG' ? new NombaPayment() : new Flutterwave();
@@ -253,10 +253,7 @@ class BankFetchingController extends BaseController
                 ]);
             }
 
-            // Clear the OTP to prevent reuse
-            $user->otp = null;
-            $user->otpExpires = null;
-            $user->save();
+
 
             // Return a success response
             return response()->json([

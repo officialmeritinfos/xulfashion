@@ -23,6 +23,10 @@ class CreateUserBanksTable extends Migration
             $table->string('benRef', 150)->nullable();
             $table->string('flutterRef', 150)->nullable();
             $table->string('accountName', 150);
+            $table->string('destination_branch_code')->nullable();
+            $table->string('destination_branch_name')->nullable();
+            $table->string('currency')->nullable();
+            $table->longText('meta')->nullable();
             $table->integer('isPrimary')->default(2);
             $table->integer('status')->default(1);
             $table->timestamps();
