@@ -118,10 +118,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('/') }}" method="POST">
+                    <form action="{{ route('mobile.user.settlement.account.international-account.process') }}" method="POST"
+                          id="addInternationalSettlementAccount">
                         @csrf
                         <input type="hidden" name="currency" value="{{ $payoutCurrency->currency }}">
-
+                        {{-- Account Bank --}}
+                        @if($payoutCurrency->requires_account_bank)
+                            <div class="mb-3">
+                                <label for="account_bank" class="form-label">Account Bank</label>
+                                <input type="text" class="form-control" id="account_bank" name="account_bank" required>
+                            </div>
+                        @endif
                         {{-- Account Number --}}
                         @if($payoutCurrency->requires_account_number)
                             <div class="mb-3">
@@ -143,17 +150,33 @@
                             @endforeach
                         @endif
 
-                        <div class="col-md-12 mt-2">
+                        <div class="col-md-12 mt-2 otpSection">
                             <label for="inputEmail4" class="form-label">OTP</label>
                             <div class="input-group mb-3">
                                 <input type="number" class="form-control" placeholder="Enter OTP"
                                        aria-label="Recipient's username" aria-describedby="basic-addon2" name="otp">
                                 <button type="button" class="input-group-text sendOtp" id="basic-addon2"
-                                        data-bs-otp="{{route('mobile.user.payments.payout-method.send-otp')}}">Send OTP</button>
+                                        data-otp="{{route('mobile.user.payments.payout-method.send-otp')}}"
+                                >Send OTP</button>
+                                <button type="button" class="input-group-text verifyOtp" id="basic-addon2" style="display: none;"
+                                        data-otp-verify="{{ route('mobile.user.payments.payout-method.verify-otp') }}"
+                                >Verify OTP</button>
+                                <button type="button" class="input-group-text resendOTP" id="basic-addon2" style="display: none;"
+                                        data-otp-resend="{{ route('mobile.user.payments.payout-method.send-otp') }}"
+                                >Resend OTP</button>
                             </div>
                         </div>
+                        <div class="col-md-12 mt-2">
+                            <label for="inputEmail4" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" id="inputEmail4"
+                                   required/>
+                        </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                        <div class="submit-btn" style="display: none;">
+                            <button type="submit" class="btn theme-btn w-100 submit">
+                                <i class="fa fa-plus-square"></i>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

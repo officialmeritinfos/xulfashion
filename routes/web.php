@@ -352,9 +352,24 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::get('payments/merchant/index',[PaymentController::class,'merchantDashboard'])->name('payments.merchant.index');
             //Settlement accounts
             Route::get('settlement/account/index',[SettlementAccountController::class,'landingPage'])->name('settlement.account.index');
+            Route::get('settlement/account/banks',[SettlementAccountController::class,'landingPage'])->name('settlement.account.banks');
+            Route::post('settlement/account/banks/set-primary', [SettlementAccountController::class, 'setPrimaryAccount'])->name('settlement.account.banks.set-primary');
             //Process settlement accounts
             Route::post('settlement/account/local-account/process',[SettlementAccountProcessorController::class,'processLocalSettlementAccount'])
                 ->name('settlement.account.local-account.process');
+            Route::post('settlement/account/international-account/process',[SettlementAccountProcessorController::class,'processInternationalSettlementAccount'])
+                ->name('settlement.account.international-account.process');
+            Route::post('settlement/account/usd-account/process',[SettlementAccountProcessorController::class,'processUSDSettlementAccount'])
+                ->name('settlement.account.usd-account.process');
+            //Settlement accounts edit
+            Route::get('settlement/account/{bank}/edit',[SettlementAccountController::class,'landingPage'])->name('settlement.account.edit');
+            //Settlement accounts delete
+            Route::get('settlement/account/{bank}/delete',[SettlementAccountController::class,'landingPage'])->name('settlement.account.delete');
+            //Settlement accounts status
+            Route::get('settlement/account/{bank}/status',[SettlementAccountController::class,'landingPage'])->name('settlement.account.status');
+            //Settlement accounts details
+            Route::get('settlement/account/{bank}/details',[SettlementAccountController::class,'landingPage'])->name('settlement.account.details');
+
 
 
 

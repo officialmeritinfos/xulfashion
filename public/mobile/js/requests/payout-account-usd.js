@@ -1,13 +1,13 @@
-const internationalPayoutAccountRequests =function (){
+const usdPayoutAccountRequests =function (){
     const otpFunctionalities = function () {
         $(document).ready(function () {
             let otpVerified = false;
             // Send OTP
-            $(document).on('click', '.sendOtp', function () {
+            $(document).on('click', '.sendOtpUSD', function () {
                 const otpButton = $(this);
                 const otpInput = $('input[name="otp"]');
-                const verifyOtpButton = $('.verifyOtp');
-                const resendOtpButton = $('.resendOTP');
+                const verifyOtpButton = $('.verifyOtpUSD');
+                const resendOtpButton = $('.resendOTPUSD');
                 const otpUrl = otpButton.data('otp'); // URL to send OTP
 
                 // Send OTP via AJAX
@@ -41,12 +41,12 @@ const internationalPayoutAccountRequests =function (){
             });
 
             // Verify OTP
-            $(document).on('click', '.verifyOtp', function () {
+            $(document).on('click', '.verifyOtpUSD', function () {
                 const verifyOtpButton = $(this);
-                const otpInputValue = $('input[name="otp"]').val(); // Get OTP value
+                const otpInputValue = $('.otp').val(); // Get OTP value
                 const otpVerifyUrl = verifyOtpButton.data('otp-verify'); // URL to verify OTP
-                const resendOtpButton = $('.resendOTP');
-                const otpInput = $('input[name="otp"]');
+                const resendOtpButton = $('.resendOTPUSD');
+                const otpInput = $('.otp');
 
                 if (!otpInputValue) {
                     toastr.error('Please enter the OTP to verify.');
@@ -86,12 +86,12 @@ const internationalPayoutAccountRequests =function (){
             });
 
             // Resend OTP
-            $(document).on('click', '.resendOTP', function () {
+            $(document).on('click', '.resendOTPUSD', function () {
                 const resendOtpButton = $(this);
                 const otpUrl = resendOtpButton.data('otp-resend'); // URL to resend OTP
                 const otpInput = $('input[name="otp"]');
-                const verifyOtpButton = $('.verifyOtp');
-                const sendOtpButton = $('.sendOtp');
+                const verifyOtpButton = $('.verifyOtpUSD');
+                const sendOtpButton = $('.sendOtpUSD');
 
                 // Resend OTP via AJAX
                 $.ajax({
@@ -125,9 +125,9 @@ const internationalPayoutAccountRequests =function (){
         });
     }
     const processPayoutForm = function () {
-        $('#addInternationalSettlementAccount').submit(function(e) {
+        $('#addUSDSettlementAccount').submit(function(e) {
             e.preventDefault();
-            var baseURL = $('#addInternationalSettlementAccount').attr('action');
+            var baseURL = $('#addUSDSettlementAccount').attr('action');
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -140,7 +140,7 @@ const internationalPayoutAccountRequests =function (){
                 dataType:"json",
                 beforeSend:function(){
                     $('.submit').attr('disabled', true);
-                    $("#addInternationalSettlementAccount :input").prop("readonly", true);
+                    $("#addUSDSettlementAccount :input").prop("readonly", true);
                     $(".submit").LoadingOverlay("show",{
                         text        : "please wait ...",
                         size        : "20"
@@ -160,7 +160,7 @@ const internationalPayoutAccountRequests =function (){
                         setTimeout(function(){
                             $('.submit').attr('disabled', false);
                             $(".submit").LoadingOverlay("hide");
-                            $("#addInternationalSettlementAccount :input").prop("readonly", false);
+                            $("#addUSDSettlementAccount :input").prop("readonly", false);
 
                         }, 3000);
                     }
@@ -174,14 +174,14 @@ const internationalPayoutAccountRequests =function (){
 
                         $('.submit').attr('disabled', false);
                         $(".submit").LoadingOverlay("hide");
-                        $("#addInternationalSettlementAccount :input").prop("readonly", false);
+                        $("#addUSDSettlementAccount :input").prop("readonly", false);
 
 
 
                         setTimeout(function(){
                             $('.submit').attr('disabled', false);
                             $(".submit").LoadingOverlay("hide");
-                            $("#addInternationalSettlementAccount :input").prop("readonly", false);
+                            $("#addUSDSettlementAccount :input").prop("readonly", false);
                             window.location.replace(data.data.redirectTo)
                         }, 5000);
                     }
@@ -192,7 +192,7 @@ const internationalPayoutAccountRequests =function (){
                         "progressBar" : true
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
-                    $("#addInternationalSettlementAccount :input").prop("readonly", false);
+                    $("#addUSDSettlementAccount :input").prop("readonly", false);
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
                 },
@@ -208,5 +208,5 @@ const internationalPayoutAccountRequests =function (){
 }();
 
 jQuery(document).ready(function() {
-    internationalPayoutAccountRequests.init();
+    usdPayoutAccountRequests.init();
 });
