@@ -9,6 +9,7 @@ use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\PayoutCurrency;
 use App\Models\UserBank;
+use App\Models\UserWithdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -78,5 +79,25 @@ class SettlementAccountController extends BaseController
             DB::rollBack();
             return response()->json(['status' => false, 'message' => 'Failed to update the primary account.']);
         }
+    }
+    //settlement account details
+    public function settlementAccountDetail($ref)
+    {
+        $web = GeneralSetting::find(1);
+        $user = Auth::user();
+
+        $bank = UserBank::where([
+            'user' => $user->id,
+            'reference' => $ref
+        ])->firstOrFail();
+
+        return view('mobile.users.payments.settlement_account_details')->with([
+            'web' => $web,
+            'user' => $user,
+            'siteName'=>$web->name,
+            'pageName' =>'Settlement Accounts Details',
+            'transactions' => UserWithdrawal::where('paymentDetails',$bank->reference)->orderByDesc('created_at')->paginate(10),
+            'bank' => $bank,
+        ]);
     }
 }

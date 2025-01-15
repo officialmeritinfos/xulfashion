@@ -361,14 +361,8 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('settlement.account.international-account.process');
             Route::post('settlement/account/usd-account/process',[SettlementAccountProcessorController::class,'processUSDSettlementAccount'])
                 ->name('settlement.account.usd-account.process');
-            //Settlement accounts edit
-            Route::get('settlement/account/{bank}/edit',[SettlementAccountController::class,'landingPage'])->name('settlement.account.edit');
-            //Settlement accounts delete
-            Route::get('settlement/account/{bank}/delete',[SettlementAccountController::class,'landingPage'])->name('settlement.account.delete');
-            //Settlement accounts status
-            Route::get('settlement/account/{bank}/status',[SettlementAccountController::class,'landingPage'])->name('settlement.account.status');
             //Settlement accounts details
-            Route::get('settlement/account/{bank}/details',[SettlementAccountController::class,'landingPage'])->name('settlement.account.details');
+            Route::get('settlement/account/{bank}/details',[SettlementAccountController::class,'settlementAccountDetail'])->name('settlement.account.details');
 
 
 

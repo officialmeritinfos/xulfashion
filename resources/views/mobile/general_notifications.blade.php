@@ -236,6 +236,29 @@
     body.dark tr{
         color: #ffffff;
     }
+    /* Dark theme for table headers */
+    body.dark table.table-striped th {
+        color: #ffffff !important;
+        background-color: #343a40 !important; /* Dark header background */
+    }
+
+    /* Dark theme for even rows in striped table */
+    body.dark table.table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f0f0f0 !important; /* Darker background for odd rows */
+        color: #ffffff !important;
+    }
+
+    /* Dark theme for odd rows in striped table */
+    body.dark table.table-striped tbody tr:nth-of-type(even) {
+        background-color: #23272a !important; /* Slightly lighter background for even rows */
+        color: #ffffff !important;
+    }
+
+    /* Optional: Dark theme for table borders */
+    body.dark table.table-striped {
+        border-color: #444 !important;
+    }
+
     body.dark .modal-body{
         background-color:rgb(18, 38, 54);
         color:#fff

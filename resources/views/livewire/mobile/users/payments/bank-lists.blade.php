@@ -15,7 +15,7 @@
     @if($banks->count())
         {{-- Bank Accounts Table --}}
         <div class="table-responsive">
-            <table class="table custom-table align-middle shadow-sm rounded-3 overflow-hidden">
+            <table class="table table-striped custom-table align-middle shadow-sm rounded-3 overflow-hidden">
                 <thead>
                 <tr>
                     <th>Bank</th>
@@ -47,7 +47,7 @@
 
                         {{-- Masked Account Number --}}
                         <td>
-                            *** {{ substr($bank->accountNumber, -3) }}
+                             {{ $bank->accountNumber }}
                         </td>
 
                         {{-- Action Icon --}}

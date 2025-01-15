@@ -213,7 +213,7 @@ class Account extends BaseController
             $user->accountBalance = $user->accountBalance-$input['amount'];
 
             $user->save();
-            $reference = $this->generateUniqueReference('user_withdrawals','reference',20);
+            $reference = $this->generateUniqueReference('user_withdrawals','reference',6);
 
             $withdrawal= UserWithdrawal::create([
                 'user'=>$user->id,'reference'=>$reference,'currency'=>$user->mainCurrency,

@@ -22,7 +22,11 @@ class CreateFiatsTable extends Migration
             $table->string('country', 150)->nullable();
             $table->integer('hasPayout')->default(1);
             $table->string('minAmount', 150)->default('100');
+            $table->string('minWithdrawal', 150)->default('100');
             $table->string('payoutFee', 150)->default('0.3');
+            $table->boolean('transferFeeInUsd')->default(false);
+            $table->string('percentTransferFee')->default('1');
+            $table->boolean('hasPercentageTransferFee')->default(false);
             $table->string('charge', 50)->default('1.5');
             $table->string('maxCharge', 150)->default('3000');
             $table->string('fixedPayoutFee', 150)->default('0');

@@ -23,7 +23,12 @@ class CreateUserWithdrawalsTable extends Migration
             $table->string('channel');
             $table->string('paymentReference')->nullable();
             $table->string('paymentDetails')->nullable();
+            $table->string('type')->default('withdrawal');
             $table->string('wallet')->nullable();
+            $table->string('fromCurrency')->nullable();
+            $table->string('toCurrency')->nullable();
+            $table->string('rate')->default(1);
+            $table->string('convertedAmount')->default(0);
             $table->integer('paymentStatus')->default(2);
             $table->integer('status')->default(2);
             $table->string('approvedBy', 100)->nullable();
