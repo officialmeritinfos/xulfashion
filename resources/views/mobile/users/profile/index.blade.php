@@ -52,7 +52,7 @@
                 </li>
 
                 <li>
-                    <a href="{{route('mobile.user.coming.soon')}}" class="profile-box">
+                    <a href="{{completedProfileMobile('mobile.user.store.index')}}" class="profile-box">
                         <div class="profile-img">
                             <i class="iconsax icon" data-icon="shop"></i>
                         </div>

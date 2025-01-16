@@ -33,6 +33,8 @@ use App\Http\Controllers\Mobile\User\Payments\SettlementAccountController;
 use App\Http\Controllers\Mobile\User\Payments\SettlementAccountProcessorController;
 use App\Http\Controllers\Mobile\User\Profile;
 use App\Http\Controllers\Mobile\User\Reviews\ReviewController;
+use App\Http\Controllers\Mobile\User\Store\MerchantStoreController;
+use App\Http\Controllers\Mobile\User\Store\StoreKYBController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -364,10 +366,6 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //Settlement accounts details
             Route::get('settlement/account/{bank}/details',[SettlementAccountController::class,'settlementAccountDetail'])->name('settlement.account.details');
 
-
-
-
-
             //Bank fetching controller
             Route::get('payments/payout-method/fetch-bank-by-country/{country?}',[BankFetchingController::class,'fetchBanksByCountry'])
                 ->name('payments.payout-method.fetch-bank-by-country');
@@ -378,7 +376,11 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::post('payments/payout-method/send-otp',[BankFetchingController::class,'sendOTP'])->name('payments.payout-method.send-otp');
             Route::post('payments/payout-method/verify-otp',[BankFetchingController::class,'verifyOTP'])->name('payments.payout-method.verify-otp');
 
-
+            //STORE FOLDER ROUTE
+            Route::get('store/index',[MerchantStoreController::class,'landingPage'])->name('store.index');
+            Route::get('store/initialize',[MerchantStoreController::class,'initializeStore'])->name('store.initialize');
+            //Store KYB
+            Route::get('store/kyb',[StoreKYBController::class,'landingPage'])->name('store.verify');
 
             //PROFILE PLACEHOLDERS
             Route::get('profile/coming-soon',[Profile::class,'comingSoon'])

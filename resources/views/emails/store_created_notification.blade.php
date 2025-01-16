@@ -103,7 +103,7 @@
 <div class="email-container">
     <!-- Header with Logo -->
     <div class="email-header">
-        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }} Logo">
+        <img src="{{ asset( $web->logo ) }}" alt="{{ config('app.name') }} Logo">
     </div>
 
     <!-- Email Body -->
@@ -119,8 +119,8 @@
         <h3>🔎 What's Next?</h3>
         <ol>
             <li><strong>✅ Verify Your Business</strong>
-                <p>While not mandatory, verifying your business unlocks premium features like higher product limits, advanced analytics, and priority support.</p>
-                <a href="{{ route('user.business.verify') }}" class="btn-warning">Verify My Business</a>
+                <p>While not mandatory, verifying your business unlocks premium features like receiving payments, higher product limits, advanced analytics, and priority support.</p>
+                <a href="{{ $verifyUrl }}" class="btn-warning">Verify My Business</a>
             </li>
 
             <li>🎨 <strong>Customize Your Store</strong>
@@ -147,7 +147,7 @@
     <!-- Footer -->
     <div class="email-footer">
         <p>&copy; {{ now()->year }} {{ config('app.name') }}. All Rights Reserved.</p>
-        <p>123 Business Street, Lagos, Nigeria</p>
+        <p>{!! $web->address !!}</p>
     </div>
 </div>
 
