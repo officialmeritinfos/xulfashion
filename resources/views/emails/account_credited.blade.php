@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Balance Settled</title>
+    <title>Account Credit Notification</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
         }
 
         .container {
+            background-color: #ffffff;
             width: 90%;
             max-width: 600px;
             margin: 20px auto;
-            background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .header {
@@ -30,6 +30,7 @@
 
         .header img {
             max-width: 150px;
+            margin-bottom: 10px;
         }
 
         .content {
@@ -37,7 +38,7 @@
         }
 
         .content h2 {
-            color: #007bff;
+            color: #28a745;
             text-align: center;
         }
 
@@ -68,7 +69,7 @@
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #28a745;
             color: #ffffff;
             text-decoration: none;
             border-radius: 5px;
@@ -79,6 +80,10 @@
             .container {
                 padding: 15px;
             }
+
+            .details-table td {
+                padding: 8px;
+            }
         }
     </style>
 </head>
@@ -86,43 +91,40 @@
 
 <div class="container">
     <div class="header">
-        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }} Logo">
+        <img src="{{ asset($web->logo) }}" alt="{{ config('app.name') }} Logo">
         <h3>{{ config('app.name') }}</h3>
     </div>
 
     <div class="content">
-        <h2>Event Balance Settled</h2>
+        <h2>Credit Alert</h2>
         <p>Dear {{ $user->name }},</p>
-        <p>We are pleased to inform you that your event balance has been successfully settled. Below are the settlement details:</p>
+        <p>Your account has been credited successfully. Below are the transaction details:</p>
 
         <table class="details-table">
             <tr>
-                <td class="label">Event Title:</td>
-                <td>{{ $eventTitle }}</td>
+                <td class="label">Amount Credited:</td>
+                <td>{{ $currency->sign }} {{ number_format($amount, 2) }}</td>
             </tr>
             <tr>
-                <td class="label">Event ID:</td>
-                <td>{{ $eventId }}</td>
+                <td class="label">Transaction Date:</td>
+                <td>{{ \Carbon\Carbon::parse($date)->format('d M Y, h:i A') }}</td>
             </tr>
             <tr>
-                <td class="label">Amount Settled:</td>
-                <td>{{ $currency }} {{ number_format($amountSettled, 2) }}</td>
+                <td class="label">Transaction Reference:</td>
+                <td>{{ $transactionRef }}</td>
             </tr>
             <tr>
-                <td class="label">Amount Received:</td>
-                <td>{{ $userCurrency }} {{ number_format($amountReceived, 2) }}</td>
+                <td class="label">Source:</td>
+                <td>{{ $source??'Account Funding' }}</td>
             </tr>
             <tr>
-                <td class="label">Settlement ID:</td>
-                <td>{{ $settlementId }}</td>
+                <td class="label">Available Balance:</td>
+                <td>{{ $currency->sign }} {{ number_format($availableBalance, 2) }}</td>
             </tr>
         </table>
 
-        <div style="text-align: center;">
-            <a href="{{ url('/') }}" class="btn">View Account</a>
-        </div>
 
-        <p>If you have any questions, feel free to contact our support team.</p>
+        <p>If you did not authorize this transaction, please contact our support team immediately.</p>
     </div>
 
     <div class="footer">

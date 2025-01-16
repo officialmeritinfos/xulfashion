@@ -86,7 +86,7 @@
 
 <div class="container">
     <div class="header">
-        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }} Logo">
+        <img src="{{ asset($web->logo) }}" alt="{{ config('app.name') }} Logo">
         <h3>{{ config('app.name') }}</h3>
     </div>
 
@@ -106,23 +106,24 @@
             </tr>
             <tr>
                 <td class="label">Amount Settled:</td>
-                <td>{{ $currency }} {{ number_format($amountSettled, 2) }}</td>
+                <td>{{ $currency->sign }} {{ number_format($amountSettled, 2) }}</td>
             </tr>
             <tr>
                 <td class="label">Amount Received:</td>
-                <td>{{ $userCurrency }} {{ number_format($amountReceived, 2) }}</td>
+                <td>{{ $userCurrency->sign }} {{ number_format($amountReceived, 2) }}</td>
             </tr>
             <tr>
                 <td class="label">Settlement ID:</td>
                 <td>{{ $settlementId }}</td>
             </tr>
+            <tr>
+                <td class="label">Transaction Date:</td>
+                <td>{{ \Carbon\Carbon::parse($date)->format('d M Y, h:i A') }}</td>
+            </tr>
         </table>
 
-        <div style="text-align: center;">
-            <a href="{{ url('/') }}" class="btn">View Account</a>
-        </div>
 
-        <p>If you have any questions, feel free to contact our support team.</p>
+        <p>You should receive a Credit Notification in your account soonest. <br/>If you have any questions, feel free to contact our support team.</p>
     </div>
 
     <div class="footer">

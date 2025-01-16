@@ -21,6 +21,10 @@ class CreateUserEventSettlementsTable extends Migration
             $table->string('amount', 150)->nullable();
             $table->string('currency', 150)->nullable();
             $table->string('payoutAccount', 150)->nullable();
+            $table->string('fromCurrency', 150)->nullable();
+            $table->string('toCurrency', 150)->nullable();
+            $table->string('convertedAmount')->default(0);
+            $table->string('exchangeRate', 150)->nullable();
             $table->integer('type')->default(1);
             $table->string('transactionId', 150);
             $table->string('payoutStatus', 150);
