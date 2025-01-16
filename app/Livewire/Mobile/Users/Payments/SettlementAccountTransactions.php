@@ -28,11 +28,18 @@ class SettlementAccountTransactions extends Component
 
     public function render()
     {
-        $withdrawals = UserWithdrawal::where([
-            'paymentDetails' => $this->bankId
-        ])->when($this->search, function ($query, $search) {
-                $query->where('reference', 'like', "%{$search}%");
-            })->paginate($this->perPage);
+
+        $withdrawals = UserWithdrawal::where('paymentDetails', $this->bankId)
+            ->when($this->search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('reference', 'like', "%{$search}%")
+                        ->orWhere('paymentReference', 'like', "%{$search}%")
+                        ->orWhere('amountCredit', 'like', "%{$search}%")
+                        ->orWhere('amount', 'like', "%{$search}%");
+                });
+            })
+            ->paginate($this->perPage);
+
 
         return view('livewire.mobile.users.payments.settlement-account-transactions', [
             'transactions' => $withdrawals,

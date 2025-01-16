@@ -25,7 +25,7 @@
                     <h4 class="fw-bold">Purchase Details</h4>
                 </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2 justify-content-center">
                 <div class="col-md-6 mt-2">
                     <p><strong>Total Amount :</strong> <span class="text-info">{{ currencySign($purchase->purchaseCurrency) . number_format($purchase->price, 2) }}</span></p>
                 </div>
@@ -39,6 +39,9 @@
                 @endif
                 <div class="col-md-6 mt-2">
                     <p><strong>Payment Method:</strong> <span class="text-info">{{ ucfirst($purchase->paymentMethod) ?? 'Not Selected' }}</span></p>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <p><strong>Payment ID:</strong> <span class="text-info">{{ ucfirst($purchase->paymentReference) ?? 'N/A' }}</span></p>
                 </div>
                 @if($purchase->converted==1)
                     <div class="col-md-6 mt-2">
