@@ -79,7 +79,7 @@
 <div class="email-container">
     <!-- Header with Company Logo -->
     <div class="header">
-        <img src="{{ asset('logo.png') }}" alt="Company Logo">
+        <img src="{{ asset($web->logo) }}" alt="Company Logo">
         <h1>Debit Notification</h1>
     </div>
 
@@ -93,11 +93,13 @@
 
         <div class="details">
             <p><strong>Amount Debited:</strong> {{ $userFiat->sign }}{{ number_format($withdrawal->amount, 2) }}</p>
+            <p><strong>Amount To Receive:</strong> {{ $bankFiat->sign }}{{ number_format($withdrawal->amountCredit, 2) }}</p>
             <p><strong>Account Name:</strong> {{ $bank->accountName }}</p>
             <p><strong>Account Number:</strong> {{ $bank->accountNumber }}</p>
             <p><strong>Bank Name:</strong> {{ $bank->bankName }}</p>
             <p><strong>Transaction Date:</strong> {{ $withdrawal->created_at->format('d M Y, h:i A') }}</p>
             <p><strong>Transaction Reference:</strong> {{ $withdrawal->reference }}</p>
+            <p><strong>Current Balance:</strong> {{ $userFiat->sign }}{{ number_format($user->accountBalance, 2) }}</p>
         </div>
 
         <p>If you did not authorize this transaction, please contact our support team immediately.</p>
@@ -107,7 +109,7 @@
 
     <!-- Footer Section -->
     <div class="footer">
-        &copy; {{ date('Y') }} XulTech. All rights reserved.<br>
+        &copy; {{ date('Y') }} {{ $web->name }}. All rights reserved.<br>
         This is an automated message. Please do not reply.
     </div>
 </div>

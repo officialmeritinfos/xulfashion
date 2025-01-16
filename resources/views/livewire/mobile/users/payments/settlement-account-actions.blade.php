@@ -47,7 +47,7 @@
                         {{-- Success Message --}}
                         @if($showSuccess)
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ $successMessage }}
+                                <p style="font-size: 12px;">{{ $successMessage }}</p>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
@@ -65,6 +65,7 @@
                             <div wire:loading wire:target="amount" class="spinner-border spinner-border-sm text-primary ms-2" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
+                            @error('amount') <span class="invalid-feedback">{{ $message }}</span> @enderror
                         </div>
 
                         {{-- Converted Amount --}}
@@ -78,6 +79,7 @@
                                 <p class="mb-0">Processor Fee: <strong>{{ number_format($transferFee, 2) }} {{ $bank->currency }}</strong></p>
                                 <p class="mb-0">Exchange Rate: <strong>1 {{ $bank->currency }} ≈ {{ number_format(1 / $exchangeRate, 2) }} {{ $user->mainCurrency }}</strong></p>
                             </div>
+                            @error('convertedAmount') <span class="error text-danger">{{ $message }}</span> @enderror
                         </div>
 
                         {{-- OTP Verification --}}
@@ -94,8 +96,8 @@
                                 @if($otpSent && !$otpVerified)
                                     <button type="button" class="input-group-text verifyOtp" id="basic-addon2" wire:click="verifyOTP">Verify OTP</button>
                                 @endif
-
                             </div>
+                            @error('enteredOtp') <span class="error text-danger">{{ $message }}</span> @enderror
 
                             {{-- Inline Spinner for Sending OTP --}}
                             <div wire:loading wire:target="sendOTP,verifyOTP" class="spinner-border spinner-border-sm text-primary ms-2" role="status">
@@ -108,12 +110,13 @@
                         <div class="mb-3">
                             <label class="form-label">Account Password</label>
                             <input type="password" class="form-control" wire:model="password" required>
+                            @error('password') <span class="error text-danger">{{ $message }}</span> @enderror
                         </div>
 
                         {{-- Error Message --}}
                         @if($showError)
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ $errorMessage }}
+                                <p style="font-size: 12px;"> {{ $errorMessage }}</p>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
@@ -133,6 +136,24 @@
         </div>
     </div>
 
+    @push('js')
+        <script>
+            window.addEventListener('clear-success-message', () => {
+                setTimeout(() => {
+                    Livewire.dispatch('clearSuccessMessage');
+                }, 5000);
+            });
+        </script>
 
+
+        <script>
+            window.addEventListener('success-withdrawal-message', () => {
+                setTimeout(() => {
+                    Livewire.dispatch('clearSuccessMessage');
+                    window.location.reload();
+                }, 5000);
+            });
+        </script>
+    @endpush
 
 </div>

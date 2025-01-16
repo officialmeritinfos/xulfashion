@@ -2,16 +2,23 @@
 
 namespace App\Livewire\Mobile\Users\Payments;
 
+use App\Mail\DebitNotification;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
+use App\Models\Transaction;
+use App\Models\UserActivity;
 use App\Models\UserBank;
 use App\Models\UserWithdrawal;
 use App\Notifications\CustomNotification;
 use App\Services\CurrencyExchangeService;
 use App\Traits\Helpers;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -19,7 +26,6 @@ class SettlementAccountActions extends Component
 {
     use LivewireAlert,Helpers;
     public $bank;
-    public $otp;
     public $enteredOtp;
     public $withdrawAmount;
     public $otpVerified = false;
@@ -42,10 +48,25 @@ class SettlementAccountActions extends Component
     public $transferFee=0;
 
     protected $exchangeService;
+    public $password;
 
     protected $listeners = [
         'refreshComponent' => '$refresh',
+        'clearSuccessMessage' => 'resetSuccessMessage',
+        'successWithdrawalMessage' => 'reloadSuccessMessage',
     ];
+
+    public function resetSuccessMessage()
+    {
+        $this->showSuccess = false;
+        $this->successMessage = '';
+    }
+    public function reloadSuccessMessage()
+    {
+        $this->showSuccess = false;
+        $this->successMessage = '';
+    }
+
 
     public function mount(UserBank $bank, CurrencyExchangeService $exchangeService)
     {
@@ -261,7 +282,7 @@ class SettlementAccountActions extends Component
             'bank' => $this->bank,
         ]);
     }
-    //send OTP
+    // Send OTP
     public function sendOTP()
     {
         try {
@@ -270,52 +291,240 @@ class SettlementAccountActions extends Component
 
             // Generate a new OTP
             $otp = $this->generateToken('users', 'reference');
+
             // Save OTP and expiration time
             $user->otp = bcrypt($otp);
-            $user->otpExpires = strtotime('+' . $web->codeExpire, time());
+            $user->otpExpires = now()->addMinutes($web->codeExpire);
             $user->save();
 
             // Compose the OTP notification message
             $message = "There is a new request on your account requiring an OTP. The OTP to use is <b>" . $otp . "</b>.
-            <p>This OTP will expire in <b>" . $web->codeExpire . "</b>. Note that neither " . $web->name . " nor her staff will ever ask you for your OTP.</p>";
+        <p>This OTP will expire in <b>" . $web->codeExpire . " minutes</b>. Note that neither " . $web->name . " nor her staff will ever ask you for your OTP.</p>";
 
             // Send the OTP notification
             $user->notify(new CustomNotification($user, $message, 'OTP Authentication'));
 
+            // Set success message
             $this->otpSent = true;
-
             $this->showSuccess = true;
             $this->successMessage = 'OTP has been sent to your email. Use it to authenticate this action.';
 
+            // Clear any previous errors
             $this->showError = false;
-            $this->errorMessage='';
+            $this->errorMessage = '';
+
+            // Dispatch a browser event to clear the success message after 5 seconds
+            $this->dispatch('clear-success-message');
 
             return;
 
         } catch (ThrottleRequestsException $exception) {
-            // Return a throttling error response
+            // Handle too many OTP requests
             $this->showError = true;
-            $this->errorMessage='You can only request for OTP once every minute. Please wait.';
+            $this->errorMessage = 'You can only request OTP once every minute. Please wait.';
+            return;
         } catch (\Exception $exception) {
-            // Log the exception and return a generic error response
+            // Log any other error
             Log::error('Error on ' . $exception->getFile() . ' on line ' . $exception->getLine() . ': ' . $exception->getMessage());
             $this->showError = true;
-            $this->errorMessage='Internal server error; we are working on this now.';
+            $this->errorMessage = 'Internal server error; we are working on this now.';
+            return;
         }
     }
-    //resend OTP
-    public function resendOTP()
-    {
-
-    }
     //verify OTP
-    public function verifyOTP()
+    public function verifyOTP(Request $request)
     {
+        $this->validate([
+            'enteredOtp' => ['required','digits:6'],
+        ]);
 
+        try {
+            $user = Auth::user(); // Get the authenticated user
+
+
+            $providedOtp = $this->enteredOtp;
+
+            // Check if the OTP has expired
+            if ($user->otpExpires < time()) {
+                $this->showError = true;
+                $this->errorMessage = 'The OTP has expired. Please request a new one.';
+                return;
+            }
+
+            // Verify the OTP
+            if (!Hash::check($providedOtp, $user->otp)) {
+                $this->showError = true;
+                $this->errorMessage = 'Invalid OTP. Please try again.';
+                return;
+            }
+
+            $this->showSuccess = true;
+            $this->successMessage ='OTP verified successfully.';
+
+            $this->showError = false;
+            $this->errorMessage='';
+
+            $this->otpVerified = true;
+            // Dispatch a browser event to clear the success message after 5 seconds
+            $this->dispatch('clear-success-message');
+
+            return;
+        } catch (\Illuminate\Validation\ValidationException $exception) {
+            $this->showError = true;
+            $this->errorMessage = $exception->errors();
+
+        } catch (\Exception $exception) {
+            // Log and handle general errors
+            Log::error('Error verifying OTP: ' . $exception->getMessage());
+
+            $this->showError = true;
+            $this->errorMessage = 'An error occurred while verifying the OTP. Please try again.';
+        }
     }
-
+    /**
+     * Process the user's withdrawal request.
+     *
+     * @return void
+     */
     public function processWithdrawal()
     {
+        $this->validate([
+            'amount' => ['required', 'numeric', 'min:1'],
+            'convertedAmount' => ['required', 'numeric', 'min:1'],
+            'enteredOtp' => ['required', 'digits:6'],
+            'otpVerified' => ['required', 'boolean', 'accepted'],
+            'password' => ['required', 'current_password:web'],
+        ]);
 
+        DB::beginTransaction();
+
+        try {
+            $user = Auth::user();
+            $bank = $this->bank;
+            $web = GeneralSetting::find(1);
+
+            // Refresh the exchange rate to prevent frontend manipulation
+            $this->exchangeService = new CurrencyExchangeService();
+            $this->fetchExchangeRate();
+
+            // Verify OTP
+            if (!$this->otpVerified) {
+                $this->showError = true;
+                $this->errorMessage = 'Please verify your OTP before proceeding.';
+                return;
+            }
+
+            if ($user->otpExpires < time()) {
+                $this->showError = true;
+                $this->errorMessage = 'The OTP has expired. Please request a new one.';
+                return;
+            }
+
+            if (!Hash::check($this->enteredOtp, $user->otp)) {
+                $this->showError = true;
+                $this->errorMessage = 'Invalid OTP. Please try again.';
+                return;
+            }
+
+            //check if account is active or not
+            if ($bank->status !=1){
+                $this->showError = true;
+                $this->errorMessage = 'Withdrawal cannot take place - Account is inactive.';
+                return;
+            }
+
+            // Fetch user and bank fiat currencies
+            $userFiat = Fiat::where('code', $user->mainCurrency)->first();
+            $bankFiat = Fiat::where('code', $bank->currency)->first();
+
+            // Validate minimum withdrawal amount
+            if ($this->amount < $userFiat->minWithdrawal) {
+                $this->showError = true;
+                $this->errorMessage = "Amount cannot be less than the minimum of {$userFiat->sign}{$userFiat->minWithdrawal}";
+                return;
+            }
+
+            // Calculate converted amount and fee
+            $convertedRate = str_replace(',', '', number_format($this->amount * $this->exchangeRate, 2));
+            $fee = $this->calculateTransferFee($bankFiat, $convertedRate);
+
+            if ($convertedRate < $bankFiat->minWithdrawal) {
+                $this->showError = true;
+                $this->errorMessage = "Minimum withdrawable in {$bankFiat->code} must be at least {$bankFiat->sign}{$bankFiat->minWithdrawal}";
+                return;
+            }
+
+            $convertedAmount = str_replace(',', '', number_format($convertedRate - $fee, 2));
+
+            // Check user's balance
+            if ($this->amount > $this->userBalance) {
+                $this->showError = true;
+                $this->errorMessage = "Insufficient balance in account.";
+                return;
+            }
+
+            // Deduct from user balance
+            $user->decrement('accountBalance', $this->amount);
+
+            // Create withdrawal record
+            $withdrawal = UserWithdrawal::create([
+                'user' => $user->id,
+                'reference' => $this->generateUniqueReference('user_withdrawals', 'reference', 6),
+                'currency' => $userFiat->code,
+                'amount' => $this->amount,
+                'amountCredit' => $convertedAmount,
+                'channel' => 1,
+                'paymentDetails' => $bank->reference,
+                'type' => 'withdrawals',
+                'fromCurrency' => $user->mainCurrency,
+                'toCurrency' => $bank->currency,
+                'rate' => $this->exchangeRate,
+                'convertedAmount' => $convertedRate,
+            ]);
+
+            if ($withdrawal) {
+                $user->refresh();
+
+                // Log the transaction
+                Transaction::create([
+                    'user' => $user->id,
+                    'reference' => $this->generateUniqueReference('transactions', 'reference', 20),
+                    'currency' => $withdrawal->currency,
+                    'amount' => $withdrawal->amount,
+                    'transactionType' => 1,
+                    'withdrawalRef' => $withdrawal->reference,
+                    'status' => 2, // Pending
+                    'newBalance' => $user->accountBalance,
+                ]);
+
+                DB::commit();
+
+                // Log user activity
+                UserActivity::create([
+                    'user' => $user->id,
+                    'title' => 'New Withdrawal',
+                    'content' => "A withdrawal of {$userFiat->sign}" . number_format($this->amount, 2) . " has been authenticated on your {$web->name} account. This should arrive within 24 hours.",
+                ]);
+
+                //Send mail to user
+                Mail::to($user->email)->queue(new  DebitNotification($user, $withdrawal, $userFiat, $bank, $bankFiat));
+
+                // Show success message
+                $this->showSuccess = true;
+                $this->successMessage = "Withdrawal to {$bank->bankName} ({$bank->accountName}) was successful. Funds should arrive within 24 hours.";
+
+                // Trigger browser event for UI feedback
+                $this->dispatch('success-withdrawal-message');
+            }
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+
+            // Log error and show feedback
+            Log::error('Error processing withdrawal: ' . $exception->getMessage());
+            $this->showError = true;
+            $this->errorMessage = 'An error occurred during the withdrawal. Please try again.';
+        }
     }
+
 }

@@ -48,7 +48,7 @@
                         @foreach($transactions as $transaction)
                             <tr>
                                 <td>{{ $transaction->created_at->format('d M Y, h:i A') }}</td>
-                                <td>{{ number_format($transaction->amount, 2) }} {{ $bank->currency }}</td>
+                                <td>{{ number_format($transaction->amount, 2) }} {{ $transaction->currency }}</td>
                                 <td>
                                     @switch($transaction->status)
                                         @case(1)

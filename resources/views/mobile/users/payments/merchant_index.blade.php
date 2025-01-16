@@ -13,8 +13,8 @@
                                 </h5>
                             </div>
                         </div>
-                        <h1 class="mt-1 mb-3" data-bs-toggle="tooltip" title="{{currencySign($user->mainCurrency)}}{{ number_format(merchantTotalAvailableBalance($user),2) }}">
-                            {{currencySign($user->mainCurrency)}}{{ shorten_number(merchantTotalAvailableBalance($user),2) }}
+                        <h1 class="mt-1 mb-3" data-bs-toggle="tooltip" title="{{currencySign($user->mainCurrency)}}{{ number_format($user->accountBalance,2) }}">
+                            {{currencySign($user->mainCurrency)}}{{ shorten_number($user->accountBalance,2) }}
                         </h1>
                     </div>
                 </div>

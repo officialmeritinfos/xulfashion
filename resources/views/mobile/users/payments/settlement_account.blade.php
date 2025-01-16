@@ -96,7 +96,7 @@
     </div>
 
     <div class="container mt-3">
-        <h2 class="mb-3 text-center">Payout Accounts</h2>
+        <h2 class="mb-3 text-center text-muted">Payout Accounts</h2>
         {{-- Bank Cards --}}
         <livewire:mobile.users.payments.bank-lists :user="$user"/>
     </div>
