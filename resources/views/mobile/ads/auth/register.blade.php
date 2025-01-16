@@ -111,6 +111,14 @@
                 </div>
                 <div id="password-strength-statuss"></div>
             </div>
+            <div class="form-group col-md-12 col-12">
+                <label for="referral" class="form-label">Referral Code<sup><small>(optional)</small></sup></label>
+                <div class="form-input input-group">
+                    <input type="text" class="form-control" name="referral" id="referral" placeholder="Enter your referral Code"
+                           value="{{$referral}}"/>
+                    <span class="input-group-text"><i class="bx bxs-user-detail"></i></span>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">

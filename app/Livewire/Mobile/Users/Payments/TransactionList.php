@@ -2,28 +2,28 @@
 
 namespace App\Livewire\Mobile\Users\Payments;
 
-use App\Models\UserBank;
-use App\Models\UserWithdrawal;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Response;
+use App\Models\Transaction;
+use App\Models\User;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Maatwebsite\Excel\Facades\Excel;
 
-class SettlementAccountTransactions extends Component
+class TransactionList extends Component
 {
     use WithPagination;
-
-    public $bankId;
     #[Url]
-    public $search = '';
+    public $search;
     #[Url]
     public $perPage = 5;
+    #[Url]
+    public $status='all';
+    #[Locked]
+    public $user;
 
-    public function mount($bankId)
+    public function mount(User $user)
     {
-        $this->bankId = $bankId;
+        $this->user = $user;
     }
 
     public function placeholder()
@@ -77,21 +77,21 @@ class SettlementAccountTransactions extends Component
     public function render()
     {
 
-        $withdrawals = UserWithdrawal::where('paymentDetails', $this->bankId)
+        $transactions = Transaction::where('user', $this->user->id)
             ->when($this->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('reference', 'like', "%{$search}%")
-                        ->orWhere('paymentReference', 'like', "%{$search}%")
-                        ->orWhere('amountCredit', 'like', "%{$search}%")
-                        ->orWhere('amount', 'like', "%{$search}%");
+                        ->orWhere('withdrawalRef', 'like', "%{$search}%");
                 });
             })
-            ->paginate($this->perPage);
+            ->when($this->status !== 'all', function ($query) {
+                $query->where('status', $this->status);
+            })
+            ->orderBy('id', 'desc')
+            ->simplePaginate($this->perPage);
 
-
-        return view('livewire.mobile.users.payments.settlement-account-transactions', [
-            'transactions' => $withdrawals,
-            'bank' => UserBank::where('reference',$this->bankId)->first(),
+        return view('livewire.mobile.users.payments.transaction-list',[
+            'transactions'=>$transactions
         ]);
     }
 }

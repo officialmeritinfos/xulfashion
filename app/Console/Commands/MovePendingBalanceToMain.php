@@ -62,13 +62,13 @@ class MovePendingBalanceToMain extends Command
                             $dataTransactionPending = [
                                 'user'=>$user->id,'reference'=>$this->generateUniqueReference('transactions','reference'),
                                 'transactionType'=>9,'amount'=>$user->pendingBalanceStore, 'currency'=>$user->mainCurrency,
-                                'newBalance'=> $newBalance
+                                'newBalance'=> $newBalance,'status'=>1
                             ];
                             //credit the merchant main balance
                             $dataTransactionMain = [
                                 'user'=>$user->id,'reference'=>$this->generateUniqueReference('transactions','reference'),
                                 'transactionType'=>10,'amount'=>$user->pendingBalanceStore, 'currency'=>$user->mainCurrency,
-                                'newBalance'=> $newBalanceMain
+                                'newBalance'=> $newBalanceMain,'status'=>1
                             ];
 
                             $transaction = Transaction::create($dataTransactionPending);

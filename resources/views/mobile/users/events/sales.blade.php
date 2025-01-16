@@ -22,37 +22,44 @@
             }
         </style>
         <style>
-            /* Scrollable container for action buttons */
-            .scrollable-actions {
-                overflow-x: auto;
-                white-space: nowrap;
-                padding-bottom: 10px;
+            /* Ensure the parent container does not overflow */
+            .scrollable-table-container {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                display: block;
+                position: relative;
             }
 
-            .scrollable-actions::-webkit-scrollbar {
+            /* Control the table width */
+            .scrollable-table-container table {
+                width: max-content;
+                min-width: 100%;
+                border-collapse: collapse;
+            }
+
+            /* Prevent the table from affecting page layout */
+            .scrollable-table-container th,
+            .scrollable-table-container td {
+                white-space: nowrap;
+                padding: 10px;
+            }
+
+            /* Optional: Smooth scrollbar styling */
+            .scrollable-table-container::-webkit-scrollbar {
                 height: 8px;
             }
 
-            .scrollable-actions::-webkit-scrollbar-thumb {
+            .scrollable-table-container::-webkit-scrollbar-thumb {
                 background-color: #ccc;
                 border-radius: 10px;
             }
 
-            .scrollable-actions::-webkit-scrollbar-track {
+            .scrollable-table-container::-webkit-scrollbar-track {
                 background-color: #f1f1f1;
             }
 
-            /* Smooth scroll on hover */
-            .scrollable-actions button {
-                min-width: 160px;
-            }
-
-            @media (max-width: 576px) {
-                .scrollable-actions button {
-                    min-width: 140px;
-                    font-size: 14px;
-                }
-            }
         </style>
     @endpush
 
@@ -87,7 +94,7 @@
             </div>
         </div>
 
-       <livewire:mobile.users.events.sales-analytics :user="$user" :event="$event"/>
+       <livewire:mobile.users.events.sales-analytics :user="$user" :event="$event" lazy/>
 
     </div>
 

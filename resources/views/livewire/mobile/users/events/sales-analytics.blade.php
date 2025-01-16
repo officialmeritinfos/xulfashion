@@ -34,7 +34,7 @@
             </div>
             <div class="card-body">
                 @if($purchases->count())
-                    <div class="scrollable-actions">
+                    <div class="scrollable-table-container">
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -152,7 +152,7 @@
             </div>
             <div class="card-body">
                 @if($settlements->count())
-                    <div class="scrollable-actions">
+                    <div class="scrollable-table-container">
                         <table class="table table-striped">
                             <thead>
                             <tr>

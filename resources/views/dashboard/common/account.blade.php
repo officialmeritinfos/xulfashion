@@ -72,7 +72,7 @@
                                                 </span>
                                             </li>
                                             <li>
-                                                <span class="dropdown-item cpy" data-clipboard-text="{{route('register',['ref'=>$user->username])}}">
+                                                <span class="dropdown-item cpy" data-clipboard-text="{{ route('mobile.register',['ref'=>$user->username]) }}">
                                                     <i class="bx bx-copy-alt"></i>
                                                     Copy Referral Link
                                                 </span>
@@ -353,5 +353,6 @@
         @include('dashboard.common.components.modals')
         <script src="{{asset('requests/dashboard/account_funding.js')}}"></script>
         <script src="{{asset('requests/dashboard/tutor/settings.js')}}"></script>
+
     @endpush
 @endsection

@@ -34,27 +34,65 @@
                 }
             }
         </style>
+        <style>
+            /* Ensure the parent container does not overflow */
+            .scrollable-table-container {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                display: block;
+                position: relative;
+            }
+
+            /* Control the table width */
+            .scrollable-table-container table {
+                width: max-content;
+                min-width: 100%;
+                border-collapse: collapse;
+            }
+
+            /* Prevent the table from affecting page layout */
+            .scrollable-table-container th,
+            .scrollable-table-container td {
+                white-space: nowrap;
+                padding: 10px;
+            }
+
+            /* Optional: Smooth scrollbar styling */
+            .scrollable-table-container::-webkit-scrollbar {
+                height: 8px;
+            }
+
+            .scrollable-table-container::-webkit-scrollbar-thumb {
+                background-color: #ccc;
+                border-radius: 10px;
+            }
+
+            .scrollable-table-container::-webkit-scrollbar-track {
+                background-color: #f1f1f1;
+            }
+
+        </style>
     @endpush
 
 
     <div class="container-fluid mt-5">
 
         {{-- Bank Information Card --}}
-        <livewire:mobile.users.payments.settlement-account-details :bank="$bank"/>
-
-        {{-- Actions Card --}}
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">Actions</h5>
-            </div>
-            <div class="card-body">
-                <livewire:mobile.users.payments.settlement-account-actions :bank="$bank"/>
-            </div>
+        <div class="mb-3">
+            <livewire:mobile.users.payments.settlement-account-details :bank="$bank" lazy/>
         </div>
 
+        {{-- Actions Card --}}
+        <div class="mb-3">
+            <livewire:mobile.users.payments.settlement-account-actions :bank="$bank" lazy/>
+        </div>
 
         {{-- Transactions Card --}}
-        <livewire:mobile.users.payments.settlement-account-transactions :bankId="$bank->reference"/>
+        <div class="mb-3">
+            <livewire:mobile.users.payments.settlement-account-transactions :bankId="$bank->reference" lazy/>
+        </div>
 
     </div>
 

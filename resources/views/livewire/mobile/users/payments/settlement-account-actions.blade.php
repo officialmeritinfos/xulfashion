@@ -1,36 +1,44 @@
 <div>
-    @include('notifications')
-    {{-- Scrollable Actions --}}
-    <div class="scrollable-actions d-flex gap-3">
-        <div>
-            <div wire:loading wire:target="deactivateAccount, activateAccount,makePrimary,deleteAccount" class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+    <div class="card shadow-sm border-0 mb-4" >
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Actions</h5>
         </div>
-        @if($bank->status == 1)
-            <button wire:click="deactivateAccount" class="btn btn-warning">
-                <i class="fa fa-ban"></i> Deactivate
-            </button>
-        @else
-            <button wire:click="activateAccount" class="btn btn-success">
-                <i class="fa fa-check"></i> Activate
-            </button>
-        @endif
+        <div class="card-body">
+            @include('notifications')
+            {{-- Scrollable Actions --}}
+            <div class="scrollable-actions d-flex gap-3">
+                <div>
+                    <div wire:loading wire:target="deactivateAccount, activateAccount,makePrimary,deleteAccount" class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                @if($bank->status == 1)
+                    <button wire:click="deactivateAccount" class="btn btn-warning">
+                        <i class="fa fa-ban"></i> Deactivate
+                    </button>
+                @else
+                    <button wire:click="activateAccount" class="btn btn-success">
+                        <i class="fa fa-check"></i> Activate
+                    </button>
+                @endif
 
-        @if($bank->isPrimary != 1)
-            <button wire:click="makePrimary" class="btn btn-info">
-                <i class="fa fa-check-circle"></i> Make Primary
-            </button>
-        @endif
+                @if($bank->isPrimary != 1)
+                    <button wire:click="makePrimary" class="btn btn-info">
+                        <i class="fa fa-check-circle"></i> Make Primary
+                    </button>
+                @endif
 
-        <button data-bs-toggle="modal" data-bs-target="#withdrawModal" class="btn btn-primary">
-            <i class="fa fa-wallet"></i> Withdraw
-        </button>
+                <button data-bs-toggle="modal" data-bs-target="#withdrawModal" class="btn btn-primary">
+                    <i class="fa fa-wallet"></i> Withdraw
+                </button>
 
-        <button wire:click="deleteAccount" class="btn btn-danger">
-            <i class="fa fa-trash"></i> Delete
-        </button>
+                <button wire:click="deleteAccount" class="btn btn-danger">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
 
+            </div>
+
+        </div>
     </div>
 
     {{-- Withdrawal Modal --}}

@@ -33,7 +33,7 @@
         <div class="card-body">
 
             @if($transactions->count())
-                <div class="scrollable-actions">
+                <div class="scrollable-table-container">
                     <table class="table table-striped">
                         <thead>
                         <tr>

@@ -101,7 +101,8 @@ class SettleEventPaymentsToMerchantBalance extends Command
                                 'transactionType' => 11,
                                 'amount' => $amount,
                                 'currency' => $user->mainCurrency,
-                                'status' => 1
+                                'status' => 1,
+                                'newBalance' => $user->accountBalance
                             ]);
                             Mail::to($user->email)->send(new EventBalanceSettledMail(
                                 $user,

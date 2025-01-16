@@ -19,10 +19,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Stevebauman\Location\Facades\Location;
 
 class Register extends BaseController
 {
@@ -32,6 +34,15 @@ class Register extends BaseController
     {
         if ($request->has('ref')){
             Cookie::queue('ref',$request->get('ref'),30 * 24 * 60 * 60);
+        }
+
+        if (!Cookie::has('hasAdsCountry')){
+            $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
+            $country = Country::where('iso2',$position->countryCode)->first();
+            Cookie::queue('hasAdsCountry',$country->iso3,7 * 24 * 60 * 60);
+            $countryIso = $country->iso3;
+        }else{
+            $countryIso = Cookie::get('hasAdsCountry');
         }
         $web = GeneralSetting::find(1);
 
@@ -46,6 +57,7 @@ class Register extends BaseController
     //process form
     public function processRegistration(Request $request)
     {
+        DB::beginTransaction();
         try {
             $web = GeneralSetting::find(1);
             $user = Auth::user();
@@ -121,7 +133,7 @@ class Register extends BaseController
                     $urlTo =route('mobile.email-verification');
                     $message = 'A code has been sent to your email. Verify your email to proceed.';
                 }
-
+                DB::commit();
                 return $this->sendResponse([
                     'redirectTo'=>$urlTo
                 ],$message);
@@ -129,6 +141,7 @@ class Register extends BaseController
             return $this->sendError('account.error',['error'=>'Something went wrong']);
 
         }catch (\Exception $exception){
+            DB::rollBack();
             Log::alert($exception->getMessage().' on line '.$exception->getLine().' on file '.$exception->getFile());
             return $this->sendError('account.error',['error'=>'Internal Server error.']);
         }
