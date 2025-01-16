@@ -98,4 +98,15 @@
 
     </div>
 
+    @push('js')
+        <script>
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(function() {
+                    toastr.success('Transaction reference copied to clipboard!');
+                }, function(err) {
+                    console.error('Could not copy text: ', err);
+                });
+            }
+        </script>
+    @endpush
 @endsection

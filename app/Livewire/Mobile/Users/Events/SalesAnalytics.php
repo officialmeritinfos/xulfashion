@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserEvent;
 use App\Models\UserEventPurchase;
 use App\Models\UserEventSettlement;
+use App\Models\UserWithdrawal;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -23,6 +24,8 @@ class SalesAnalytics extends Component
     public $search;
     #[Url]
     public $perPage=5;
+
+    public $settlementDetail = null;
 
     public function mount(User $user, UserEvent $event)
     {
@@ -104,5 +107,11 @@ class SalesAnalytics extends Component
             'purchases' => $purchases,
             'settlements' => $settlements
         ]);
+    }
+    public function viewDetails($reference)
+    {
+        $this->settlementDetail = UserEventSettlement::where('reference', $reference)
+            ->where('user', $this->user->id)
+            ->first();
     }
 }

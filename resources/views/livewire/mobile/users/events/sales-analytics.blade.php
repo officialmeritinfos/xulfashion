@@ -213,9 +213,8 @@
 
                                     </td>
                                     <td>
-                                        <a href="">
-                                            <i class="fa fa-arrow-circle-o-right"></i>
-                                        </a>
+                                        <i class="fa fa-arrow-circle-o-right" wire:click="viewDetails('{{ $settlement->reference }}')"
+                                           data-bs-toggle="offcanvas" data-bs-target="#settlementCanvas"></i>
                                     </td>
                                 </tr>
                             @endforeach
@@ -230,9 +229,90 @@
 
                     </div>
                 @else
-                    <p>No settlement transactions found for this eventt.</p>
+                    <p>No settlement transactions found for this event.</p>
                 @endif
 
+            </div>
+        </div>
+    </div>
+
+    <!-- Offcanvas for Withdrawal Details -->
+    <div wire:ignore.self class="offcanvas offcanvas-end" tabindex="-1" id="settlementCanvas" aria-labelledby="settlementDetails">
+        <div class="offcanvas-header bg-dark text-white">
+            <h5 id="withdrawalDetailsLabel">Settlement Details</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            @if($settlementDetail)
+                <!-- Transaction Details Card -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Transaction Summary</h5>
+                        <span class="badge {{ $settlementDetail->payoutStatus == 1 ? 'bg-success' : ($settlementDetail->payoutStatus == 2 ? 'bg-warning' : 'bg-danger') }}">
+                    @switch($settlementDetail->payoutStatus)
+                                @case(1)
+                                    Completed
+                                    @break
+                                @case(2)
+                                    Pending
+                                    @break
+                                @default
+                                    Cancelled
+                                    @break
+                            @endswitch
+                </span>
+                    </div>
+                    <div class="card-body">
+                        <!-- Transaction Reference -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="text-muted mb-1"><i class="fa fa-hashtag me-2"></i>Transaction Reference</h6>
+                                <p class="fw-bold text-muted mb-0">{{ $settlementDetail->reference }}</p>
+                            </div>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="copyToClipboard('{{ $settlementDetail->reference }}')">
+                                <i class="fa fa-copy"></i> Copy
+                            </button>
+                        </div>
+
+                        <!-- Amount -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="text-muted mb-1"><i class="fa fa-wallet me-2"></i>Amount</h6>
+                                <p class="fw-bold text-muted mb-0">{{ $settlementDetail->currency }}{{ number_format($settlementDetail->amount, 2) }}</p>
+                            </div>
+                            <div>
+                                <h6 class="text-muted mb-1"><i class="fa fa-exchange-alt me-2"></i>Amount You Received</h6>
+                                <p class="fw-bold text-muted mb-0">{{ $settlementDetail->toCurrency }}{{ number_format($settlementDetail->convertedAmount, 2) }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-1"><i class="fa fa-calendar-alt me-2"></i>Date of Transaction</h6>
+                            <p class="fw-bold text-muted mb-0">{{ date('D, d M Y H:i:s', strtotime($settlementDetail->created_at)) }}</p>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="text-center mt-4">
+                    <span class="badge py-2 px-3 {{ $settlementDetail->status == 1 ? 'bg-success' : ($settlementDetail->status == 2 ? 'bg-warning' : 'bg-danger') }}">
+                        @switch($settlementDetail->status)
+                            @case(1)
+                                <i class="fa fa-check-circle me-1"></i> Completed
+                                @break
+                            @case(2)
+                                <i class="fa fa-clock me-1"></i> Pending
+                                @break
+                            @default
+                                <i class="fa fa-times-circle me-1"></i> Cancelled
+                                @break
+                        @endswitch
+                    </span>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            <div wire:loading>
+                <p>Loading details...</p>
             </div>
         </div>
     </div>
