@@ -15,7 +15,7 @@ use App\Http\Controllers\Storefront\User\TicketController;
 
 /*==============================MERCHANT STORE =====================================*/
 
-Route::domain('{subdomain}.xulstore.com')->group(function () {
+Route::domain('{subdomain}.localhost')->group(function () {
     Route::middleware(['applyTheme','extend.session'])->group(function (){
         //landing page
         Route::get('/', [Home::class,'landingPage'])->name('merchant.store');//landing page

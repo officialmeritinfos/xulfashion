@@ -23,7 +23,7 @@
             </div>
 
             <div class="latest-transaction-area">
-                <div class="table-responsive" data-simplebar>
+                <div class="table-responsive" >
                     <table class="table align-middle mb-0">
                         <thead>
                         <tr>
