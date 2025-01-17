@@ -16,4 +16,8 @@ class UserStoreOrderBreakdown extends Model
     {
         return $this->belongsTo(UserStoreProduct::class,'product');
     }
+    public function products()
+    {
+        return $this->belongsTo(UserStoreProduct::class, 'product', 'id');
+    }
 }

@@ -74,7 +74,7 @@ class KYB extends BaseController
             $input = $validator->validated();
 
 
-            $reference = $this->generateUniqueReference('user_store_verifications','reference',16);
+            $reference = $this->generateUniqueReference('user_store_verifications','reference',8);
 
             if ($user->isVerified==2){
                 $this->sendError('kyb.error',['error'=>'Please submit your account verification first before submitting Store KYC']);

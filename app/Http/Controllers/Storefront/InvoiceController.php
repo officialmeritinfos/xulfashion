@@ -122,7 +122,7 @@ class InvoiceController extends BaseController
                     $amountCredit = $amountPaid-$totalCharge;
 
                     if ($store->isVerified!=1){
-                        $newBalance = bcadd($merchant->pendingBalance,$amountCredit,5);
+                        $newBalance = bcadd($merchant->pendingBalanceStore,$amountCredit,5);
                         $merchant->pendingBalance= bcadd($merchant->pendingBalance,$amountCredit,5);
                         $merchant->pendingBalanceStore= bcadd($merchant->pendingBalanceStore,$amountCredit,5);
                     }else{

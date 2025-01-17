@@ -1,4 +1,6 @@
 @inject('injected','App\Custom\Regular')
+
+@if(!checkIfAccessorIsMobile())
 <ul class="navbar-nav ms-auto mb-lg-0">
     @if(!checkIfAccessorIsMobile())
         <li class="nav-item">
@@ -7,6 +9,7 @@
         </span>
         </li>
     @endif
+
     <li class="nav-item">
         <span href="#" class="nav-link" id="theme-switcher">
             <i id="theme-icon" class="ri-moon-line"></i>
@@ -130,5 +133,6 @@
         </div>
     </li>
 
-
 </ul>
+
+@endif

@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 
-class StaffCustomNotification extends Notification
+class StaffCustomNotification extends Notification implements ShouldQueue
 {
     use Queueable;
     public $user;

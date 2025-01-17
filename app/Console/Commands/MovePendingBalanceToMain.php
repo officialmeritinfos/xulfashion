@@ -53,6 +53,7 @@ class MovePendingBalanceToMain extends Command
                         $user->pendingBalance = bcsub($user->pendingBalance,$user->pendingBalanceStore,5);
 
                         $user->pendingBalanceStore = bcsub($user->pendingBalanceStore,$user->pendingBalanceStore,5);
+                        $user->pendingBalance = bcsub($user->pendingBalance, $user->pendingBalanceStore,5);
 
 
 

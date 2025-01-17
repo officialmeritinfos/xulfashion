@@ -69,13 +69,13 @@ class InvoiceController extends BaseController
             }
 
             $input = $validator->validated();
-            $reference = $this->generateUniqueReference('user_store_invoices','reference',5);
+            $reference = $this->generateUniqueReference('user_store_invoices','reference',6);
 
             //check if customer exists or create profile
             $customer = UserStoreCustomer::firstOrCreate([
                 'store'=>$store->id,'phone'=>$input['phone']
             ],[
-                'name'=>$input['name'],'reference'=>$this->generateUniqueReference('user_store_customers','reference'),
+                'name'=>$input['name'],'reference'=>$this->generateUniqueReference('user_store_customers','reference',6),
                 'email'=>$input['email'],'status'=>1
             ]);
 

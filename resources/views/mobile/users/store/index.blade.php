@@ -65,7 +65,84 @@
     </div>
 
 @else
+    @push('css')
+        <!-- Custom Styles -->
+        <style>
+            .dashboard-card {
+                border: none;
+                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            }
 
+            .dashboard-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            }
+
+            .icon-large {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+
+            .btn {
+                padding: 10px 25px;
+                font-size: 14px;
+            }
+
+            .btn-auto {
+                width: auto;
+                padding: 10px 30px;
+            }
+        </style>
+        <style>
+            /* Ensure the parent container does not overflow */
+            .scrollable-table-container {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                display: block;
+                position: relative;
+            }
+
+            /* Control the table width */
+            .scrollable-table-container table {
+                width: max-content;
+                min-width: 100%;
+                border-collapse: collapse;
+            }
+
+            /* Prevent the table from affecting page layout */
+            .scrollable-table-container th,
+            .scrollable-table-container td {
+                white-space: nowrap;
+                padding: 10px;
+            }
+
+            /* Optional: Smooth scrollbar styling */
+            .scrollable-table-container::-webkit-scrollbar {
+                height: 8px;
+            }
+
+            .scrollable-table-container::-webkit-scrollbar-thumb {
+                background-color: #ccc;
+                border-radius: 10px;
+            }
+
+            .scrollable-table-container::-webkit-scrollbar-track {
+                background-color: #f1f1f1;
+            }
+
+        </style>
+    @endpush
+    <div class="container-fluid">
+        <div class="mb-2">
+            <livewire:mobile.users.store.components.business-data :store="$store" lazy/>
+        </div>
+        <div class="mb-4">
+            <livewire:mobile.users.store.components.business-actions lazy/>
+        </div>
+
+    </div>
 @endif
 
 @endsection

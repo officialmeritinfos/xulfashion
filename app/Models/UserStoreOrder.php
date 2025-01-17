@@ -17,5 +17,9 @@ class UserStoreOrder extends Model
         return $this->hasMany(UserStoreOrderBreakdown::class,'orderId');
     }
 
+    public function customers()
+    {
+        return $this->belongsTo(UserStoreCustomer::class, 'customer', 'id');
+    }
 
 }
