@@ -14,4 +14,12 @@ class UserStoreCustomer extends Authenticatable
     protected $guarded=[];
 
     protected $guard_name = 'customers';
+
+    /**
+     * Define the relationship: A customer can have many invoices.
+     */
+    public function invoices()
+    {
+        return $this->hasMany(UserStoreInvoice::class, 'customer');
+    }
 }

@@ -31,4 +31,11 @@ class UserStoreInvoice extends Model
             get: fn ($value) =>explode(',', $value),
         );
     }
+    /**
+     * Define the relationship: An invoice belongs to a customer.
+     */
+    public function customers()
+    {
+        return $this->belongsTo(UserStoreCustomer::class, 'customer');
+    }
 }

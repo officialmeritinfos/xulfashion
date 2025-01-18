@@ -195,7 +195,7 @@
                             <i class="fa fa-download"></i> Download Invoice
                         </a>
                         @if($invoice->paymentStatus!=1)
-                            <button type="button" class="btn btn-lg btn-primary submit"
+                            <button type="button" class="btn btn-lg btn-success submit"
                                     data-url="{{route('merchant.store.invoice.pay',['subdomain'=>$subdomain,'id'=>$invoice->reference])}}">
                                 <i class="fa fa-credit-card"></i> Make Payment
                             </button>

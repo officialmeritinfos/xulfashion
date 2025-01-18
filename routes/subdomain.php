@@ -38,6 +38,7 @@ Route::domain('{subdomain}.localhost')->group(function () {
             ->name('merchant.store.invoice.detail');//invoice page
         Route::post('/invoice/{id}/pay',[InvoiceController::class,'makePayment'])
             ->name('merchant.store.invoice.pay');//make payment for invoice
+
         Route::get('invoice/payment/{id}/process',[InvoiceController::class,'processInvoiceOrderPayment'])
             ->name('merchant.store.invoice.payment.process');//callback for processing payment
 

@@ -4,7 +4,10 @@ namespace App\Custom;
 
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
+use App\Models\UserStore;
 use App\Models\UserStoreCustomer;
+use App\Models\UserStoreInvoice;
+use App\Services\Payments\NombaGateway;
 use Illuminate\Support\Facades\Log;
 
 class PaymentProcessing
@@ -17,37 +20,32 @@ class PaymentProcessing
 
         switch ($order->currency){
             case 'NGN':
-                //use paystack
-                $data = [
-                    'amount'=>$order->totalAmountToPay*$fiat->subUnit,
+                //use Nomba
+                $gateWay = new NombaGateway();
+                $response = $gateWay->initializePayment([
+                    'amount'=>$order->amount,
                     'email'=>$customer->email??$web->email,
                     'reference'=>$order->paymentReference,
                     'callback_url'=>route('merchant.store.checkout.order.payment.process',['subdomain'=>$store->slug,'id'=>$order->reference]),
-                    'channels'=>["bank","ussd", "qr", "mobile_money", "bank_transfer"]
-                ];
-                $gateWay = new Paystack();
-                $response = $gateWay->initializeTransaction($data);
+                    'currency'=>$order->currency
+                ],[]);
                 //check if response is okay
-                if ($response->ok()){
-                    $res = $response->json();
+                if ($response['status']){
                     $result = [
                         'result'=>true,
-                        'url'=>$res['data']['authorization_url'],
-                        'reference'=>$res['data']['reference']
+                        'url'=>$response['data']['payment_url'],
+                        'reference'=>$response['data']['orderReference']
                     ];
                 }else{
-                    Log::info($response->body());
+                    logger($response);
                     $result = [
                         'result'=>false,
                         'message'=>'Unable to process your order. Redirecting your to the invoice page to use another method'
                     ];
                 }
                 break;
-            case 'GHS':
-                //use paystack but different data
-                break;
             default:
-                //use stripe
+                //use flutterwave
                 break;
         }
 
@@ -58,8 +56,9 @@ class PaymentProcessing
     {
         switch ($order->currency) {
             case 'NGN':
-                $gateWay = new Paystack();
-                $response = $gateWay->verifyTransaction($reference);
+                $gateWay = new NombaGateway();
+                $response = $gateWay->verifyPayment($reference);
+
                 //check if response is okay
                 if ($response->ok()){
                     $res = $response->json();
@@ -82,41 +81,37 @@ class PaymentProcessing
         return $result;
     }
     //initiate invoice payment
-    public function initiateInvoicePayment($order,$store,$web)
+    public function initiateInvoicePayment(UserStoreInvoice $order,UserStore $store,GeneralSetting $web)
     {
         $customer = UserStoreCustomer::where('id',$order->customer)->first();
         $fiat = Fiat::where('code',$order->currency)->first();
 
         switch ($order->currency){
             case 'NGN':
-                //use paystack
-                $data = [
-                    'amount'=>$order->amount*$fiat->subUnit,
+                //use Nomba
+                $gateWay = new NombaGateway();
+                $response = $gateWay->initializePayment([
+                    'amount'=>$order->amount,
                     'email'=>$customer->email??$web->email,
                     'reference'=>$order->paymentReference,
                     'callback_url'=>route('merchant.store.invoice.payment.process',['subdomain'=>$store->slug,'id'=>$order->reference]),
-                    'channels'=>["bank","ussd", "qr", "mobile_money", "bank_transfer"]
-                ];
-                $gateWay = new Paystack();
-                $response = $gateWay->initializeTransaction($data);
+                    'currency'=>$order->currency
+                ],[]);
                 //check if response is okay
-                if ($response->ok()){
-                    $res = $response->json();
+                if ($response['status']){
                     $result = [
                         'result'=>true,
-                        'url'=>$res['data']['authorization_url'],
-                        'reference'=>$res['data']['reference']
+                        'url'=>$response['data']['payment_url'],
+                        'reference'=>$response['data']['orderReference']
                     ];
                 }else{
-                    Log::info($response->body());
+                    logger($response);
                     $result = [
                         'result'=>false,
-                        'message'=>'Unable to process your order.'
+                        'message'=>'Unable to process your order. Redirecting your to the invoice page to use another method'
                     ];
                 }
-                break;
-            case 'GHS':
-                //use paystack but different data
+
                 break;
             default:
                 //use stripe

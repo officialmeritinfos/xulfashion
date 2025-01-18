@@ -53,7 +53,7 @@
 <body>
 <div class="container">
     <div class="header">
-        <img src="{{ asset('images/logo.png') }}" alt="Company Logo">
+        <img src="{{ asset($web->logo) }}" alt="Company Logo">
         <h2>Invoice Payment Received</h2>
     </div>
 

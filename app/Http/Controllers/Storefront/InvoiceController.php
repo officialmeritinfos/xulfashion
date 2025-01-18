@@ -6,6 +6,7 @@ use App\Custom\PaymentProcessing;
 use App\Custom\Regular;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Mail\InvoicePaymentReceived;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\Transaction;
@@ -14,6 +15,9 @@ use App\Models\UserStore;
 use App\Models\UserStoreCustomer;
 use App\Models\UserStoreInvoice;
 use App\Notifications\CustomNotificationMail;
+use App\Services\Payments\FlutterwaveGateway;
+use App\Services\Payments\NombaGateway;
+use App\Services\Payments\PaystackGateway;
 use App\Traits\Helpers;
 use App\Traits\Themes;
 use Illuminate\Http\Request;
@@ -25,12 +29,17 @@ use Mockery\Exception;
 class InvoiceController extends BaseController
 {
     use Helpers,Themes;
-    public $payment,$regular;
+    protected PaymentProcessing $payment;
+    protected Regular $regular;
+    protected NombaGateway $nombaGateway;
+    protected FlutterwaveGateway $flutterwaveGateway;
 
-    public function __construct()
+    public function __construct(NombaGateway $nombaGateway, FlutterwaveGateway $flutterwaveGateway, PaymentProcessing $payment, Regular $regular)
     {
-        $this->payment=new PaymentProcessing();
-        $this->regular = new Regular();
+        $this->nombaGateway = $nombaGateway;
+        $this->flutterwaveGateway = $flutterwaveGateway;
+        $this->payment= $payment;
+        $this->regular = $regular;
     }
 
     //landing page
@@ -47,6 +56,12 @@ class InvoiceController extends BaseController
             abort(404);
         }
 
+        // Check if Nomba Gateway is available
+        if (!$this->nombaGateway->accessToken) {
+            Log::warning('Nomba gateway is unavailable. Showing limited features.');
+            session()->flash('error', 'Payment processing is temporarily unavailable. Please try again later.');
+        }
+
         return view('storefront.invoice',[
             'store'=>$store,
             'invoice'=>$invoice,
@@ -60,127 +75,160 @@ class InvoiceController extends BaseController
             'fiat'    =>Fiat::where('code',$invoice->currency)->orWhere('code','USD')->first()
         ]);
     }
-    //make payment
-    public function makePayment($subdomain,$orderRef)
+    /**
+     * Initiates payment for a store invoice using the appropriate payment gateway.
+     *
+     * @param string $subdomain  The store's subdomain.
+     * @param string $orderRef   The invoice reference number.
+     * @return \Illuminate\Http\JsonResponse  Payment URL or error response.
+     */
+    public function makePayment(string $subdomain, string $orderRef)
     {
-        $web = GeneralSetting::find(1);
-        $store = UserStore::where('slug',$subdomain)->firstOrFail();
-        $order = UserStoreInvoice::where([
-            'store'=>$store->id,'reference'=>$orderRef,
-        ])->first();
-
         try {
-            $invoiceUrl = route('merchant.store.invoice.detail',['subdomain'=>$subdomain,'id'=>$orderRef]);
+            // Retrieve general settings, store, and invoice details
+            $settings = GeneralSetting::find(1);
+            $store = UserStore::where('slug', $subdomain)->firstOrFail();
+            $order = UserStoreInvoice::where([
+                'store' => $store->id,
+                'reference' => $orderRef,
+            ])->with('customers')->firstOrFail();
 
-            $payment = $this->payment->initiateInvoicePayment($order,$store,$web);
-            if ($payment['result']){
-                $url=$payment['url'];
-                $order->channelPaymentReference = $payment['reference'];
-                $order->save();
-                $message = "Redirecting to payment processor";
-            }else{
-                $url=$invoiceUrl;
-                $message = $payment['message'];
+            // Generate unique payment reference and save it
+            $paymentReference = $this->generateUniqueReference('user_store_invoices', 'paymentReference', 7);
+            $order->paymentReference = $paymentReference;
+
+            $order->save();
+
+            // Select the payment gateway based on currency
+            $paymentGateway = $this->selectPaymentGateway($order->currency);
+
+            // Prepare payment data for gateway initialization
+            $paymentData = [
+                'amount'       => $order->amount,
+                'email'        => $order->customers->email ?? $settings->email,
+                'reference'    => $paymentReference,
+                'callback_url' => route('merchant.store.invoice.payment.process', [
+                    'subdomain' => $store->slug,
+                    'id' => $order->reference
+                ]),
+                'currency'     => $order->currency
+            ];
+
+            // Initialize payment with card payment channel
+            $paymentResponse = $paymentGateway->initializePayment($paymentData, [
+                'channels' => ['card'],
+            ]);
+
+            // Handle payment initialization failure
+            if (!$paymentResponse['status']) {
+
+                logger( $paymentResponse);
+                return $this->sendError('invoice.checkout.error', [
+                    'error' => 'An error occurred while initiating payment for invoice ' . $orderRef . '.'
+                ]);
             }
+
+            // Save the payment gateway reference and redirect URL
+            $order->channelPaymentReference = $paymentResponse['data']['orderReference'];
+            $order->save();
+
+            // Return payment URL for redirection
             return $this->sendResponse([
-                'redirectTo'=>$url
-            ],$message);
-        }catch (\Exception $exception){
-            Log::info('An error occurred while initiating payment for order '.$orderRef.' with error '.$exception->getMessage().' on line '.$exception->getLine().' in file '.$exception->getFile());
+                'redirectTo' => $paymentResponse['data']['payment_url'],
+            ], 'Payment initiated - redirecting to checkout page');
+
+        } catch (\Exception $exception) {
+            // Log error and return user-friendly error response
+            Log::error("Payment initiation failed for order {$orderRef}: {$exception->getMessage()} on line {$exception->getLine()}");
+            return $this->sendError('invoice.checkout.error', [
+                'error' => 'An error occurred while initiating payment for invoice ' . $orderRef . '.'
+            ]);
         }
     }
+
     //process invoice order payment
     public function processInvoiceOrderPayment(Request $request,$subdomain,$orderRef)
     {
-        $transRef = $request->get('trxref');
+        $transRef = $request->get('tx_ref')??$request->get('orderReference')??null;
+        $paymentId = $request->get('transaction_id')??$request->get('orderId')??null;
+
         $store = UserStore::where('slug',$subdomain)->firstOrFail();
         $order = UserStoreInvoice::where([
             'store'=>$store->id,'reference'=>$orderRef,
-            'channelPaymentReference'=>$transRef
-        ])->first();
-        $customer = UserStoreCustomer::where('id',$order->customer)->first();
+        ])->with('customers')->firstOrFail();
+        $customer =$order->customers;
+
         $merchant = User::where('id',$store->user)->first();
         $web = GeneralSetting::find(1);
 
+        $order->update([
+            'channelPaymentReference' => $order->paymentReference,
+            'channelPaymentId' => $paymentId
+        ]);
+        $order->refresh();
+        $invoiceUrl = route('merchant.store.invoice.detail',['subdomain'=>$subdomain,'id'=>$orderRef]);
+
         try {
             DB::beginTransaction();
-            $invoiceUrl = route('merchant.store.invoice.detail',['subdomain'=>$subdomain,'id'=>$orderRef]);
             $fiat = Fiat::where('code',$order->currency)->first();
-            $response = $this->payment->verifyOrderPayment($order,$transRef);
-            if ($response['result']){
-                $data = $response['data']['data'];
-                //if payment was successful
-                if ($data['status']=='success'){
-                    //payment was completed
-                    $transId = $data['id'];
-                    $channelPaymentReference=$data['reference'];
-                    $amountPaidSubUnit = $data['amount'];
-                    $feesUnit = $data['fees'];
-                    $amountPaid = $amountPaidSubUnit/$fiat->subUnit;
-                    $fees = $feesUnit/$fiat->subUnit;
-                    $totalCharge = $this->regular->calculateChargeOnAmount($amountPaid,$order->currency);
-                    $amountCredit = $amountPaid-$totalCharge;
 
-                    if ($store->isVerified!=1){
-                        $newBalance = bcadd($merchant->pendingBalanceStore,$amountCredit,5);
-                        $merchant->pendingBalance= bcadd($merchant->pendingBalance,$amountCredit,5);
-                        $merchant->pendingBalanceStore= bcadd($merchant->pendingBalanceStore,$amountCredit,5);
-                    }else{
-                        $newBalance = bcadd($merchant->accountBalance,$amountCredit,5);
-                        $merchant->accountBalance= bcadd($merchant->accountBalance,$amountCredit,5);
+            if ($order->currency==='NGN'){
+                $paymentReference = $order->channelPaymentReference;
+            }else{
+                $paymentReference = $order->channelPaymentId;
+            }
+            // Select the payment gateway based on currency
+            $paymentGateway = $this->selectPaymentGateway($order->currency);
+            $response = $paymentGateway->verifyPayment($paymentReference);
+
+            if ($response['status']) {
+                if ($response['data']['status']){
+                    if ($response['data']['amount'] >= $order->amount) {
+                        $data = $response['data'];
+                        //payment was completed
+                        $transId = $data['id'];
+                        $channelPaymentReference=$data['reference'];
+                        $amountPaid = $data['amount'];
+                        $fees = $data['fees'];
+                        $totalCharge = $this->regular->calculateChargeOnAmount($amountPaid,$order->currency);
+                        $amountCredit = $amountPaid-$totalCharge;
+
+                        if ($store->isVerified!=1){
+                            $newBalance = bcadd($merchant->pendingBalanceStore,$amountCredit,5);
+                            $merchant->pendingBalance= bcadd($merchant->pendingBalance,$amountCredit,5);
+                            $merchant->pendingBalanceStore= bcadd($merchant->pendingBalanceStore,$amountCredit,5);
+                        }else{
+                            $newBalance = bcadd($merchant->accountBalance,$amountCredit,5);
+                            $merchant->accountBalance= bcadd($merchant->accountBalance,$amountCredit,5);
+                        }
+
+                        Transaction::create([
+                            'user'=>$merchant->id,'reference'=>$order->reference,'transactionType'=>5,
+                            'amount'=>$amountCredit,'currency'=>$order->currency,'newBalance'=>$newBalance,
+                            'status'=>1
+                        ]);
+
+                        $dataOrder = [
+                            'paymentMethod'=>ucfirst($data['channel']),
+                            'paymentStatus'=>1,'amountPaid'=>$amountPaid,
+                            'charge'=>$totalCharge,'amountCredit'=>$amountCredit,
+                            'channelPaymentId'=>$transId,'channelPaymentReference'=>$channelPaymentReference,
+                            'datePaid'=>time(),'paymentReference'=>$channelPaymentReference,'processorFee'=>$fees,
+                            'status'=>1
+                        ];
+                        $order->update($dataOrder);
+                        $merchant->save();
+
+                        DB::commit();;
+                        //send mail to merchant
+                        Mail::to($merchant->email)->queue(new InvoicePaymentReceived($merchant, $order,$customer,$amountPaid,$totalCharge,$amountCredit));
+                        return redirect()->to($invoiceUrl)->with('success', "Payment successful.");
                     }
-
-                    Transaction::create([
-                        'user'=>$merchant->id,'reference'=>$order->reference,'transactionType'=>5,
-                        'amount'=>$amountCredit,'currency'=>$order->currency,'newBalance'=>$newBalance,
-                        'status'=>1
-                    ]);
-
-                    $dataOrder = [
-                        'paymentMethod'=>ucfirst($data['channel']),
-                        'paymentStatus'=>1,'amountPaid'=>$amountPaid,
-                        'charge'=>$totalCharge,'amountCredit'=>$amountCredit,
-                        'channelPaymentId'=>$transId,'channelPaymentReference'=>$channelPaymentReference,
-                        'datePaid'=>time(),'paymentReference'=>$channelPaymentReference,'processorFee'=>$fees,
-                        'status'=>1
-                    ];
-                    $order->update($dataOrder);
-                    $merchant->save();
-
-                    DB::commit();;
-                    //Send mail to Merchant & customer
-                    $message = "
-                        We have received the payment for your invoice <b>".$order->reference."</b> from the payer. THe Details are below
-                        <hr/>
-                        <p><b>Invoice Name:</b> ".$order->title."</p>
-                        <p><b>Invoice Reference:</b> ".$order->reference."</p>
-                        <p><b>Payer:</b> ".$customer->name."</p>
-                        <p><b>Invoice Amount:</b> ".$order->currency.number_format($order->amount,2)."</p>
-                        <p><b>Amount Paid:</b> ".$order->currency.number_format($amountPaid,2)."</p>
-                        <p><b>Charge:</b> ".$order->currency.number_format($totalCharge,2)."</p>
-                        <p><b>Credited:</b> ".$order->currency.number_format($amountCredit,2)."</p>
-                        <br/>
-                    ";
-                    $merchant->notify(new CustomNotificationMail($merchant->name,'Invoice Payment received',$message));
-
-                    return redirect()->to($invoiceUrl)->with('success', "Payment successful.");
-                }elseif($data['status']=='failed'||$data['status']=='abandoned'){
-                    $dataOrder = [
-                        'paymentStatus'=>3
-                    ];
-                    $order->update($dataOrder);
-                    DB::commit();;
-                    //Send mail to Merchant & customer
-                    return redirect()->to($invoiceUrl)->with('error', "Payment failed/cancelled.");
                 }else{
-                    //the payment is either pending or ongoing so we return to the invoice page
-                    return redirect()->to($invoiceUrl)->with('info', "No actions detected. Please contact support or retry your payment attempt.");
+                    return redirect()->to($invoiceUrl)->with('info', $response['message']??'Payment not received or transaction was cancelled.');
                 }
             }else{
-                $ticketUrl = route('merchant.store.ticket.new',['subdomain'=>$subdomain,'reference'=>$orderRef]);
-                return redirect()->to($ticketUrl)->with('error','An error occurred while we were processing your payment.
-                Fill up the form below to open a ticket and our support team will be on the way. Use this code in your error reporting
-                '.$response['message']);
+                return redirect()->to($invoiceUrl)->with('error',$response['message'].'. If this persists, contact your merchant about this.');
             }
         }catch (Exception $exception){
             DB::rollBack();
@@ -189,5 +237,10 @@ class InvoiceController extends BaseController
 
             return redirect()->to($ticketUrl)->with('error','An error occurred while we were processing your payment. Fill up the form below to open a ticket and our support team will be on the way.');
         }
+    }
+
+    private function selectPaymentGateway($currency)
+    {
+        return strtoupper($currency) === 'NGN' ? $this->nombaGateway : $this->flutterwaveGateway;
     }
 }

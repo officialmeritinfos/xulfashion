@@ -33,11 +33,12 @@ return [
     'nomba'=>[
         'testSecKey'    =>env('NOMBA_TEST_SECRET_KEY'),
         'testPubKey'    =>env('NOMBA_TEST_CLIENT_KEY'),
+
         'liveSecKey'    =>env('NOMBA_SECRET_KEY'),
         'livePubKey'    =>env('NOMBA_CLIENT_KEY'),
-        'clientId'      =>env('NOMBA_ACCOUNT_ID'),
+
         'accountId'     =>env('NOMBA_ACCOUNT_ID'),
-        'live'          =>false,
-        'url'           =>config('constant.nomba.live')?'https://api.nomba.com/v1/':'https://sandbox.nomba.com/v1/'
+        'live'          =>env('NOMBA_LIVE'),
+        'url'           =>env('NOMBA_LIVE')?'https://api.nomba.com/v1/':'https://sandbox.nomba.com/v1/'
     ]
 ];

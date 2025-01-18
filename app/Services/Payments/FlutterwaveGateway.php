@@ -68,7 +68,7 @@ class FlutterwaveGateway implements PaymentGatewayInterface
         $response = Http::withToken($this->secretKey)
             ->post("{$this->url}payments", $dataToSend);
 
-        return $this->formatResponse($response, ['payment_url' => 'data.link']);
+        return $this->formatResponse($response, ['payment_url' => 'data.link','orderReference'=>'data.orderReference']);
     }
 
     /**
