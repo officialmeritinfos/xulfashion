@@ -144,13 +144,14 @@
                                     loadMoreBtn.text(originalText);
                                 }
                             } else {
-                                $('#product-list').html(`
+                                $('#product-list').append(`
                                     <div class="empty-tab">
-                                        <img class="img-fluid empty-img w-100" src="{{asset('mobile/images/gif/search.gif')}}" alt="empty-search" />
+                                        <img class="img-fluid empty-img w-100" src="{{ asset('mobile/images/gif/search.gif') }}" alt="empty-search" />
                                         <h2>No Events to Show</h2>
-                                        <h5 class="mt-3">No events found. Browse another location perhaps</h5>
+                                        <h5 class="mt-3">No more events found.</h5>
                                     </div>
                                 `);
+
                                 loadMoreBtn.hide(); // Hide load more button
                             }
                         },
