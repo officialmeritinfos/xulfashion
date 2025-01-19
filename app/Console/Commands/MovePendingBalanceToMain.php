@@ -46,16 +46,14 @@ class MovePendingBalanceToMain extends Command
                     $store = UserStore::where('user',$user->id)->first();
                     if (!empty($store) && $user->pendingBalanceStore > 0){
 
-                        $newBalanceMain = bcadd($user->accountBalance,$user->pendingBalanceStore,5);
-                        $user->accountBalance = bcadd($user->accountBalance,$user->pendingBalanceStore,5);
+                        $newBalanceMain = bcadd($user->accountBalance,$user->pendingBalanceStore,2);
+                        $user->accountBalance = bcadd($user->accountBalance,$user->pendingBalanceStore,2);
 
-                        $newBalance = bcsub($user->pendingBalance,$user->pendingBalanceStore,5);
-                        $user->pendingBalance = bcsub($user->pendingBalance,$user->pendingBalanceStore,5);
+                        $newBalance = bcsub($user->pendingBalance,$user->pendingBalanceStore,2);
+                        $user->pendingBalance = bcsub($user->pendingBalance,$user->pendingBalanceStore,2);
 
-                        $user->pendingBalanceStore = bcsub($user->pendingBalanceStore,$user->pendingBalanceStore,5);
-                        $user->pendingBalance = bcsub($user->pendingBalance, $user->pendingBalanceStore,5);
-
-
+                        $user->pendingBalanceStore = bcsub($user->pendingBalanceStore,$user->pendingBalanceStore,2);
+                        $user->pendingBalance = bcsub($user->pendingBalance, $user->pendingBalanceStore,2);
 
                         //check if the store is verified
                         if ($store->isVerified==1) {
