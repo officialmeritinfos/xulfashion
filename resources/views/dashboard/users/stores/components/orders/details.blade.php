@@ -171,12 +171,14 @@
                                     <button class="success-btn" data-bs-toggle="modal"
                                     data-bs-target="#completedOrder">Proceed</button>
                                 </span></li>
-                            <li>Mark As Paid
-                                <span>
+                            @if($order->paymentStatus!=1 && $order->paymentStatus!=3)
+                                <li>Mark As Paid
+                                    <span>
                                     <button class="primary-btn" data-bs-toggle="modal"
                                             data-bs-target="#markPaid">Proceed</button>
                                 </span>
-                            </li>
+                                </li>
+                            @endif
                             <li>Cancel Order
                                 <span>
                                     <button class="danger-btn" data-bs-toggle="modal"

@@ -11,7 +11,7 @@ use App\Models\UserEventPurchase;
 use App\Models\UserEventPurchaseTicket;
 use App\Models\UserEventTicketBuyer;
 use App\Services\Payments\FlutterwaveGateway;
-use App\Services\Payments\PaystackGateway;
+use App\Services\Payments\NombaGateway;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +21,12 @@ use Illuminate\Support\Facades\Validator;
 class EventCheckoutController extends BaseController
 {
     use Helpers;
-    protected PaystackGateway $paystackGateway;
+    protected NombaGateway $nombaGateway;
     protected FlutterwaveGateway $flutterwaveGateway;
 
-    public function __construct(PaystackGateway $paystackGateway, FlutterwaveGateway $flutterwaveGateway)
+    public function __construct(NombaGateway $nombaGateway, FlutterwaveGateway $flutterwaveGateway)
     {
-        $this->paystackGateway = $paystackGateway;
+        $this->nombaGateway = $nombaGateway;
         $this->flutterwaveGateway = $flutterwaveGateway;
     }
     //checkout-landing page
@@ -160,10 +160,7 @@ class EventCheckoutController extends BaseController
                 'reference' => $paymentRef,
                 'callback_url'=>route('mobile.marketplace.events.cart.process.checkout.payment',['event'=>$event->reference,'payment'=>$purchase->reference])
             ],[
-                'channels'=>[$request->payment_method],
-                'metadata'=>[
-                    'cancel_action'=>route('mobile.marketplace.events.cart.process.checkout.payment.cancel',['event'=>$event->reference,'payment'=>$purchase->reference])
-                ]
+                'channels'=>['card'],
             ]);
 
             if (!$paymentResponse['status']) {
@@ -221,6 +218,6 @@ class EventCheckoutController extends BaseController
 
     private function selectPaymentGateway($currency)
     {
-        return strtoupper($currency) === 'NGN' ? $this->paystackGateway : $this->flutterwaveGateway;
+        return strtoupper($currency) === 'NGN' ? $this->nombaGateway : $this->flutterwaveGateway;
     }
 }

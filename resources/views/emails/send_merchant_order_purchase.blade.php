@@ -78,12 +78,14 @@
     </style>
 </head>
 <body>
-
+@inject('injected','App\Custom\Regular')
 <div class="invoice-container">
     <div class="header">
         <img src="{{ asset($store->logo) }}" alt="Logo">
         <h1 class="invoice-title">Invoice #{{$order->reference}}</h1>
         <p>Date: {{date('d M Y', strtotime($order->created_at))}}</p>
+
+        @include('notifications')
     </div>
 
     <table class="customer-details">
@@ -132,7 +134,7 @@
                 @if($order->checkoutType == 1)
                     <span class="badge bg-dark">Completed on WhatsApp</span>
                 @else
-                    <span class="badge bg-dark">{{ $order->paymentMethod ?? 'Online' }}</span>
+                    <span style="color: #0E1C1F;">{{ $order->paymentMethod ?? 'Online' }}</span>
                 @endif
             </td>
         </tr>
@@ -188,13 +190,14 @@
                 <i class="fa fa-print"></i> Print
             </a>
             @if($order->paymentStatus != 1)
-                <a href="{{route('merchant.store.checkout.make.payment', ['subdomain'=>$subdomain, 'id'=>$order->reference])}}" class="btn btn-success">
-                    <i class="fa fa-credit-card"></i> Make Payment
-                </a>
-            @endif
+                    <button
+                        data-url="{{ route('merchant.store.checkout.make.payment', ['subdomain' => $subdomain, 'id' => $order->reference]) }}"
+                        class="btn btn-success make-payment-btn">
+                        <i class="fa fa-credit-card"></i> Make Payment
+                    </button>
+                @endif
         @endif
     </div>
 </div>
-
 </body>
 </html>

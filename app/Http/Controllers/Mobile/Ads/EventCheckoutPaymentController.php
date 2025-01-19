@@ -11,7 +11,7 @@ use App\Models\UserEvent;
 use App\Models\UserEventPurchase;
 use App\Models\UserEventPurchaseTicket;
 use App\Services\Payments\FlutterwaveGateway;
-use App\Services\Payments\PaystackGateway;
+use App\Services\Payments\NombaGateway;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Mail;
 
 class EventCheckoutPaymentController extends BaseController
 {
-    protected PaystackGateway $paystackGateway;
+    protected NombaGateway $NombaGateway;
     protected FlutterwaveGateway $flutterwaveGateway;
 
-    public function __construct(PaystackGateway $paystackGateway, FlutterwaveGateway $flutterwaveGateway)
+    public function __construct(NombaGateway $NombaGateway, FlutterwaveGateway $flutterwaveGateway)
     {
-        $this->paystackGateway = $paystackGateway;
+        $this->NombaGateway = $NombaGateway;
         $this->flutterwaveGateway = $flutterwaveGateway;
     }
 
@@ -43,7 +43,7 @@ class EventCheckoutPaymentController extends BaseController
             'user_id' => $user->id,
         ])->firstOrFail();
 
-        $transactionId = $request->has('transaction_id')?$request->get('transaction_id'):$request->get('trxref');
+        $transactionId = $request->has('transaction_id')?$request->get('transaction_id'):$request->get('orderReference');
 
         return view('mobile.ads.events.checkout.success_page')->with([
             'user' => $user,
@@ -188,6 +188,6 @@ class EventCheckoutPaymentController extends BaseController
 
     private function determineGateway($currency)
     {
-        return strtoupper($currency) === 'NGN' ? $this->paystackGateway : $this->flutterwaveGateway;
+        return strtoupper($currency) === 'NGN' ? $this->NombaGateway : $this->flutterwaveGateway;
     }
 }

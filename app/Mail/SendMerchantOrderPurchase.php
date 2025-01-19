@@ -17,7 +17,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendMerchantOrderPurchase extends Mailable
+class SendMerchantOrderPurchase extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     public mixed $mailData,$title;

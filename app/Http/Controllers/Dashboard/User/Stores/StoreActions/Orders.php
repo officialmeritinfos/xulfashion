@@ -263,12 +263,12 @@ class Orders extends BaseController
                 //owner of store
                 $owner = User::where('id',$store->user)->first();
                 if ($store->isVerified!=1){
-                    $newBalance = bcadd($owner->pendingBalance,$orderExists->amountToCredit,5);
-                    $owner->pendingBalance=bcadd($owner->pendingBalance,$orderExists->amountToCredit,5);
-                    $owner->pendingBalanceStore= bcadd($owner->pendingBalanceStore,$orderExists->amountToCredit,5);
+                    $newBalance = bcadd($owner->pendingBalance,$orderExists->amountToCredit,2);
+                    $owner->pendingBalance=bcadd($owner->pendingBalance,$orderExists->amountToCredit,2);
+                    $owner->pendingBalanceStore= bcadd($owner->pendingBalanceStore,$orderExists->amountToCredit,2);
                 }else{
-                    $newBalance = bcadd($owner->accountBalance,$orderExists->amountToCredit,5);
-                    $owner->accountBalance=bcadd($owner->accountBalance,$orderExists->amountToCredit,5);
+                    $newBalance = bcadd($owner->accountBalance,$orderExists->amountToCredit,2);
+                    $owner->accountBalance=bcadd($owner->accountBalance,$orderExists->amountToCredit,2);
                 }
                 $owner->save();
 

@@ -64,10 +64,12 @@ class BusinessData extends Component
         $statistics = $this->getStatistics();
         $popularProducts = $this->getMostOrderedProducts();
         $recentOrders = $this->getRecentOrders();
+        $invoicePayments = $this->getInvoicePayments();
         return view('livewire.mobile.users.store.components.business-data',[
             'statistics' => $statistics,
             'popularProducts' => $popularProducts,
             'recentOrders' => $recentOrders,
+            'invoicePayments'=>$invoicePayments
         ]);
     }
     // Optimized Statistics Data
@@ -114,6 +116,16 @@ class BusinessData extends Component
         return UserStoreOrder::with('customers')
             ->where('store', $this->store->id)
             ->orderByDesc('id')
+            ->take(10)
+            ->get();
+    }
+    //Optimized Recent Invoice Payments
+    private function getInvoicePayments()
+    {
+        return UserStoreInvoice::with('customers')
+            ->where('store', $this->store->id)
+            ->where('paymentStatus', 1)
+            ->orderBy('id', 'desc')
             ->take(10)
             ->get();
     }

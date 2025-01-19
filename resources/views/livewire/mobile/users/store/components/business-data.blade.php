@@ -68,14 +68,14 @@
                 </div>
                 <div class="card-body scrollable-table-container">
                     @if($popularProducts->count())
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                            <tr>
-                                <th>Image</th>
-                                <th>Product</th>
-                                <th>Quantity Sold</th>
-                                <th>Revenue</th>
-                            </tr>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product</th>
+                                    <th>Quantity Sold</th>
+                                    <th>Revenue</th>
+                                </tr>
                             </thead>
                             <tbody>
                             @foreach($popularProducts as $product)
@@ -105,14 +105,15 @@
                 </div>
                 <div class="card-body scrollable-table-container">
                     @if($recentOrders->count())
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                            <tr>
-                                <th>Reference</th>
-                                <th>Customer</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                            </tr>
+                        <table class="table table-striped">
+                            <thead >
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
                             </thead>
                             <tbody>
                             @foreach($recentOrders as $order)
@@ -121,12 +122,54 @@
                                     <td>{{ $order->customers->name }}</td>
                                     <td>{{ $order->currency }}{{ number_format($order->amount, 2) }}</td>
                                     <td>{{ $order->created_at->format('d M, Y - h:i A') }}</td>
+                                    <td>
+                                        <a href="{{route('user.stores.orders.details',['id'=>$order->reference])}}"><i class="fa fa-arrow-circle-right"></i> </a>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                     @else
                         <p class="text-muted text-center">No recent orders available.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Invoices -->
+        <div class="col-12">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-dark">
+                    <h5 class="mb-0">Recent Invoices(Recent 10)</h5>
+                </div>
+                <div class="card-body scrollable-table-container">
+                    @if($invoicePayments->count())
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($invoicePayments as $invoice)
+                                <tr>
+                                    <td><span class="badge bg-primary">{{ $invoice->reference }}</span></td>
+                                    <td>{{ $invoice->customers->name }}</td>
+                                    <td>{{ $invoice->currency }}{{ number_format($invoice->amount, 2) }}</td>
+                                    <td>{{ $invoice->created_at->format('d M, Y - h:i A') }}</td>
+                                    <td>
+                                        <a href="{{route('user.stores.invoices.details',['id'=>$invoice->reference])}}"><i class="fa fa-arrow-circle-right"></i> </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-muted text-center">No Invoice has been paid recently</p>
                     @endif
                 </div>
             </div>

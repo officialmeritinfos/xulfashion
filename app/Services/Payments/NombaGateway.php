@@ -184,7 +184,7 @@ class NombaGateway implements PaymentGatewayInterface
     {
         $data = [
             'status' => $response->ok() && ($response['code'] == '00' || $response['description'] == 'success'),
-            'message' => $response['message']['message'] ?? '',
+            'message' => $response['description'] ?? '',
             'data' => [],
         ];
 

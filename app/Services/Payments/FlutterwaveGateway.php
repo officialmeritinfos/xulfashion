@@ -118,7 +118,7 @@ class FlutterwaveGateway implements PaymentGatewayInterface
     protected function formatResponse($response, array $fields): array
     {
         $data = [
-            'status' => $response->ok() && ($response['status'] === 'success'),
+            'status' => $response->ok() && ($response['data']['status'] === 'successful'),
             'message' => $response['message'] ?? '',
             'data' => [],
         ];

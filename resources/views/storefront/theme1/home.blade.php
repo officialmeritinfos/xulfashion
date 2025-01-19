@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <img src="{{ $slider->featuredImage}}" class="img-fluid" alt="...">
+                                    <img src="{{ $slider->featuredImage}}" class="img-fluid" alt="..." >
                                 </div>
                             </div>
                         </div>
@@ -91,8 +91,7 @@
         </div>
     </section>
     <!--end carousel-->
-
-
+    @if($featureds->count() > 0 )
     <!--start Featured Products slider-->
     <section class="section-padding">
         <div class="container">
@@ -135,6 +134,7 @@
         </div>
     </section>
     <!--end Featured Products slider-->
+    @endif
 
 
     <!--start tabular product-->

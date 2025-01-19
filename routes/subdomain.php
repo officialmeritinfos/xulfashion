@@ -77,6 +77,7 @@ Route::domain('{subdomain}.localhost')->group(function () {
             ->name('merchant.store.checkout.order.invoice');//checkout invoice
         Route::post('checkout/order/{id}/make/payment',[CheckoutController::class,'makePaymentForOrder'])
             ->name('merchant.store.checkout.make.payment');
+
         //cart page
         Route::get('cart', [CartController::class,'cart'])->name('merchant.store.cart');
         Route::get('cart/cart-preview/cart',[CartController::class,'getCartItemCarts'])

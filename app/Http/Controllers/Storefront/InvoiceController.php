@@ -194,12 +194,12 @@ class InvoiceController extends BaseController
                         $amountCredit = $amountPaid-$totalCharge;
 
                         if ($store->isVerified!=1){
-                            $newBalance = bcadd($merchant->pendingBalanceStore,$amountCredit,5);
-                            $merchant->pendingBalance= bcadd($merchant->pendingBalance,$amountCredit,5);
-                            $merchant->pendingBalanceStore= bcadd($merchant->pendingBalanceStore,$amountCredit,5);
+                            $newBalance = bcadd($merchant->pendingBalanceStore,$amountCredit,2);
+                            $merchant->pendingBalance= bcadd($merchant->pendingBalance,$amountCredit,2);
+                            $merchant->pendingBalanceStore= bcadd($merchant->pendingBalanceStore,$amountCredit,2);
                         }else{
-                            $newBalance = bcadd($merchant->accountBalance,$amountCredit,5);
-                            $merchant->accountBalance= bcadd($merchant->accountBalance,$amountCredit,5);
+                            $newBalance = bcadd($merchant->accountBalance,$amountCredit,2);
+                            $merchant->accountBalance= bcadd($merchant->accountBalance,$amountCredit,2);
                         }
 
                         Transaction::create([
