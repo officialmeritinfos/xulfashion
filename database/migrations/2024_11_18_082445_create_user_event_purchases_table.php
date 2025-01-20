@@ -32,6 +32,7 @@ class CreateUserEventPurchasesTable extends Migration
             $table->string('charge')->nullable();
             $table->string('totalCharge')->nullable();
             $table->string('processorFee')->nullable();
+            $table->text('paymentLink')->nullable();
             $table->integer('paymentStatus')->default(2);
             $table->string('datePaid')->nullable();
             $table->integer('status')->default(1);

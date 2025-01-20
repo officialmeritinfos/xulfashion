@@ -103,7 +103,7 @@
 
     <!-- Content for Reminder -->
     <div class="content">
-        <p>Dear <span class="highlight">[Buyer Name]</span>,</p>
+        <p>Dear <span class="highlight">{{ $buyer->name }}</span>,</p>
         <p>
             We noticed that you started purchasing tickets for <span class="highlight">[Event Name]</span>, but it seems you haven’t completed your payment yet.
         </p>
@@ -112,21 +112,20 @@
         </p>
         <p><strong>Order Details:</strong></p>
         <ul>
-            <li><strong>Event:</strong> [Event Name]</li>
-            <li><strong>Tickets:</strong> [Number of Tickets]</li>
-            <li><strong>Total Amount:</strong> [Total Price]</li>
+            <li><strong>Event:</strong> {{ $event->title }}</li>
+            <li><strong>Tickets:</strong> {{ $purchase->tickets->sum('quantity') }}</li>
+            <li><strong>Total Amount:</strong> {{ currencySign($purchase->purchaseCurrency) }}{{ number_format($purchase->totalPrice) }}</li>
         </ul>
         <p>
             Click the button below to complete your purchase now:
         </p>
-        <a href="[Payment Link]" class="button">Complete Purchase</a>
+        <a href="{{ $purchase->paymentLink }}" class="button">Complete Purchase</a>
         <p>If you have any questions or need assistance, feel free to contact our support team.</p>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        <p>You are receiving this email because you initiated a purchase on <a href="[Platform URL]">[Platform Name]</a>.</p>
-        <p>If you no longer wish to receive these reminders, please <a href="[Unsubscribe Link]">unsubscribe</a>.</p>
+        <p>You are receiving this email because you initiated a purchase on <a href="{{ route('mobile.ads.index') }}">{{ $web->name }}</a>.</p>
     </div>
 </div>
 

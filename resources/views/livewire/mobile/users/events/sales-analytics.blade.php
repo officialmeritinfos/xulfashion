@@ -39,6 +39,7 @@
                             <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Date</th>
                                 <th>Buyer</th>
                                 <th>Reference</th>
                                 <th>Total</th>
@@ -50,6 +51,9 @@
                             @foreach($purchases as $index => $purchase)
                                 <tr>
                                     <td>{{$index+1}}</td>
+                                    <td>
+                                        {{ $purchase->created_at->format('d M Y, h:i A') }}
+                                    </td>
                                     <td>
                                         {{$purchase->users->name}}
                                     </td>
@@ -161,6 +165,7 @@
                                 <th>Account</th>
                                 <th>Amount</th>
                                 <th>Status</th>
+                                <th>Date</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -176,6 +181,9 @@
                                     </td>
                                     <td>
                                         {{currencySign($settlement->currency)}}{{number_format($settlement->amount,2)}}
+                                    </td>
+                                    <td>
+                                        {{ $settlement->created_at->format('d M Y, h:i A') }}
                                     </td>
                                     <td>
                                         @switch($settlement->payoutStatus)

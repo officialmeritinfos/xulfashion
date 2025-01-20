@@ -27,6 +27,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:conclude-events')->everyMinute();
         $schedule->command('app:conclude-recurring-events')->everyMinute();
         $schedule->command('app:send-event-reminders')->everyMinute();
+        $schedule->command('app:return-ticket-if-not-paid')->hourly();
+        $schedule->command('app:send-event-purchase-reminder')->everyTenMinutes();
         $schedule->command('app:settle-event-payments-to-merchant-balance')->everyMinute();
         $schedule->command('queue:retry all')->everyMinute();
         $schedule->command('queue:work --stop-when-empty')->everyMinute();

@@ -173,6 +173,9 @@ class EventCheckoutController extends BaseController
                 ], 400);
             }
             $cart->delete();
+            $purchase->update([
+                'paymentLink' => $paymentResponse['data']['payment_url']
+            ]);
             DB::commit();
 
             return response()->json([

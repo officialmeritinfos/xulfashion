@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Your Purchase</title>
+    <title>Order Cancellation Notification</title>
     <style>
         /* General Styles */
         body {
@@ -24,7 +24,7 @@
         }
 
         .header {
-            background-color: #ffc107;
+            background-color: #ff4d4f;
             color: #fff;
             padding: 20px;
             text-align: center;
@@ -45,7 +45,7 @@
         }
 
         .content .highlight {
-            color: #ffc107;
+            color: #ff4d4f;
             font-weight: bold;
         }
 
@@ -54,7 +54,7 @@
             width: fit-content;
             margin: 20px auto;
             text-align: center;
-            background-color: #ffc107;
+            background-color: #ff4d4f;
             color: #fff;
             text-decoration: none;
             padding: 10px 20px;
@@ -62,7 +62,7 @@
         }
 
         .button:hover {
-            background-color: #e0a800;
+            background-color: #e04344;
         }
 
         .footer {
@@ -74,7 +74,7 @@
         }
 
         .footer a {
-            color: #ffc107;
+            color: #ff4d4f;
             text-decoration: none;
         }
 
@@ -98,35 +98,34 @@
 <div class="container">
     <!-- Header -->
     <div class="header">
-        <h1>Don’t Miss Out on Your Purchase!</h1>
+        <h1>Order Cancellation Notification</h1>
     </div>
 
-    <!-- Content for Reminder -->
+    <!-- Content for Merchants -->
     <div class="content">
-        <p>Dear <span class="highlight">[Buyer Name]</span>,</p>
+        <p>Dear <span class="highlight">{{ $user->name }}</span>,</p>
         <p>
-            We noticed that you started purchasing tickets for <span class="highlight">[Event Name]</span>, but it seems you haven’t completed your payment yet.
+            This is to inform you that an order for your event <span class="highlight">{{ $event->title }}</span> has been cancelled. The order was placed on
+            <span class="highlight">{{ $purchase->created_at->format('d M Y, h:i A') }}</span> but no payment was received within the required 48-hour period.
         </p>
         <p>
-            Your selected tickets are reserved for a limited time. Complete your payment to secure your spot and enjoy the event without any interruptions.
+            Below are the details of the cancelled order:
         </p>
-        <p><strong>Order Details:</strong></p>
         <ul>
-            <li><strong>Event:</strong> [Event Name]</li>
-            <li><strong>Tickets:</strong> [Number of Tickets]</li>
-            <li><strong>Total Amount:</strong> [Total Price]</li>
+            <li><strong>Event:</strong> {{ $event->title }}</li>
+            <li><strong>Buyer Name:</strong> {{ $buyer->name }}</li>
+            <li><strong>Tickets:</strong> {{ $purchase->tickets->sum('quantity') }}</li>
+            <li><strong>Order ID:</strong> {{ $purchase->reference }}</li>
+            <li><strong>Cancellation Date:</strong> {{ date('d M Y, h:i A') }}</li>
         </ul>
-        <p>
-            Click the button below to complete your purchase now:
-        </p>
-        <a href="[Payment Link]" class="button">Complete Purchase</a>
-        <p>If you have any questions or need assistance, feel free to contact our support team.</p>
+        <p>If you have any questions or would like to discuss this cancellation, please contact our support team.</p>
+        <a href="{{ route('mobile.user.help') }}" class="button">Contact Support</a>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        <p>You are receiving this email because you initiated a purchase on <a href="[Platform URL]">[Platform Name]</a>.</p>
-        <p>If you no longer wish to receive these reminders, please <a href="[Unsubscribe Link]">unsubscribe</a>.</p>
+        <p>You are receiving this email because of your recent activity on <a href="{{ route('mobile.ads.index') }}">{{ $web->name }}</a>.</p>
+        <p>If you have any questions, please visit our <a href="{{ route('home.faq') }}">FAQ page</a> or contact our <a href="{{ route('mobile.user.help') }}">support team</a>.</p>
     </div>
 </div>
 
