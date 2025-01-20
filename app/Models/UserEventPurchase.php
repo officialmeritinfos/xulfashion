@@ -80,4 +80,13 @@ class UserEventPurchase extends Model
         return $this->hasMany(UserEventGuest::class, 'purchase');
     }
 
+    /**
+     * Define the relationship with the UserEventTicketBuyer model.
+     * The 'buyer' column holds the ID of the UserEventTicketBuyer.
+     */
+    public function buyers()
+    {
+        return $this->belongsTo(UserEventTicketBuyer::class, 'buyer', 'id');
+    }
+
 }

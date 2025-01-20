@@ -23,7 +23,7 @@
         </style>
     @endpush
 
-        @if($staff->can('update UserAd'))
+        @if($staff->can('update UserEvent'))
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
@@ -248,12 +248,12 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($tickets as $index=>$ticket)
+                                    @foreach($tickets as $ticks =>$ticket)
                                         <tr>
                                             <td>
                                                 <div class="form-check style-check d-flex align-items-center">
                                                     <label class="form-check-label" for="check1">
-                                                        {{$tickets->firstItem()+$index}}
+                                                        {{$ticks+1}}
                                                     </label>
                                                 </div>
                                             </td>
@@ -332,41 +332,63 @@
                                                 </label>
                                             </div>
                                         </th>
-                                        <th scope="col">Ticket</th>
+                                        <th scope="col">Reference</th>
                                         <th scope="col">Buyer</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Type</th>
                                         <th scope="col">Total</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($purchases as $purchase)
+                                    @foreach($purchases as $index => $purchase)
                                         <tr>
                                             <td>
                                                 <div class="form-check style-check d-flex align-items-center">
                                                     <label class="form-check-label" for="check1">
-                                                        {{$tickets->firstItem()+1}}
+                                                        {{$index+1}}
                                                     </label>
                                                 </div>
                                             </td>
-                                            <td>{{$purchase->tickets->name}}</td>
+                                            <td>{{$purchase->reference}}</td>
                                             <td>
                                                 {{$purchase->buyers->name}}
                                             </td>
-                                            <td>{{$purchase->quantity}}</td>
                                             <td>
-                                                @if($purchase->tickets->ticketType==1)
-                                                    Single Ticket
-                                                @else
-                                                    Group Ticket
-                                                @endif
+                                                {{currencySign($purchase->purchaseCurrency)}}{{number_format($purchase->price,2)}}
                                             </td>
                                             <td>
-                                                {{currencySign($purchase->purchaseCurrency)}}{{number_format($purchase->totalPrice,2)}}
+                                                @switch($purchase->paymentStatus)
+                                                    @case(1)
+                                                        <span class="badge bg-success" data-bs-toggle="tooltip" title="completed">
+                                                        <i class="fa fa-check-square"></i>
+                                                    </span>
+                                                        @break
+                                                    @case(2)
+                                                        <span class="badge bg-primary" data-bs-toggle="tooltip" title="pending">
+                                                        <i class="fa fa-info-circle"></i>
+                                                    </span>
+                                                        @break
+                                                    @case(4)
+                                                        <span class="badge bg-info" data-bs-toggle="tooltip" title="processing">
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </span>
+                                                        @break
+                                                    @case(3)
+                                                        <span class="badge bg-warning" data-bs-toggle="tooltip" title="Cancelled">
+                                                        <i class="fa fa-close"></i>
+                                                    </span>
+                                                        @break
+                                                    @case(5)
+                                                        <span class="badge bg-warning" data-bs-toggle="tooltip" title="Cancelled By Compliance">
+                                                        <i class="fa fa-warning"></i>
+                                                    </span>
+                                                        @break
+                                                    @default
+                                                        <span class="badge bg-danger" data-bs-toggle="tooltip" title="Failed">
+                                                        <i class="fa fa-sad-tear"></i>
+                                                    </span>
+                                                        @break
+                                                @endswitch
                                             </td>
-                                            <td></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -434,57 +456,68 @@
                                         <th scope="col">Payout Account</th>
                                         <th scope="col">Amount</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($settlements as $settlement)
+                                    @foreach($settlements as $key =>$settlement)
                                         <tr>
                                             <td>
                                                 <div class="form-check style-check d-flex align-items-center">
                                                     <label class="form-check-label" for="check1">
-                                                        {{$tickets->firstItem()+1}}
+                                                        {{$key+1}}
                                                     </label>
                                                 </div>
                                             </td>
-                                            <td>{{$settlements->firstItem()+1}}</td>
                                             <td>
                                                 {{$settlement->reference}}
                                             </td>
                                             <td>
-                                                <span style="font-size: 12px;">{{$purchase->banks->accountName}} ({{$settlement->banks->bankName}}-{{$settlement->banks->accountNumber}})</span>
+                                                {{ucfirst($settlement->payoutAccount)}}
                                             </td>
                                             <td>
                                                 {{currencySign($settlement->currency)}}{{number_format($settlement->amount,2)}}
                                             </td>
                                             <td>
                                                 @switch($settlement->payoutStatus)
-                                                    @case(1):
-                                                    <span class="badge bg-success">Completed</span>
-                                                    @break
-                                                    @case(2):
-                                                    <span class="badge bg-primary">Pending</span>
-                                                    @break
-                                                    @case(4):
-                                                    <span class="badge bg-info">Processing</span>
-                                                    @break
-                                                    @case(3):
-                                                    <span class="badge bg-warning">Cancelled</span>
-                                                    @break
-                                                    @case(5):
-                                                    <span class="badge bg-warning">Cancelled By Compliance</span>
-                                                    @break
+                                                    @case(1)
+                                                        <span class="badge bg-success" data-bs-toggle="tooltip" title="completed">
+                                                            <i class="fa fa-check-square"></i>
+                                                        </span>
+                                                        @break
+                                                    @case(2)
+                                                        <span class="badge bg-primary" data-bs-toggle="tooltip" title="pending">
+                                                        <i class="fa fa-info-circle"></i>
+                                                    </span>
+                                                        @break
+                                                    @case(4)
+                                                        <span class="badge bg-info" data-bs-toggle="tooltip" title="processing">
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </span>
+                                                        @break
+                                                    @case(3)
+                                                        <span class="badge bg-warning" data-bs-toggle="tooltip" title="Cancelled">
+                                                        <i class="fa fa-close"></i>
+                                                    </span>
+                                                        @break
+                                                    @case(5)
+                                                        <span class="badge bg-warning" data-bs-toggle="tooltip" title="Cancelled By Compliance">
+                                                        <i class="fa fa-warning"></i>
+                                                    </span>
+                                                        @break
                                                     @default
-                                                        <span class="badge bg-danger">Failed</span>
+                                                        <span class="badge bg-danger" data-bs-toggle="tooltip" title="Failed">
+                                                        <i class="fa fa-sad-tear"></i>
+                                                    </span>
                                                         @break
                                                 @endswitch
+
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
                                 <div class="mt-3">
-                                    {{$tickets->links()}}
+                                    {{$settlements->links()}}
                                 </div>
                             </div>
                         @else

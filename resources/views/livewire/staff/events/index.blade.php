@@ -66,24 +66,39 @@
                                 <td>
                                     @switch($event->status)
                                         @case(1)
-                                            <span class="text-success" data-bs-toggle="tooltip" title="Active">
-                                                <i class="ri-check-double-fill text-success" style="font-size: 20px;"></i>
+                                            <span class="badge bg-success">
+                                                <i class="fa fa-check-circle text-success" style="font-size: 14px;"
+                                                   data-bs-toggle="tooltip" title="Active"></i>
+                                                Active
                                             </span>
                                             @break
                                         @case(2)
-                                            <span class="text-primary" data-bs-toggle="tooltip" title="Under-review">
-                                                <i class="bx bx-loader-alt bx-spin text-primary" style="font-size: 20px;"></i>
-                                            </span>
+                                           <span class="badge bg-primary">
+                                                <i class="fa fa-rotate-270 fa-rotate text-primary" style="font-size: 14px;"
+                                                   data-bs-toggle="tooltip" title="Review"></i>
+                                               Under-Review
+                                           </span>
                                             @break
                                         @case(3)
-                                            <span class="text-danger" data-bs-toggle="tooltip" title="Deactivated">
-                                                <i class="ri-alert-fill text-danger" style="font-size: 20px;"></i>
+                                            <span class="badge bg-danger">
+                                                <i class="fa fa-ban text-danger" style="font-size: 14px;"
+                                                   data-bs-toggle="tooltip" title="Cancelled"></i>
+                                                Cancelled
+                                            </span>
+                                            @break
+                                        @case(5)
+                                            <span class="badge bg-warning">
+                                                <i class="fa fa-ban text-danger" style="font-size: 14px;"
+                                                   data-bs-toggle="tooltip" title="Concluded"></i>
+                                                Concluded
                                             </span>
                                             @break
                                         @default
-                                            <span class="text-danger" data-bs-toggle="tooltip" title="Rejected By support">
-                                                <i class="ri-error-warning-fill text-danger" style="font-size: 20px;"></i>
-                                            </span>
+                                                <span class="badge bg-danger">
+                                                    <i class="fa fa-warning text-danger" style="font-size: 14px;"
+                                                       data-bs-toggle="tooltip" title="Rejected"></i>
+                                                    Rejected
+                                                </span>
                                             @break
                                     @endswitch
                                 </td>

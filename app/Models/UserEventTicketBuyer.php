@@ -10,4 +10,12 @@ class UserEventTicketBuyer extends Model
 {
     use HasFactory,Notifiable;
     protected $guarded = [];
+
+    /**
+     * Define the relationship with the UserEventPurchase model.
+     */
+    public function purchases()
+    {
+        return $this->hasMany(UserEventPurchase::class, 'buyer', 'id');
+    }
 }
