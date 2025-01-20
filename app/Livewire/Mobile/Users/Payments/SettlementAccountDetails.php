@@ -3,11 +3,13 @@
 namespace App\Livewire\Mobile\Users\Payments;
 
 use App\Models\UserBank;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class SettlementAccountDetails extends Component
 {
     public $bank;
+    public $user;
 
     protected $listeners = [
         'refreshComponent' => '$refresh',
@@ -16,6 +18,7 @@ class SettlementAccountDetails extends Component
     public function mount(UserBank $bank)
     {
         $this->bank = $bank;
+        $this->user = Auth::user();
     }
     public function placeholder()
     {
@@ -45,9 +48,7 @@ class SettlementAccountDetails extends Component
                 <rect x="10" y="65" rx="5" ry="5" width="300" height="15" fill="url(#skeleton-gradient)" />
                 <rect x="10" y="90" rx="5" ry="5" width="250" height="15" fill="url(#skeleton-gradient)" />
 
-                <!-- Circle Placeholder (e.g., Avatar) -->
-                <circle cx="30" cy="120" r="20" fill="url(#skeleton-gradient)" />
-                <rect x="60" y="110" rx="5" ry="5" width="200" height="15" fill="url(#skeleton-gradient)" />
+
             </svg>
         </div>
         HTML;

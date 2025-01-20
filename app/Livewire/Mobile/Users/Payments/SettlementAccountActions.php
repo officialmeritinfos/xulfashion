@@ -6,6 +6,7 @@ use App\Mail\DebitNotification;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserBank;
 use App\Models\UserWithdrawal;
@@ -447,7 +448,7 @@ class SettlementAccountActions extends Component
         DB::beginTransaction();
 
         try {
-            $user = Auth::user();
+            $user = User::where('id',$this->user->id)->first();
             $bank = $this->bank;
             $web = GeneralSetting::find(1);
 
@@ -513,6 +514,9 @@ class SettlementAccountActions extends Component
 
             // Deduct from user balance
             $user->decrement('accountBalance', $this->amount);
+            $user->otp='';
+            $user->otpExpires='';
+            $user->save();
 
             // Create withdrawal record
             $withdrawal = UserWithdrawal::create([
@@ -562,7 +566,7 @@ class SettlementAccountActions extends Component
                 $this->successMessage = "Withdrawal to {$bank->bankName} ({$bank->accountName}) was successful. Funds should arrive within 24 hours.";
 
                 // Trigger browser event for UI feedback
-                $this->dispatch('success-withdrawal-message');
+                $this->dispatch('success-withdrawal-message',url:url()->previous());
             }
 
         } catch (\Exception $exception) {

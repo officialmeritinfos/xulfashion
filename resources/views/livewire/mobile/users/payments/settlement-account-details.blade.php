@@ -1,4 +1,25 @@
 <div>
+    <div class="container-fluid mb-4">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col mt-0">
+                                <h5 class="card-title">Available Balance
+                                    <sup><i class="fa-solid fa-circle-info" data-bs-toggle="tooltip"
+                                            title="The total amount in your account balance which is can be withdrawn"></i></sup>
+                                </h5>
+                            </div>
+                        </div>
+                        <h1 class="mt-1 mb-3" data-bs-toggle="tooltip" title="{{currencySign($user->mainCurrency)}}{{ number_format($user->accountBalance,2) }}">
+                            {{currencySign($user->mainCurrency)}}{{ shorten_number($user->accountBalance,2) }}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">Bank Information</h5>

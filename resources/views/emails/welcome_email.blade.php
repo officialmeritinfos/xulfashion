@@ -122,7 +122,7 @@
             <li><strong>Share Store & Catalog:</strong> Promote your store and catalog by sharing them across your networks. The more you share, the greater your reach.</li>
         </ul>
         <p>
-            We’re committed to helping you grow your business on {{$siteName}}. If you have any questions or need ass
+            We’re committed to helping you grow your business on {{$siteName}}. If you have any questions or need an assistance
             don’t hesitate to reach out to our support team at <a href="mailto:{{$web->supportEmail}}">{{$web->supportEmail}}</a> or visit our <a href="{{$web->ticketHelpDesk}}">Help Center</a>.
         </p>
         <p>

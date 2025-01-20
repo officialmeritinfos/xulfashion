@@ -41,7 +41,6 @@
                             <th>Amount</th>
                             <th>Status</th>
                             <th> ID</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -74,9 +73,6 @@
 
                                 </td>
                                 <td>{{ $transaction->reference }}</td>
-                                <td>
-                                    <i class="fa fa-arrow-circle-o-right"></i>
-                                </td>
                             </tr>
                         @endforeach
                         </tbody>

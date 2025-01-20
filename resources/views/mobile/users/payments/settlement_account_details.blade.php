@@ -99,7 +99,6 @@
 @endsection
 
 @push('js')
-    <x-livewire-alert::scripts />
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Copy on click functionality
@@ -112,6 +111,17 @@
                         toastr.error('Failed to copy!');
                     });
                 });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            window.addEventListener('success-withdrawal-message', event => {
+                let url = event.detail.url;
+                setTimeout(() => {
+                    window.location.href = url;
+                }, 5000);
             });
         });
     </script>

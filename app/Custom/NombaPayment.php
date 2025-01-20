@@ -77,7 +77,7 @@ class NombaPayment
     {
         $response = Http::withToken($this->accessToken)->withHeaders([
             'accountId'=> $this->accountId
-        ])->get("{$this->url}/transfers/banks");
+        ])->get("{$this->url}transfers/banks");
 
         if ($response->ok()) {
             return $response;
@@ -104,7 +104,7 @@ class NombaPayment
     {
         $response = Http::withToken($this->accessToken)->withHeaders([
             'accountId' => $this->accountId,
-        ])->post("{$this->url}/transfers/bank/lookup",$data);
+        ])->post("{$this->url}transfers/bank/lookup",$data);
 
         if ($response->ok()) {
             return $response;

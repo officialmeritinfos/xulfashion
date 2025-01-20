@@ -16,19 +16,18 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('model:prune')->daily()->everyMinute();
-        $schedule->command('app:move-pending-balance-to-main')->everyMinute()->withoutOverlapping();
-        $schedule->command('location:update')->daily();
-        $schedule->command('app:welcome-mail')->everyMinute();
-        $schedule->command('app:delete-user-data')->everyMinute();
-        $schedule->command('app:run-scheduled-notifications')->everyMinute();
-
-        $schedule->command('app:update-recurring-events')->everyMinute();
-        $schedule->command('app:notify-next-occurrence')->everyMinute();
-        $schedule->command('app:send-next-occurrence-reminders')->everyMinute();
-        $schedule->command('app:conclude-events')->everyMinute();
-        $schedule->command('app:conclude-recurring-events')->everyMinute();
-        $schedule->command('app:send-event-reminders')->everyMinute();
-        $schedule->command('app:settle-event-payments-to-merchant-balance')->everyMinute();
+//        $schedule->command('app:move-pending-balance-to-main')->everyMinute()->withoutOverlapping();
+//        $schedule->command('location:update')->daily();
+//        $schedule->command('app:welcome-mail')->everyMinute();
+//        $schedule->command('app:delete-user-data')->everyMinute();
+//        $schedule->command('app:run-scheduled-notifications')->everyMinute();
+//        $schedule->command('app:update-recurring-events')->everyMinute();
+//        $schedule->command('app:notify-next-occurrence')->everyMinute();
+//        $schedule->command('app:send-next-occurrence-reminders')->everyMinute();
+//        $schedule->command('app:conclude-events')->everyMinute();
+//        $schedule->command('app:conclude-recurring-events')->everyMinute();
+//        $schedule->command('app:send-event-reminders')->everyMinute();
+//        $schedule->command('app:settle-event-payments-to-merchant-balance')->everyMinute();
         $schedule->command('queue:retry all')->everyMinute();
         $schedule->command('queue:work --stop-when-empty')->everyMinute();
     }
