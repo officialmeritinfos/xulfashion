@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Jenssegers\Agent\Agent;
+use Kreait\Firebase\Factory;
 
 if (!function_exists('maskEmail')) {
     /**
@@ -540,7 +541,8 @@ if (!function_exists('sendPushNotification')) {
      */
     function sendPushNotification($user,$title,$message,$url='')
     {
-        $messaging = app('firebase.messaging');
+        $firebase = (new Factory)->withServiceAccount(config('firebase.projects.app.credentials'));
+        $messaging = $firebase->createMessaging();
 
         $tokens = UserDevice::where('user',$user->id)->get();
         if ($tokens->count()>0){
