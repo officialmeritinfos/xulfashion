@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class StaffTwoFactorAuthentication extends Notification
+class StaffTwoFactorAuthentication extends Notification implements ShouldQueue
 {
     use Queueable,Helpers;
     public mixed $user;
