@@ -15,6 +15,8 @@
                         <th scope="col">Bank</th>
                         <th scope="col">Account Name</th>
                         <th scope="col">Account Number</th>
+                        <th scope="col">Currency</th>
+                        <th scope="col">Meta</th>
                         <th scope="col" class="text-center">STATUS</th>
                         <th scope="col" class="text-center">Date Added</th>
                     </tr>
@@ -35,6 +37,24 @@
                                 </td>
                                 <td>
                                     {{$bank->accountNumber}}
+                                </td>
+                                <td>
+                                    {{$bank->currency}}
+                                </td>
+                                <td>
+                                    @if(!empty($bank->meta) && json_decode($bank->meta, true) !== [])
+                                        @php $metaData = json_decode($bank->meta, true); @endphp
+                                        <div class="row">
+                                            @foreach($metaData as $key => $value)
+                                                <div class="col-6 col-md-6 mb-3">
+                                                    <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong>
+                                                    <p class="copyable" data-content="{{ $value }}">{{ $value }}</p>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <strong>No other information</strong>
+                                    @endif
                                 </td>
                                 <td>
                                     @if($bank->status==1)

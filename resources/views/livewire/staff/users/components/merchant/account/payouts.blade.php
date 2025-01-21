@@ -100,28 +100,45 @@
                                     </div>
                                     <div class="py-28 px-20">
                                         <div class="d-flex flex-wrap justify-content-between align-items-end gap-3">
+                                           <div>
+                                               <h6 class="text-md">Payout Account:</h6>
+                                               <table class="text-sm text-secondary-light">
+                                                   <tbody>
+                                                   <tr>
+                                                       <td>Bank</td>
+                                                       <td class="ps-8">
+                                                           {{empty($option->fetchPayoutAccountByReference($withdrawal->paymentDetails))?'N/A':$option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->bankName}}
+                                                       </td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td>Account Number</td>
+                                                       <td class="ps-8">
+                                                           {{empty($option->fetchPayoutAccountByReference($withdrawal->paymentDetails))?'N/A':$option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->accountNumber}}
+                                                       </td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td>Account Name</td>
+                                                       <td class="ps-8">
+                                                           {{empty($option->fetchPayoutAccountByReference($withdrawal->paymentDetails))?'N/A':$option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->accountName}}
+                                                       </td>
+                                                   </tr>
+                                                   </tbody>
+                                               </table>
+                                           </div>
                                             <div>
-                                                <h6 class="text-md">Payout Account:</h6>
                                                 <table class="text-sm text-secondary-light">
                                                     <tbody>
-                                                    <tr>
-                                                        <td>Bank</td>
-                                                        <td class="ps-8">
-                                                            {{empty($option->fetchPayoutAccountByReference($withdrawal->paymentDetails))?'N/A':$option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->bankName}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Account Number</td>
-                                                        <td class="ps-8">
-                                                            {{empty($option->fetchPayoutAccountByReference($withdrawal->paymentDetails))?'N/A':$option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->accountNumber}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Account Name</td>
-                                                        <td class="ps-8">
-                                                            {{empty($option->fetchPayoutAccountByReference($withdrawal->paymentDetails))?'N/A':$option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->accountName}}
-                                                        </td>
-                                                    </tr>
+                                                    @if(!empty($option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->meta) && json_decode($option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->meta, true) !== [])
+                                                        @php $metaData = json_decode($option->fetchPayoutAccountByReference($withdrawal->paymentDetails)->meta, true); @endphp
+                                                        @foreach($metaData as $key => $value)
+                                                            <tr>
+                                                                <td>{{ ucfirst(str_replace('_', ' ', $key)) }}</td>
+                                                                <td class="ps-8">
+                                                                    {{ $value }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
                                                     </tbody>
                                                 </table>
                                             </div>

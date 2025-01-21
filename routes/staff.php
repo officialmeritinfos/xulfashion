@@ -11,7 +11,9 @@ use App\Http\Controllers\Staff\Dashboard\ServiceTypeController;
 use App\Http\Controllers\Staff\Dashboard\SettingController;
 use App\Http\Controllers\Staff\Dashboard\StaffController;
 use App\Http\Controllers\Staff\Dashboard\StoreController;
+use App\Http\Controllers\Staff\Dashboard\TransactionController;
 use App\Http\Controllers\Staff\Dashboard\Users;
+use App\Http\Controllers\Staff\Dashboard\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::domain('modacore.localhost')->group(function () {
@@ -94,5 +96,14 @@ Route::domain('modacore.localhost')->group(function () {
         //Events
         Route::get('events/list',[EventController::class,'landingPage'])->name('events.list');
         Route::get('events/{event}/detail',[EventController::class,'eventDetail'])->name('events.detail');
+
+        //Transactions
+        Route::get('transactions/account-funding',[TransactionController::class,'accountFunding'])->name('transactions.account-funding');
+        Route::get('transactions/withdrawals',[TransactionController::class,'withdrawals'])->name('transactions.withdrawals');
+
+        //Verifications
+        Route::get('verifications/merchants',[VerificationController::class,'merchantsKYC'])->name('verifications.merchants');
+        Route::get('verifications/stores',[VerificationController::class,'storeKYC'])->name('verifications.stores');
+
     });
 });

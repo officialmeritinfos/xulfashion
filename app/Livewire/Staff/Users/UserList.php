@@ -42,15 +42,15 @@ class UserList extends Component
 
         switch ($this->duration) {
             case 'today':
-                return [$now->startOfDay(), $now->endOfDay()];
+                return [$now->copy()->startOfDay(), $now->copy()->endOfDay()];
             case 'week':
-                return [$now->startOfWeek(), $now->endOfWeek()];
+                return [$now->copy()->startOfWeek(), $now->copy()->endOfWeek()];
             case 'year':
-                return [$now->startOfYear(), $now->endOfYear()];
+                return [$now->copy()->startOfYear(), $now->copy()->endOfYear()];
             case 'custom':
                 return [Carbon::parse($this->customStartDate), Carbon::parse($this->customEndDate)];
             default:
-                return [$now->startOfMonth(), $now->endOfMonth()];
+                return [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()];
         }
     }
 

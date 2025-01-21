@@ -173,6 +173,25 @@
                     </li>
                 @endif
 
+                @if($staff->can('read Transaction'))
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" style="font-size: 20px;">
+                            <iconify-icon icon="icon-park-outline:folder-withdrawal-one" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                            <span>Transactions</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{route('staff.transactions.account-funding')}}" wire:navigate><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                                    Account Funding</a>
+                            </li>
+                            <li>
+                                <a href="{{route('staff.transactions.withdrawals')}}" wire:navigate><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                                    Withdrawals</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
                 @if($staff->can('update SuperAdmin'))
                     <li class="dropdown">
                         <a href="javascript:void(0)" style="font-size: 20px;">
@@ -192,19 +211,43 @@
                     </li>
                 @endif
 
+                @if($staff->can('read UserVerification'))
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" style="font-size: 20px;">
+                            <iconify-icon icon="ic:round-domain-verification" class="menu-icon" style="font-size: 20px;"></iconify-icon>
+                            <span>Verifications</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{route('staff.verifications.merchants')}}" wire:navigate><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                                    Merchant Verification</a>
+                            </li>
+                            <li>
+                                <a href="{{route('staff.verifications.stores')}}" wire:navigate><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                                    Store Verification</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                @if($staff->can('read UserAd'))
                 <li>
                     <a href="{{route('staff.ads.list')}}" wire:navigate style="font-size: 20px;">
                         <iconify-icon icon="mdi:advertisements" class="menu-icon" style="font-size: 20px;"></iconify-icon>
                         <span>Ads</span>
                     </a>
                 </li>
+                @endif
+
+                @if($staff->can('read UserEvent'))
                 <li>
                     <a href="{{route('staff.events.list')}}" wire:navigate style="font-size: 20px;">
                         <iconify-icon icon="mdi:events" class="menu-icon" style="font-size: 20px;"></iconify-icon>
                         <span>Events</span>
                     </a>
                 </li>
-
+                @endif
+                @if($staff->can('read UserStore'))
                 <li>
                     <a href="{{route('staff.stores.list')}}" wire:navigate style="font-size: 20px;">
                         <iconify-icon icon="streamline:shopping-store-2-store-shop-shops-stores" class="menu-icon"
@@ -212,19 +255,23 @@
                         <span>Stores</span>
                     </a>
                 </li>
-
-                <li>
-                    <a href="{{route('staff.orders.list')}}" wire:navigate style="font-size: 20px;">
-                        <i class="ri-shopping-cart-2-line menu-icon" style="font-size: 20px;"></i>
-                        <span>Orders</span>
-                    </a>
-                </li>
+                @endif
+                 @if($staff->can('read UserStoreOrder'))
+                    <li>
+                        <a href="{{route('staff.orders.list')}}" wire:navigate style="font-size: 20px;">
+                            <i class="ri-shopping-cart-2-line menu-icon" style="font-size: 20px;"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                @endif
+                @if($staff->can('read SystemStaff'))
                 <li>
                     <a href="{{route('staff.activity.index')}}" wire:navigate style="font-size: 22px;">
                         <i class="ri-dashboard-3-line menu-icon" style="font-size: 22px;"></i>
                         <span>Activities</span>
                     </a>
                 </li>
+                @endif
                 @if($staff->can('update GeneralSetting'))
                     <li class="dropdown">
                         <a href="javascript:void(0)" style="font-size: 20px;">
@@ -250,6 +297,8 @@
                         </ul>
                     </li>
                 @endif
+
+
             </ul>
         </div>
     </aside>
@@ -336,60 +385,15 @@
         <footer class="d-footer">
             <div class="row align-items-center justify-content-between">
                 <div class="col-auto">
-                    <p class="mb-0">© {{ date('Y') }} {{ $siteName }}. All Rights Reserved.</p>
+                    <p class="mb-0">© 2024 - {{ date('Y') }} {{ $siteName }}. All Rights Reserved.</p>
                 </div>
                 <div class="col-auto">
-                    <p class="mb-0">Made by <span class="text-primary-600">Kopium LLC</span></p>
+                    <p class="mb-0">Made by <span class="text-primary-600">XulTech LTD</span></p>
                 </div>
             </div>
         </footer>
 
-        <div class="footer-bottom text-center">
-            <ul>
-                <li>
-                    <a href="{{route('staff.dashboard')}}">
-                        <i class="fa fa-home"></i>
-                        <p>Overview</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('staff.users.list')}}">
-                        <i class="ri-group-line"></i>
-                        <p>Users</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('staff.staffs.list')}}">
-                        <i class="ri-table-alt-line"></i>
-                        <p>Staff</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('staff.ads.list')}}">
-                        <i class="ri-advertisement-line"></i>
-                        <p>ADS</p>
-                    </a>
-                </li>
-                <li>
-                    <a class="menu-bar" href="{{route('staff.stores.list')}}">
-                        <i class="ri-store-2-line"></i>
-                        <p>Stores</p>
-                    </a>
-                </li>
-                <li>
-                    <a class="menu-bar" href="{{route('staff.orders.list')}}">
-                        <i class="ri-shopping-cart-2-line"></i>
-                        <p>Orders</p>
-                    </a>
-                </li>
-                <li>
-                    <a class="menu-bar" href="{{route('staff.activity.index')}}">
-                        <i class="ri-dashboard-3-line"></i>
-                        <p>Activities</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
+
     </main>
     <!-- jQuery library js -->
     <script src="{{asset('staff/js/lib/jquery-3.7.1.min.js')}}"></script>
