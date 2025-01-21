@@ -143,7 +143,7 @@
                                                     <div class="form-check p-2 bg-cream-dark text-white rounded border d-flex align-items-center gap-2" style="min-width: 200px;">
                                                         <input class="form-check-input" type="checkbox" id="permission-{{ $permission->id }}"
                                                                wire:model="selectedPermissions" value="{{ $permission->name }}"
-                                                               @if(in_array($permission->id, $selectedPermissions)) checked @endif>
+                                                               @if(in_array($permission->name, $selectedPermissions)) checked @endif>
                                                         <label class="form-check-label mb-0" for="permission-{{ $permission->id }}">
                                                             {{ $permission->name }}
                                                         </label>

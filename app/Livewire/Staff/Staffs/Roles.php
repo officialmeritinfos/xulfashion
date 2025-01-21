@@ -231,7 +231,7 @@ class Roles extends Component
 
         $this->selectedRoleId = $role->id;
         $this->newRoleName = $role->name;
-        $this->selectedPermissions = $role->permissions->pluck('id')->toArray();
+        $this->selectedPermissions = $role->permissions->pluck('name')->toArray();
         $this->showAddRole=false;
         $this->showEditRole = true;
 
