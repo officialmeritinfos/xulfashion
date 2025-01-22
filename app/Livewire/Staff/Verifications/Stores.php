@@ -2,10 +2,16 @@
 
 namespace App\Livewire\Staff\Verifications;
 
+use App\Models\UserStoreVerification;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class Stores extends Component
 {
+    #[Url]
+    public $search;
+    #[Url]
+    public $perPage = 10;
     public function placeholder()
     {
         return <<<'HTML'
@@ -49,6 +55,29 @@ class Stores extends Component
     }
     public function render()
     {
-        return view('livewire.staff.verifications.stores');
+        $verifications = UserStoreVerification::when($this->search, function ($query) {
+            $query->where(function ($query) {
+                // Search in the UserStoreVerification model
+                $query->where('reference', 'like', '%' . $this->search . '%')
+                ->orWhere('legalName', 'like', '%' . $this->search . '%')
+                ->orWhere('dba', 'like', '%' . $this->search . '%');
+            })
+                ->orWhereHas('stores', function ($query) {
+                    // Search in the stores relationship
+                    $query->where('name', 'like', '%' . $this->search . '%')
+                        ->orWhere('email', 'like', '%' . $this->search . '%');
+                });
+        })->with(['stores'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($this->perPage);
+
+
+
+        return view('livewire.staff.verifications.stores',[
+            'verifications' => $verifications,
+            'totalVerificationSubmissions' => UserStoreVerification::count(),
+            'pendingVerifications' => UserStoreVerification::where('status',4)->count(),
+            'completedVerifications' => UserStoreVerification::where('status',1)->count(),
+        ]);
     }
 }

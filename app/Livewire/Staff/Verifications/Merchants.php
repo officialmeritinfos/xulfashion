@@ -2,10 +2,14 @@
 
 namespace App\Livewire\Staff\Verifications;
 
+use App\Models\UserVerification;
 use Livewire\Component;
 
 class Merchants extends Component
 {
+    public $search;
+    public $perPage = 10;
+
     public function placeholder()
     {
         return <<<'HTML'
@@ -49,6 +53,20 @@ class Merchants extends Component
     }
     public function render()
     {
-        return view('livewire.staff.verifications.merchants');
+        $verifications = UserVerification::when($this->search, function ($query) {
+            $query->whereHas('users', function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%')
+                    ->orWhere('username', 'like', '%' . $this->search . '%');
+            });
+        })->with(['users','docTypes'])->orderBy('created_at','desc')->paginate($this->perPage);
+
+
+        return view('livewire.staff.verifications.merchants',[
+            'verifications' => $verifications,
+            'totalVerificationSubmissions' => UserVerification::count(),
+            'pendingVerifications' => UserVerification::where('status',4)->count(),
+            'completedVerifications' => UserVerification::where('status',1)->count(),
+        ]);
     }
 }
