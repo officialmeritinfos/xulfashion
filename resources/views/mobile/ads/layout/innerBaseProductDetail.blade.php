@@ -92,5 +92,38 @@
     });
 </script>
 @include('basicInclude')
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Hide the preloader when the DOM is fully loaded
+        $('.loader-wrapper').fadeOut();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Step 1: Convert `src` to `data-src` and add placeholders
+        $('img.img').each(function () {
+            const img = $(this);
+            const originalSrc = img.attr('src'); // Get the current src
+            const placeholder = "{{ asset('favicon.png') }}"; // Define your default placeholder
+
+            // If the image already has a src and no data-src, update attributes
+            if (originalSrc && !img.attr('data-src')) {
+                img.attr('data-src', originalSrc); // Move src to data-src
+                img.attr('src', placeholder); // Set placeholder as src
+            }
+        });
+
+        // Step 2: Initialize jQuery Lazy
+        $('img.img').Lazy({
+            effect: "fadeIn", // Optional: Add a fade-in effect
+            effectTime: 500, // Duration of the fade-in effect
+            threshold: 0,    // Load images as soon as they are in the viewport
+        });
+    });
+
+</script>
 </body>
 </html>

@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                             <div class="categories-img">
-                                <img class="img-fluid img" src="{{$category->photo}}" alt="p3" />
+                                <img class="img-fluid img" src="{{$category->photo}}" alt="p3" loading="lazy" />
                             </div>
                         </a>
                     </li>

@@ -193,7 +193,7 @@
                     <div class="stat-item col-6 mt-3">
                         @if($event->currentBalance >0)
                             <h5>
-                                {{date('d M, Y H:i',$event->nextSettlement)}}
+                                {{date('d M, Y H:i', strtotime($event->nextSettlement))}}
                             </h5>
                         @else
                             <h5>-</h5>

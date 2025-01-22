@@ -37,6 +37,11 @@ class MarketplaceController extends BaseController
                 'country'=>$country->iso2,
                 'iso3'  =>$country->iso3
             ]);
+            if (!Cookie::has('hasAdsCountry')){
+                $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
+                $country = Country::where('iso2',$position->countryCode)->first();
+                Cookie::queue('hasAdsCountry',$country->iso3,7 * 24 * 60 * 60);
+            }
         }else{
             if (!Cookie::has('hasAdsCountry')){
                 $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());

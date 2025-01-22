@@ -84,5 +84,6 @@
     });
 </script>
 @include('mobile.general_notifications')
+
 </body>
 </html>

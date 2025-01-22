@@ -89,8 +89,13 @@ class StoreController extends BaseController
 
     public function searchSuggestion(Request $request)
     {
-        $countryIso = Cookie::get('hasAdsCountry');
-        $country = Country::where('iso3', strtoupper($countryIso))->first();
+        if (!\auth()->check()) {
+            $countryIso = Cookie::get('hasAdsCountry');
+            $country = Country::where('iso3', strtoupper($countryIso))->first();
+        }else{
+            $countryIso = \auth()->user()->countryCode;
+            $country = Country::where('iso3', strtoupper($countryIso))->first();
+        }
         $query = $request->input('query');
         $state = $request->input('state');
         $countryIso2 = $country->iso2;
@@ -207,7 +212,8 @@ class StoreController extends BaseController
     public function categorySearchResult(Request $request)
     {
         $web = GeneralSetting::find(1);
-        $countryIso = Cache::get('hasAdsCountry');
+        $countryIso = Cookie::get('hasAdsCountry');
+        logger("logging {$countryIso}");
         $country = Country::where('iso3', strtoupper($countryIso))->first();
         $category = $request->input('category');
         $query = $request->input('search');

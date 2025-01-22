@@ -15,11 +15,11 @@ class SplashScreenController extends Controller
     public function landingPage(Request $request)
     {
         if (Cookie::has('hasAdsCountry')){
-            return redirect()->to(route('mobile.marketplace.index',['country'=>Cookie::get('hasAdsCountry')]));
+            return redirect()->to(route('mobile.marketplace.index',['country'=>strtolower(Cookie::get('hasAdsCountry'))]));
         }else{
             $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
             $country = Country::where('iso2',$position->countryCode)->first();
-            Cookie::queue('hasAdsCountry',$country->iso3,7 * 24 * 60 * 60);
+            Cookie::queue('hasAdsCountry',$country->iso3,366 * 24 * 60 * 60);
         }
 
         $web = GeneralSetting::find(1);
@@ -34,6 +34,14 @@ class SplashScreenController extends Controller
     //splash screen 2
     public function appStartingPage(Request $request)
     {
+        if (Cookie::has('hasAdsCountry')){
+            return redirect()->to(route('mobile.marketplace.index',['country'=>strtolower(Cookie::get('hasAdsCountry'))]));
+        }else{
+            $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
+            $country = Country::where('iso2',$position->countryCode)->first();
+            Cookie::queue('hasAdsCountry',$country->iso3,365 * 24 * 60 * 60);
+        }
+
         $web = GeneralSetting::find(1);
         return view('mobile.ads.app_starting_page')->with([
             'web'       =>$web,

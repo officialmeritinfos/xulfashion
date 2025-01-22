@@ -111,7 +111,7 @@ class KycList extends Component
             $imageResultAddress = $google->uploadGoogle($this->addressProof);
             $addressImage = $imageResultAddress['link'];
 
-            $reference = $this->generateUniqueReference('user_verifications','reference',16);
+            $reference = $this->generateUniqueReference('user_verifications','reference',10);
 
             $verification = UserVerification::create([
                 'user'=>$merchant->id,
