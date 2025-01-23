@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
 use App\Models\User;
+use App\Models\UserVerification;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -186,5 +187,17 @@ class Profile extends BaseController
             Log::alert($exception->getMessage());
             return $this->sendError('tutor.error',['error'=>'Internal Server Error']);
         }
+    }
+    //user kyc
+    public function userKyc()
+    {
+        $web = GeneralSetting::find(1);
+
+        return view('mobile.users.profile.kyc')->with([
+            'pageName'  =>'KYC Verification',
+            'web'       =>$web,
+            'siteName'  =>$web->name,
+            'user'      =>Auth::user()
+        ]);
     }
 }

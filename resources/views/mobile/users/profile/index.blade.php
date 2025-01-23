@@ -64,6 +64,18 @@
                 </li>
 
                 <li>
+                    <a href="{{route('mobile.user.coming.soon')}}" class="profile-box">
+                        <div class="profile-img">
+                            <i class="iconsax icon" data-icon="teacher"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Fashion School</h4>
+                            <h5>Create and manage enrollments into your fashion school.</h5>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{route('mobile.user.app.settings')}}" class="profile-box">
                         <div class="profile-img">
                             <i class="iconsax icon" data-icon="setting-1"></i>
@@ -86,6 +98,48 @@
                         </div>
                     </a>
                 </li>
+                @if($user->isVerified==3 || $user->isVerified==2)
+                    <li>
+                        <a href="{{completedProfileMobile('mobile.user.user.kyc')}}" class="profile-box">
+                            <div class="profile-img">
+                                <i class="iconsax icon" data-icon="shield-tick"></i>
+                            </div>
+                            <div class="profile-details">
+                                <h4>Account Verification</h4>
+                                <h5>Submission not received</h5>
+                            </div>
+                        </a>
+                    </li>
+                @elseif($user->isVerified==4)
+                    <li>
+                        <a href="{{completedProfileMobile('mobile.user.user.kyc')}}" class="profile-box ">
+                            <div class="profile-img bg-info"  data-bs-toggle="tooltip" title="Submission under review">
+                                <i class="iconsax icon" data-icon="shield-tick"></i>
+                            </div>
+                            <div class="profile-details">
+                                <h4>Verification Status </h4>
+                                <h5>
+                                    Pending Review
+                                </h5>
+                            </div>
+                        </a>
+                    </li>
+                @else
+
+                    <li>
+                        <a href="{{completedProfileMobile('mobile.user.user.kyc')}}" class="profile-box ">
+                            <div class="profile-img bg-success"  data-bs-toggle="tooltip" title="Account Verified">
+                                <i class="iconsax icon" data-icon="shield-tick"></i>
+                            </div>
+                            <div class="profile-details">
+                                <h4>Verification Status</h4>
+                                <h5>
+                                    <i class="fa fa-user-check text-success"></i>
+                                </h5>
+                            </div>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
     </section>

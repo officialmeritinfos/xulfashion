@@ -481,6 +481,9 @@ if (!function_exists('merchantType')){
             case 4:
                 $text='Model';
                 break;
+            case 5:
+                $text='Fashion School';
+                break;
             default:
                 $text='Unknown';
                 break;

@@ -58,7 +58,10 @@ class Settings extends BaseController
             'pageName'      =>'Account Verification',
             'user'          =>$user,
             'accountType'   =>$this->userAccountType($user),
-            'userDocs'      =>UserVerificationDocumentType::where('status',1)->get(),
+            'userDocs'      =>UserVerificationDocumentType::where('status',1)->where(function ($query) use ($user) {
+                $query->where('country',strtolower($user->countryCode))
+                    ->orWhere('country','all');
+            }) ->get(),
             'countries'     =>Country::get()
         ]);
     }
@@ -90,7 +93,7 @@ class Settings extends BaseController
             $input = $validator->validated();
 
 
-            $reference = $this->generateUniqueReference('user_verifications','reference',16);
+            $reference = $this->generateUniqueReference('user_verifications','reference',7);
 
             $directorDocRequirement = UserVerificationDocumentType::where('slug',$input['docType'])->first();
             $google = new GoogleUpload();

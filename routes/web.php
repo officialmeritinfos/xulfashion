@@ -385,6 +385,9 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //PROFILE PLACEHOLDERS
             Route::get('profile/coming-soon',[Profile::class,'comingSoon'])
                 ->name('coming.soon');
+            //Account KYC
+            Route::get('profile/user/kyc',[Profile::class,'userKyc'])->name('user.kyc');
+
             Route::get('profile/app/settings',[Profile::class,'settings'])
                 ->name('app.settings');
             Route::get('profile/help',[Profile::class,'helpCenter'])

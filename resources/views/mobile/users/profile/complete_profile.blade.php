@@ -38,6 +38,7 @@
                         <option value="2" {{($user->merchantType=='2')?'selected':''}}>Fashion Designer</option>
                         <option value="3" {{($user->merchantType=='3')?'selected':''}}>Manufacturer</option>
                         <option value="4" {{($user->merchantType=='4')?'selected':''}}>Model</option>
+                        <option value="5" {{($user->merchantType=='5')?'selected':''}}>Fashion School</option>
                     </select>
                     <i class="iconsax icons" data-icon="user-2"></i>
                 </div>
