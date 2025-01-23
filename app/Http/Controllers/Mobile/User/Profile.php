@@ -155,7 +155,7 @@ class Profile extends BaseController
                 'address'               =>['required','string'],
                 'tutorKeywords'         =>['nullable'],
                 'tutorKeywords.*'       =>['nullable','string'],
-                'image'                 => ['required', 'image','max:1024'],
+                'image'                 => ['required', 'image','max:5120'],
                 'merchantType'          =>['required','numeric']
 
             ])->stopOnFirstFailure();
