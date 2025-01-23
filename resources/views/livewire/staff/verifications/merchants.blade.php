@@ -142,7 +142,7 @@
                                     <td>{{ date('F d, Y h:i:s', strtotime($document->created_at)) }}</td>
                                     <td>
                                         @can('read UserVerification')
-                                            <a href="{{route('staff.users.kyc.submission',['id'=>$document->user->reference])}}"
+                                            <a href="{{route('staff.users.kyc.submission',['id'=>$document->users->reference])}}"
                                                class="bg-primary-50 text-primary-600 bg-hover-primary-600 hover-text-white p-10 text-sm
                                                    btn-sm px-12 py-12 radius-8 d-flex align-items-center justify-content-center
                                                    mt-16 fw-medium gap-2 w-100" wire:navigate>

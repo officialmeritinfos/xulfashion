@@ -3,11 +3,17 @@
 namespace App\Livewire\Staff\Verifications;
 
 use App\Models\UserVerification;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Merchants extends Component
 {
+    use WithPagination;
+
+    #[Url]
     public $search;
+    #[Url]
     public $perPage = 10;
 
     public function placeholder()

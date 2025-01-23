@@ -34,7 +34,7 @@ class KycList extends Component
     public $idNumber;
     #[Validate('required|image|max:2048')]
     public $frontImage;
-    #[Validate('required_if:hasBack,true|image|max:2048')]
+    #[Validate('nullable|required_if:hasBack,true|image|max:2048')]
     public $backImage;
     #[Validate('required|exists:countries,iso3')]
     public $country;
@@ -81,7 +81,7 @@ class KycList extends Component
     {
         $staff = Auth::guard('staff')->user();
 
-        if ($staff->cannot('create User') && $staff->cannot('create UserVerification') && $staff->cannot('update UserVerification')) {
+        if ($staff->cannot('create User') && $staff->cannot('create UserVerification')) {
 
             $this->alert('error', '', [
                 'position' => 'top-end',
@@ -92,7 +92,9 @@ class KycList extends Component
             ]);
             return;
         }
+
         $this->validate();
+
         try {
 
             $merchant = User::where('reference', $this->userId)->first();

@@ -5,9 +5,12 @@ namespace App\Livewire\Staff\Verifications;
 use App\Models\UserStoreVerification;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Stores extends Component
 {
+    use WithPagination;
+
     #[Url]
     public $search;
     #[Url]
