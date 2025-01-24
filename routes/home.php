@@ -8,20 +8,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[Home::class,'landingPage'])->name('index');
 /*================================ COMPANY CONTROLLER ==============================*/
-Route::get('about',[Home::class,'about'])
-    ->name('about');
-Route::get('faq',[Home::class,'faq'])
-    ->name('faq');
-Route::get('pricing',[Home::class,'pricing'])
-    ->name('pricing');
-Route::get('contact',[Home::class,'contact'])
-    ->name('contact');
-Route::get('career',[Home::class,'career'])
-    ->name('career');
-Route::get('features',[Home::class,'features'])
-    ->name('features');
-Route::get('download-page',[Home::class,'download'])
-    ->name('download');
+Route::get('company/about',[Home::class,'about'])->name('about');
+Route::get('company/contact',[Home::class,'contact'])->name('contact');
+Route::get('company/career',[Home::class,'career'])->name('career');
+/*================================ MISCELLANEOUS HOME CONTROLLER ==============================*/
+Route::get('pricing',[Home::class,'pricing'])->name('pricing');
+Route::get('download-page',[Home::class,'download'])->name('download');
+/*================================ SOLUTIONS CONTROLLER ==============================*/
+Route::get('solutions/sell-online',[Home::class,'download'])->name('solutions.sell-online');
+Route::get('solutions/invoice',[Home::class,'download'])->name('solutions.invoice');
+Route::get('solutions/inventory',[Home::class,'download'])->name('solutions.inventory');
+Route::get('solutions/pos',[Home::class,'download'])->name('solutions.pos');
+Route::get('solutions/payments',[Home::class,'download'])->name('solutions.payments');
+Route::get('solutions/booking',[Home::class,'download'])->name('solutions.booking');
+Route::get('solutions/listing',[Home::class,'download'])->name('solutions.listing');
+Route::get('solutions/events',[Home::class,'download'])->name('solutions.events');
+Route::get('solutions/academy',[Home::class,'download'])->name('solutions.academy');
+/*================================ BUSINESSES CONTROLLER ==============================*/
+
+/*================================ RESOURCES CONTROLLER ==============================*/
+Route::get('resources/faq',[Home::class,'faq'])->name('faq');
 
 //Download marketplace apk
 Route::get('download-page/marketplace',[Home::class,'downloadMarketplaceApp'])

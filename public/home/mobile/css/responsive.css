@@ -1,13 +1,5 @@
 /* Responsive CSS Document */
 
-/* 
-    Created on   : 15/10/2024.
-    Theme Name   : Piku - Creative Saas & Software HTML5 Template
-    Version      : 1.0.
-    Developed by : (me@heloshape.com) / (www.me.heloshape.com)
-   
-*/
-
 @media (min-width: 992px) {
   .container {padding-right: 0;padding-left: 0;}
 }
@@ -24,7 +16,7 @@
 /*(min-width: 1400px)*/
 
 /*Grid xl Start*/
-@media (max-width: 1399px) { 
+@media (max-width: 1399px) {
   .fs-20 {font-size: 18px;}
   .block-feature-five .filter-nav .nav-link {font-size: 18px;}
   .footer-three .footer-intro h3 {font-size: 34px;}
@@ -619,7 +611,7 @@
 /*(max-width: 991px)*/
 /*Grid md Start*/
 @media (min-width: 992px) {
-  
+
 }
 
 
@@ -630,7 +622,7 @@
   .hero-banner-six .illustration {max-width: 45%;}
   .grid-3column .grid-sizer, .grid-3column .isotop-item {width: 50%;}
   .project-details .project-info li {width: calc(50% - 20px);}
-  
+
 }
 /*(min-width: 768px) and (max-width: 991px)*/
 

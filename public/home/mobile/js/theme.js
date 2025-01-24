@@ -1,18 +1,7 @@
 // js Document
 
-// Created on   : 15/20/2024.
-// Theme Name   : Piku - Creative Saas & Software HTML5 Template
-// Version      : 1.0.
-// Developed by : (me@heloshape.com) / (www.me.heloshape.com)
-
-
 (function($) {
     "use strict";
-
-    // ------------------------ Switcher
-    if($("body").length) {
-      $("body").append('<a href="https://html.creativegigstf.com/piku/piku-dark" id="switcher" target="_blank" class="d-flex align-items-center justify-content-center" title="Dark Version"><i class="bi bi-moon-stars-fill"></i></a>');
-    }
 
       //-------------- Click event to scroll to top
       $(window).on('scroll', function (){
@@ -28,7 +17,7 @@
       });
 
       // --------------------- Add .active class to current navigation based on URL
-      var pgurl = window.location.href.substr(window.location.href.lastIndexOf("https://html.creativegigstf.com/")+1);
+      var pgurl = window.location.href.substr(window.location.href.lastIndexOf("https://xulfashion.com/")+1);
       $(".navbar-nav > li  a").each(function(){
       if($(this).attr("href") == pgurl || $(this).attr("href") == '' )
       $(this).addClass("active");
@@ -46,7 +35,7 @@
         }
 
         // ------------------------ Navigation Scroll
-        $(window).on('scroll', function (){   
+        $(window).on('scroll', function (){
           var sticky = $('.sticky-menu'),
           scroll = $(window).scrollTop();
           if (scroll >= 180) sticky.addClass('fixed');
@@ -63,7 +52,7 @@
             });
             $(this).on('focusout', function() {
                 $(this).attr('placeholder',$(this).data('holder'));
-            });     
+            });
         });
 
 
@@ -266,7 +255,7 @@
             ]
           });
       }
-      
+
 
 
       // ------------------------ Service Slider One
@@ -323,7 +312,7 @@
             autoplaySpeed: 3000,
           });
       }
-        
+
 
 
         // ------------------------ Counter Slider One
@@ -390,8 +379,8 @@
               ]
             });
         }
-        
-        
+
+
 
 
 
@@ -559,7 +548,7 @@ $(window).on ('load', function (){ // makes sure the whole site is loaded
             }
           );
           wow.init();
-        
+
 // ------------------------------------- Fancybox
         var fancy = $ ("[data-fancybox]");
         if(fancy.length) {
