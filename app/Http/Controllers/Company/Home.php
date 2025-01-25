@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -29,6 +30,17 @@ class Home extends BaseController
             'pageName'      =>'About '.$web->name,
             'siteName'      =>$web->name,
             'web'           =>$web
+        ]);
+    }
+    //Team
+    public function team()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.team')->with([
+            'pageName'      =>'Our Team',
+            'siteName'      =>$web->name,
+            'web'           =>$web,
+            'teams'         =>Team::where('is_active',1)->get()
         ]);
     }
 
@@ -72,16 +84,6 @@ class Home extends BaseController
             'web'           =>$web
         ]);
     }
-    public function features()
-    {
-        $web = GeneralSetting::find(1);
-        return view('company.features')->with([
-            'pageName'      =>$web->name.' Features',
-            'siteName'      =>$web->name,
-            'web'           =>$web
-        ]);
-    }
-
     public function download()
     {
         $web = GeneralSetting::find(1);

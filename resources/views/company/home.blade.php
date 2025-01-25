@@ -547,7 +547,11 @@
                         <div class="icon d-flex align-items-center justify-content-center rounded-circle"><img src="{{asset('home/mobile/images/icon/icon_45.svg')}}" alt=""></div>
                         <div class="text">
                             <div class="title">Live chat</div>
-                            <span class="fs-20">{{ config('app.knowledge-base') }}</span>
+                            <span class="fs-20">
+                                <a class="startChat" >
+                                    Chat Us <i class="fa-light fa-arrow-up-right"></i>
+                                </a>
+                            </span>
                         </div>
                     </div>
                     <!-- /.block -->
@@ -556,6 +560,28 @@
         </div>
     </div>
     <!-- /.contact-banner-one -->
+
+
+    <!--
+    =====================================================
+        Fancy Banner Nine
+    =====================================================
+    -->
+    <div class="fancy-banner-nine bg-thirteen position-relative z-1 pt-120 lg-pt-80 pb-120 lg-pb-80 mt-130 lg-mt-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-9 m-auto text-center">
+                    <div class="title-ten text-center">
+                        <h2>Get Your Fashion & Beauty <span class="position-relative z-1">Business Discovered<span class="line" style="background: #FF5B00;"></span></span> Today with
+                            {{$siteName}}.</h2>
+                    </div>
+                    <p class="fs-28 mt-30 mb-50 lg-mb-30">Try {{$siteName}} risk-free — no hidden charges, no cancellation fees.</p>
+                    <a href="{{route('home.download')}}" class="btn-five color-two tran3s">Let’s Get Started</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.fancy-banner-nine -->
 
 
 @endsection

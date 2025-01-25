@@ -11,6 +11,7 @@ Route::get('/',[Home::class,'landingPage'])->name('index');
 Route::get('company/about',[Home::class,'about'])->name('about');
 Route::get('company/contact',[Home::class,'contact'])->name('contact');
 Route::get('company/career',[Home::class,'career'])->name('career');
+Route::get('company/team',[Home::class,'team'])->name('team');
 /*================================ MISCELLANEOUS HOME CONTROLLER ==============================*/
 Route::get('pricing',[Home::class,'pricing'])->name('pricing');
 Route::get('download-page',[Home::class,'download'])->name('download');
@@ -25,6 +26,11 @@ Route::get('solutions/listing',[Home::class,'download'])->name('solutions.listin
 Route::get('solutions/events',[Home::class,'download'])->name('solutions.events');
 Route::get('solutions/academy',[Home::class,'download'])->name('solutions.academy');
 /*================================ BUSINESSES CONTROLLER ==============================*/
+Route::get('business/fashion-designer',[Home::class,'download'])->name('business.fashion-designer');
+Route::get('business/beauty-entrepreneurs',[Home::class,'download'])->name('business.beauty-entrepreneurs');
+Route::get('business/fashion-schools',[Home::class,'download'])->name('business.fashion-schools');
+Route::get('business/manufacturers',[Home::class,'download'])->name('business.manufacturers');
+Route::get('business/retailers',[Home::class,'download'])->name('business.retailers');
 
 /*================================ RESOURCES CONTROLLER ==============================*/
 Route::get('resources/faq',[Home::class,'faq'])->name('faq');

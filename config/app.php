@@ -217,4 +217,5 @@ return [
     ],
     'settlementDay'=>env('TICKET_SETTLEMENT_DAY',5),
     'knowledge-base'=>'https://xulfashion-know.tawk.help/',
+    'about-xulfashion-video'=>'',
 ];

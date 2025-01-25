@@ -1,104 +1,99 @@
 @extends('company.layout.base')
 @section('content')
 
-    <div class="inner_banner-section">
-        <img class="inner_banner-background-image" src="{{asset('home/image/common/inner-bg.png')}}" alt="image alt">
-        <div class="container">
-            <div class="inner_banner-content-block">
-                <h3 class="inner_banner-title">{{$pageName}}</h3>
-                <ul class="banner__page-navigator">
-                    <li>
-                        <a href="{{url('/')}}">Home</a>
-                    </li>
-                    <li class="active">
-                        <a href="{{url()->current()}}">
-                            {{$pageName}}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="pricing_main_pricing-section section-padding-120">
-        <div class="container">
-            <div class="row text-center justify-content-center">
-                <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10">
-                    <div class="section-heading">
-                        <h2 class="section-heading__title heading-lg ">Our pricing plans are designed for your favor</h2>
-                        <p>
-                            Running a business is already expensive and we understand this. This is why we have made our
-                            pricing to be the lowest in the market while offering you the best solution better than others.
-                        </p>
-                        <div class="home-8_pricing-control-block">
-                            <div class="btn-group">
-                                @foreach($fiats as $fiatss)
-                                    <input type="radio" class="btn-check currency" name="options" id="option{{$fiatss->code}}"
-                                        {{($fiatss->code==$fiat->code)?'checked':''}}
-                                        data-value="{{route('home.pricing',['currency'=>$fiatss->code])}}#plan"/>
-                                    <label class="btn btn-primary" for="option{{$fiatss->code}}">{{$fiatss->code}}</label>
-                                @endforeach
+    <!--
+		=====================================================
+			Pricing Section Six
+		=====================================================
+		-->
+    <div class="pricing-section-six mt-250 xl-mt-200 lg-mt-150">
+        <div class="container lg">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 m-auto m-xl-0 text-center text-xl-start">
+                    <div class="title-eleven">
+                        <h2>Our pricing plans are designed for your favor</h2>
+                    </div>
+                    <p>
+                        Running a business is already expensive and we understand this. This is why we have made our
+                        pricing to be the lowest in the market while offering you the best solution better than others.
+                    </p>
+
+                </div>
+                <div class="col-xl-8">
+                    <div class="tab-content ps-xxl-5">
+                        <div class="tab-pane show active fade" id="monthly" role="tabpanel" aria-labelledby="buy-tab" tabindex="0">
+                            <div class="row">
+                                <div class="col-lg-6 d-flex">
+                                    <div class="pr-column w-100">
+                                        <div class="pr-header text-center mb-25">
+                                            <div class="plane-name">Merchant</div>
+                                            <div class="info1 fs-20">For a limited period, we are offering our listing and storefront solution for free.</div>
+                                            <div class="save-line fs-20 fw-500">Save 100%</div>
+                                            <div class="price">$0<sub>/mo*</sub></div>
+                                            <div class="info2 fs-20">
+                                                {{$fiat->charge}}% + {{$fiat->sign}}{{$fiat->transactionCharge}} per online checkout
+                                                @if($fiat->maxCharge!=0 && !empty($fiat->maxCharge))
+                                                    Capped at {{$fiat->sign}}{{$fiat->maxCharge}}
+                                                @endif <sup><i class="fa fa-info-circle"
+                                                               data-bs-toggle="tooltip" title="Exclusive of payment processor's fees."></i></sup>
+                                            </div>
+
+                                        </div>
+                                        <!-- /.pr-header -->
+                                        <a href="{{ route('mobile.register') }}" class="btn-eleven w-100 d-flex justify-content-between align-items-center">
+                                            Start Now<span class="icon tran3s d-flex align-items-center justify-content-center"><i class="bi bi-chevron-right"></i></span></a>
+                                        <h6>Features</h6>
+                                        <ul class="style-none package-feature">
+                                            <li>Live chat and email support</li>
+                                            <li>Unlimited products</li>
+                                            <li>{{$web->fileUploadAllowed}} Product Photos</li>
+                                            <li>Full store analytics</li>
+                                            <li>24/7 support</li>
+                                            <li>Custom Store-design </li>
+                                            <li>Free SSL Certificate</li>
+                                            <li>Free Website</li>
+                                            <li>Receive Payments in:
+                                                @foreach($fiats as $fiatss)
+                                                    <span class="badge bg-primary">{{$fiatss->code}}</span>
+                                                @endforeach
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- /.pr-column -->
+                                </div>
+
                             </div>
                         </div>
 
                     </div>
+                    <!-- /.tab-content -->
                 </div>
-            </div>
-            <div class="row justify-content-center" data-plan-id="pricing-1" data-plan-active="monthly">
-                <div class="col-xxl-10 col-lg-12 col-md-8 col-sm-10">
-                    <div class=" pricing-card-6">
-                        <div class="pricing-card-6__head" id="plan">
-                            <span class="pricing-card-6__plan">For Merchants</span>
-                            <h2 class="pricing-card-6__price-plan">
-                                <span class="pricing-card-6__price dynamic-value" data-yearly="Free" data-monthly="Free">Free</span>
-                                <span class="pricing-card-6__time dynamic-value" data-yearly="/Per Year" data-monthly="/Per Month">/Per Month</span>
-                            </h2>
-                            <p>
-                                For a limited period, we are offering our listing and storefront solution for free.
-                            </p>
-                        </div>
-                        <div class="pricing-card-6__body">
-                            <h3 class="pricing-card-6__badge">That includes:</h3>
-                            <ul class="pricing-card-6__list">
-                                <li class="pricing-card-6-list-item"><img src="{{asset('home/image/icons/icon-check-purple.svg')}}" alt="image alt" class="icon">
-                                    <span>Live chat and email</span>
-                                </li>
-                                <li class="pricing-card-6-list-item"><img src="{{asset('home/image/icons/icon-check-purple.svg')}}" alt="image alt" class="icon">
-                                    <span>Unlimited products</span>
-                                </li>
-                                <li class="pricing-card-6-list-item"><img src="{{asset('home/image/icons/icon-check-purple.svg')}}" alt="image alt" class="icon">
-                                    <span>{{$web->fileUploadAllowed}} Product Photos</span>
-                                </li>
-                                <li class="pricing-card-6-list-item"><img src="{{asset('home/image/icons/icon-check-purple.svg')}}" alt="image alt" class="icon">
-                                    <span>Full store analytics</span>
-                                </li>
-                                <li class="pricing-card-6-list-item"><img src="{{asset('home/image/icons/icon-check-purple.svg')}}" alt="image alt" class="icon">
-                                    <span>24/7 support centre</span>
-                                </li>
-                                <li class="pricing-card-6-list-item"><img src="{{asset('home/image/icons/icon-check-purple.svg')}}" alt="image alt" class="icon">
-                                    <span>Custom Store-design on-demand</span>
-                                </li>
-                                <li class="pricing-card-6-list-item"><img src="{{asset('home/image/icons/icon-check-purple.svg')}}" alt="image alt" class="icon">
-                                    <span>
-                                        {{$fiat->charge}}% + {{$fiat->sign}}{{$fiat->transactionCharge}} per online checkout
-                                        @if($fiat->maxCharge!=0 && !empty($fiat->maxCharge))
-                                            Capped at {{$fiat->sign}}{{$fiat->maxCharge}}
-                                        @endif
-                                        <sup><i class="fa fa-info-circle"
-                                            data-bs-toggle="tooltip" title="Exclusive of payment processor's fees."></i></sup>
-                                    </span>
-                                </li>
-                            </ul>
-                            <div class="pricing-card-6__button">
-                                <a href="{{route('register')}}" class="btn-masco btn-primary-l08 btn-fill--slide w-100">
-                                    <span>Get Started</span>
-                                </a>
+                <div class="col-md-12 mt-80">
+                    <h3 class="text-center">Looking for our fees structure?</h3>
+                    <div class="row">
+                        <div class="col-lg-12 d-flex mb-40 md-mb-20">
+                            <div class="card-style-two tran3s w-100">
+                                <div class="wrapper tran3s d-flex flex-column h-100 position-relative">
+                                    <div class="d-flex justify-content-between align-items-center mb-160 xl-mb-120 lg-mb-80 position-relative z-1">
+                                        <h3 class="tran3s">Our Full Fee Structure</h3>
+                                        <img src="{{asset('home/mobile/images/shape/shape_08.svg')}}" alt="" class="shapes pointer">
+                                        <div class="icon tran3s rounded-circle d-flex align-items-center justify-content-center"><img src="{{asset('home/mobile/images/icon/icon_07.svg')}}" alt=""></div>
+                                    </div>
+                                    <p class="font-manrope tran3s mt-auto">
+                                        Find the full details about our pricing for receiving payments, withdrawals etc.
+                                    </p>
+                                    <a href="https://xulfashion-know.tawk.help/category/orders-and-payments" target="_blank" class="stretched-link"></a>
+                                </div>
                             </div>
+                            <!-- /.card-style-two -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- /.pricing-section-six -->
+
 
     @push('js')
         <script>
@@ -116,4 +111,5 @@
             });
         </script>
     @endpush
+
 @endsection

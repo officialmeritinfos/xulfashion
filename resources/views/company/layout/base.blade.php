@@ -104,13 +104,13 @@
         Theme Main Menu
     ==============================================
     -->
-    <header class="theme-main-menu menu-style-eight white-vr sticky-menu menu-overlay">
+    <header class="theme-main-menu menu-style-eight  sticky-menu menu-overlay">
         <div class="inner-content gap-one">
             <div class="top-header position-relative">
                 <div class="d-flex align-items-center">
                     <div class="logo order-lg-0 me-auto me-xl-0">
                         <a href="{{ route('home.index') }}" class="d-flex align-items-center">
-                            <img src="{{asset($web->logo2)}}" alt="" style="width: 100px;">
+                            <img src="{{asset($web->logo)}}" alt="" style="width: 100px;">
                         </a>
                     </div>
                     <!-- logo -->
@@ -145,7 +145,7 @@
                             <ul class="navbar-nav align-items-lg-center">
                                 <li class="d-block d-lg-none">
                                     <div class="logo">
-                                        <a href="{{ route('home.index') }}" class="d-block"><img src="{{asset($web->logo2)}}" alt="" style="width: 100px;"></a>
+                                        <a href="{{ route('home.index') }}" class="d-block"><img src="{{asset($web->logo)}}" alt="" style="width: 100px;"></a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -174,11 +174,11 @@
                                        data-bs-auto-close="outside" aria-expanded="false">Businesses
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="blog-v1" class="dropdown-item"><span>Fashion Designers</span></a></li>
-                                        <li><a href="blog-v2" class="dropdown-item"><span>Beauty Entrepreneurs </span></a></li>
-                                        <li><a href="blog-v3" class="dropdown-item"><span>Fashion Schools</span></a></li>
-                                        <li><a href="blog-details" class="dropdown-item"><span>Manufacturers</span></a></li>
-                                        <li><a href="blog-details" class="dropdown-item"><span>Retailers</span></a></li>
+                                        <li><a href="{{ route('home.business.fashion-designer') }}" class="dropdown-item"><span>Fashion Designers</span></a></li>
+                                        <li><a href="{{ route('home.business.beauty-entrepreneurs') }}" class="dropdown-item"><span>Beauty Entrepreneurs </span></a></li>
+                                        <li><a href="{{ route('home.business.fashion-schools') }}" class="dropdown-item"><span>Fashion Schools</span></a></li>
+                                        <li><a href="{{ route('home.business.manufacturers') }}" class="dropdown-item"><span>Manufacturers</span></a></li>
+                                        <li><a href="{{ route('home.business.retailers') }}" class="dropdown-item"><span>Retailers</span></a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -217,31 +217,6 @@
 
 
     @yield('content')
-
-
-
-    <!--
-    =====================================================
-        Fancy Banner Nine
-    =====================================================
-    -->
-    <div class="fancy-banner-nine bg-thirteen position-relative z-1 pt-120 lg-pt-80 pb-120 lg-pb-80 mt-130 lg-mt-80">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-9 m-auto text-center">
-                    <div class="title-ten text-center">
-                        <h2>Get Your Fashion & Beauty <span class="position-relative z-1">Business Discovered<span class="line" style="background: #FF5B00;"></span></span> Today with
-                            {{$siteName}}.</h2>
-                    </div>
-                    <p class="fs-28 mt-30 mb-50 lg-mb-30">Try {{$siteName}} risk-free — no hidden charges, no cancellation fees.</p>
-                    <a href="{{route('home.download')}}" class="btn-five color-two tran3s">Let’s Get Started</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.fancy-banner-nine -->
-
-
 
 
 
@@ -364,6 +339,16 @@
             s1.setAttribute('crossorigin','*');
             s0.parentNode.insertBefore(s1,s0);
         })();
+    </script>
+    <script>
+        $(function (){
+            window.Tawk_API.onLoad = function() {
+                window.Tawk_API.hideWidget();
+            }
+        });
+        $('.startChat').on('click',function (){
+            window.Tawk_API.popup();
+        })
     </script>
     <!--End of Tawk.to Script-->
     @include('genericJs')
