@@ -49,8 +49,8 @@
             <div class="qu_schedule_content">
                 <h2>Get the visibility your business needs. </h2>
                 <div class="d-flex mt-5">
-                    <a href="{{route('register')}}" class="theme_btn hover_effect">Try it for free </a>
-                    <a href="{{route('marketplace.index')}}" class="theme_btn_two border_btn hover_effect">See how it looks <i
+                    <a href="{{route('mobile.register')}}" class="theme_btn hover_effect">Try it for free </a>
+                    <a href="{{route('mobile.marketplace.index')}}" class="theme_btn_two border_btn hover_effect">See how it looks <i
                             class="ti-arrow-right"></i></a>
                 </div>
             </div>

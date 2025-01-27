@@ -100,9 +100,9 @@ class Home extends BaseController
     }
     public function downloadIos()
     {
-//        if (!getMobileType()->isiOS()){
-//            return redirect()->route('home.download');
-//        }
+        if (!getMobileType()->isiOS()){
+            return redirect()->route('home.download');
+        }
         $web = GeneralSetting::find(1);
         return view('company.download-ios')->with([
             'pageName'      =>'Download the app',

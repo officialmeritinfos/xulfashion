@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Company\BusinessesController;
 use App\Http\Controllers\Company\Home;
 use App\Http\Controllers\Company\LegalController;
+use App\Http\Controllers\Company\SolutionsController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,21 +19,21 @@ Route::get('pricing',[Home::class,'pricing'])->name('pricing');
 Route::get('download-page',[Home::class,'download'])->name('download');
 Route::get('download-ios',[Home::class,'downloadIos'])->name('download.ios');
 /*================================ SOLUTIONS CONTROLLER ==============================*/
-Route::get('solutions/sell-online',[Home::class,'download'])->name('solutions.sell-online');
-Route::get('solutions/invoice',[Home::class,'download'])->name('solutions.invoice');
-Route::get('solutions/inventory',[Home::class,'download'])->name('solutions.inventory');
-Route::get('solutions/pos',[Home::class,'download'])->name('solutions.pos');
-Route::get('solutions/payments',[Home::class,'download'])->name('solutions.payments');
-Route::get('solutions/booking',[Home::class,'download'])->name('solutions.booking');
-Route::get('solutions/listing',[Home::class,'download'])->name('solutions.listing');
-Route::get('solutions/events',[Home::class,'download'])->name('solutions.events');
-Route::get('solutions/academy',[Home::class,'download'])->name('solutions.academy');
+Route::get('solutions/sell-online',[SolutionsController::class,'sellOnline'])->name('solutions.sell-online');
+Route::get('solutions/invoice',[SolutionsController::class,'invoiceManagement'])->name('solutions.invoice');
+Route::get('solutions/inventory',[SolutionsController::class,'inventory'])->name('solutions.inventory');
+Route::get('solutions/pos',[SolutionsController::class,'pointOfSale'])->name('solutions.pos');
+Route::get('solutions/payments',[SolutionsController::class,'payments'])->name('solutions.payments');
+Route::get('solutions/booking',[SolutionsController::class,'bookingSolution'])->name('solutions.booking');
+Route::get('solutions/listing',[SolutionsController::class,'businessListing'])->name('solutions.listing');
+Route::get('solutions/events',[SolutionsController::class,'eventManagement'])->name('solutions.events');
+Route::get('solutions/academy',[SolutionsController::class,'academy'])->name('solutions.academy');
 /*================================ BUSINESSES CONTROLLER ==============================*/
-Route::get('business/fashion-designer',[Home::class,'download'])->name('business.fashion-designer');
-Route::get('business/beauty-entrepreneurs',[Home::class,'download'])->name('business.beauty-entrepreneurs');
-Route::get('business/fashion-schools',[Home::class,'download'])->name('business.fashion-schools');
-Route::get('business/manufacturers',[Home::class,'download'])->name('business.manufacturers');
-Route::get('business/retailers',[Home::class,'download'])->name('business.retailers');
+Route::get('business/fashion-designer',[BusinessesController::class,'fashionDesigners'])->name('business.fashion-designer');
+Route::get('business/beauty-entrepreneurs',[BusinessesController::class,'beautyEntrepreneur'])->name('business.beauty-entrepreneurs');
+Route::get('business/fashion-schools',[BusinessesController::class,'fashionSchool'])->name('business.fashion-schools');
+Route::get('business/manufacturers',[BusinessesController::class,'manufacturers'])->name('business.manufacturers');
+Route::get('business/retailers',[BusinessesController::class,'retailers'])->name('business.retailers');
 
 /*================================ RESOURCES CONTROLLER ==============================*/
 Route::get('resources/faq',[Home::class,'faq'])->name('faq');

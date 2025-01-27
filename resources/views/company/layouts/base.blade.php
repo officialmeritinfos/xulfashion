@@ -89,8 +89,8 @@
                     </li>
                 </ul>
                 <div class="nav_right">
-                    <a href="{{route('login')}}" class="login_btn">Login</a>
-                    <a href="{{route('register')}}" class="signup_btn hover_effect">Sign up for free</a>
+                    <a href="{{route('mobile.login')}}" class="login_btn">Login</a>
+                    <a href="{{route('mobile.register')}}" class="signup_btn hover_effect">Sign up for free</a>
                 </div>
             </div>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
@@ -141,9 +141,9 @@
                         <div class="f_widget f_link_widget">
                             <h3 class="f_title f_title_dark">Solution</h3>
                             <ul class="list-unstyled link_widget dark_link">
-                                <li><a href="{{route('home.features')}}">Store-front</a></li>
-                                <li><a href="{{route('home.features')}}">Booking</a></li>
-                                <li><a href="{{route('home.features')}}">Offline Sales</a></li>
+                                <li><a href="{{route('home.solutions.sell-online')}}">Store-front</a></li>
+                                <li><a href="{{route('home.solutions.booking')}}">Booking</a></li>
+                                <li><a href="{{route('home.solutions.pos')}}">Offline Sales</a></li>
                             </ul>
                         </div>
                         <div class="f_widget f_link_widget">
@@ -193,6 +193,16 @@
         s1.setAttribute('crossorigin','*');
         s0.parentNode.insertBefore(s1,s0);
     })();
+</script>
+<script>
+    $(function (){
+        window.Tawk_API.onLoad = function() {
+            window.Tawk_API.hideWidget();
+        }
+    });
+    $('.startChat').on('click',function (){
+        window.Tawk_API.popup();
+    })
 </script>
 <!--End of Tawk.to Script-->
 @include('basicInclude')
