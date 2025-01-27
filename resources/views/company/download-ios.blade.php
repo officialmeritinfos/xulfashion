@@ -11,14 +11,18 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-7">
-                        <h1 class="hero-heading wow fadeInUp pe-xxl-5">Designed for  <span>Fashion,</span> Built for You</h1>
+                        <h1 class="hero-heading wow fadeInUp pe-xxl-5">Download the  <span>{{$siteName}},</span> app on iOS</h1>
                         <p class="fs-24 pt-35 pb-20 pe-xxl-5 wow fadeInUp" data-wow-delay="0.1s">
-                            The {{$siteName}} app gives you the power to grow your business, connect with customers, and
-                            create your unique fashion journey—all from your fingertips.
+                            The {{$siteName}} iOS app gives you the power to grow your business, connect with customers, and
+                            create your unique fashion journey—all from your fingertips.<br/>
+                            Click the button below and follow the instruction to add the {{$siteName}} to your device, and
+                            enjoy {{$siteName}} on the go.
                         </p>
 
                         <div class="d-flex align-items-center flex-wrap wow fadeInUp" data-wow-delay="0.2s">
-                            <button href="#" class="btn-seven color-two mt-10 me-3 install-client-btn">Download - It’s free</button>
+                            <button id="install-ios" class="btn-seven color-two mt-10 me-3 install-ios-app">
+                                How to add to screen
+                            </button>
                             <a class="btn-sixteen mt-10" href="{{ route('mobile.app.base') }}" target="_blank">Use Web</a>
                         </div>
 
@@ -150,5 +154,57 @@
 
 
 
+    @push('js')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const isIos = () => {
+                    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                };
+
+                const isInStandaloneMode = () => {
+                    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+                };
+
+                // Function to show the prompt
+                const showAddToHomePrompt = () => {
+                    if (isIos() && !isInStandaloneMode()) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "info",
+                            title: "Add {{$siteName}} to Your Home Screen",
+                            html: `
+            <p>Follow these steps to add {{$siteName}} to your home screen:</p>
+            <ol style="text-align: left; margin: 10px 0 0 20px;">
+                <li>Tap the <strong>Share</strong> icon at the bottom of your Safari browser.</li>
+                <li>Select <strong>Add to Home Screen</strong> from the list of options.</li>
+                <li>Confirm by tapping <strong>Add</strong>.</li>
+            </ol>
+            <p>Once added, you can access {{$siteName}} directly from your home screen.</p>
+        `,
+                            showCloseButton: true,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 5000,
+                            title: "Oops...",
+                            text: "This feature is available only for iOS devices and Safari.",
+                            footer: '<a href="{{route('home.download')}}">Go to alternative page</a>'
+                        });
+                    }
+                };
+
+                // Add event listener for the button
+                const addToHomeButton = document.getElementById('install-ios');
+                if (addToHomeButton) {
+                    addToHomeButton.addEventListener('click', showAddToHomePrompt);
+                }
+            });
+
+        </script>
+    @endpush
 
 @endsection

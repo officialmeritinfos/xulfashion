@@ -12,6 +12,11 @@
     <!-- Windows Phone -->
     <meta name="msapplication-navbutton-color" content="#0D1A1C">
     <!-- iOS Safari -->
+    <link rel="apple-touch-icon" href="{{asset($web->favicon)}}">
+    <meta name="apple-mobile-web-app-title" content="{{$siteName}}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
     <meta name="apple-mobile-web-app-status-bar-style" content="#0D1A1C">
     <link rel="canonical" href="{{url('/')}}">
     <meta name="robots" content="index, follow">

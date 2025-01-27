@@ -1,4 +1,5 @@
-@if(getMobileType()->isAndroidOS())
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(getMobileType()->isAndroidOS() || getMobileType()->isDesktop())
     <div class="install-prompt" id="install-prompt">
         <!-- App Icon -->
         <img src="{{asset('home/image/xulfashion_client.png')}}" alt="App Icon">
@@ -11,27 +12,6 @@
         </div>
         <!-- Install Button -->
         <button id="install-client-btn" class="install-btn install-client-btn">Get the App</button>
-    </div>
-@elseif(getMobileType()->isiOS())
-    <div class="container mt-4 install-prompt" id="install-prompt">
-        <button class="btn btn-info floating-btn" type="button" data-bs-toggle="collapse" data-bs-target="#install-info" aria-expanded="false" aria-controls="install-info">
-            <i class="fas fa-info-circle"></i> How to Install the App on iOS
-        </button>
-
-        <!-- Collapsible Section for Instructions -->
-        <div class="collapse mt-3" id="install-info">
-            <div class="alert alert-info">
-                <h5 class="alert-heading">Install This App
-                    <i class="fas fa-times collapse-icon" data-bs-toggle="collapse" data-bs-target="#install-info"></i> <!-- Close icon -->
-                </h5>
-                <p class="mb-0">To install this app on your iPhone or iPad:</p>
-                <ol class="pl-3">
-                    <li>Tap the <strong>Share</strong> button at the bottom of the Safari browser.</li>
-                    <li>Select <strong>Add to Home Screen</strong>.</li>
-                    <li>Confirm by tapping <strong>Add</strong> on the top-right corner.</li>
-                </ol>
-            </div>
-        </div>
     </div>
 @endif
 <script>
@@ -86,21 +66,24 @@
     });
 
     // Handle the click event for the Marketplace install button
-    document.getElementById('install-client-btn').addEventListener('click', () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt(); // Show the install prompt
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the Marketplace install prompt');
-                } else {
-                    console.log('User dismissed the Marketplace install prompt');
-                }
-                deferredPrompt = null; // Reset the prompt so it can’t be used again
-            });
-        } else {
-            console.log('Marketplace install prompt not available');
-        }
+    document.querySelectorAll('.install-client-btn').forEach((button) => {
+        button.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Show the install prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the Marketplace install prompt');
+                    } else {
+                        console.log('User dismissed the Marketplace install prompt');
+                    }
+                    deferredPrompt = null; // Reset the prompt so it can’t be used again
+                });
+            } else {
+                console.log('Marketplace install prompt not available');
+            }
+        });
     });
+
 
     // Function to display the update notification
     function showUpdateNotification() {
@@ -190,11 +173,7 @@
     .install-prompt .stars {
         font-size: 14px;
     }
-    @media only screen and (min-width: 769px) {
-        .install-prompt {
-            display: none;
-        }
-    }
+
     .floating-btn {
         position: fixed;
         bottom: 20px;
