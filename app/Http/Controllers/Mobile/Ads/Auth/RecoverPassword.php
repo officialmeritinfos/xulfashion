@@ -57,7 +57,7 @@ class RecoverPassword extends BaseController
             // ✅ Validate Request
             $validator = Validator::make($request->all(), [
                 'email' => ['required', 'email', 'exists:users,email'],
-                'g-recaptcha-response' => ['nullable', new ReCaptcha]
+                'g-recaptcha-response' => ['required', new ReCaptcha]
             ],[],[
                 'g-recaptcha-response' => "Recaptcha"
             ])->stopOnFirstFailure();

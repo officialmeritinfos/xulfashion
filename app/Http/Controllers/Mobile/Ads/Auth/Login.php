@@ -62,7 +62,7 @@ class Login extends BaseController
                 'email' => ['required', 'email', 'exists:users,email'],
                 'password' => ['required', Password::min(8)->uncompromised(1)],
                 'remember' => ['nullable', 'integer'],
-                'g-recaptcha-response' => ['nullable', new ReCaptcha]
+                'g-recaptcha-response' => ['required', new ReCaptcha]
             ],[],['g-recaptcha-response'=>'Recaptcha'])->stopOnFirstFailure();
 
             if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);

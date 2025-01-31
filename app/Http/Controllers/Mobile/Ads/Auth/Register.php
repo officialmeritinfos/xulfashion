@@ -82,7 +82,7 @@ class Register extends BaseController
                 'username' => ['required', 'alpha_num', 'unique:users,username'],
                 'password' => ['required', Password::min(8)],
                 'password_confirmation' => ['required', 'same:password'],
-                'g-recaptcha-response' => ['nullable', new ReCaptcha],
+                'g-recaptcha-response' => ['required', new ReCaptcha],
                 'referral' => ['nullable', 'string', 'exists:users,username'],
             ], [
                 'email.unique' => 'User already exists with this email. Please login instead.',
