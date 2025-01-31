@@ -71,7 +71,7 @@
             <div class="form-group">
                 <label for="inputusername" class="form-label">Code</label>
                 <div class="form-input mb-4">
-                    <input type="text" class="form-control" id="inputusername" placeholder="Enter verification Code" name="code"/>
+                    <input type="number" class="form-control" id="inputusername" placeholder="Enter verification Code" name="code"/>
                     <i class="iconsax icons" data-icon="mail"></i>
                 </div>
             </div>
@@ -102,7 +102,7 @@
         </div>
         <div class="col-12 mt-3 text-white mb-3">
             <p class="create">Did not receive the mail?
-                <a data-url="{{ route('mobile.auth.passwordRecover.resend') }}" class="submitResend">Resend</a>
+                <span data-url="{{ route('mobile.auth.passwordRecover.resend') }}" class="submitResend">Resend</span>
             </p>
         </div>
     </form>

@@ -2,6 +2,9 @@
 
 namespace App\Notifications;
 
+use App\Models\UserActivity;
+use App\Models\UserNotification;
+use App\Models\UserSetting;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -41,6 +44,23 @@ class PasswordChanged extends Notification
      */
     public function toMail($notifiable)
     {
+        $settings = UserSetting::where('user',$this->user->id)->first();
+        if ($settings && $settings->notifications==1){
+            UserNotification::create([
+                'user' => $this->user->id,
+                'title' => 'Account Password Change',
+                'content' => 'Your account password has been changed.',
+                'status' => 2,
+            ]);
+        }
+
+        UserActivity::create([
+            'user' => $this->user->id,
+            'content' => 'Your account password has been changed.',
+            'title' => 'Account Password Change',
+            'status' => 2
+        ]);
+
         return (new MailMessage)
             ->subject('Account Password Changed')
             ->greeting('Hello '.$this->user->name)
