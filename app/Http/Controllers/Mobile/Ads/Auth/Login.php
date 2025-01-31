@@ -50,8 +50,14 @@ class Login extends BaseController
             // Rate limiting to prevent brute-force
             $key = 'login-attempts-' . $request->ip();
 
-            if (RateLimiter::tooManyAttempts($key, 5)) {
-                return $this->sendError('login.error',['error'=>'Too many attempts. Try again later.']);
+            // Check if the user has exceeded the limit
+            $allowed = RateLimiter::attempt($key, 5, function () {
+                return false;
+            }, 600);
+
+            // Apply Rate Limiting (Max 5 attempts per 10 minutes)
+            if (!$allowed) {
+                return $this->sendError('rate.limit', ['error' => 'Too many sing-in attempts. Try again in 10 minutes.']);
             }
 
             $validator = Validator::make($request->all(), [
@@ -67,7 +73,7 @@ class Login extends BaseController
 
             // Check if password is correct
             if (!Hash::check($input['password'], $user->password)) {
-                RateLimiter::hit($key, 60);
+
                 return $this->sendError('authentication.error', ['error' => 'Email and Password combination is incorrect']);
             }
             // Check if account is active
@@ -131,7 +137,7 @@ class Login extends BaseController
                 return redirect()->route('mobile.login')->with('error', 'User not found. Please log in again.');
             }
 
-            return view('mobile.ads.auth.two_factor', [
+            return view('mobile.ads.auth.two_factor')->with([
                 'pageName' => 'Login Authorization',
                 'siteName' => GeneralSetting::find(1)->name,
                 'web'      => GeneralSetting::find(1),
@@ -167,8 +173,15 @@ class Login extends BaseController
 
             // Apply rate limiting to prevent brute-force attacks (Max 5 attempts per 10 minutes)
             $rateLimitKey = '2fa-attempts-' . $user->id;
-            if (RateLimiter::tooManyAttempts($rateLimitKey, 5)) {
-                return $this->sendError('rate.limit', ['error' => 'Too many incorrect attempts. Try again in 10 minutes.']);
+
+            // Check if the user has exceeded the limit
+            $allowed = RateLimiter::attempt($rateLimitKey, 5, function () {
+                return false;
+            }, 600);
+
+            // Apply Rate Limiting (Max 5 attempts per 10 minutes)
+            if (!$allowed) {
+                return $this->sendError('rate.limit', ['error' => 'Too many attempts. Try again in 10 minutes.']);
             }
 
             // Validate request
@@ -193,13 +206,11 @@ class Login extends BaseController
 
             // Check if token is expired
             if (Carbon::parse($codeExists->created_at)->add($web->codeExpire)->isPast()) {
-                RateLimiter::hit($rateLimitKey, 600);
                 return $this->sendError('token.error', ['error' => 'Token expired. Request a new one.']);
             }
 
             // Verify token
             if (!Hash::check($input['code'], $codeExists->token)) {
-                RateLimiter::hit($rateLimitKey, 600);
                 return $this->sendError('token.error', ['error' => 'Invalid token entered.']);
             }
 

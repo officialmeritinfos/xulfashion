@@ -69,22 +69,28 @@ const loginRequest=function (){
                     let errorMessage = "An unexpected error occurred. Please try again."; // Default error message
 
                     if (jqXHR.responseJSON) {
-                        // If it's a validation error
-                        if (jqXHR.responseJSON.errors) {
-                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>'); // Convert object to readable string
+                        // Extract the correct error message
+                        if (jqXHR.responseJSON.message) {
+                            errorMessage = jqXHR.responseJSON.message; // Now correctly extracts the error
                         }
-                        // If it's a general API error response
-                        else if (jqXHR.responseJSON.message) {
-                            errorMessage = jqXHR.responseJSON.message;
+                        else if (jqXHR.responseJSON.errors) {
+                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>'); // Handles validation errors
                         }
-                        // If your API uses `data.error`
                         else if (jqXHR.responseJSON.data && jqXHR.responseJSON.data.error) {
-                            errorMessage = jqXHR.responseJSON.data.error;
+                            errorMessage = jqXHR.responseJSON.data.error; // Handles errors inside "data"
                         }
                     }
-                    // Handle non-JSON responses (e.g., HTML error pages)
-                    else if (jqXHR.responseText) {
-                        errorMessage = jqXHR.responseText;
+                    // Handle non-JSON responses (Avoids displaying raw HTML error pages)
+                    else if (jqXHR.responseText && jqXHR.responseText.trim().startsWith("{")) {
+                        try {
+                            let errorResponse = JSON.parse(jqXHR.responseText);
+                            if (errorResponse.message) {
+                                errorMessage = errorResponse.message;
+                            }
+                        } catch (e) {
+                            // Fallback if JSON parsing fails
+                            errorMessage = "Unable to proceed";
+                        }
                     }
 
                     // Display error message in Toastr
@@ -95,6 +101,7 @@ const loginRequest=function (){
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
                 }
+
             });
         });
     }

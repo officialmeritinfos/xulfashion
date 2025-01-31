@@ -52,27 +52,39 @@ const registerRequest=function (){
                     let errorMessage = "An unexpected error occurred. Please try again."; // Default error message
 
                     if (jqXHR.responseJSON) {
-                        if (jqXHR.responseJSON.errors) {
-                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>'); // Convert object to readable string
-                        }
-                        else if (jqXHR.responseJSON.message) {
-                            errorMessage = jqXHR.responseJSON.message;
-                        }
-                        else if (jqXHR.responseJSON.data && jqXHR.responseJSON.data.error) {
+                        // If API returned `data.error`, extract it (fixes the issue)
+                        if (jqXHR.responseJSON.data && jqXHR.responseJSON.data.error) {
                             errorMessage = jqXHR.responseJSON.data.error;
                         }
+                        // If validation errors exist, format them correctly
+                        else if (jqXHR.responseJSON.errors) {
+                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>');
+                        }
+                        // If a general error message exists in `message`, use it
+                        else if (jqXHR.responseJSON.message && jqXHR.responseJSON.message !== "validation.error") {
+                            errorMessage = jqXHR.responseJSON.message;
+                        }
                     }
-                    // Handle non-JSON responses (e.g., 500 Internal Server Error with HTML output)
-                    else if (jqXHR.responseText) {
-                        errorMessage = jqXHR.responseText;
+                    // Handle non-JSON responses (Avoids displaying raw HTML error pages)
+                    else if (jqXHR.responseText && jqXHR.responseText.trim().startsWith("{")) {
+                        try {
+                            let errorResponse = JSON.parse(jqXHR.responseText);
+                            if (errorResponse.message) {
+                                errorMessage = errorResponse.message;
+                            }
+                        } catch (e) {
+                            // Fallback if JSON parsing fails
+                        }
                     }
                     // Display error message in Toastr
                     toastr.error(errorMessage);
+
                     // Re-enable form inputs and hide loading overlay
                     $("#registration :input").prop("readonly", false);
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
                 }
+
             });
         });
     }

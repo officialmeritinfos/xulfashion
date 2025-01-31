@@ -33,18 +33,23 @@ class Register extends BaseController
     {
         if ($request->has('ref')){
             //let us store it for future purpose
-            Cache::put('ref',$request->get('ref'),now()->addDays(30));
+            $ref = $request->ref;
+        }else{
+            $ref = null;
         }
-        $web = GeneralSetting::find(1);
 
-        return view('auth.register')->with([
-           'web'        =>$web,
-           'siteName'   =>$web->name,
-           'pageName'   =>'Sign up for an account',
-            'countries' =>Country::where('status',1)->get(),
-            'fiats'     =>Fiat::where('status',1)->get(),
-            'referral'=>(Cache::has('ref'))?Cache::get('ref'):$request->get('ref'),
-        ]);
+        return redirect()->route('mobile.register', ['ref' => $ref]);
+
+//        $web = GeneralSetting::find(1);
+//
+//        return view('auth.register')->with([
+//           'web'        =>$web,
+//           'siteName'   =>$web->name,
+//           'pageName'   =>'Sign up for an account',
+//            'countries' =>Country::where('status',1)->get(),
+//            'fiats'     =>Fiat::where('status',1)->get(),
+//            'referral'=>(Cache::has('ref'))?Cache::get('ref'):$request->get('ref'),
+//        ]);
     }
     //process form
     public function processRegistration(Request $request)

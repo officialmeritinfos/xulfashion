@@ -27,9 +27,9 @@
             </div>
             <button class="btn auth-btn w-100 submit" role="button">Verify</button>
         </form>
-        <div class="col-12 mt-3 text-white mb-3">
+        <div class="col-12 mt-3 text-white mb-5">
             <p class="create">Did not receive the mail?
-                <span data-url="{{ route('auth.email.resend') }}" class="submitResend">Resend</span>
+                <span data-url="{{ route('mobile.auth.email.resend') }}" class="submitResend">Resend</span>
             </p>
         </div>
     </div>
@@ -86,10 +86,41 @@
                         },
                         error:function (jqXHR, textStatus, errorThrown){
                             toastr.options = {
-                                "closeButton" : true,
-                                "progressBar" : true
+                                "closeButton": true,
+                                "progressBar": true,
+                                "positionClass": "toast-top-full-width"
+                            };
+
+                            let errorMessage = "An unexpected error occurred. Please try again."; // Default error message
+
+                            if (jqXHR.responseJSON) {
+                                // If API returned `data.error`, extract it (fixes the issue)
+                                if (jqXHR.responseJSON.data && jqXHR.responseJSON.data.error) {
+                                    errorMessage = jqXHR.responseJSON.data.error;
+                                }
+                                // If validation errors exist, format them correctly
+                                else if (jqXHR.responseJSON.errors) {
+                                    errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>');
+                                }
+                                // If a general error message exists in `message`, use it
+                                else if (jqXHR.responseJSON.message && jqXHR.responseJSON.message !== "validation.error") {
+                                    errorMessage = jqXHR.responseJSON.message;
+                                }
                             }
-                            toastr.error(jqXHR.responseJSON.data.error);
+                            // Handle non-JSON responses (Avoids displaying raw HTML error pages)
+                            else if (jqXHR.responseText && jqXHR.responseText.trim().startsWith("{")) {
+                                try {
+                                    let errorResponse = JSON.parse(jqXHR.responseText);
+                                    if (errorResponse.message) {
+                                        errorMessage = errorResponse.message;
+                                    }
+                                } catch (e) {
+                                    // Fallback if JSON parsing fails
+                                }
+                            }
+                            // Display error message in Toastr
+                            toastr.error(errorMessage);
+
                             $("#registration :input").prop("readonly", false);
                             $('.submit').attr('disabled', false);
                             $(".submit").LoadingOverlay("hide");

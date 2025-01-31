@@ -31,18 +31,22 @@ class Login extends BaseController
     {
         $web = GeneralSetting::find(1);
 
-        //check if session is active and redirect to dashboard
-        if (\auth()->check()){
-            $user = \auth()->user();
-            $url =  $this->userDashboard($user);
-            return redirect()->to($url);
-        }
 
-        return view('auth.login')->with([
-            'web'        =>$web,
-            'siteName'   =>$web->name,
-            'pageName'   =>'Login to your account',
-        ]);
+
+        //check if session is active and redirect to dashboard
+//        if (\auth()->check()){
+//            $user = \auth()->user();
+//            $url =  $this->userDashboard($user);
+//            return redirect()->to($url);
+//        }
+//
+//        return view('auth.login')->with([
+//            'web'        =>$web,
+//            'siteName'   =>$web->name,
+//            'pageName'   =>'Login to your account',
+//        ]);
+
+        return redirect()->route('mobile.login');
     }
     //profess form
     public function processLogin(Request $request)

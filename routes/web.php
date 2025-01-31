@@ -192,7 +192,7 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::post('register/email-verification/process', [Register::class, 'processEmailVerification'])
                 ->name('auth.email');
             Route::post('register/email-verification/resend', [Register::class, 'resendVerificationMail'])
-                ->name('auth.email.resend')->middleware(['throttle:token-resend']);
+                ->name('auth.email.resend');
 
             //Two-factor authentication
             Route::get('login/login-verification', [Login::class, 'twoFactorAuthentication'])
@@ -200,7 +200,7 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::post('login/login-verification/process', [Login::class, 'processTwoFactor'])
                 ->name('auth.twoFactor');
             Route::post('register/login-verification/resend', [Login::class, 'resendVerificationMail'])
-                ->name('auth.twoFactor.resend')->middleware(['throttle:token-resend']);
+                ->name('auth.twoFactor.resend');
 
             //Password Reset authentication
             Route::get('recover-password/email-verification',[RecoverPassword::class,'requestVerificationPage'])
@@ -208,7 +208,7 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::post('recover-password/email-verification/process',[RecoverPassword::class,'processVerificationCode'])
                 ->name('auth.recovery');
             Route::post('recover/recovery-verification/resend', [RecoverPassword::class, 'resendVerificationMail'])
-                ->name('auth.passwordRecover.resend')->middleware(['throttle:token-resend']);
+                ->name('auth.passwordRecover.resend');
 
         });
         //USER ACCOUNT ROUTE MOBILE

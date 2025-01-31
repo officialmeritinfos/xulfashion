@@ -69,20 +69,13 @@ const recoveryRequest=function (){
                     let errorMessage = "An unexpected error occurred. Please try again."; // Default error message
 
                     if (jqXHR.responseJSON) {
-                        // If Laravel validation errors exist (422 Unprocessable Entity)
-                        if (jqXHR.responseJSON.errors) {
-                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>'); // Convert object to readable string
-                        }
-                        // If a general error message
-                        else if (jqXHR.responseJSON.message) {
+                        if (jqXHR.responseJSON.message) {
                             errorMessage = jqXHR.responseJSON.message;
                         }
-                        // If your API uses `data.error`
-                        else if (jqXHR.responseJSON.data && jqXHR.responseJSON.data.error) {
-                            errorMessage = jqXHR.responseJSON.data.error;
+                        else if (jqXHR.responseJSON.errors) {
+                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>');
                         }
                     }
-                    // Handle non-JSON responses (e.g., 500 Internal Server Error with HTML output)
                     else if (jqXHR.responseText) {
                         errorMessage = jqXHR.responseText;
                     }
