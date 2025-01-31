@@ -15,7 +15,7 @@ class Authenticate extends Middleware
     {
         $agent = new Agent();
 
-        $route = ($agent->isMobile())?route('mobile.login'):route('login');
+        $route = ($agent->isMobile())?route('mobile.login'):route('mobile.login');
 
         return $request->expectsJson() ? null : $route;
     }

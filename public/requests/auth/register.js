@@ -42,17 +42,37 @@ const registerRequest=function (){
                         }, 5000);
                     }
                 },
-                error:function (jqXHR, textStatus, errorThrown){
+                error: function (jqXHR, textStatus, errorThrown) {
                     toastr.options = {
-                        "closeButton" : true,
-                        "progressBar" : true,
+                        "closeButton": true,
+                        "progressBar": true,
                         "positionClass": "toast-top-full-width"
+                    };
+
+                    let errorMessage = "An unexpected error occurred. Please try again."; // Default error message
+
+                    if (jqXHR.responseJSON) {
+                        if (jqXHR.responseJSON.errors) {
+                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>'); // Convert object to readable string
+                        }
+                        else if (jqXHR.responseJSON.message) {
+                            errorMessage = jqXHR.responseJSON.message;
+                        }
+                        else if (jqXHR.responseJSON.data && jqXHR.responseJSON.data.error) {
+                            errorMessage = jqXHR.responseJSON.data.error;
+                        }
                     }
-                    toastr.error(jqXHR.responseJSON.data.error);
+                    // Handle non-JSON responses (e.g., 500 Internal Server Error with HTML output)
+                    else if (jqXHR.responseText) {
+                        errorMessage = jqXHR.responseText;
+                    }
+                    // Display error message in Toastr
+                    toastr.error(errorMessage);
+                    // Re-enable form inputs and hide loading overlay
                     $("#registration :input").prop("readonly", false);
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
-                },
+                }
             });
         });
     }

@@ -49,6 +49,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 /*===============================ACCOUNT PROCESSING================================*/
 Route::post('account/fund',[Account::class,'fundAccount'])
     ->name('account.fund');
@@ -170,21 +171,21 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
 
 
         //Registration & Login as User
-        //REGISTRATION
-        Route::get('register',[Register::class,'landingPage'])->name('register');
-        Route::post('register/process',[Register::class,'processRegistration'])
-            ->name('register.process');
-        //LOGIN
-        Route::get('login',[Login::class,'landingPage'])->name('login');
-        Route::post('login/process',[Login::class,'processLogin'])->name('login.process');
-        //FORGOTTEN PASSWORD
-        Route::get('recover-password',[RecoverPassword::class,'landingPage'])
-            ->name('recoverPassword');
-        Route::post('recover-password/process',[RecoverPassword::class,'processPasswordRecovery'])
-            ->name('recover.process');
+        Route::middleware(['web'])->group(function () {
+            //REGISTRATION
+            Route::get('register',[Register::class,'landingPage'])->name('register');
+            Route::post('register/process',[Register::class,'processRegistration'])
+                ->name('register.process');
+            //LOGIN
+            Route::get('login',[Login::class,'landingPage'])->name('login');
+            Route::post('login/process',[Login::class,'processLogin'])->name('login.process');
+            //FORGOTTEN PASSWORD
+            Route::get('recover-password',[RecoverPassword::class,'landingPage'])
+                ->name('recoverPassword');
+            Route::post('recover-password/process',[RecoverPassword::class,'processPasswordRecovery'])
+                ->name('recover.process');
 
 
-        Route::middleware(['web','auth'])->group(function () {
             //Email verification
             Route::get('register/email-verification', [Register::class, 'emailVerification'])
                 ->name('email-verification');

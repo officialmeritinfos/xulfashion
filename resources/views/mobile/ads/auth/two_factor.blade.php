@@ -27,11 +27,11 @@
             </div>
             <button class="btn auth-btn w-100 submit" role="button">Verify</button>
         </form>
-        <div class="col-12 mt-3 text-white mb-3">
-            <p class="create">Did not receive the mail?
-                <span data-url="{{ route('mobile.auth.twoFactor.resend') }}" class="submitResend">Resend</span>
-            </p>
+        <div class="col-12 d-flex justify-content-between align-items-center text-white mb-4 mt-4">
+            <p class="create mb-0">No email? <span data-url="{{ route('mobile.auth.twoFactor.resend') }}" class="submitResend">Resend</span></p>
+            <p class="back-to-login mb-0">Back to  <a href="{{ route('mobile.login') }}">Login</a></p>
         </div>
+
     </div>
     <!-- otp section end -->
 
@@ -80,7 +80,6 @@
                                 setTimeout(function(){
                                     $('.submitResend').attr('disabled', false);
                                     $(".submitResend").LoadingOverlay("hide");
-                                    // window.location.replace(data.data.redirectTo)
                                 }, 30000);
                             }
                         },

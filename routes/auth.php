@@ -14,7 +14,7 @@ Route::post('register/process',[Register::class,'processRegistration'])
     ->name('auth.register');
 
 /*========== ACCOUNT LOGIN ======================*/
-Route::get('login',[Login::class,'landingPage'])
+Route::get('mobile/app/login',[Login::class,'landingPage'])
     ->name('login');
 Route::post('login/process',[Login::class,'processLogin'])
     ->name('auth.login');
