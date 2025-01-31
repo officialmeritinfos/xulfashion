@@ -34,27 +34,31 @@
                     <ul class="profile-list">
                         @if(!empty($web->phone))
                             <!-- Email Card -->
-                            <li class="col-12 mb-3 cpy" data-clipboard-text="{{$web->phone}}">
+                            <li class="col-12 mb-3 copy" data-clipboard-text="{{$web->phone}}">
                                 <span class="profile-box">
                                     <div class="profile-img">
                                         <i class="iconsax icon" data-icon="phone"></i>
                                     </div>
                                     <div class="profile-details">
                                         <h4>Call Support</h4>
-                                        <p class="mb-0">Click to copy</p>
+                                        <p class="mb-0">
+                                            {{$web->phone}}
+                                        </p>
                                     </div>
                                 </span>
                             </li>
                         @endif
                         <!-- Email Card -->
-                        <li class="col-12 mb-3 cpy" data-clipboard-text="{{$web->supportEmail}}">
+                        <li class="col-12 mb-3">
                             <span class="profile-box">
                                 <div class="profile-img">
                                     <i class="iconsax icon" data-icon="mail"></i>
                                 </div>
                                 <div class="profile-details">
                                     <h4>Email Support</h4>
-                                    <p class="mb-0">Click to copy</p>
+                                    <p class="mb-0">
+                                        {{$web->supportEmail}}
+                                    </p>
                                 </div>
                             </span>
                         </li>
@@ -107,8 +111,7 @@
 
 
             function openLiveChat() {
-                Tawk_API.showWidget();
-                Tawk_API.maximize();
+                window.Tawk_API.popup();
 
             }
 

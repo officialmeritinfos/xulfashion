@@ -111,7 +111,7 @@ class Profile extends BaseController
     {
         $web = GeneralSetting::find(1);
 
-        return view('mobile.users.profile.placeholder.settings')->with([
+        return view('mobile.users.profile.settings')->with([
             'pageName'  =>'Settings',
             'web'       =>$web,
             'siteName'  =>$web->name,
@@ -122,7 +122,7 @@ class Profile extends BaseController
     {
         $web = GeneralSetting::find(1);
 
-        return view('mobile.users.profile.placeholder.help')->with([
+        return view('mobile.users.profile.help')->with([
             'pageName'  =>'Help Center',
             'web'       =>$web,
             'siteName'  =>$web->name,

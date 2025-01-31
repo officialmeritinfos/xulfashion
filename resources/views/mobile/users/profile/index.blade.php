@@ -82,7 +82,7 @@
                         </div>
                         <div class="profile-details">
                             <h4>Settings</h4>
-                            <h5>Dark mode settings</h5>
+                            <h5>Notifications, 2FA etc</h5>
                         </div>
                     </a>
                 </li>
