@@ -44,40 +44,10 @@ const registerRequest=function (){
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     toastr.options = {
-                        "closeButton": true,
-                        "progressBar": true,
-                        "positionClass": "toast-top-full-width"
-                    };
-
-                    let errorMessage = "An unexpected error occurred. Please try again."; // Default error message
-
-                    if (jqXHR.responseJSON) {
-                        // If API returned `data.error`, extract it (fixes the issue)
-                        if (jqXHR.responseJSON.data && jqXHR.responseJSON.data.error) {
-                            errorMessage = jqXHR.responseJSON.data.error;
-                        }
-                        // If validation errors exist, format them correctly
-                        else if (jqXHR.responseJSON.errors) {
-                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>');
-                        }
-                        // If a general error message exists in `message`, use it
-                        else if (jqXHR.responseJSON.message && jqXHR.responseJSON.message !== "validation.error") {
-                            errorMessage = jqXHR.responseJSON.message;
-                        }
+                        "closeButton" : true,
+                        "progressBar" : true
                     }
-                    // Handle non-JSON responses (Avoids displaying raw HTML error pages)
-                    else if (jqXHR.responseText && jqXHR.responseText.trim().startsWith("{")) {
-                        try {
-                            let errorResponse = JSON.parse(jqXHR.responseText);
-                            if (errorResponse.message) {
-                                errorMessage = errorResponse.message;
-                            }
-                        } catch (e) {
-                            // Fallback if JSON parsing fails
-                        }
-                    }
-                    // Display error message in Toastr
-                    toastr.error(errorMessage);
+                    toastr.error(jqXHR.responseJSON.data.error);
 
                     // Re-enable form inputs and hide loading overlay
                     $("#registration :input").prop("readonly", false);

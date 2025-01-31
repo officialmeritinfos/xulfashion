@@ -238,6 +238,7 @@
                                 "progressBar" : true
                             }
                             toastr.error(jqXHR.responseJSON.data.error);
+
                             $("#registration :input").prop("readonly", false);
                             $('.submit').attr('disabled', false);
                             $(".submit").LoadingOverlay("hide");

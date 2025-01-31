@@ -61,40 +61,10 @@ const loginRequest=function (){
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     toastr.options = {
-                        "closeButton": true,
-                        "progressBar": true,
-                        "positionClass": "toast-top-full-width"
-                    };
-
-                    let errorMessage = "An unexpected error occurred. Please try again."; // Default error message
-
-                    if (jqXHR.responseJSON) {
-                        // Extract the correct error message
-                        if (jqXHR.responseJSON.message) {
-                            errorMessage = jqXHR.responseJSON.message; // Now correctly extracts the error
-                        }
-                        else if (jqXHR.responseJSON.errors) {
-                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>'); // Handles validation errors
-                        }
-                        else if (jqXHR.responseJSON.data && jqXHR.responseJSON.data.error) {
-                            errorMessage = jqXHR.responseJSON.data.error; // Handles errors inside "data"
-                        }
+                        "closeButton" : true,
+                        "progressBar" : true
                     }
-                    // Handle non-JSON responses (Avoids displaying raw HTML error pages)
-                    else if (jqXHR.responseText && jqXHR.responseText.trim().startsWith("{")) {
-                        try {
-                            let errorResponse = JSON.parse(jqXHR.responseText);
-                            if (errorResponse.message) {
-                                errorMessage = errorResponse.message;
-                            }
-                        } catch (e) {
-                            // Fallback if JSON parsing fails
-                            errorMessage = "Unable to proceed";
-                        }
-                    }
-
-                    // Display error message in Toastr
-                    toastr.error(errorMessage);
+                    toastr.error(jqXHR.responseJSON.data.error);
 
                     // Re-enable form inputs and hide loading overlay
                     $("#login :input").prop("readonly", false);

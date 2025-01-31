@@ -61,27 +61,10 @@ const recoveryRequest=function (){
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     toastr.options = {
-                        "closeButton": true,
-                        "progressBar": true,
-                        "positionClass": "toast-top-full-width"
-                    };
-
-                    let errorMessage = "An unexpected error occurred. Please try again."; // Default error message
-
-                    if (jqXHR.responseJSON) {
-                        if (jqXHR.responseJSON.message) {
-                            errorMessage = jqXHR.responseJSON.message;
-                        }
-                        else if (jqXHR.responseJSON.errors) {
-                            errorMessage = Object.values(jqXHR.responseJSON.errors).flat().join('<br>');
-                        }
+                        "closeButton" : true,
+                        "progressBar" : true
                     }
-                    else if (jqXHR.responseText) {
-                        errorMessage = jqXHR.responseText;
-                    }
-
-                    // Display error message in Toastr
-                    toastr.error(errorMessage);
+                    toastr.error(jqXHR.responseJSON.data.error);
 
                     // Re-enable form inputs and hide loading overlay
                     $("#recovery :input").prop("readonly", false);

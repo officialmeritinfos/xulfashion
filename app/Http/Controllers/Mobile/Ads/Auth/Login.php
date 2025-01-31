@@ -51,13 +51,11 @@ class Login extends BaseController
             $key = 'login-attempts-' . $request->ip();
 
             // Check if the user has exceeded the limit
-            $allowed = RateLimiter::attempt($key, 5, function () {
-                return false;
-            }, 600);
+            $allowed = RateLimiter::attempt($key, 5, function () {}, 600);
 
             // Apply Rate Limiting (Max 5 attempts per 10 minutes)
             if (!$allowed) {
-                return $this->sendError('rate.limit', ['error' => 'Too many sing-in attempts. Try again in 10 minutes.']);
+                return $this->sendError('rate.limit', ['error' => 'Too many sign-in attempts. Try again in 10 minutes.']);
             }
 
             $validator = Validator::make($request->all(), [
@@ -175,9 +173,7 @@ class Login extends BaseController
             $rateLimitKey = '2fa-attempts-' . $user->id;
 
             // Check if the user has exceeded the limit
-            $allowed = RateLimiter::attempt($rateLimitKey, 5, function () {
-                return false;
-            }, 600);
+            $allowed = RateLimiter::attempt($rateLimitKey, 5, function () { }, 600);
 
             // Apply Rate Limiting (Max 5 attempts per 10 minutes)
             if (!$allowed) {
@@ -190,7 +186,6 @@ class Login extends BaseController
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
-                RateLimiter::hit($rateLimitKey, 600);
                 return $this->sendError('validation.error', ['error' => $validator->errors()->all()]);
             }
 
@@ -200,7 +195,6 @@ class Login extends BaseController
             $codeExists = TwoFactor::where('user', $user->id)->latest()->first();
 
             if (!$codeExists) {
-                RateLimiter::hit($rateLimitKey, 600);
                 return $this->sendError('token.error', ['error' => 'Unidentified token.']);
             }
 
@@ -262,13 +256,15 @@ class Login extends BaseController
 
             // Rate limit resend requests (Max 1 request per minute)
             $rateLimitKey = 'resend-2fa-' . $user->id;
-            if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
-                return $this->sendError('rate.limit', ['error' => 'Please wait before requesting another code.']);
+            // Check if the user has exceeded the limit
+            $allowed = RateLimiter::attempt($rateLimitKey, 5, function () {}, 600);
+
+            // Apply Rate Limiting (Max 5 attempts per 10 minutes)
+            if (!$allowed) {
+                return $this->sendError('rate.limit', ['error' => 'Too many attempts. Try again in 10 minutes.']);
             }
             // Resend the 2FA code notification
             $user->notify(new TwoFactorAuthentication($user));
-            // Apply rate limit (cooldown for 1 minute)
-            RateLimiter::hit($rateLimitKey, 60);
 
             return $this->sendResponse([], 'A new authentication code has been sent to your email.');
         }catch (\Exception $exception){
