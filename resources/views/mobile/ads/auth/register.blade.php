@@ -71,6 +71,18 @@
 
     <form class="auth-form" id="registration" method="post" action="{{route('mobile.register.process')}}">
         <div class="custom-container row">
+            <div class="form-group col-md-12">
+                <label for="inputusername" class="form-label">Country</label>
+                <div class="form-input mb-4">
+                    <select type="text" class="form-control" id="inputusername"  name="country">
+                        <option value="">Select your country</option>
+                        @foreach($countries as $country)
+                            <option value="{{$country->iso3}}">{{ $country->name }}</option>
+                        @endforeach
+                    </select>
+                    <i class="iconsax icons" data-icon="flag-1"></i>
+                </div>
+            </div>
             <div class="form-group col-md-6">
                 <label for="inputusername" class="form-label">Full Name</label>
                 <div class="form-input mb-4">

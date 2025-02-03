@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Stevebauman\Location\Facades\Location;
 
@@ -48,7 +49,12 @@ class Register extends BaseController
         }else{
             $countryIso = Cookie::get('hasAdsCountry');
         }
+
         $web = GeneralSetting::find(1);
+
+        if (\auth()->check()){
+           return redirect()->route('mobile.user.profile.landing-page');
+        }
 
 
         return view('mobile.ads.auth.register')->with([
@@ -56,6 +62,7 @@ class Register extends BaseController
             'pageName'  =>"Create an account on ".$web->name,
             'siteName'  =>$web->name,
             'referral'=>(Cookie::has('ref'))?Cookie::get('ref'):$request->get('ref'),
+            'countries' => Country::where('status',1)->get()
         ]);
     }
     //process form
@@ -85,6 +92,7 @@ class Register extends BaseController
                 'password_confirmation' => ['required', 'same:password'],
                 'g-recaptcha-response' => ['required', new ReCaptcha],
                 'referral' => ['nullable', 'string', 'exists:users,username'],
+                'country' => ['required',Rule::exists('countries','iso3')->where('status',1)]
             ], [
                 'email.unique' => 'User already exists with this email. Please login instead.',
                 'g-recaptcha-response.required'=>'Recaptcha must be passed first.'

@@ -35,6 +35,10 @@ class Login extends BaseController
             Cookie::queue('redirect', $request->redirect, 30 * 24 * 60 * 60);
         }
 
+        if (\auth()->check()){
+            return redirect()->route('mobile.user.profile.landing-page');
+        }
+
         return view('mobile.ads.auth.login')->with([
             'web' => $web,
             'pageName' => "Sign in to " . $web->name,
