@@ -24,6 +24,7 @@ class Index extends Component
     public $description;
     public $status;
     public $photo;
+    public $mainCategory;
     public $editingId;
     public $staff;
     public $show = 10;
@@ -48,6 +49,7 @@ class Index extends Component
         $this->name = $service->name;
         $this->description = $service->description;
         $this->status = $service->status;
+        $this->mainCategory = $service->mainCategory;
 
         $this->showAddForm = false;
         $this->showEditForm=true;
@@ -88,7 +90,8 @@ class Index extends Component
             'name'=>['required','string','max:255','unique:service_types,name'],
             'description'=>['required','string'],
             'status'=>['required','numeric','in:1,2'],
-            'photo'=>['required','image','max:1024']
+            'photo'=>['required','image','max:1024'],
+            'mainCategory'=>['required','in:beauty,fashion']
         ]);
 
         try {
@@ -109,7 +112,7 @@ class Index extends Component
 
             $serviceTypes = ServiceType::create([
                 'name' => $this->name,'description' => $this->description,
-                'status' => $this->status,'photo' => $photo
+                'status' => $this->status,'photo' => $photo,'mainCategory'=>$this->mainCategory
             ]);
             if (!empty($serviceTypes)){
                 $this->alert('success', '', [
@@ -155,7 +158,8 @@ class Index extends Component
             'name'=>['required','string','max:255',Rule::unique('service_types','name')->ignore($this->editingId)],
             'description'=>['required','string'],
             'status'=>['required','numeric','in:1,2'],
-            'photo'=>['nullable','image','max:1024']
+            'photo'=>['nullable','image','max:1024'],
+            'mainCategory'=>['required','in:beauty,fashion']
         ]);
 
         try {
@@ -173,7 +177,7 @@ class Index extends Component
 
             $updated = ServiceType::where('id',$service->id)->update([
                 'name' => $this->name,'description' => $this->description,
-                'status' => $this->status,'photo' => $photo
+                'status' => $this->status,'photo' => $photo,'mainCategory'=>$this->mainCategory
             ]);
             if ($updated){
                 $this->alert('success', '', [

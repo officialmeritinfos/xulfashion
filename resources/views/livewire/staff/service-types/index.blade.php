@@ -40,6 +40,7 @@
                                         </label>
                                     </div>
                                 </th>
+                                <th scope="col">Main Category</th>
                                 <th scope="col">Title</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Photo</th>
@@ -58,6 +59,7 @@
                                             </label>
                                         </div>
                                     </td>
+                                    <td>{{ ucfirst($serviceType->mainCategory) }}</td>
                                     <td>{{$serviceType->name}}</td>
                                     <td>{{shortenText($serviceType->description,5)}}</td>
                                     <td>
@@ -146,6 +148,17 @@
                     </div>
                     <div class="mb-20 col-md-6">
                         <label for="password"
+                               class="form-label fw-semibold text-primary-light text-sm mb-8">Main Category<span
+                                class="text-danger-600">*</span></label>
+                        <select class="form-control radius-8 @error('status') is-invalid @enderror" wire:model="mainCategory" >
+                            <option value="">Select an Option</option>
+                            <option value="fashion">Fashion</option>
+                            <option value="beauty">Beauty</option>
+                        </select>
+                        @error('mainCategory') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="mb-20 col-md-12">
+                        <label for="password"
                                class="form-label fw-semibold text-primary-light text-sm mb-8">Status<span
                                 class="text-danger-600">*</span></label>
                         <select class="form-control radius-8 @error('status') is-invalid @enderror" wire:model="status" >
@@ -202,7 +215,19 @@
                                    class="form-control radius-8 @error('photo') is-invalid @enderror" wire:model="photo" >
                             @error('photo') <span class="invalid-feedback">{{ $message }}</span> @enderror
                         </div>
+
                         <div class="mb-20 col-md-6">
+                            <label for="password"
+                                   class="form-label fw-semibold text-primary-light text-sm mb-8">Main Category<span
+                                    class="text-danger-600">*</span></label>
+                            <select class="form-control radius-8 @error('status') is-invalid @enderror" wire:model="mainCategory" >
+                                <option value="">Select an Option</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="beauty">Beauty</option>
+                            </select>
+                            @error('mainCategory') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="mb-20 col-md-12">
                             <label for="password"
                                    class="form-label fw-semibold text-primary-light text-sm mb-8">Status<span
                                     class="text-danger-600">*</span></label>

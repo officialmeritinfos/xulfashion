@@ -19,6 +19,7 @@ class CreateServiceTypesTable extends Migration
             $table->string('photo', 150)->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->default(1);
+            $table->enum('mainCategory',['beauty','fashion'])->default('fashion');
             $table->timestamps();
         });
     }
