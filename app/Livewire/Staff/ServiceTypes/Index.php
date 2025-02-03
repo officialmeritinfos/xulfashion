@@ -27,7 +27,9 @@ class Index extends Component
     public $mainCategory;
     public $editingId;
     public $staff;
+
     public $show = 10;
+    public $filterByMainCategory;
 
     protected $listeners = [
         'submitted' => 'render',
@@ -207,7 +209,9 @@ class Index extends Component
     public function render()
     {
         return view('livewire.staff.service-types.index',[
-            'serviceTypes' => ServiceType::paginate($this->show)
+            'serviceTypes' => ServiceType::when($this->filterByMainCategory,function ($query){
+                $query->where('mainCategory', $this->filterByMainCategory)->get();
+            })->paginate($this->show)
         ]);
     }
 }

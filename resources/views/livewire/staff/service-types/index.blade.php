@@ -4,7 +4,6 @@
         @if(!$showEditForm && !$showAddForm)
             <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
                 <div class="d-flex flex-wrap align-items-center gap-3">
-
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <select class="form-select form-select-sm w-auto" wire:model.live="show">
                             <option>5</option>
@@ -13,6 +12,13 @@
                             <option>20</option>
                             <option>50</option>
                             <option>100</option>
+                        </select>
+                    </div>
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                        <select class="form-select form-select-sm w-auto" wire:model.live="filterByMainCategory">
+                            <option value="">Filter By</option>
+                            <option>Fashion</option>
+                            <option>Beauty</option>
                         </select>
                     </div>
 
