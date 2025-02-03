@@ -126,7 +126,7 @@ class LoginController extends BaseController
             }
 
             //check if the token has expired
-            if (time() < $token->codeExpires){
+            if (time() > $token->codeExpires){
                 return $this->sendError('staff.error',['error'=>'Token already expired']);
             }
 
