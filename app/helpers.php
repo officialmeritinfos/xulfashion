@@ -1021,99 +1021,141 @@ if (!function_exists('eventShowCaseFullDateFormat')) {
 }
 
 if (!function_exists('displayChargeOnTicketIfAny')) {
-    function displayChargeOnTicketIfAny($id){
+    function displayChargeOnTicketIfAny($id): ?string
+    {
+
         $ticket = \App\Models\UserEventTicket::find($id);
-        if ($ticket->isFree()){
+
+        // If the ticket is free, return null (no charge applies)
+        if (!$ticket || $ticket->isFree()) {
             return null;
-        }else{
-            //check if the customer pays
-            if ($ticket->guestsShouldPayFee==1){
-                $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
-                $fiat = Fiat::where('code',$event->currency)->first();
-                $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
-                $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
-                $dynamicCharge = $price*($fiat->ticketCharge/100);
-                $totalCharge = $fixedCharge+$dynamicCharge;
-                return " includes ".$fiat->sign.$totalCharge.' fee';
-            }else{
-                return  null;
-            }
         }
+
+        // If guests do not pay the fee, return null
+        if ($ticket->guestsShouldPayFee != 1) {
+            return null;
+        }
+
+        // Retrieve event and currency details
+        $event = \App\Models\UserEvent::find($ticket->event_id);
+        $fiat = Fiat::where('code', $event->currency)->first();
+
+        if (!$event || !$fiat) {
+            return null; // Prevents errors if event or fiat details are missing
+        }
+
+        // Determine ticket price (group or individual)
+        $price = ($ticket->ticketType === 'group') ? $ticket->groupPrice : $ticket->price;
+
+        // Calculate fixed and dynamic charges
+        $fixedCharge = $fiat->hasTicketFixedCharge ? $fiat->ticketFixedCharge : 0;
+        $dynamicCharge = $price * ($fiat->ticketCharge / 100);
+        $totalCharge = $fixedCharge + $dynamicCharge;
+
+        // Return formatted charge message
+        return " includes " . $fiat->sign . number_format($totalCharge, 2) . ' fee';
+
     }
 }
 if (!function_exists('calculateTotalCostOnTicket')) {
     function calculateTotalCostOnTicket($id){
         $ticket = \App\Models\UserEventTicket::find($id);
-        if ($ticket->isFree()){
+
+        // If the ticket is free, return 0
+        if (!$ticket || $ticket->isFree()) {
             return 0;
-        }else{
-            //check if the customer pays
-            if ($ticket->guestsShouldPayFee==1){
-                $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
-                $fiat = Fiat::where('code',$event->currency)->first();
-                $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
-                $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
-                $dynamicCharge = $price*($fiat->ticketCharge/100);
-                $totalCharge = $fixedCharge+$dynamicCharge;
-                return $totalCharge+$price;
-            }else{
-                $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
-                $fiat = Fiat::where('code',$event->currency)->first();
-                $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
-                $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
-                $dynamicCharge = $price*($fiat->ticketCharge/100);
-                $charge = $fixedCharge+$dynamicCharge;
-                if ($price<$fiat->ticketAmountToAddToCharge){
-                    $totalCharge = $price+$charge;
-                }else{
-                    $totalCharge = $price;
-                }
-                return  $totalCharge;
-            }
         }
+
+        // Retrieve event and currency details
+        $event = \App\Models\UserEvent::find($ticket->event_id);
+        $fiat = Fiat::where('code', $event->currency)->first();
+
+        if (!$event || !$fiat) {
+            return 0; // Prevent errors if event or currency details are missing
+        }
+
+        // Determine ticket price (group or individual)
+        $price = ($ticket->ticketType === 'group') ? $ticket->groupPrice : $ticket->price;
+
+        // Calculate fixed and dynamic charges
+        $fixedCharge = $fiat->hasTicketFixedCharge ? $fiat->ticketFixedCharge : 0;
+        $dynamicCharge = $price * ($fiat->ticketCharge / 100);
+        $totalCharge = $fixedCharge + $dynamicCharge;
+
+        // If guests pay the fee, return price + charge
+        if ($ticket->guestsShouldPayFee == 1) {
+            return $price + $totalCharge;
+        }
+
+        // Otherwise, charge is deducted from the ticket price
+        return ($price < $fiat->ticketAmountToAddToCharge) ? $price + $totalCharge : $price;
+
     }
 }
-if (!function_exists('calculateCostOnTicketWithoutCharge')) {
-    function calculateCostOnTicketWithoutCharge($id,$quantity){
-        $ticket = \App\Models\UserEventTicket::find($id);
-        if ($ticket->isFree()){
-            return 0;
-        }else{
-            $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
-            //check if the customer pays
-            if ($ticket->guestsShouldPayFee==1){
-                return $price*$quantity;
-            }else{
-                $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
-                $fiat = Fiat::where('code',$event->currency)->first();
-                $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
-                $dynamicCharge = $price*($fiat->ticketCharge/100);
-                $charge = $dynamicCharge+$fixedCharge;
 
-                if ($price < $fiat->ticketAmountToAddToCharge){
-                    $totalCharge = $price*$quantity;
-                }else{
-                    $totalCharge = ($price-$charge)*$quantity;
-                }
-                return  $totalCharge;
-            }
+if (!function_exists('calculateCostOnTicketWithoutCharge')) {
+    function calculateCostOnTicketWithoutCharge($id,$quantity): float|int
+    {
+        $ticket = \App\Models\UserEventTicket::find($id);
+        // Return 0 if the ticket is free
+        if ($ticket->isFree()) {
+            return 0;
         }
+        // Determine ticket price (group or individual)
+        $price = ($ticket->ticketType === 'group') ? $ticket->groupPrice : $ticket->price;
+
+        // If guests should pay, return total price directly
+        if ($ticket->guestsShouldPayFee == 1) {
+            return $price * $quantity;
+        }
+
+        // Fetch event and currency details
+        $event = \App\Models\UserEvent::find($ticket->event_id);
+        $fiat = Fiat::where('code', $event->currency)->first();
+
+        if (!$fiat) {
+            return $price * $quantity; // Fallback in case fiat details are missing
+        }
+
+        // Calculate charges
+        $fixedCharge = $fiat->hasTicketFixedCharge ? $fiat->ticketFixedCharge : 0;
+        $dynamicCharge = $price * ($fiat->ticketCharge / 100);
+        $charge = $fixedCharge + $dynamicCharge;
+
+        // Determine final cost without additional charge
+        return ($price < $fiat->ticketAmountToAddToCharge)
+            ? $price * $quantity
+            : ($price - $charge) * $quantity;
     }
 }
 if (!function_exists('calculateChargeOnTicket')) {
-    function calculateChargeOnTicket($id,$quantity){
+    function calculateChargeOnTicket($id,$quantity): float|int
+    {
         $ticket = \App\Models\UserEventTicket::find($id);
-        if ($ticket->isFree()){
+
+        // If the ticket is free, no charge applies
+        if (!$ticket || $ticket->isFree()) {
             return 0;
-        }else{
-            $event = \App\Models\UserEvent::where('id',$ticket->event_id)->first();
-            $fiat = Fiat::where('code',$event->currency)->first();
-            $fixedCharge = ($fiat->hasTicketFixedCharge)?$fiat->ticketFixedCharge:0;
-            $price = ($ticket->ticketType=='group')?$ticket->groupPrice:$ticket->price;
-            $dynamicCharge = $price*($fiat->ticketCharge/100);
-            $totalCharge = $fixedCharge+$dynamicCharge;
-            return $totalCharge*$quantity;
         }
+
+        // Fetch event and currency details
+        $event = \App\Models\UserEvent::find($ticket->event_id);
+        $fiat = Fiat::where('code', $event->currency)->first();
+
+        if (!$event || !$fiat) {
+            return 0; // Fallback in case event or fiat details are missing
+        }
+
+
+        // Determine ticket price (group or individual)
+        $price = ($ticket->ticketType === 'group') ? $ticket->groupPrice : $ticket->price;
+
+        // Calculate fixed and dynamic charges
+        $fixedCharge = $fiat->hasTicketFixedCharge ? $fiat->ticketFixedCharge : 0;
+        $dynamicCharge = $price * ($fiat->ticketCharge / 100);
+        $totalCharge = $fixedCharge + $dynamicCharge;
+
+        return $totalCharge*$quantity;
     }
 }
 
@@ -1247,5 +1289,17 @@ if (!function_exists('merchantTotalAvailableBalance')){
         $totalEventBalance = \App\Models\UserEvent::where('user',$user->id)->sum('currentBalance');
 
         return bcadd($accountBalance+$referralBalance,$totalEventBalance,2);
+    }
+}
+
+if (!function_exists('calculateChargeRate')){
+    function calculateChargeRate($charge)
+    {
+        $web = \App\Models\GeneralSetting::find(1);
+        if ($web->hasPromo==true){
+            $rateToCharge = (100 - $web->promoRate)/100;
+            return $charge*$rateToCharge;
+        }
+        return $charge;
     }
 }

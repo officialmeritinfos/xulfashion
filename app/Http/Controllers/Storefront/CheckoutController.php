@@ -582,7 +582,7 @@ class CheckoutController extends BaseController
 
                     // Calculate charges and creditable amount
                     $totalCharge = $this->regular->calculateChargeOnAmount($data['amount'], $order->currency);
-                    $amountCredit = $data['amount'] - ($totalCharge + $data['fees']);
+                    $amountCredit = $data['amount'] - ($totalCharge );
 
                     // Update order with payment details
                     $order->update([

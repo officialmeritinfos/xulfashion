@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\File;
+use Stevebauman\Location\Facades\Location;
 
 class Home extends BaseController
 {
@@ -55,7 +58,16 @@ class Home extends BaseController
     }
     public function pricing(Request $request)
     {
-        $currency = $request->get('currency');
+        if (Cookie::has('hasAdsCountry')){
+            $country = Country::where('iso3',Cookie::get('hasAdsCountry'))->first();
+            $currencyMain = $country->currency;
+        }else{
+            $position = (config('location.testing.enabled'))?Location::get():Location::get($request->ip());
+            $country = Country::where('iso2',$position->countryCode)->first();
+            Cookie::queue('hasAdsCountry',$country->iso3,366 * 24 * 60 * 60);
+            $currencyMain = $country->currency;
+        }
+        $currency = $request->get('currency')??$currencyMain;
 
         $web = GeneralSetting::find(1);
         return view('company.pricing')->with([

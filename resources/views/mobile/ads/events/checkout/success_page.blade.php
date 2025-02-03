@@ -24,10 +24,15 @@
 
 
 <div class="container status-container">
-    <div>
+    <div class="row">
         <div id="loading" class="loading-spinner">
             <i class="fas fa-spinner fa-spin light-text"></i>
             <p class="light-text">Checking payment status...</p>
+           <div class="col-md-12 mt-4">
+               <a id="paymentStatusBtn" href="#" class="btn theme-btn w-100 " style="display: none;">
+                   Retry Payment
+               </a>
+           </div>
         </div>
         <div id="success" class="d-none">
             <i class="fas fa-check-circle text-success status-icon"></i>
@@ -52,6 +57,7 @@
                 };
 
                 function checkPaymentStatus() {
+                    $('#paymentStatusBtn').hide();
                     $.ajax({
                         url: "{{ route('mobile.marketplace.events.ticket.purchase.checkout.payment.status', ['purchaseRef'=>$purchase->reference, 'transactionId' => $transactionId]) }}",
                         method: "GET",
@@ -70,6 +76,8 @@
                                 $('#success').addClass('d-none');
                                 $('#failure').addClass('d-none');
                                 toastr.info(response.message || 'Payment is still pending. Checking again soon.');
+                                let newPaymentUrl = response.link;
+                                updatePaymentStatusUrl(newPaymentUrl);
                             } else {
                                 $('#loading').addClass('d-none');
                                 $('#failure').removeClass('d-none');
@@ -92,6 +100,11 @@
                 checkPaymentStatus();
                 // Check payment status every 30 seconds
                 setInterval(checkPaymentStatus, 30000);
+
+                function updatePaymentStatusUrl(newUrl) {
+                    $("#paymentStatusBtn").attr("href", newUrl);
+                    $('#paymentStatusBtn').show()
+                }
             });
         </script>
     @endpush

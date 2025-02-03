@@ -114,6 +114,8 @@ class EventCheckoutPaymentController extends BaseController
             // Fetch payment status from the selected gateway
             $statusResponse = $gateway->verifyPayment($transactionId);
 
+
+
             if ($statusResponse['status']) {
                 if ($statusResponse['data']['status']){
 
@@ -166,7 +168,8 @@ class EventCheckoutPaymentController extends BaseController
                 }else{
                     return response()->json([
                         'status' => 'pending',
-                        'message' => 'Payment is still pending'
+                        'message' => 'Payment is still pending',
+                        'link'    => $purchase->paymentLink
                     ]);
                 }
             } else {

@@ -32,6 +32,8 @@ class CreateGeneralSettingsTable extends Migration
             $table->string('onlinePaymentFee', 100)->default('2.5');
             $table->string('ticketHelpDesk', 150)->nullable();
             $table->string('blogLink', 150)->nullable();
+            $table->boolean('hasPromo')->default(false);
+            $table->string('promoRate')->default(0);
             $table->timestamps();
         });
     }
