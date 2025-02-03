@@ -36,6 +36,9 @@ class InitializeStoreForm extends Component
     public $supportEmail;
     public $verifyBusiness = false;
     public $country;
+    public $industry;
+    public $categories=[];
+    public $showCategory = false;
 
     public function mount()
     {
@@ -89,8 +92,6 @@ class InitializeStoreForm extends Component
         $country = Country::where('iso3',$this->user->countryCode)->first();
 
         return view('livewire.mobile.users.store.components.initialize-store-form',[
-
-            'services'=>ServiceType::where('status',1)->orderBy('name')->get(),
             'states' => State::where('country_code', $country->iso2)->orderBy('name')->get(),
         ]);
     }
@@ -109,7 +110,8 @@ class InitializeStoreForm extends Component
             'supportEmail' => ['required', 'email'],
             'file' => ['required', 'image', 'max:20'],  // Max size in KB
             'returnPolicy' => ['nullable', 'string'],
-            'refundPolicy' => ['required', 'string']
+            'refundPolicy' => ['required', 'string'],
+            'industry' => ['required','in:fashion,business']
         ]);
 
         // 2. Begin database transaction
@@ -146,12 +148,17 @@ class InitializeStoreForm extends Component
                 'status' => 1,
                 'refundPolicy' => clean($this->refundPolicy),
                 'returnPolicy' => clean($this->returnPolicy),
-                'theme' => $theme->id
+                'theme' => $theme->id,
+                'industry' => $this->industry,
             ]);
 
             if ($store) {
                 // 7. Create default store settings
-                UserStoreSetting::create(['store' => $store->id]);
+                UserStoreSetting::firstOrCreate(
+                    ['store' => $store->id],
+                    ['store' => $store->id]
+                );
+
 
                 // 8. Create a default product category
                 UserStoreCatalogCategory::create([
@@ -203,6 +210,21 @@ class InitializeStoreForm extends Component
 
             // 17. Log the error for debugging
             Log::error('Error creating store: ' . $exception->getMessage());
+        }
+    }
+    //fetch categories in industry
+    public function fetchIndustryCategories()
+    {
+        if (!empty($this->industry)) {
+            $this->categories = ServiceType::where('mainCategory', $this->industry)
+                ->select('id', 'name') // Fetch only id and name
+                ->get()
+                ->toArray();
+
+            $this->showCategory = true;
+        } else {
+            $this->categories = [];
+            $this->showCategory = false;
         }
     }
 }
