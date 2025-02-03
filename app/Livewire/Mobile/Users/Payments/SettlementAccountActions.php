@@ -339,7 +339,7 @@ class SettlementAccountActions extends Component
             $web = GeneralSetting::find(1); // Fetch general settings
 
             // Generate a new OTP
-            $otp = $this->generateToken('users', 'reference');
+            $otp = $this->generateToken('users', 'otp');
 
             // Save OTP and expiration time
             $user->otp = bcrypt($otp);

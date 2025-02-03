@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CustomNotification extends Notification implements ShouldQueue
+class CustomNotification extends Notification
 {
     use Queueable;
     public $user;
@@ -44,22 +44,12 @@ class CustomNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        switch ($this->user->accountType){
-            case 1:
-                $url = route('user.dashboard');
-                break;
-            case 3:
-                $url = route('school.dashboard');
-                break;
-            default:
-                $url = route('parent.dashboard');
-                break;
-        }
+
         return (new MailMessage)
                 ->subject($this->subject)
                 ->greeting('Hello '.$this->user->name)
                 ->line($this->message)
-                ->action('Login to Account',$url);
+                ->action('Login to Account',route('mobile.login'));
     }
 
     /**
