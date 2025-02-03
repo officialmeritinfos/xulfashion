@@ -84,7 +84,7 @@
                     <img class="unactive" src="{{asset('mobile/images/svg/categories.svg')}}" alt="categories" />
                     <img class="active" src="{{asset('mobile/images/svg/categories-fill.svg')}}" alt="categories" />
                 </div>
-                <p>Categories</p>
+                <p>Cate.</p>
             </a>
         </li>
         <li class="{{(url()->current()==route('mobile.marketplace.events'))?'active':''}}">
@@ -113,7 +113,7 @@
                         <img class="unactive" src="{{asset('mobile/images/svg/profile.svg')}}" alt="profile" />
                         <img class="active" src="{{asset('mobile/images/svg/profile-fill.svg')}}" alt="profile" />
                     </div>
-                    <p>Register/Sign-in</p>
+                    <p>Auth</p>
                 </a>
             </li>
         @else
