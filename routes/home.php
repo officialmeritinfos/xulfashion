@@ -17,6 +17,7 @@ Route::get('company/team',[Home::class,'team'])->name('team');
 /*================================ MISCELLANEOUS HOME CONTROLLER ==============================*/
 Route::get('pricing',[Home::class,'pricing'])->name('pricing');
 Route::get('download-page',[Home::class,'download'])->name('download');
+Route::get('download',[Home::class,'download'])->name('download.main');
 Route::get('download-ios',[Home::class,'downloadIos'])->name('download.ios');
 /*================================ SOLUTIONS CONTROLLER ==============================*/
 Route::get('solutions/sell-online',[SolutionsController::class,'sellOnline'])->name('solutions.sell-online');
