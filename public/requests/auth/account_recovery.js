@@ -68,6 +68,7 @@ const recoveryRequest=function (){
 
                     // Re-enable form inputs and hide loading overlay
                     $("#recovery :input").prop("readonly", false);
+                    $("#recovery")[0].reset();
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
                 }

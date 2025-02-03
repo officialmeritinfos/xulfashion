@@ -107,7 +107,7 @@ class Register extends BaseController
             $input = $validator->validated();
 
             // Get Country from Cookie
-            $country = Cookie::get('hasAdsCountry');
+            $country = Country::where('iso3',$input['country'])->first();
             if (!$country) {
                 return $this->sendError('validation.error', ['error' => 'Country selection is required. Please reload this page.']);
             }
@@ -116,18 +116,14 @@ class Register extends BaseController
             $blacklistedCountries = json_decode(Storage::get('data/blacklisted_countries.json'), true)['blacklisted'];
 
             // Check if the user's country is blacklisted
-            if (in_array(strtoupper($country), $blacklistedCountries)) {
+            if (in_array(strtoupper($country->iso3), $blacklistedCountries)) {
                 return $this->sendError('account.error', ['error' => 'Access denied. Your country is not supported.']);
             }
 
-            // Validate Country from DB
-            $countryExists = Country::where(['iso3' => strtoupper($country), 'status' => 1])->first();
-            if (!$countryExists) {
-                return $this->sendError('validation.error', ['error' => 'Invalid country selected or country not supported yet.']);
-            }
+
 
             //check if the user's country currency is supported
-            $fiat = Fiat::where('code',$countryExists->currency)->first();
+            $fiat = Fiat::where('code',$country->currency)->first();
             if (empty($fiat)){
                 $currency = 'USD';
             }else{
@@ -145,8 +141,8 @@ class Register extends BaseController
                 'username' => $input['username'],
                 'reference' => $reference,
                 'password' => Hash::make($input['password']),
-                'country' => $countryExists->name,
-                'countryCode' => $countryExists->iso3,
+                'country' => $country->name,
+                'countryCode' => $country->iso3,
                 'mainCurrency' => $currency,
                 'registrationIp' => $request->ip(),
                 'referral' => $refBy,

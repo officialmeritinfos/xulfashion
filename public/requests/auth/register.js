@@ -51,6 +51,7 @@ const registerRequest=function (){
 
                     // Re-enable form inputs and hide loading overlay
                     $("#registration :input").prop("readonly", false);
+                    $("#registration")[0].reset();
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
                 }
