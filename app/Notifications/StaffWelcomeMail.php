@@ -52,7 +52,7 @@ class StaffWelcomeMail extends Notification
 
         StaffEmailVerification::create([
             'staff'=>$this->staff->id,'email'=>$this->staff->email,
-            'token'=>$token,'codeExpires'=>strtotime($this->web->codeExpire,time())
+            'token'=>$token,'codeExpires'=>strtotime("48 Hours",time())
         ]);
         $url = route('staff.staff.setup.password',['token'=>$token,'email'=>$this->staff->email,'staff'=>$this->staff->id]);
         return (new MailMessage)
