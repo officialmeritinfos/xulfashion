@@ -143,11 +143,13 @@ class Register extends BaseController
 
             // Email Verification Handling
             if ($web->emailVerification == 1) {
+                Auth::login($user);
                 $user->markEmailAsVerified();
                 $user->loggedIn=1;
                 $user->save();
                 $message = 'Account successfully created. Redirecting to complete account setup.';
-                $urlTo = Cookie::has('redirect') ? Cookie::get('redirect') : route('mobile.user.profile.settings.complete-profile');
+
+                $urlTo = Cookie::has('redirect') ?  : route('mobile.user.profile.settings.complete-profile');
             } else {
                 // Encrypt user ID and set verification session
                 session([
@@ -278,7 +280,7 @@ class Register extends BaseController
             Email::where('user', $user->id)->delete();
 
             // Determine redirect location
-            $urlTo = Cookie::has('redirect') ? Cookie::get('redirect') : route('mobile.marketplace.index', ['country' => strtolower($user->countryCode)]);
+            $urlTo = Cookie::has('redirect') ? Cookie::get('redirect') : route('mobile.user.profile.settings.complete-profile');
             Cookie::forget('redirect');
 
             return $this->sendResponse([
