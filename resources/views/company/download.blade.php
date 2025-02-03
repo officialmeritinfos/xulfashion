@@ -18,7 +18,7 @@
                         </p>
 
                         <div class="d-flex align-items-center flex-wrap wow fadeInUp" data-wow-delay="0.2s">
-                            <button href="#" class="btn-seven color-two mt-10 me-3 install-client-btn">Download - It’s free</button>
+                            <button href="#" class="btn-seven color-two mt-10 me-3 install-client-btn">Install - It’s free</button>
                             <a class="btn-sixteen mt-10" href="{{ route('mobile.app.base') }}" target="_blank">Use Web</a>
                         </div>
 
