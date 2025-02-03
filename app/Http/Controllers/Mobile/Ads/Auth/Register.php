@@ -72,7 +72,7 @@ class Register extends BaseController
         $rateLimitKey = 'register-attempts-' . md5(session()->getId() . $request->ip());
 
         // Check if the user has exceeded the limit
-        $allowed = RateLimiter::attempt($rateLimitKey, 5, function () {}, 600);
+        $allowed = RateLimiter::attempt($rateLimitKey, 10, function () {}, 600);
 
         // Apply Rate Limiting (Max 5 attempts per 10 minutes)
         if (!$allowed) {
