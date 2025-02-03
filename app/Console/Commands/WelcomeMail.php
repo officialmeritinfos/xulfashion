@@ -35,6 +35,9 @@ class WelcomeMail extends Command
             foreach ($users as $user) {
                 if ($user->accountType!=null && $user->accountType!=3){
                     Mail::to($user->email)->send(new SendWelcomeEmail($user,$web));
+                    $user->update([
+                        'welcomeSent'=>1
+                    ]);
                 }
             }
         }
