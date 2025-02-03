@@ -21,6 +21,7 @@ class CreateUserStoresTable extends Migration
             $table->mediumText('description')->nullable();
             $table->string('currency', 150)->nullable();
             $table->integer('service')->nullable();
+            $table->enum('industry',['beauty','fashion'])->default('fashion');
             $table->string('slug', 150)->nullable();
             $table->integer('isVerified')->default(2);
             $table->string('logo', 200)->nullable();

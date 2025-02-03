@@ -53,16 +53,23 @@
                 </div>
             </div>
 
+
+            <div class="form-group d-block">
+                <label for="inputusernumber" class="form-label">Industry<sup class="text-danger">*</sup></label>
+                <div class="form-input mb-4 position-relative">
+                    <select class="form-control" id="industry" name="industry">
+                        <option value="">Select an Industry</option>
+                        <option value="fashion" {{ ($ad->industry=='fashion')?'selected':'' }}>Fashion</option>
+                        <option value="beauty" {{ ($ad->industry=='beauty')?'selected':'' }}>Beauty</option>
+                    </select>
+                    <i class="fa fa-filter"></i>
+                </div>
+            </div>
+
             <div class="form-group d-block">
                 <label for="inputusernumber" class="form-label">Category<sup class="text-danger">*</sup></label>
                 <div class="form-input mb-4 position-relative">
-                    <select class="selectize" id="merchantType" name="category">
-                        <option value="">Select a Category</option>
-                        @foreach($categories as $category)
-                            <option value="{{$category->id}}" {{($ad->serviceType==$category->id)?'selected':''}}>{{$category->name}}</option>
-                        @endforeach
-                    </select>
-                    <i class="fa fa-filter"></i>
+                    <select class="form-control" id="merchantType" name="category" data-selected="{{ old('category', $ad->serviceType ?? '') }}"></select>
                 </div>
             </div>
 
@@ -74,7 +81,7 @@
                     <sup class="text-danger">*</sup>
                 </label>
                 <div class="form-input mb-3">
-                    <textarea type="text" class="form-control" id="inputname" name="description">{{$ad->description}}</textarea>
+                    <textarea type="text" class="form-control" id="inputname" name="description">{!! $ad->description !!}</textarea>
                     <i class="fa fa-file-alt"></i>
                 </div>
             </div>
@@ -183,6 +190,54 @@
 
                 // Run on change of priceType input
                 $('input[name="priceType"]').on('change', togglePriceFields);
+            });
+
+            $(document).ready(function () {
+                let industry = $('#industry').val(); // Get the current industry value (for edit mode)
+                let selectedCategory = $('#merchantType').data('selected'); // Get the selected category (set via `data-selected`)
+                let submitBtn = $('.submit');
+                let categorySelect = $('#merchantType');
+
+                function fetchCategories(selectedIndustry, selectedCategory = null) {
+                    if (selectedIndustry) {
+                        submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+
+                        $.ajax({
+                            url: "{{ route('mobile.user.industry.categories') }}",
+                            type: 'GET',
+                            data: { mainCategory: selectedIndustry },
+                            success: function (response) {
+                                categorySelect.empty(); // Clear previous options
+                                categorySelect.append('<option value="">Select a Category</option>');
+
+                                // Loop through response and append options (only id and name)
+                                $.each(response, function (index, category) {
+                                    let isSelected = selectedCategory && selectedCategory == category.id ? 'selected' : '';
+                                    categorySelect.append('<option value="' + category.id + '" ' + isSelected + '>' + category.name + '</option>');
+                                });
+                            },
+                            error: function () {
+                                console.log('Failed to fetch categories');
+                            },
+                            complete: function () {
+                                submitBtn.prop('disabled', false).html('Post Ad');
+                            }
+                        });
+                    } else {
+                        categorySelect.empty().append('<option value="">Select a Category</option>');
+                    }
+                }
+
+                // Fetch categories on industry change
+                $('#industry').on('change', function () {
+                    let industryValue = $(this).val();
+                    fetchCategories(industryValue);
+                });
+
+                // Fetch categories on page load (for edit mode)
+                if (industry) {
+                    fetchCategories(industry, selectedCategory);
+                }
             });
 
         </script>

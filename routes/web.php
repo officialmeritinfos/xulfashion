@@ -393,6 +393,9 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('app.settings');
             Route::get('profile/help',[Profile::class,'helpCenter'])
                 ->name('help');
+
+            //fetch categories in an industry
+            Route::get('industry/categories',[Profile::class,'fetchIndustryCategory'])->name('industry.categories');
         });
 
         //EVENT TICKET DOWNLOAD

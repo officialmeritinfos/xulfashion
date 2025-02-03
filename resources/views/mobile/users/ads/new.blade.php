@@ -53,15 +53,21 @@
             </div>
 
             <div class="form-group d-block">
-                <label for="inputusernumber" class="form-label">Category<sup class="text-danger">*</sup></label>
+                <label for="inputusernumber" class="form-label">Industry<sup class="text-danger">*</sup></label>
                 <div class="form-input mb-4 position-relative">
-                    <select class="selectize" id="merchantType" name="category">
-                        <option value="">Select a Category</option>
-                        @foreach($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
-                        @endforeach
+                    <select class="form-control" id="industry" name="industry">
+                        <option value="">Select an Industry</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="beauty">Beauty</option>
                     </select>
                     <i class="fa fa-filter"></i>
+                </div>
+            </div>
+
+            <div class="form-group d-block">
+                <label for="inputusernumber" class="form-label">Category<sup class="text-danger">*</sup></label>
+                <div class="form-input mb-4 position-relative">
+                    <select class="form-control" id="merchantType" name="category"></select>
                 </div>
             </div>
 
@@ -181,6 +187,43 @@
                     }
                 })
             });
+            $(document).ready(function () {
+                $('#industry').on('change', function () {
+                    let industry = $(this).val();
+                    let submitBtn = $('.submit');
+                    let categorySelect = $('#merchantType');
+
+                    if (industry) {
+                        submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+
+                        $.ajax({
+                            url: "{{ route('mobile.user.industry.categories') }}",
+                            type: 'GET',
+                            data: { mainCategory: industry }, // Send selected industry
+                            success: function (response) {
+                                $('#merchantType').empty(); // Clear previous options
+                                $('#merchantType').append('<option value="">Select a Category</option>');
+
+                                // Loop through response and append options (only id and name)
+                                $.each(response, function (index, category) {
+                                    $('#merchantType').append('<option value="' + category.id + '">' + category.name + '</option>');
+                                });
+
+
+                            },
+                            error: function () {
+                                console.log('failed to fetch categories')
+                            },
+                            complete: function () {
+                                submitBtn.prop('disabled', false).html('Post Ad');
+                            }
+                        });
+                    } else {
+                        $('#merchantType').empty().append('<option value="">Select a Category</option>');
+                    }
+                });
+            });
+
         </script>
         <script src="{{asset('mobile/js/requests/profile-edit.js')}}"></script>
     @endpush

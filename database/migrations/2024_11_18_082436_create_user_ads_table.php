@@ -25,6 +25,7 @@ class CreateUserAdsTable extends Migration
             $table->string('currency', 100)->nullable();
             $table->string('amount', 150)->default('0');
             $table->string('serviceType', 100)->nullable();
+            $table->enum('industry',['beauty','fashion'])->default('fashion');
             $table->integer('isPromoted')->default(2);
             $table->string('promotionEndTime', 150)->nullable();
             $table->string('country', 150)->nullable();

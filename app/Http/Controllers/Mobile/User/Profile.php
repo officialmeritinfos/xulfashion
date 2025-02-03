@@ -6,6 +6,7 @@ use App\Custom\GoogleUpload;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\GeneralSetting;
+use App\Models\ServiceType;
 use App\Models\User;
 use App\Models\UserVerification;
 use App\Traits\Helpers;
@@ -199,5 +200,15 @@ class Profile extends BaseController
             'siteName'  =>$web->name,
             'user'      =>Auth::user()
         ]);
+    }
+
+    //fetch categories in industry
+    public function fetchIndustryCategory(Request $request)
+    {
+        $industry = $request->mainCategory;
+        $categories = ServiceType::where('mainCategory',$industry)
+            ->select('id', 'name')->get();
+
+        return response()->json($categories);
     }
 }

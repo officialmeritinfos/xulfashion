@@ -91,9 +91,6 @@
                         @endempty
                     </h3>
                 </div>
-                <p>
-                    {{$ad->description}}
-                </p>
 
                 <section class="reviews-box mb-2">
                     <div class="card-body">
@@ -135,6 +132,7 @@
                                 <table class="table table-bordered text-center m-0">
                                     <thead>
                                     <tr>
+                                        <th scope="col">Industry</th>
                                         <th scope="col">Company</th>
                                         <th scope="col">Number of Views</th>
                                         <th scope="col">State</th>
@@ -143,6 +141,7 @@
                                     </thead>
                                     <tbody>
                                     <tr>
+                                        <td>{{ ucfirst($ad->industry) }}</td>
                                         <td>{{$ad->companyName??'N/A'}}</td>
                                         <td>{{$ad->numberOfViews}}</td>
                                         <td>{{$injected->fetchState($ad->country,$ad->state)->name}}</td>
@@ -181,7 +180,7 @@
                             <div class="accordion-body">
                                 <div class="product-description">
                                     <p>
-                                        {{$ad->description}}
+                                        {!! $ad->description !!}
                                     </p>
                                 </div>
                             </div>

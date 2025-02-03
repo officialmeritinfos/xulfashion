@@ -63,6 +63,7 @@ class AdsEdit extends BaseController
                 'featuredPhoto'=>['nullable','image','max:2048'],
                 'title'=>['required','string','max:200'],
                 'companyName'=>['nullable','string','max:150'],
+                'industry'=>['required','in:beauty,fashion'],
                 'category'=>['required','integer','exists:service_types,id'],
                 'description'=>['required','string'],
                 'priceType'=>['required','integer','in:1,2'],
@@ -77,7 +78,8 @@ class AdsEdit extends BaseController
                 'photos.max'=>'You can only upload a maximum of '.$web->fileUploadAllowed.' images.',
                 'photos.*.image' => 'Each file must be an image.',
                 'photos.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg.',
-                'photos.*.max' => 'Each image may not be larger than 2MB.'
+                'photos.*.max' => 'Each image may not be larger than 2MB.',
+                'industry.in'=>'Only Beauty and Fashion Industries are currently supported.',
             ],[
                 'negotiate'=>'Open to Negotiation',
             ])->stopOnFirstFailure();
@@ -105,7 +107,8 @@ class AdsEdit extends BaseController
                 'amount'=>($input['priceType']!=1)?$input['price']:0,'serviceType'=>$input['category'],
                 'state'=>$input['location'],'tags'=>implode(',',$input['tags']),
                 'openToNegotiation'=>($input['priceType']!=1)?$input['negotiate']:2,'status'=>2,
-                'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2
+                'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
+                'industry'=>$input['industry'],
             ])){
                 //check if photos were uploaded
                 if ($request->file('photos')){

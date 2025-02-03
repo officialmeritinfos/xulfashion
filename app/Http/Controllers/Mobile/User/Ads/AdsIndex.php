@@ -90,6 +90,7 @@ class AdsIndex extends BaseController
                 'featuredPhoto'=>['required','image','max:2048'],
                 'title'=>['required','string','max:200'],
                 'companyName'=>['nullable','string','max:150'],
+                'industry'=>['required','in:beauty,fashion'],
                 'category'=>['required','integer','exists:service_types,id'],
                 'description'=>['required','string'],
                 'priceType'=>['required','integer','in:1,2'],
@@ -104,7 +105,8 @@ class AdsIndex extends BaseController
                 'photos.max'=>'You can only upload a maximum of '.$web->fileUploadAllowed.' images.',
                 'photos.*.image' => 'Each file must be an image.',
                 'photos.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg.',
-                'photos.*.max' => 'Each image may not be larger than 2MB.'
+                'photos.*.max' => 'Each image may not be larger than 2MB.',
+                'industry.in'=>'Only Beauty and Fashion Industries are currently supported.',
             ],[
                 'negotiate'=>'Open to Negotiation',
             ])->stopOnFirstFailure();
@@ -129,7 +131,8 @@ class AdsIndex extends BaseController
                 'amount'=>($input['priceType']!=1)?$input['price']:0,'serviceType'=>$input['category'],
                 'state'=>$input['location'],'tags'=>implode(',',$input['tags']),
                 'openToNegotiation'=>($input['priceType']!=1)?$input['negotiate']:2,'status'=>2,
-                'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2
+                'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
+                'industry'=>$input['industry'],
             ]);
             if (!empty($ad)){
                 if (empty($user->phone)){
@@ -147,8 +150,8 @@ class AdsIndex extends BaseController
                         ]);
                     }
                 }
-                DB::commit();
                 $this->userNotification($user,'Ad Created','Your ad was created successfully and is pending review',$request->ip());
+                DB::commit();
                 return $this->sendResponse([
                     'redirectTo'=>route('mobile.user.ads.index'),
                     'redirects'=>true
