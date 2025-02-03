@@ -398,6 +398,9 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::get('industry/categories',[Profile::class,'fetchIndustryCategory'])->name('industry.categories');
         });
 
+
+        Route::get('industry/categories',[Profile::class,'fetchIndustryCategory'])->name('industry.categories');
+
         //EVENT TICKET DOWNLOAD
         Route::get('event/{event}/ticket/{ticket}/guest/{guest}/download',[TicketController::class,'displayTicket'])
             ->name('event.ticket.guest.download')->middleware('signed');

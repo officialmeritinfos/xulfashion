@@ -337,6 +337,8 @@ class MarketplaceController extends BaseController
     {
         $state = $request->input('state');
         $serviceType = $request->input('category');
+        $industry = $request->input('industry');
+        $search = $request->input('search');
         $country = Session::get('country');
         if (!$country){
             return to_route('mobile.marketplace.index');
@@ -347,6 +349,10 @@ class MarketplaceController extends BaseController
             $fetch->where('state', $state);
         })->when($request->filled('category'),function ($fetch) use($serviceType){
             $fetch->where('serviceType', $serviceType);
+        })->when($request->filled('industry'),function ($fetch) use($industry){
+            $fetch->where('industry', $industry);
+        })->when($request->filled('search'),function ($fetch) use($search){
+            $fetch->where('title', 'like', '%' . $search . '%');
         })->with('service')->inRandomOrder()->paginate(30);
 
         //fetch similar ads not in the searched category/state
@@ -357,6 +363,8 @@ class MarketplaceController extends BaseController
             $q->whereNot('state',$state);
         })->when($request->filled('category'),function ($q) use($serviceType){
             $q->whereNot('serviceType',$serviceType);
+        })->when($request->filled('industry'),function ($q) use($industry){
+            $q->whereNot('industry',$industry);
         })->with('service')->latest()->paginate(14);
 
         $country = Country::where('iso2',$country)->first();

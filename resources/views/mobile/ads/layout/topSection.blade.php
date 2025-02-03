@@ -89,27 +89,48 @@
 <!-- search section starts -->
 <section>
     <div class="custom-container mt-4">
-        <form class="theme-form search-head" action="{{route('mobile.marketplace.search')}}" method="get">
-            <div class="form-group">
+        <form class="theme-form search-head row" action="{{ route('mobile.marketplace.search') }}" method="get">
+            <div class="form-group mb-2">
+                <!-- State Select -->
                 <div class="form-input">
-                    <select class="form-control form-control-lg stateAds" aria-label="Default select example" name="state">
-                        <option value="" data-value="{{route('mobile.marketplace.index')}}">All of {{$country->name}}</option>
+                    <select class="form-control form-control-lg" aria-label="Default select example" name="state">
+                        <option value="" data-value="{{ route('mobile.marketplace.index') }}">All of {{ $country->name }}</option>
                         @foreach($states as $state)
-                            <option value="{{$state->iso2}}" {{(isset($params['state']) && $params['state']==$state->iso2)?'selected':''}} >{{$state->name}}</option>
+                            <option value="{{ $state->iso2 }}" {{ (isset($params['state']) && $params['state'] == $state->iso2) ? 'selected' : '' }}>{{ $state->name }}</option>
                         @endforeach
                     </select>
                 </div>
+                <!-- Industry Select -->
                 <div class="form-input">
-                    <select class="form-control form-control-lg categoryAds" aria-label="Default select example" name="category">
-                        <option value="" data-value="{{route('mobile.marketplace.index')}}">All</option>
-                        @foreach($serviceTypes as $serviceType)
-                            <option value="{{$serviceType->id}}" {{( isset($params['category']) && $params['category']==$serviceType->id)?'selected':''}}>{{$serviceType->name}}</option>
-                        @endforeach
+                    <select class="form-control form-control-lg industrySelect" aria-label="Default select example" name="industry">
+                        <option value="" data-value="{{ route('mobile.marketplace.index') }}">All Industry</option>
+                        <option value="fashion" {{ (isset($params['industry']) && $params['industry'] == 'fashion') ? 'selected' : '' }}>Fashion</option>
+                        <option value="beauty" {{ (isset($params['industry']) && $params['industry'] == 'beauty') ? 'selected' : '' }}>Beauty</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group mb-2">
+                <!-- Category Select -->
+                <div class="form-input">
+                    <select class="form-control form-control-lg categorySelect" aria-label="Default select example" name="category" data-selected="{{ $params['category'] ?? '' }}">
+                        <option value="" data-value="{{ route('mobile.marketplace.index') }}">All</option>
+
                     </select>
                 </div>
                 <div class="form-input">
-                    <input class="form-control-lg form-control" type="submit" aria-label="Default select example" value="Search"/>
+                    <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search here..." name="search"/>
+                    <div id="suggestions-box" class="suggestions-box"></div>
                 </div>
+
+            </div>
+            <div class="form-group">
+                <!-- Submit Button -->
+                <div class="form-input">
+                    <button class="form-control-lg form-control search-btn" type="submit" aria-label="Search">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+
             </div>
         </form>
     </div>

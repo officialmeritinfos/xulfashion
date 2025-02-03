@@ -111,6 +111,52 @@
                 });
             });
         </script>
+
+        <script>
+            $(document).ready(function () {
+                let industrySelect = $('select[name="industry"]'); // Select industry dropdown
+                let categorySelect = $('select[name="category"]'); // Select category dropdown
+                let selectedIndustry = industrySelect.val(); // Get the selected industry
+                let selectedCategory = categorySelect.data('selected'); // Get the preselected category
+
+                // Function to fetch categories dynamically
+                function fetchCategories(industry, selectedCategory = null) {
+                    if (industry) {
+                        $.ajax({
+                            url: "{{ route('mobile.industry.categories') }}",
+                            type: 'GET',
+                            data: { mainCategory: industry },
+                            success: function (response) {
+                                categorySelect.empty().append('<option value="">All</option>'); // Clear previous options
+
+                                // Append categories dynamically
+                                $.each(response, function (index, category) {
+                                    let isSelected = selectedCategory && selectedCategory == category.id ? 'selected' : '';
+                                    categorySelect.append('<option value="' + category.id + '" ' + isSelected + '>' + category.name + '</option>');
+                                });
+                            },
+                            error: function () {
+                                console.log('Failed to fetch categories');
+                            }
+                        });
+                    } else {
+                        categorySelect.empty().append('<option value="">All</option>'); // Reset if no industry is selected
+                    }
+                }
+
+                // Fetch categories when industry changes
+                industrySelect.on('change', function () {
+                    let industryValue = $(this).val();
+                    fetchCategories(industryValue);
+                });
+
+                // Fetch categories on page load if industry and category are set
+                if (selectedIndustry) {
+                    fetchCategories(selectedIndustry, selectedCategory);
+                }
+            });
+
+        </script>
     @endpush
 
 @endsection
