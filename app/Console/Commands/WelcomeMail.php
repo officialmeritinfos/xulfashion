@@ -30,7 +30,7 @@ class WelcomeMail extends Command
     public function handle()
     {
         $web = GeneralSetting::find(1);
-        $users = User::whereNot('welcomeSent',1)->where('email_verified_at','!=',null)->get();
+        $users = User::where('welcomeSent','!=',1)->where('email_verified_at','!=',null)->get();
         if ($users->count() >0){
             foreach ($users as $user) {
                 if ($user->accountType!=null && $user->accountType!=3){
