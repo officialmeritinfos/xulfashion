@@ -74,7 +74,9 @@ class Home extends BaseController
             'pageName'      =>'Pricing & Fees',
             'siteName'      =>$web->name,
             'web'           =>$web,
-            'fiat'          =>Fiat::where('code',strtoupper($currency))->orWhere('code','USD')->first(),
+            'fiat'          =>Fiat::where('status',1)->where(function ($query) use ($currency){
+                $query->where('code',strtoupper($currency))->orWhere('code','USD')->first();
+            })->first(),
             'fiats'         =>Fiat::where('status',1)->get()
         ]);
     }
