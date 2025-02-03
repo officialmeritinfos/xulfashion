@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\Email;
+use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\User;
 use App\Notifications\CustomNotification;
@@ -114,7 +115,15 @@ class Register extends BaseController
             // Validate Country from DB
             $countryExists = Country::where(['iso3' => strtoupper($country), 'status' => 1])->first();
             if (!$countryExists) {
-                return $this->sendError('validation.error', ['error' => 'Invalid country selected.']);
+                return $this->sendError('validation.error', ['error' => 'Invalid country selected or country not supported yet.']);
+            }
+
+            //check if the user's country currency is supported
+            $fiat = Fiat::where('code',$countryExists->currency)->first();
+            if (empty($fiat)){
+                $currency = 'USD';
+            }else{
+                $currency = $fiat->code;
             }
 
             // Handle Referral
@@ -130,7 +139,7 @@ class Register extends BaseController
                 'password' => Hash::make($input['password']),
                 'country' => $countryExists->name,
                 'countryCode' => $countryExists->iso3,
-                'mainCurrency' => $countryExists->currency,
+                'mainCurrency' => $currency,
                 'registrationIp' => $request->ip(),
                 'referral' => $refBy,
             ]);
