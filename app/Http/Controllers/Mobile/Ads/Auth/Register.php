@@ -112,16 +112,6 @@ class Register extends BaseController
                 return $this->sendError('validation.error', ['error' => 'Country selection is required. Please reload this page.']);
             }
 
-            // Load Blacklisted Countries from JSON
-            $blacklistedCountries = json_decode(Storage::get('data/blacklisted_countries.json'), true)['blacklisted'];
-
-            // Check if the user's country is blacklisted
-            if (in_array(strtoupper($country->iso3), $blacklistedCountries)) {
-                return $this->sendError('account.error', ['error' => 'Access denied. Your country is not supported.']);
-            }
-
-
-
             //check if the user's country currency is supported
             $fiat = Fiat::where('code',$country->currency)->first();
             if (empty($fiat)){
