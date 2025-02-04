@@ -133,6 +133,8 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Reference</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Email Verification</th>
+                                <th scope="col">Profile</th>
                                 <th scope="col">Date Joined</th>
                                 <th scope="col">Deletion Request</th>
                                 <th scope="col">Status</th>
@@ -157,6 +159,24 @@
                                 <td><a href="{{ route('staff.users.detail',['id'=>$user->reference]) }}"
                                         class="text-primary-600">{{ $user->reference }}</a></td>
                                 <td>{{ $user->email }}</td>
+                                <td>
+                                    @empty($user->email_verified_at)
+                                        <span
+                                            class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">Unverified</span>
+                                    @else
+                                        <span
+                                            class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Verified</span>
+                                    @endempty
+                                </td>
+                                <td>
+                                    @if($user->completedProfile!=1)
+                                        <span
+                                            class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">Incomplete</span>
+                                    @else
+                                        <span
+                                            class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Completed</span>
+                                    @endif
+                                </td>
                                 <td>{{ date('F d, Y h:i:s', strtotime($user->created_at)) }}</td>
                                 <td>
                                     @switch($user->requestedForAccountDeletion)
@@ -189,18 +209,6 @@
                                         d-inline-flex align-items-center justify-content-center" wire:navigate>
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                     </a>
-                                    @can('update User')
-                                    <a href="javascript:void(0)"
-                                        class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                        <iconify-icon icon="lucide:edit"></iconify-icon>
-                                    </a>
-                                    @endcan
-                                    @can('delete User')
-                                    <a href="javascript:void(0)"
-                                        class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                        <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                    </a>
-                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

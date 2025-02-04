@@ -12,7 +12,7 @@
                         <h6 class="mb-0 mt-16">{{ $user->name }}</h6>
                         <span class="text-secondary-light mb-16">{{ $user->email }}</span>
                     </div>
-                    <div class="mt-24">
+                    <div class="mt-24 border border-top-0 border-start-0 border-end mb-5">
                         <h6 class="text-xl mb-16">Personal Info</h6>
                         <ul>
                             <li class="d-flex align-items-center gap-1 mb-12">
@@ -118,6 +118,59 @@
                                 </li>
                             @endif
                         </ul>
+                    </div>
+                    <div class="mt-2 text-center">
+                        <h6 class="text-xl mb-16 ">Actions</h6>
+                        <div class="row gap-2">
+                            <div class="col-md-12">
+                                {{-- Loading Spinner for Search --}}
+                                <div class="col-md-1 d-flex align-items-center">
+                                    <div wire:loading wire:target="verifyEmail,resendVerificationMail" class="spinner-border text-primary" role="status"
+                                         style="width: 1.5rem; height: 1.5rem;">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @if($user->email_verified_at==null)
+                                <div class="col-md-12">
+                                    <button class="btn btn-primary" wire:click="verifyEmail">
+                                        Verify Email
+                                    </button>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <button class="btn btn-info" wire:click="resendVerificationMail">
+                                        Resend Verification Mail
+                                    </button>
+                                </div>
+                            @endif
+                            @if($user->status==1)
+                                <div class="col-md-12">
+                                    <button class="btn btn-danger">
+                                        Suspend
+                                    </button>
+                                </div>
+                            @else
+                                    <div class="col-md-12">
+                                        <button class="btn btn-success">
+                                            Activate
+                                        </button>
+                                    </div>
+                            @endif
+                            @if($user->completedProfile!=1)
+                                    <div class="col-md-12">
+                                        <button class="btn btn-info-100">
+                                            Profile Reminder
+                                        </button>
+                                    </div>
+                            @endif
+
+                                <div class="col-md-12">
+                                    <button class="btn btn-dark">
+                                        Send Notification
+                                    </button>
+                                </div>
+                        </div>
                     </div>
                 </div>
             </div>

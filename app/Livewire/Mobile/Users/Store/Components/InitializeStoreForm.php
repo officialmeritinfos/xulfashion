@@ -111,7 +111,7 @@ class InitializeStoreForm extends Component
             'file' => ['required', 'image', 'max:4096'],  // Max size in KB
             'returnPolicy' => ['nullable', 'string'],
             'refundPolicy' => ['required', 'string'],
-            'industry' => ['required','in:fashion,business']
+            'industry' => ['required','in:fashion,beauty']
         ]);
 
         // 2. Begin database transaction
