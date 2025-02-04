@@ -108,7 +108,7 @@ class InitializeStoreForm extends Component
             'address' => ['required', 'string'],
             'supportPhone' => ['required', 'string'],
             'supportEmail' => ['required', 'email'],
-            'file' => ['required', 'image', 'max:20'],  // Max size in KB
+            'file' => ['required', 'image', 'max:4096'],  // Max size in KB
             'returnPolicy' => ['nullable', 'string'],
             'refundPolicy' => ['required', 'string'],
             'industry' => ['required','in:fashion,business']

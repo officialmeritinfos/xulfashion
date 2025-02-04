@@ -62,7 +62,7 @@ class AdsEdit extends BaseController
 
             $validator = Validator::make($request->all(),[
                 'location'=>['required','alpha',Rule::exists('states','iso2')->where('country_code',$country->iso2)],
-                'featuredPhoto'=>['nullable','image','max:2048'],
+                'featuredPhoto'=>['nullable','image','max:4096'],
                 'title'=>['required','string','max:200'],
                 'companyName'=>['nullable','string','max:150'],
                 'industry'=>['required','in:beauty,fashion'],
@@ -74,7 +74,7 @@ class AdsEdit extends BaseController
                 'tags'=>['nullable'],
                 'tags.*'=>['nullable','string'],
                 'photos'=>['nullable','array','max:'.$web->fileUploadAllowed],
-                'photos.*'=>['nullable','image','mimes:jpeg,png,jpg,gif,svg','max:2048'],
+                'photos.*'=>['nullable','image','mimes:jpeg,png,jpg,gif,svg','max:4096'],
                 'ad'=>['required','string',Rule::exists('user_ads','reference')->where('user',$user->id)],
             ],[
                 'photos.max'=>'You can only upload a maximum of '.$web->fileUploadAllowed.' images.',
