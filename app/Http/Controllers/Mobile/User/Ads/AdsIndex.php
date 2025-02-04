@@ -126,7 +126,7 @@ class AdsIndex extends BaseController
 
             $ad = UserAd::create([
                 'user'=>$user->id,'reference'=>$reference,
-                'title'=>$input['title'],'description'=>clean($input['description']),
+                'title'=>$input['title'],'description'=>$input['description'],
                 'companyName'=>$input['companyName'],'priceType'=>$input['priceType'],
                 'amount'=>($input['priceType']!=1)?$input['price']:0,'serviceType'=>$input['category'],
                 'state'=>$input['location'],'tags'=>implode(',',$input['tags']),

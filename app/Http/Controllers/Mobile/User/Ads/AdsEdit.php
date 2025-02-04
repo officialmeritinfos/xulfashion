@@ -102,7 +102,7 @@ class AdsEdit extends BaseController
                 $featuredPhoto=$ad->featuredImage;
             }
             if (UserAd::where('id',$ad->id)->update([
-                'title'=>$input['title'],'description'=>clean($input['description']),
+                'title'=>$input['title'],'description'=>$input['description'],
                 'companyName'=>$input['companyName'],'priceType'=>$input['priceType'],
                 'amount'=>($input['priceType']!=1)?$input['price']:0,'serviceType'=>$input['category'],
                 'state'=>$input['location'],'tags'=>implode(',',$input['tags']),

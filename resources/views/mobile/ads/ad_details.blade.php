@@ -163,7 +163,7 @@
         <div class="custom-container">
             <h4 class="theme-color fw-semibold">Description :</h4>
             <p class="theme-color fw-normal mt-1">
-                {!! $ad->description !!}
+                {{ str_replace('<p> </p>', '',$ad->description) }}
             </p>
         </div>
     </section>
