@@ -162,7 +162,7 @@
     <section class="mb-4">
         <div class="custom-container">
             <h4 class="theme-color fw-semibold">Details :</h4>
-            <p class="theme-color fw-normal mt-1">
+            <p class=" fw-normal mt-1">
                 {!! $ad->description !!}
             </p>
         </div>
@@ -264,7 +264,7 @@
 
     <section>
         <div class="title" style="margin-left: 2rem;">
-            <h2 class="">Fashion Designer</h2>
+            <h2 class="">Merchant</h2>
         </div>
         <div class="delivery-sec">
 
