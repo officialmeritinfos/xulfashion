@@ -73,7 +73,9 @@ class AdsIndex extends BaseController
             'siteName'  =>$web->name,
             'user'      =>$user,
             'states'    =>State::where('country_code',$country->iso2)->orderBy('name')->get(),
-            'categories'=>ServiceType::where('status',1)->get()
+            'categories'=>ServiceType::where('status',1)->get(),
+            'fashion_categories' => ServiceType::where('mainCategory','fashion')->orderBy('name')->get(),
+            'beauty_categories' => ServiceType::where('mainCategory','beauty')->orderBy('name')->get(),
         ]);
     }
     //process new ad
@@ -91,7 +93,8 @@ class AdsIndex extends BaseController
                 'title'=>['required','string','max:200'],
                 'companyName'=>['nullable','string','max:150'],
                 'industry'=>['required','in:beauty,fashion'],
-                'category'=>['required','integer','exists:service_types,id'],
+                'fashionCategory'=>['nullable','required_if:industry,fashion', 'integer','exists:service_types,id'],
+                'beautyCategory'=>['nullable','required_if:industry,beauty', 'integer','exists:service_types,id'],
                 'description'=>['required','string'],
                 'priceType'=>['required','integer','in:1,2'],
                 'price'=>['nullable','required_if:priceType,2', 'numeric'],
@@ -124,11 +127,17 @@ class AdsIndex extends BaseController
                 $featuredPhoto  = $result['link'];
             }
 
+            if ($request->industry=='fashion'){
+                $category = $request->fashionCategory;
+            }else{
+                $category = $request->beautyCategory;
+            }
+
             $ad = UserAd::create([
                 'user'=>$user->id,'reference'=>$reference,
                 'title'=>$input['title'],'description'=>$input['description'],
                 'companyName'=>$input['companyName'],'priceType'=>$input['priceType'],
-                'amount'=>($input['priceType']!=1)?$input['price']:0,'serviceType'=>$input['category'],
+                'amount'=>($input['priceType']!=1)?$input['price']:0,'serviceType'=>$category,
                 'state'=>$input['location'],'tags'=>implode(',',$input['tags']),
                 'openToNegotiation'=>($input['priceType']!=1)?$input['negotiate']:2,'status'=>2,
                 'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2,

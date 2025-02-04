@@ -46,7 +46,9 @@ class AdsEdit extends BaseController
             'user'      =>$user,
             'states'    =>State::where('country_code',$country->iso2)->orderBy('name')->get(),
             'categories'=>ServiceType::where('status',1)->get(),
-            'ad'        =>$ad
+            'ad'        =>$ad,
+            'fashion_categories' => ServiceType::where('mainCategory','fashion')->orderBy('name')->get(),
+            'beauty_categories' => ServiceType::where('mainCategory','beauty')->orderBy('name')->get(),
         ]);
     }
 
