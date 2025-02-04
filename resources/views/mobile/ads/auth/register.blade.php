@@ -150,6 +150,14 @@
                 <span>OR</span>
             </div>
 
+            <ul class="social-media">
+                <li>
+                    <a href="{{ route('mobile.auth.google-authentication') }}">
+                        <img class="img-fluid icons" src="{{asset('mobile/images/svg/google.svg')}}" alt="facebook" />
+                    </a>
+                </li>
+            </ul>
+
             <h4 class="signup pt-0">Already have an account ?<a href="{{route('mobile.login')}}"> Sign in</a></h4>
         </div>
     </form>

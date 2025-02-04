@@ -107,7 +107,7 @@ class Register extends BaseController
             $input = $validator->validated();
 
             // Get Country from Cookie
-            $country = Country::where('iso3',$input['country'])->first();
+            $country =  Country::where('iso3',$input['country'])->where('status',1)->first();
             if (!$country) {
                 return $this->sendError('validation.error', ['error' => 'Country selection is required. Please reload this page.']);
             }

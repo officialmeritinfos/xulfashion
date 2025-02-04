@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Mobile\User;
 use App\Custom\GoogleUpload;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Models\Country;
+use App\Models\Fiat;
 use App\Models\GeneralSetting;
 use App\Models\ServiceType;
 use App\Models\User;
@@ -12,8 +14,10 @@ use App\Models\UserVerification;
 use App\Traits\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class Profile extends BaseController
 {
@@ -141,6 +145,19 @@ class Profile extends BaseController
             'user'      =>Auth::user()
         ]);
     }
+    public function completeProfileSocialite()
+    {
+        $web = GeneralSetting::find(1);
+
+        return view('mobile.users.profile.complete_profile_socialite')->with([
+            'pageName'  =>'Complete Profile',
+            'web'       =>$web,
+            'siteName'  =>$web->name,
+            'user'      =>Auth::user(),
+            'countries' =>Country::where('status',1)->get(),
+            'referral'  =>(Cookie::has('ref'))?Cookie::get('ref'):'',
+        ]);
+    }
 
     public function processCompleteProfile(Request $request)
     {
@@ -176,6 +193,82 @@ class Profile extends BaseController
                 'completedProfile'=>1, 'dob'=>$input['dob'],
                 'displayName'=>$input['displayName'],
                 'address'=>$input['address'], 'accountType'=>1,'photo'=>$image,'merchantType' => $input['merchantType']
+            ])){
+                $this->userNotification($user,'Profile setup completed','Your profile setup as a merchant has been completed.',$request->ip());
+                return $this->sendResponse([
+                    'redirectTo'=>route('mobile.user.profile.landing-page'),
+                    'redirects'=>true
+                ],'Profile completely setup.');
+            }
+            return $this->sendError('setup.error',['error'=>'Something went wrong. Please try again']);
+        }catch (\Exception $exception){
+            Log::alert($exception->getMessage());
+            return $this->sendError('tutor.error',['error'=>'Internal Server Error']);
+        }
+    }
+
+    public function processCompleteProfileSocialite(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $web = GeneralSetting::find(1);
+
+            $validator = Validator::make($request->all(),[
+                'bio'                   =>['required','string'],
+                'displayName'           =>['nullable','string'],
+                'gender'                =>['required','string','in:male,female,others'],
+                'dob'                   =>['required','date'],
+                'address'               =>['required','string'],
+                'tutorKeywords'         =>['nullable'],
+                'tutorKeywords.*'       =>['nullable','string'],
+                'image'                 => ['nullable', 'image','max:5120'],
+                'merchantType'          =>['required','numeric'],
+                'name'                  => ['required', 'string'],
+                'username'              => ['required', 'alpha_num', 'unique:users,username'],
+                'country'               => ['required',Rule::exists('countries','iso3')->where('status',1)],
+                'referral'              => ['nullable', 'string', 'exists:users,username'],
+            ])->stopOnFirstFailure();
+            if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
+            $input = $validator->validated();
+
+            if ($request->hasFile('image')) {
+                //upload image
+                $google = new GoogleUpload();
+                $imageResult = $google->uploadGoogle($request->file('image'));
+                $image  = $imageResult['link'];
+            }else{
+                $image = $user->photo;
+            }
+
+            // Get Country from request
+            $country = Country::where('iso3',$input['country'])->where('status',1)->first();
+            if (!$country) {
+                return $this->sendError('validation.error', ['error' => 'Country selection is required. Please reload this page.']);
+            }
+
+            //check if the user's country currency is supported
+            $fiat = Fiat::where('code',$country->currency)->first();
+            if (empty($fiat)){
+                $currency = 'USD';
+            }else{
+                $currency = $fiat->code;
+            }
+
+            $refBy = $request->filled('referral') ? User::where('username', $input['referral'])->value('id') : 0;
+
+            //update the user's profile
+            if (User::where('id',$user->id)->update([
+                'bio'=>$input['bio'], 'gender'=>$input['gender'],
+                'tutorKeywords'=>implode(',',$input['tutorKeywords']),
+                'activelyLookingForJob'=>1,
+                'completedProfile'=>1, 'dob'=>$input['dob'],
+                'displayName'=>$input['displayName'],
+                'address'=>$input['address'], 'accountType'=>1,'photo'=>$image,'merchantType' => $input['merchantType'],
+                'name' => $input['name'],'registrationIp' => $request->ip(),
+                'username' => $input['username'],
+                'country' => $country->name,
+                'countryCode' => $country->iso3,
+                'mainCurrency' => $currency,
             ])){
                 $this->userNotification($user,'Profile setup completed','Your profile setup as a merchant has been completed.',$request->ip());
                 return $this->sendResponse([

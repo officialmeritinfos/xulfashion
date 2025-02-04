@@ -46,6 +46,7 @@ class CreateUsersTable extends Migration
             $table->string('tutorKeywords', 200)->nullable();
             $table->string('photo', 200)->nullable();
             $table->text('address')->nullable();
+            $table->string('google_id')->nullable();
             $table->string('companyName', 200)->nullable();
             $table->string('state', 150)->nullable();
             $table->integer('activateProfile')->default(1);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\Account;
+use App\Http\Controllers\Mobile\Ads\Auth\GoogleController;
 use App\Http\Controllers\Mobile\Ads\Auth\Login;
 use App\Http\Controllers\Mobile\Ads\Auth\RecoverPassword;
 use App\Http\Controllers\Mobile\Ads\Auth\Register;
@@ -176,6 +177,11 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::get('register',[Register::class,'landingPage'])->name('register');
             Route::post('register/process',[Register::class,'processRegistration'])
                 ->name('register.process');
+            //REGISTRATION WITH GOOGLE
+            Route::get('auth/google-authentication',[GoogleController::class,'redirectToGoogle'])->name('auth.google-authentication');
+            Route::get('auth/google-authentication/callback',[GoogleController::class,'handleGoogleCallback'])->name('auth.google-authentication.callback');
+
+
             //LOGIN
             Route::get('login',[Login::class,'landingPage'])->name('login');
             Route::post('login/process',[Login::class,'processLogin'])->name('login.process');
@@ -224,6 +230,11 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('profile.settings.complete-profile');
             Route::post('profile/settings/complete-profile/process',[Profile::class,'processCompleteProfile'])
                 ->name('profile.settings.complete-profile.process');
+
+            Route::get('profile/settings/complete-profile/socialite',[Profile::class,'completeProfileSocialite'])
+                ->name('profile.settings.complete-profile.socialite');//for those who signed up from Google
+            Route::post('profile/settings/complete-profile/socialite/process',[Profile::class,'processCompleteProfile'])
+                ->name('profile.settings.complete-profile.socialite.process');
 
             /*====================ADS DIRECTORY ===========================*/
             Route::get('ads/index',[AdsIndex::class,'landingPage'])
