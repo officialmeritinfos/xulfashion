@@ -16,7 +16,7 @@ use App\Http\Controllers\Staff\Dashboard\Users;
 use App\Http\Controllers\Staff\Dashboard\VerificationController;
 use Illuminate\Support\Facades\Route;
 
-Route::domain('modacore.localhost')->group(function () {
+Route::domain('modacore.xulstore.com')->group(function () {
     //Staff authentication
     Route::get('/',[LoginController::class,'landingPage'])->name('login');//login
     Route::post('login/process',[LoginController::class,'processLogin'])->name('login.process');//process login

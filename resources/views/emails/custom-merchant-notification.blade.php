@@ -74,7 +74,7 @@
 <div class="container">
     <!-- Header -->
     <div class="header">
-        <img src="{{ asset('images/logo.png') }}" alt="Xulfashion Logo">
+        <img src="{{ asset($web->logo2) }}" alt="{{ $web->name }} Logo">
         <h1>{{ $subject }}</h1>
     </div>
 
@@ -84,14 +84,14 @@
 
         <p>{!! nl2br(e($messageContent)) !!}</p>
 
-        <p>If you have any questions, feel free to <a href="mailto:support@xulfashion.com">contact our support team</a>.</p>
+        <p>If you have any questions, feel free to <a href="mailto:{{ $web->supportEmail }}">contact our support team</a>.</p>
 
-        <p>Best Regards,<br><strong>The Xulfashion Team</strong></p>
+        <p>Best Regards,<br><strong>The {{ $web->name }} Team</strong></p>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        <p>&copy; 2025 Xulfashion. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} {{ $web->name }}. All rights reserved.</p>
     </div>
 </div>
 </body>

@@ -125,7 +125,7 @@
                             <div class="col-md-12">
                                 {{-- Loading Spinner for Search --}}
                                 <div class="col-md-1 d-flex align-items-center">
-                                    <div wire:loading wire:target="verifyEmail,resendVerificationMail" class="spinner-border text-primary" role="status"
+                                    <div wire:loading wire:target="verifyEmail,resendVerificationMail,remindAboutProfile,suspendUser,activateUser" class="spinner-border text-primary" role="status"
                                          style="width: 1.5rem; height: 1.5rem;">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
@@ -145,28 +145,28 @@
                                 </div>
                             @endif
                             @if($user->status==1)
-                                <div class="col-md-12">
+                                <div class="col-md-12" wire:click="suspendUser">
                                     <button class="btn btn-danger">
                                         Suspend
                                     </button>
                                 </div>
                             @else
                                     <div class="col-md-12">
-                                        <button class="btn btn-success">
+                                        <button class="btn btn-success" wire:click="activateUser">
                                             Activate
                                         </button>
                                     </div>
                             @endif
                             @if($user->completedProfile!=1)
                                     <div class="col-md-12">
-                                        <button class="btn btn-info-100">
-                                            Profile Reminder
+                                        <button class="btn btn-outline-primary" wire:click="remindAboutProfile">
+                                            Send Profile Reminder
                                         </button>
                                     </div>
                             @endif
 
                                 <div class="col-md-12">
-                                    <button class="btn btn-dark">
+                                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#customNotification">
                                         Send Notification
                                     </button>
                                 </div>
@@ -366,4 +366,67 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="customNotification" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    wire:ignore.self>
+        <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
+            <div class="modal-content radius-16 bg-base">
+                <div class="modal-header py-16 px-24 border border-top-0 border-start-0 border-end-0">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Send a Notification </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-24">
+                    <div class="card">
+                        <div class="card-body">
+                            <form wire:submit.prevent="submitNotification">
+                                <div class="row gy-3">
+                                    <div class="col-12">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" wire:model="title" class="form-control" placeholder="Enter Title">
+                                        @error('title') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Content</label>
+                                        <textarea type="text" wire:model="content" class="form-control" rows="5"></textarea>
+                                        @error('content') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Type of Notification</label>
+                                        <div class="d-flex align-items-center flex-wrap gap-24">
+                                            <div class="bg-primary-50 px-20 py-12 radius-8">
+                                                <span class="form-check checked-primary d-flex align-items-center gap-2">
+                                                    <input class="form-check-input" type="radio" wire:model="notificationType" id="radio100" value="mail">
+                                                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="radio100"> Mail </label>
+                                                </span>
+                                            </div>
+                                            <div class="bg-warning-100 px-20 py-12 radius-8">
+                                                <span class="form-check checked-success d-flex align-items-center gap-2">
+                                                    <input class="form-check-input" type="radio" wire:model="notificationType" id="radio200" value="push">
+                                                    <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="radio200"> Push Notification </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @error('notificationType') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Account Pin</label>
+                                        <input type="password" wire:model.live.debounce.250ms="pin" minlength="6" maxlength="6"
+                                               class="form-control" placeholder="*******">
+                                        @error('pin') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center gap-3">
+                                        <button type="submit" class="btn btn-primary-600" wire:loading.attr="disabled">
+                                            <span wire:loading.remove>Proceed</span>
+                                            <span wire:loading>Processing...</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
