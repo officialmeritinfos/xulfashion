@@ -75,7 +75,7 @@ class ReviewController extends BaseController
             $review = UserAdReview::create([
                 'reviewer'=>$user->id,'merchant'=>$merchant->id,
                 'reference'=>$this->generateUniqueReference('user_ad_reviews','reference'),
-                'comment'=>clean($input['review']),'rating'=>$input['rating'],'status'=>1
+                'comment'=>$input['review'],'rating'=>$input['rating'],'status'=>1
             ]);
             if (!empty($review)){
                 $message= "
