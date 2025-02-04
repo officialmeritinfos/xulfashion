@@ -162,7 +162,7 @@
     <section class="mb-4">
         <div class="custom-container">
             <h4 class="theme-color fw-semibold">Description :</h4>
-            <p class=" fw-normal mt-1 text-muted">
+            <p class="theme-color fw-normal mt-1">
                 {!! $ad->description !!}
             </p>
         </div>
