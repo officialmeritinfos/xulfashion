@@ -233,7 +233,7 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
 
             Route::get('profile/settings/complete-profile/socialite',[Profile::class,'completeProfileSocialite'])
                 ->name('profile.settings.complete-profile.socialite');//for those who signed up from Google
-            Route::post('profile/settings/complete-profile/socialite/process',[Profile::class,'processCompleteProfile'])
+            Route::post('profile/settings/complete-profile/socialite/process',[Profile::class,'processCompleteProfileSocialite'])
                 ->name('profile.settings.complete-profile.socialite.process');
 
             /*====================ADS DIRECTORY ===========================*/
