@@ -58,7 +58,7 @@ class GoogleController extends Controller
                     'name' => $user->name,
                     'google_id'=> $user->id,
                     'reference' => $this->generateUniqueId('users','reference'),
-                    'username' => $user->getNickname()??textToSlug($user->name),
+                    'username' => $user->getNickname()??str_replace(' ', '', $user->name),
                     'country' => $countryName,
                     'mainCurrency' => $currency,
                     'email_verified_at' => now(),
