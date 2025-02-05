@@ -113,7 +113,7 @@
                         <img class="unactive" src="{{asset('mobile/images/svg/profile.svg')}}" alt="profile" />
                         <img class="active" src="{{asset('mobile/images/svg/profile-fill.svg')}}" alt="profile" />
                     </div>
-                    <p>Auth</p>
+                    <p>Login/Register</p>
                 </a>
             </li>
         @else

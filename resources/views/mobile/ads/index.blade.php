@@ -189,7 +189,7 @@
                                         <div class="d-flex justify-content-between gap-3">
                                             <h5>By: {{$trendingInCategory->companyName}}</h5>
                                             <h3 class="text-end">
-                                                {{getStateFromIso2($trendingInCategory->state,$country->iso2)->name}}
+                                                {{getStateFromIso2($trendingInCategory->state,$trendingInCategory->country)->name}}
                                             </h3>
                                         </div>
                                         <div class="bottom-panel">
@@ -248,7 +248,7 @@
                             },
                             complete: function () {
                                 // Restore submit button after request completes
-                                submitBtn.prop('disabled', false).html('<i class="fa fa-search"></i>');
+                                submitBtn.prop('disabled', false).html('<i class="fa fa-search"></i>');9
                             }
                         });
                     } else {
