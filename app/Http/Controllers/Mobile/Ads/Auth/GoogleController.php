@@ -50,7 +50,7 @@ class GoogleController extends Controller
 
             if ($user) {
                 // User exists, log them in
-                Auth::login($user);
+                Auth::login($user,true);
                 $user->update(['loggedIn' => 1]);
 
                 // Determine redirection URL
@@ -84,7 +84,7 @@ class GoogleController extends Controller
                 $this->initializeUserSettings($newUser);
 
                 // Log user in
-                Auth::login($newUser);
+                Auth::login($newUser,true);
 
                 // Redirect to complete profile page
                 $url = Cookie::has('redirect') ? Cookie::get('redirect') : route('mobile.user.profile.settings.complete-profile.socialite');

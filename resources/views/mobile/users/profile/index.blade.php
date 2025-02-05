@@ -1,6 +1,12 @@
 @extends('mobile.users.layout.innerBase')
 @section('content')
-
+    <div class="main mt-2 mb-3">
+        <div class="container-fluid text-center">
+            <a href="{{completedProfileMobile('mobile.user.ads.new')}}" class="btn theme-btn w-100 mt-3 mb-3 btn-auto" role="button">
+                Post an AD
+            </a>
+        </div>
+    </div>
     <section class="section-b-space pt-0">
         <div class="custom-container">
             <ul class="profile-list">
@@ -15,6 +21,20 @@
                         </div>
                     </a>
                 </li>
+
+
+                <li>
+                    <a href="{{completedProfileMobile('mobile.user.store.index')}}" class="profile-box">
+                        <div class="profile-img">
+                            <i class="iconsax icon" data-icon="shop"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Store</h4>
+                            <h5>Create & Manage Your Store</h5>
+                        </div>
+                    </a>
+                </li>
+
                 <li>
                     <a href="{{route('mobile.user.events.index')}}" class="profile-box">
                         <div class="profile-img">
@@ -47,30 +67,6 @@
                         <div class="profile-details">
                             <h4>Reviews</h4>
                             <h5>All your reviews</h5>
-                        </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{completedProfileMobile('mobile.user.store.index')}}" class="profile-box">
-                        <div class="profile-img">
-                            <i class="iconsax icon" data-icon="shop"></i>
-                        </div>
-                        <div class="profile-details">
-                            <h4>Store</h4>
-                            <h5>Create & Manage Your Store</h5>
-                        </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{route('mobile.user.coming.soon')}}" class="profile-box">
-                        <div class="profile-img">
-                            <i class="iconsax icon" data-icon="teacher"></i>
-                        </div>
-                        <div class="profile-details">
-                            <h4>Fashion School</h4>
-                            <h5>Create and manage enrollments into your fashion school.</h5>
                         </div>
                     </a>
                 </li>
@@ -140,6 +136,19 @@
                         </a>
                     </li>
                 @endif
+
+
+                <li>
+                    <a href="{{route('mobile.user.coming.soon')}}" class="profile-box">
+                        <div class="profile-img">
+                            <i class="iconsax icon" data-icon="teacher"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Fashion School</h4>
+                            <h5>Create and manage enrollments into your fashion school.</h5>
+                        </div>
+                    </a>
+                </li>
             </ul>
         </div>
     </section>
