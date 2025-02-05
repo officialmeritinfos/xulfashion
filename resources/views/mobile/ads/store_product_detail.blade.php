@@ -103,7 +103,7 @@
                                 <h6>Contact</h6>
                                 <h6  style="cursor: pointer;word-break: break-word;">
                                     <a href="https://api.whatsapp.com/send?phone={{formatContactToWhatsapp($store->phone,$store->country)}}&text=I%20came%20from%20Xulfashion,%20and%20I%20want%20to%20buy%20{{$product->name}}"
-                                       target="_blank">
+                                       target="_blank" class="back">
                                         <i class="fa fa-whatsapp" style="font-size: 50px;"></i>
                                     </a>
                                 </h6>

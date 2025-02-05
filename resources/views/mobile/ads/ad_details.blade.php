@@ -274,7 +274,7 @@
                         <h6>Contact</h6>
                         <h6 id="contact-number" style="cursor: pointer;">
                             <a href="https://api.whatsapp.com/send?phone={{formatContactToWhatsapp($merchant->phone,$merchant->countryCode)}}&text=Hi,%20I%20came%20from%20Xulfashion"
-                            target="_blank">
+                            target="_blank" class="back">
                                 <i class="fa fa-whatsapp" style="font-size: 50px;"></i>
                             </a>
                         </h6>

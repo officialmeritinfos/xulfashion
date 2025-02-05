@@ -55,12 +55,12 @@
                                 </div>
                                 <div class="col-md-4 frontImage">
                                     <label for="frontImage" class="form-label">Front of <span class="idName">{{ $docName }}</span></label>
-                                    <input type="file" class="form-control" id="frontImage" wire:model.live="frontImage">
+                                    <input type="file" class="form-control" id="frontImage" wire:model="frontImage">
                                     @error('frontImage') <span class="error text-danger">{{ $message }}</span> @enderror
                                 </div>
                                 <div class="col-md-4 backImage">
                                     <label for="backImage" class="form-label">Back of <span class="idName">{{ $docName }}</span></label>
-                                    <input type="file" class="form-control" id="backImage" wire:model.live="backImage">
+                                    <input type="file" class="form-control" id="backImage" wire:model="backImage">
                                     @error('backImage') <span class="error text-danger">{{ $message }}</span> @enderror
                                 </div>
                             @else
@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="col-md-6 frontImage">
                                     <label for="frontImage" class="form-label">Front of <span class="idName">{{ $docName }}</span></label>
-                                    <input type="file" class="form-control" id="frontImage" wire:model.live="frontImage">
+                                    <input type="file" class="form-control" id="frontImage" wire:model="frontImage">
                                     @error('frontImage') <span class="error text-danger">{{ $message }}</span> @enderror
                                 </div>
                             @endif
@@ -112,7 +112,7 @@
 
                     <div class="col-12 mt-3">
                         <label for="addressProof" class="form-label">Proof of Address</label>
-                        <input type="file" class="form-control" id="addressProof" wire:model.live="addressProof">
+                        <input type="file" class="form-control" id="addressProof" wire:model="addressProof">
                         @error('addressProof') <span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
 
