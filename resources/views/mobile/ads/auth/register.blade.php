@@ -58,7 +58,7 @@
     @endpush
 
     <div class="auth-img">
-        <img class="img-fluid auth-bg" src="{{asset('marketplace/img/hero/fashion.jpg')}}" alt="auth_bg"/>
+        <img class="img-fluid auth-bg" src="{{asset('mobile/images/onboarding/login.svg')}}" alt="auth_bg"/>
         <div class="auth-content">
             <div>
                 <h2>Join {{$siteName}}</h2>
