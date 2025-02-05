@@ -3039,7 +3039,7 @@ input[type=range]::-ms-thumb {
   padding: 15px;
 }
 .auth-body .auth-img .auth-bg {
-    height: 60%;
+    height: 20%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
