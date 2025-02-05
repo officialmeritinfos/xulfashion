@@ -65,4 +65,51 @@ class AdsDetails extends BaseController
 
         return back()->with('success','Successfully deleted');
     }
+
+    public function upload(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'photos.*' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ]);
+
+        //check user owns ad
+        $ad = UserAd::where([
+            'id' => $id,'user' => $user->id
+        ])->first();
+        if(!$ad){
+            return response()->json([
+                'success' => false,
+                'message' => 'You cannot upload an image into an ad you do not own.'
+            ], 400);
+        }
+
+        $uploadedPhotos = [];
+
+        if ($request->hasFile('photos')) {
+
+            foreach ($request->file('photos') as $index => $item) {
+                $result = googleUpload($item);
+                $fileName = $result['link'];
+
+                $photoEntry = UserAdPhoto::create([
+                    'ad'=>$id,'photo'=>$fileName
+                ]);
+
+                $uploadedPhotos[] = $photoEntry;
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Images uploaded successfully!',
+                'photos' => $uploadedPhotos
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No images uploaded.'
+        ], 400);
+    }
 }

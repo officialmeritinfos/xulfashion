@@ -1303,3 +1303,38 @@ if (!function_exists('calculateChargeRate')){
         return $charge;
     }
 }
+
+if (!function_exists('formatContactToWhatsapp')) {
+    /**
+     * Formats a phone number into a WhatsApp-compatible format.
+     *
+     * @param string $contact   The phone number to format.
+     * @param string $country   The country ISO code (default: 'NGA').
+     * @return string|null      Returns a formatted WhatsApp number or null if invalid.
+     */
+    function formatContactToWhatsapp($contact, $country = 'NGA')
+    {
+        // Fetch country details based on ISO2 or ISO3 code
+        $countryMain = \App\Models\Country::where('iso3', $country)->orWhere('iso2', $country)->first();
+
+        // Ensure a valid country was found
+        if (!$countryMain) {
+            return null; // Return null if country is not found
+        }
+
+        // Extract phone country code (without '+')
+        $phoneCode = str_replace('+', '', optional($countryMain)->phonecode);
+
+        // Remove all non-numeric characters from the contact number
+        $cleanContact = preg_replace('/\D/', '', $contact);
+
+        // Remove the country code if it already exists in the contact number
+        if (strpos($cleanContact, $phoneCode) === 0) {
+            $cleanContact = substr($cleanContact, strlen($phoneCode));
+        }
+
+        // Construct the final WhatsApp-compatible contact
+        return $phoneCode . $cleanContact;
+    }
+}
+

@@ -217,8 +217,11 @@
                 <div class="dimensions-box delivery-box">
                     <div class="d-block">
                         <h6>Contact</h6>
-                        <h6 id="contact-number" style="cursor: pointer;">
-                            Click to reveal
+                        <h6  style="cursor: pointer;">
+                            <a href="https://api.whatsapp.com/send?phone={{formatContactToWhatsapp($merchant->phone,$merchant->countryCode)}}&text=Hi,%20I%20came%20from%20Xulfashion"
+                               target="_blank">
+                                <i class="fa fa-whatsapp" style="font-size: 50px;"></i>
+                            </a>
                         </h6>
                     </div>
                 </div>
@@ -246,7 +249,7 @@
                         <div class="d-block">
                             <h6>Logo</h6>
                             <h6>
-                                <img  src="{{$store->logo}}" style="width: 150px;" alt="Image">
+                                <img  src="{{$store->logo}}" style="width: 70px;" alt="Image">
                             </h6>
                         </div>
                     </div>
@@ -262,7 +265,7 @@
                             <h6 style="cursor: pointer;">
 
                                 <a href="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}">
-                                    <img src="https://glenthemes.github.io/iconsax/icons/document-copy.svg" style="font-size: 12px;"/>
+                                    <i class="fa fa-external-link" style="font-size: 40px;"></i>
                                 </a>
                             </h6>
                         </div>

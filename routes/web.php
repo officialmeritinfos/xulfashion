@@ -249,6 +249,8 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('ads.detail');
             Route::get('ads/{id}/photo/{photo}/delete',[AdsDetails::class,'deletePhoto'])
                 ->name('ads.photo.delete');
+            Route::post('ads/{id}/photo/upload', [AdsDetails::class, 'upload'])
+                ->name('ads.photo.upload');
             //Ads Edit
             Route::get('ads/{id}/edit',[AdsEdit::class,'landingPage'])
                 ->name('ads.edit');

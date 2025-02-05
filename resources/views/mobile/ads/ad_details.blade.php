@@ -273,7 +273,10 @@
                     <div class="d-block">
                         <h6>Contact</h6>
                         <h6 id="contact-number" style="cursor: pointer;">
-                            Click to reveal
+                            <a href="https://api.whatsapp.com/send?phone={{formatContactToWhatsapp($merchant->phone,$merchant->countryCode)}}&text=Hi,%20I%20came%20from%20Xulfashion"
+                            target="_blank">
+                                <i class="fa fa-whatsapp" style="font-size: 50px;"></i>
+                            </a>
                         </h6>
                     </div>
                 </div>
@@ -304,7 +307,7 @@
                         <div class="d-block">
                             <h6>Logo</h6>
                             <h6>
-                                <img  src="{{$store->logo}}" style="width: 150px;" alt="Image">
+                                <img  src="{{$store->logo}}" style="width: 70px;" alt="Image">
                             </h6>
                         </div>
                     </div>
@@ -438,15 +441,7 @@
     @push('js')
         <!-- range-slider js -->
         <script src="{{asset('mobile/js/range-slider.js')}}"></script>
-        <script>
-            $(document).ready(function(){
-                var phoneNumber = '{{$merchant->phone}}';
 
-                $('#contact-number').on('click', function(){
-                    $(this).text(phoneNumber);
-                });
-            });
-        </script>
         <script src="{{asset('mobile/js/requests/profile-edit.js')}}"></script>
 
         <script>

@@ -94,8 +94,11 @@
 
                 <section class="reviews-box mb-2">
                     <div class="card-body">
-                        <div class="title">
-                            Images
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="title">Images</div>
+                            <button class="btn btn-primary btn-auto btn-sm" data-bs-toggle="modal" data-bs-target="#addImageModal">
+                                Add Image
+                            </button>
                         </div>
                         <table class="table table-bordered text-center m-0">
                             <thead>
@@ -218,6 +221,34 @@
     </section>
 
 
+    <!-- Image Upload Modal -->
+    <div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="addImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addImageModalLabel">Upload Images</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="imageUpload" class="form-label">Select Images</label>
+                            <input type="file" class="form-control" id="imageUpload" name="photos[]" multiple accept="image/*">
+                        </div>
+                        <div id="imagePreview" class="d-flex flex-wrap gap-2"></div>
+
+                        <div class="mt-3 text-center">
+                            <button type="submit" id="uploadBtn" class="btn btn-success">Upload</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     @push('js')
         <script>
             $(document).ready(function() {
@@ -251,6 +282,62 @@
                             loadMoreBtn.text(originalText);
                         }
                     });
+                });
+            });
+        </script>
+        <script>
+            document.getElementById('imageUpload').addEventListener('change', function(event) {
+                let previewContainer = document.getElementById('imagePreview');
+                previewContainer.innerHTML = ''; // Clear previous previews
+
+                Array.from(event.target.files).forEach(file => {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100px';
+                        img.style.height = '100px';
+                        img.style.objectFit = 'cover';
+                        img.classList.add('rounded', 'border');
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        </script>
+        <script>
+            $('#uploadForm').on('submit', function(e) {
+                e.preventDefault(); // Prevent normal form submission
+
+                let formData = new FormData(this);
+                let uploadBtn = $('#uploadBtn');
+                let loader = $('#uploadLoader');
+
+                uploadBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Uploading...');
+
+                $.ajax({
+                    url: "{{ route('mobile.user.ads.photo.upload', ['id' => $ad->id]) }}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function() {
+                        $('#uploadBtn').prop('disabled', true).text('Uploading...');
+                    },
+                    success: function(response) {
+                        uploadBtn.prop('disabled', false).html('Upload');
+
+                        if (response.success) {
+                            toastr.success(response.message);
+                            setTimeout(() => location.reload(), 3000);
+                        } else {
+                            toastr.error(response.message || 'Upload failed.');
+                        }
+                    },
+                    error: function(xhr) {
+                        uploadBtn.prop('disabled', false).html('Upload');
+                        toastr.error('An error occurred. Please try again.');
+                    }
                 });
             });
         </script>

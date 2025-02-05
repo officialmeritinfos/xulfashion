@@ -67,8 +67,8 @@
                         <div class="dimensions-box delivery-box">
                             <div class="d-block">
                                 <h6>Email</h6>
-                                <h6 style="word-break: break-word;">
-                                    {{$store->email}}
+                                <h6 id="contact-number" style="word-break: break-word;">
+                                    Click to Reveal
                                 </h6>
                             </div>
                         </div>
@@ -80,8 +80,11 @@
                         <div class="dimensions-box delivery-box">
                             <div class="d-block">
                                 <h6>Contact</h6>
-                                <h6 id="contact-number" style="cursor: pointer;word-break: break-word;">
-                                    Click to reveal
+                                <h6  style="cursor: pointer;word-break: break-word;">
+                                    <a href="https://api.whatsapp.com/send?phone={{formatContactToWhatsapp($store->phone,$store->country)}}&text=Hi,%20I%20came%20from%20Xulfashion"
+                                       target="_blank">
+                                        <i class="fa fa-whatsapp" style="font-size: 50px;"></i>
+                                    </a>
                                 </h6>
                             </div>
                         </div>
@@ -95,13 +98,11 @@
                         </div>
                         <div class="dimensions-box delivery-box">
                             <div class="d-block">
-                                <h6>Store-front <sup class="text-primary">(Click to copy)</sup></h6>
-                                <h6 class="cpy-link" data-clipboard-text="{{route('merchant.store',['subdomain'=>$store->slug])}}">
-
-                                    <span
-                                          style="cursor: pointer;word-break: break-word;">
-                                        {{route('merchant.store',['subdomain'=>$store->slug])}}
-                                    </span>
+                                <h6>Store-front</h6>
+                                <h6  data-clipboard-text="">
+                                    <a href="{{route('merchant.store',['subdomain'=>$store->slug])}}" target="_blank" class="back">
+                                        <i class="fa fa-external-link" style="font-size: 40px;"></i>
+                                    </a>
                                 </h6>
                             </div>
                         </div>
@@ -154,7 +155,7 @@
         <script src="{{asset('mobile/js/range-slider.js')}}"></script>
         <script>
             $(document).ready(function(){
-                var phoneNumber = '{{$store->phone}}';
+                var phoneNumber = '{{$store->email}}';
 
                 $('#contact-number').on('click', function(){
                     $(this).text(phoneNumber);
