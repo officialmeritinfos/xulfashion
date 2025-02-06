@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CustomNotificationMail extends Notification
+class CustomNotificationMail extends Notification implements ShouldQueue
 {
     use Queueable;
     public mixed $user,$title,$message,$file;
