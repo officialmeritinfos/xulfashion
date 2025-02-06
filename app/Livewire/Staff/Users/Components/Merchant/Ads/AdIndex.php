@@ -5,6 +5,7 @@ namespace App\Livewire\Staff\Users\Components\Merchant\Ads;
 use App\Models\User;
 use App\Models\UserAd;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -20,6 +21,11 @@ class AdIndex extends Component
     #[Url]
     public $show = 10;
     public $staff;
+
+    protected $listeners = [
+        'renderAds' => 'render',
+        'deleteConfirmed'
+    ];
 
     public function mount()
     {
@@ -42,5 +48,56 @@ class AdIndex extends Component
         return view('livewire.staff.users.components.merchant.ads.ad-index',[
             'ads'=>$ads
         ]);
+    }
+    //delete ad
+    public function deleteAd($id)
+    {
+        try {
+            $ad = UserAd::where([
+                'id' => $id, 'user' => $this->user->id
+            ])->first();
+
+            //open a dialog to confirm action
+            $this->alert('warning', '', [
+                'text' => 'Do you want to delete ' . $ad->title,
+                'showConfirmButton' => true,
+                'confirmButtonText' => 'Yes',
+                'showCancelButton' => true,
+                'cancelButtonText' => 'Cancel',
+                'onConfirmed' => 'deleteConfirmed',
+                'data' => [
+                    'id' => $id
+                ],
+                'timer' => null
+            ]);
+        } catch (\Exception $exception) {
+            Log::info('An error occurred while trying to delete an ad');
+            $this->alert('error', '', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+                'text' => 'An error occurred while creating an ad for merchant.s',
+                'width' => '400',
+            ]);
+            return;
+        }
+    }
+
+    //delete confirmed
+    public function deleteConfirmed($data)
+    {
+        $id = $data['id'] ?? null;
+
+        if ($id) {
+            $ad = UserAd::where([
+                'id' => $id, 'user' => $this->user->id
+            ])->first();
+
+            if ($ad) {
+                $ad->delete();
+            }
+        }
+
+        $this->dispatch('renderAds');
     }
 }
