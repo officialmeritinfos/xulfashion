@@ -16,7 +16,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="inputService" class="form-label">Industry <sup class="text-danger">*</sup></label>
-                                        <select class="form-select selectize" id="inputService"
+                                        <select class="form-select" id="inputService"
                                                 wire:model="industry" wire:change="fetchIndustryCategories">
                                             <option value="">Select an option</option>
                                             <option value="fashion">Fashion</option>
@@ -27,7 +27,7 @@
                                     @if($showCategory)
                                         <div class="col-md-12">
                                             <label for="inputCategory" class="form-label">Category <sup class="text-danger">*</sup></label>
-                                            <select class="form-select selectize" id="inputCategory" wire:model="serviceType">
+                                            <select class="form-select" id="inputCategory" wire:model="serviceType">
                                                 <option value="">Select an option</option>
                                                 @foreach($categories as $category)
                                                     <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
