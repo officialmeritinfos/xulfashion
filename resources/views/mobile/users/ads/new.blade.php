@@ -230,6 +230,6 @@
             });
 
         </script>
-        <script src="{{asset('mobile/js/requests/profile-edit.js')}}"></script>
+        <script src="{{asset('mobile/js/requests/profile-edit.js?ver1.0')}}"></script>
     @endpush
 @endsection
