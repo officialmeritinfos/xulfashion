@@ -112,7 +112,7 @@
                     <sup class="text-danger">*</sup>
                 </label>
                 <div class="form-input mb-3">
-                    <textarea type="text" class="form-control" id="inputname" name="address">{{$user->bio}}</textarea>
+                    <textarea type="text" class="form-control" id="inputname" name="address">{{$user->address}}</textarea>
                     <i class="iconsax icons" data-icon="map-1"></i>
                 </div>
             </div>

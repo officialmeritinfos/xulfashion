@@ -13,6 +13,27 @@
                                         <!-- Upload Image Start -->
                                         <div class="mb-24 mt-16">
                                             <div class="col-12">
+                                                <label class="form-label">Merchant Country </label>
+                                               <select class="form-control" wire:model="country">
+                                                   @foreach($countries as $country)
+                                                       <option value="{{$country->iso3}}" {{ ($user->countryCode==$country->iso3)?'selected':''  }}
+                                                       >{{ $country->name }}</option>
+                                                   @endforeach
+                                               </select>
+                                            </div>
+                                            @error('country') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                        <!-- Upload Image Start -->
+                                        <div class="mb-24 mt-16">
+                                            <div class="col-12">
+                                                <label class="form-label">Merchant Username </label>
+                                                <input class="form-control" value="{{$user->username  }}" type="text" accept=".png, .jpg, .jpeg" wire:model.live="username">
+                                            </div>
+                                            @error('username') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                        <!-- Upload Image Start -->
+                                        <div class="mb-24 mt-16">
+                                            <div class="col-12">
                                                 <label class="form-label">Merchant Image </label>
                                                 <input class="form-control" type="file" accept=".png, .jpg, .jpeg" wire:model.live="photo">
                                             </div>
@@ -46,6 +67,18 @@
                                             </select>
                                             @error('gender') <span class="error text-danger">{{ $message }}</span> @enderror
                                         </div>
+                                        <div class="col-md-6">
+                                            <label for="inputEmail4" class="form-label">Merchant Type<sup class="text-danger">*</sup></label>
+                                            <select class="form-control" id="inputEmail4" wire:model.blur="merchantType">
+                                                <option value="">Select an Option</option>
+                                                <option value="1" {{($user->merchantType=='1')?'selected':''}}>Retailer</option>
+                                                <option value="2" {{($user->merchantType=='2')?'selected':''}}>Fashion Designer</option>
+                                                <option value="3" {{($user->merchantType=='3')?'selected':''}}>Manufacturer</option>
+                                                <option value="4" {{($user->merchantType=='4')?'selected':''}}>Model</option>
+                                                <option value="5" {{($user->merchantType=='5')?'selected':''}}>Fashion School</option>
+                                            </select>
+                                            @error('merchantType') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        </div>
 
                                         <div class="col-md-6">
                                             <label for="inputPassword4" class="form-label">Date of Birth<sup class="text-danger">*</sup></label>
@@ -57,6 +90,12 @@
                                             <label for="inputAddress" class="form-label">Address <sup class="text-danger">*</sup></label>
                                             <input type="text" class="form-control" id="inputAddress" wire:model.blur="address">
                                             @error('address') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="inputAddress" class="form-label">Keywords <sup class="text-danger">*</sup></label>
+                                            <input type="text" class="form-control" id="inputAddress" wire:model.blur="tutorKeywords" value="{{$user->tutorKeywords}}">
+                                            @error('tutorKeywords') <span class="error text-danger">{{ $message }}</span> @enderror
                                         </div>
 
                                         <div class="col-md-6">
