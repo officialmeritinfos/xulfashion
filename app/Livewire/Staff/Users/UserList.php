@@ -3,23 +3,33 @@
 namespace App\Livewire\Staff\Users;
 
 use App\Models\User;
+use App\Models\UserSetting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class UserList extends Component
 {
-    use WithPagination;
+    use WithPagination,LivewireAlert;
     #[Url]
     public $search = '';
     public $status = 'all';
+    public $profileStatus = 'all';
+    public $show = 10;
     public $duration = 'month'; // default duration
     public $customStartDate;
     public $customEndDate;
 
     protected $queryString = ['search', 'status', 'duration', 'customStartDate', 'customEndDate'];
+
+    protected $listeners = [
+        'renderUsers' => 'render',
+        'deleteConfirmed'
+    ];
 
     public function updatingSearch()
     {
@@ -95,8 +105,11 @@ class UserList extends Component
             })
             ->when($this->status != 'all', function($query) {
                 $query->where('status', $this->status);
+            })
+            ->when($this->profileStatus != 'all', function($query) {
+                $query->where('status', $this->profileStatus);
             })->latest()
-            ->paginate(10);
+            ->paginate($this->show);
 
         $staff = Auth::guard('staff')->user();
 
@@ -110,5 +123,59 @@ class UserList extends Component
             'inactiveUsersIncrease' => $inactiveUsersIncrease,
             'staff' => $staff
         ]);
+    }
+
+    public function deleteAd($id)
+    {
+        try {
+            $ad = User::where([
+                'id' => $id
+            ])->first();
+
+            //open a dialog to confirm action
+            $this->alert('warning', '', [
+                'text' => 'Do you want to delete ' . $ad->name,
+                'showConfirmButton' => true,
+                'confirmButtonText' => 'Yes',
+                'showCancelButton' => true,
+                'cancelButtonText' => 'Cancel',
+                'onConfirmed' => 'deleteConfirmed',
+                'data' => [
+                    'id' => $id
+                ],
+                'timer' => null
+            ]);
+        } catch (\Exception $exception) {
+            Log::info('An error occurred while trying to delete a User');
+            $this->alert('error', '', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+                'text' => 'An error occurred while creating an ad for merchant.s',
+                'width' => '400',
+            ]);
+            return;
+        }
+    }
+
+    //delete confirmed
+    public function deleteConfirmed($data)
+    {
+        $id = $data['id'] ?? null;
+
+        if ($id) {
+            $user = User::where([
+                'id' => $id
+            ])->first();
+
+            if ($user) {
+
+                UserSetting::where('user', $user->id)->delete();
+
+                $user->delete();
+            }
+        }
+
+        $this->dispatch('renderUser');
     }
 }

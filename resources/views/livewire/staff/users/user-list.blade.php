@@ -99,6 +99,14 @@
     <div class="card">
         <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
             <div class="d-flex flex-wrap align-items-center gap-3">
+                <select class="form-select form-select-sm w-auto" wire:model.live="show">
+                    <option>5</option>
+                    <option>10</option>
+                    <option>15</option>
+                    <option>20</option>
+                    <option>50</option>
+                    <option>100</option>
+                </select>
                 <div class="icon-field">
                     <input type="text" class="form-control form-control-sm w-auto"
                         placeholder="Search by Email or Reference ID" wire:model.live.debounce.250ms="search">
@@ -108,6 +116,11 @@
                 </div>
             </div>
             <div class="d-flex flex-wrap align-items-center gap-3">
+                <select class="form-select form-select-sm w-auto" wire:model.live="profileStatus">
+                    <option value="all">All</option>
+                    <option value="1">Completed</option>
+                    <option value="2">Incomplete</option>
+                </select>
                 <select class="form-select form-select-sm w-auto" wire:model.live="status">
                     <option value="all">All</option>
                     <option value="1">Active</option>
@@ -209,6 +222,12 @@
                                         d-inline-flex align-items-center justify-content-center" wire:navigate>
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                     </a>
+                                    @can('delete User')
+                                        <button type="button" wire:click="deleteUser({{ $user->id }})"  wire:loading.attr="disabled"
+                                                class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                        </button>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach
