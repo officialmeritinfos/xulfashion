@@ -39,7 +39,7 @@ const loginRequest=function (){
                             $('.submit').attr('disabled', false);
                             $(".submit").LoadingOverlay("hide");
                             $("#login :input").prop("readonly", false);
-                            $("#login")[0].reset();
+                            grecaptcha.reset();
                         }, 3000);
                     }
                     if(data.error === 'ok')
@@ -70,6 +70,7 @@ const loginRequest=function (){
                     $("#login :input").prop("readonly", false);
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
+                    grecaptcha.reset();
                 }
 
             });

@@ -39,7 +39,7 @@ const recoveryRequest=function (){
                             $('.submit').attr('disabled', false);
                             $(".submit").LoadingOverlay("hide");
                             $("#recovery :input").prop("readonly", false);
-                            $("#recovery")[0].reset();
+                            grecaptcha.reset();
                         }, 3000);
                     }
                     if(data.error === 'ok')
@@ -68,7 +68,7 @@ const recoveryRequest=function (){
 
                     // Re-enable form inputs and hide loading overlay
                     $("#recovery :input").prop("readonly", false);
-                    $("#recovery")[0].reset();
+                    grecaptcha.reset();
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
                 }
