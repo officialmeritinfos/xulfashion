@@ -374,6 +374,12 @@
                                         @case(10)
                                             <span class="badge bg-dark">Credit From Pending Balance</span>
                                             @break
+                                        @case(11)
+                                            <span class="badge bg-dark">Event Settlement</span>
+                                            @break
+                                        @case(12)
+                                            <span class="badge bg-dark">Bonus Earning</span>
+                                            @break
                                         @default
                                             <span class="badge bg-primary">Charge</span>
                                             @break

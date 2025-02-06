@@ -540,7 +540,7 @@ class SettlementAccountActions extends Component
                 // Log the transaction
                 Transaction::create([
                     'user' => $user->id,
-                    'reference' => $this->generateUniqueReference('transactions', 'reference', 20),
+                    'reference' => $this->generateUniqueReference('transactions', 'reference', 6),
                     'currency' => $withdrawal->currency,
                     'amount' => $withdrawal->amount,
                     'transactionType' => 1,

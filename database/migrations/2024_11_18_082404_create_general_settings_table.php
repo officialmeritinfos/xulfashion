@@ -34,6 +34,7 @@ class CreateGeneralSettingsTable extends Migration
             $table->string('blogLink', 150)->nullable();
             $table->boolean('hasPromo')->default(false);
             $table->string('promoRate')->default(0);
+            $table->string('ngAdBonus')->default(0);
             $table->timestamps();
         });
     }

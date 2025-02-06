@@ -3,12 +3,15 @@
 namespace App\Livewire\Staff\Users\Components\Merchant\Ads;
 
 use App\Custom\GoogleUpload;
+use App\Models\GeneralSetting;
 use App\Models\SystemStaffAction;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserAd;
 use App\Models\UserAdPhoto;
 use App\Models\UserNotification;
 use App\Notifications\CustomNotificationNoLink;
+use App\Traits\Helpers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +23,7 @@ use Livewire\WithPagination;
 
 class AdDetail extends Component
 {
-    use WithPagination, LivewireAlert,WithFileUploads;
+    use WithPagination, LivewireAlert,WithFileUploads,Helpers;
 
     public $user;
     public $userId;
@@ -241,6 +244,7 @@ class AdDetail extends Component
     public function submitApprove()
     {
         $staff = Auth::guard('staff')->user();
+        $web = GeneralSetting::find(1);
 
         if ($staff->cannot('update UserAd')){
             $this->alert('error', '', [
@@ -277,6 +281,17 @@ class AdDetail extends Component
                 'id'=>$this->ad->id,'user'=>$merchant->id
             ])->first();
 
+            if ($ad->status==1){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Merchant Ad already approved.',
+                    'width' => '400',
+                ]);
+                return;
+            }
+
             $dataUpdate = [
                 'status'=>1,
                 'rejectReason'=>$this->rejectReason,
@@ -299,6 +314,35 @@ class AdDetail extends Component
             ]);
             scheduleUserNotification($merchant->id,'AD approved','Your Ad '.$this->ad->title.' has been approved and is now active.',
                 route('mobile.user.ads.detail',['id'=>$this->ad->reference]));
+
+            //credit the merchant for approved ads
+            if ($merchant->mainCurrency=='NGN' && $web->ngAdBonus!=0){
+                $newBalance = $web->ngAdBonus+$merchant->accountBalance;
+                $merchant->update([
+                    'accountBalance' => $merchant->accountBalance + $web->ngAdBonus,
+                ]);
+
+                Transaction::create([
+                    'user' => $merchant->id,
+                    'transactionType' => 12,
+                    'amount' => $web->ngAdBonus,
+                    'currency' => $merchant->mainCurrency,
+                    'newBalance' => $newBalance,
+                    'status' => 1,
+                    'reference' =>$this->generateUniqueReference('transactions','reference',6)
+                ]);
+
+                $notificationMessage = "
+                Great news! Your ad has been approved, and you’ve received a bonus for posting it. Keep posting more ads to boost your visibility and earn even more rewards.
+                ";
+                scheduleUserNotification(
+                    $merchant->id,
+                    'You’ve Earned a Bonus! 🎉',
+                    $notificationMessage,
+                );
+                $merchant->notify(new CustomNotificationNoLink($merchant->name,'You’ve Earned a Bonus! 🎉',$notificationMessage));
+            }
+
             DB::commit();
             $merchant->notify(new CustomNotificationNoLink($merchant->name,'Ad post approved',$message));
             $this->alert('success', '', [
