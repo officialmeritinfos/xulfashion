@@ -79,7 +79,7 @@ class Profile extends BaseController
                 'redirectTo'=>url()->previous(),
                 'photo'=>$image,
                 'name'=>$input['name'],
-                'redirects'=>false
+                'redirects'=>true
             ],'profile update successful.');
         }
             return $this->sendError('setup.error',['error'=>'Something went wrong. Please try again']);
@@ -167,7 +167,7 @@ class Profile extends BaseController
 
             $validator = Validator::make($request->all(),[
                 'bio'                   =>['required','string'],
-                'displayName'           =>['nullable','string'],
+                'displayName'           =>['required','string'],
                 'gender'                =>['required','string','in:male,female,others'],
                 'dob'                   =>['required','date'],
                 'address'               =>['required','string'],
@@ -218,7 +218,7 @@ class Profile extends BaseController
 
             $validator = Validator::make($request->all(),[
                 'bio'                   =>['required','string'],
-                'displayName'           =>['nullable','string'],
+                'displayName'           =>['required','string'],
                 'gender'                =>['required','string','in:male,female,others'],
                 'dob'                   =>['required','date'],
                 'address'               =>['required','string'],
@@ -227,7 +227,7 @@ class Profile extends BaseController
                 'image'                 => ['nullable', 'image','max:5120'],
                 'merchantType'          =>['required','numeric'],
                 'name'                  => ['required', 'string'],
-                'username'              => ['required', 'alpha_num', 'unique:users,username'],
+                'username'              => ['required', 'alpha_num', Rule::unique('users','username')->ignore($user->id)],
                 'country'               => ['required',Rule::exists('countries','iso3')->where('status',1)],
                 'referral'              => ['nullable', 'string', 'exists:users,username'],
             ])->stopOnFirstFailure();
