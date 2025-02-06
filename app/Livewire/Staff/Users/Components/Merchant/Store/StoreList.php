@@ -59,6 +59,10 @@ class StoreList extends Component
     public $refundPolicy;
     #[Validate]
     public $logo;
+    #[Validate]
+    public $industry;
+    public $categories=[];
+    public $showCategory = false;
     public $verifyBusiness;
     public $staff;
     public $legalName;
@@ -101,7 +105,8 @@ class StoreList extends Component
             'email'=>['required','email'],
             'logo'=>['nullable','image','max:2048'],
             'returnPolicy'=>['nullable','string'],
-            'refundPolicy'=>['nullable','string']
+            'refundPolicy'=>['nullable','string'],
+            'industry'=>['required','in:fashion,beauty']
         ];
     }
     //initialize store
@@ -146,7 +151,7 @@ class StoreList extends Component
                 'logo'=>$logo,'currency'=>$merchant->mainCurrency,'country'=>$this->country->iso2,
                 'address'=>$this->address,'email'=>$this->email,'phone'=>$this->phone,
                 'status'=>1,'refundPolicy'=>clean($this->refundPolicy),'returnPolicy'=>clean($this->returnPolicy),
-                'theme'=>$theme->id
+                'theme'=>$theme->id,'industry' => $this->industry,
             ]);
             if (!empty($store)) {
 
@@ -200,6 +205,22 @@ class StoreList extends Component
             Log::error('Error initializing merchant store: ' . $exception->getMessage().' on line: '.$exception->getLine());
         }
     }
+    //fetch categories in industry
+    public function fetchIndustryCategories()
+    {
+        if (!empty($this->industry)) {
+            $this->categories = ServiceType::where('mainCategory', $this->industry)
+                ->select('id', 'name') // Fetch only id and name
+                ->get()
+                ->toArray();
+
+            $this->showCategory = true;
+        } else {
+            $this->categories = [];
+            $this->showCategory = false;
+        }
+    }
+
     //submit kyc
     public function submitKYC()
     {

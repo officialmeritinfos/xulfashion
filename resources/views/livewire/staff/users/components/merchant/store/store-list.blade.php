@@ -9,21 +9,33 @@
                         <div class="container-fluid">
                             <form class="submit-property-form" id="processForm" wire:submit.prevent="submitInitialization">
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="inputTitle" class="form-label">Store name<sup class="text-danger">*</sup></label>
                                         <input type="text" class="form-control form-control-lg" id="inputTitle" wire:model.live="name">
                                         @error('name') <span class="error text-danger">{{ $message }}</span> @enderror
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="inputCity" class="form-label">Type of Service<sup class="text-danger">*</sup></label>
-                                        <select class="form-control form-control-lg" id="inputCity" wire:model.live="serviceType">
+                                    <div class="col-md-12">
+                                        <label for="inputService" class="form-label">Industry <sup class="text-danger">*</sup></label>
+                                        <select class="form-select selectize" id="inputService"
+                                                wire:model="industry" wire:change="fetchIndustryCategories">
                                             <option value="">Select an option</option>
-                                            @foreach($services as $service)
-                                                <option value="{{$service->id}}">{{$service->name}}</option>
-                                            @endforeach
+                                            <option value="fashion">Fashion</option>
+                                            <option value="beauty">Beauty</option>
                                         </select>
-                                        @error('serviceType') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        @error('industry') <span class="error text-danger">{{ $message }}</span> @enderror
                                     </div>
+                                    @if($showCategory)
+                                        <div class="col-md-12">
+                                            <label for="inputCategory" class="form-label">Category <sup class="text-danger">*</sup></label>
+                                            <select class="form-select selectize" id="inputCategory" wire:model="serviceType">
+                                                <option value="">Select an option</option>
+                                                @foreach($categories as $category)
+                                                    <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('serviceType') <span class="error text-danger">{{ $message }}</span> @enderror
+                                        </div>
+                                    @endif
                                     <div class="col-12">
                                         <label for="inputAddress" class="form-label">Description<sup class="text-danger">*</sup></label>
                                         <textarea class="form-control form-control-lg" id="inputAddress" wire:model.live="description" rows="5"></textarea>
