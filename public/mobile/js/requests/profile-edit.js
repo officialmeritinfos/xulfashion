@@ -1,5 +1,5 @@
-const registerRequest=function (){
-    const initiatebasicSettings=function (){
+const settingsRequests=function (){
+    const updateBasicSettings=function (){
         //process the form submission
         $('#basicSettings').submit(function(e) {
             e.preventDefault();
@@ -60,7 +60,6 @@ const registerRequest=function (){
                     $('.submit').attr('disabled', false);
                     $(".submit").LoadingOverlay("hide");
 
-                    grecaptcha.reset();
                 }
 
             });
@@ -71,11 +70,11 @@ const registerRequest=function (){
 
     return {
         init: function() {
-            initiatebasicSettings();
+            updateBasicSettings();
         }
     };
 }();
 
 jQuery(document).ready(function() {
-    registerRequest.init();
+    settingsRequests.init();
 });
