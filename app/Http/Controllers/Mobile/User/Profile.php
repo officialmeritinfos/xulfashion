@@ -195,8 +195,11 @@ class Profile extends BaseController
                 'address'=>$input['address'], 'accountType'=>1,'photo'=>$image,'merchantType' => $input['merchantType']
             ])){
                 $this->userNotification($user,'Profile setup completed','Your profile setup as a merchant has been completed.',$request->ip());
+
+                $url = session()->has('redirect')?session('redirect'):route('mobile.user.profile.landing-page');
+
                 return $this->sendResponse([
-                    'redirectTo'=>route('mobile.user.profile.landing-page'),
+                    'redirectTo'=>$url,
                     'redirects'=>true
                 ],'Profile completely setup.');
             }
@@ -271,10 +274,13 @@ class Profile extends BaseController
                 'mainCurrency' => $currency,
             ])){
                 $this->userNotification($user,'Profile setup completed','Your profile setup as a merchant has been completed.',$request->ip());
+                $url = session()->has('redirect')?session('redirect'):route('mobile.user.profile.landing-page');
+
                 return $this->sendResponse([
-                    'redirectTo'=>route('mobile.user.profile.landing-page'),
+                    'redirectTo'=>$url,
                     'redirects'=>true
                 ],'Profile completely setup.');
+
             }
             return $this->sendError('setup.error',['error'=>'Something went wrong. Please try again']);
         }catch (\Exception $exception){

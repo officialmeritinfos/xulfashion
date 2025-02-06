@@ -64,7 +64,7 @@ class Login extends BaseController
 
             $validator = Validator::make($request->all(), [
                 'email' => ['required', 'email', 'exists:users,email'],
-                'password' => ['required', Password::min(8)->uncompromised(1)],
+                'password' => ['required', Password::min(8)],
                 'remember' => ['nullable', 'integer'],
                 'g-recaptcha-response' => ['required', new ReCaptcha]
             ],[

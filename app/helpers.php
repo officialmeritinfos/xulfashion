@@ -583,8 +583,16 @@ if (!function_exists('completedProfileMobile')) {
                 // Return the intended route if profile is completed
                 return route($intendedRoute);
             } else {
+                session([
+                    'redirect'=>$intendedRoute
+                ]);
                 // Return the profile completion route if not completed
-                return route('mobile.user.profile.settings.complete-profile');
+                if (!$user->google_id){
+                    return route('mobile.user.profile.settings.complete-profile');
+                }else{
+                    return route('mobile.user.profile.settings.complete-profile.socialite');
+                }
+
             }
         }
     }
