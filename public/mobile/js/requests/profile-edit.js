@@ -13,7 +13,7 @@ const registerRequest=function (){
                 }
             });
             $.ajax({
-                method: "POST",
+                type: "POST",
                 url:baseURL,
                 data:formData,
                 cache:false,
