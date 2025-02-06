@@ -27,7 +27,7 @@
                                         <div class="mb-24 mt-16">
                                             <div class="col-12">
                                                 <label class="form-label">Merchant Username </label>
-                                                <input class="form-control" value="{{$user->username  }}" type="text" accept=".png, .jpg, .jpeg" wire:model.live="username">
+                                                <input class="form-control" type="text" accept=".png, .jpg, .jpeg" wire:model.live="username">
                                             </div>
                                             @error('username') <span class="error text-danger">{{ $message }}</span> @enderror
                                         </div>

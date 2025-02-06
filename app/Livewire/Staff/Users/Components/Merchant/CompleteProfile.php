@@ -54,6 +54,7 @@ class CompleteProfile extends Component
         $this->dob = $this->user->dob;
         $this->address = $this->user->address;
         $this->gender = $this->user->gender;
+        $this->username = $this->user->username;
     }
 
     public function submit()
