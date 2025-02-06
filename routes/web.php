@@ -197,6 +197,8 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('email-verification');
             Route::post('register/email-verification/process', [Register::class, 'processEmailVerification'])
                 ->name('auth.email');
+            Route::get('register/email-verification/link/{token}/process', [Register::class, 'emailVerification'])
+                ->name('email-verification.link.process');
             Route::post('register/email-verification/resend', [Register::class, 'resendVerificationMail'])
                 ->name('auth.email.resend');
 
@@ -218,7 +220,7 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
 
         });
         //USER ACCOUNT ROUTE MOBILE
-        Route::middleware(['web','auth','lockedOut','twoFactor'])->name('user.')->prefix('user')->group(function () {
+        Route::middleware(['web','auth','auth.session','lockedOut','twoFactor'])->name('user.')->prefix('user')->group(function () {
             //profile
             Route::get('profile',[Profile::class,'landingPage'])
                 ->name('profile.landing-page');

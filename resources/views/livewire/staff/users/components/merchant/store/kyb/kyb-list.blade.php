@@ -87,7 +87,7 @@
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="inputState" class="form-label"><sup class="text-danger">*</sup>
-                                                                Account Pin
+                                                                Reason for Rejecting
                                                             </label>
                                                             <textarea type="text" class="form-control" id="inputState" rows="4" wire:model.live="rejectReason"></textarea>
                                                             @error('rejectReason') <span class="error text-danger">{{ $message }}</span> @enderror

@@ -248,18 +248,32 @@ class Register extends BaseController
             $input = $validator->validated();
 
             // Fetch the latest stored email verification token
-            $codeExists = Email::where('user', $user->id)->latest()->first();
-            if (!$codeExists) {
-                return $this->sendError('token.error', ['error' => 'Unidentified token.']);
+            $tokens = Email::where('user', $user->id)
+                ->where('codeExpire', '>', time()) // Ensure token is still valid
+                ->orderBy('created_at', 'desc') // Order by latest first
+                ->get();
+
+            if ($tokens->isEmpty()) {
+                return $this->sendError('token.error', ['error' => 'No valid token found. Request a new one.']);
             }
 
-            // Check if the token is expired
-            if (Carbon::parse($codeExists->created_at)->add($web->codeExpire)->isPast()) {
-                return $this->sendError('token.error', ['error' => 'Token expired. Request a new one.']);
+            // Loop through the tokens and check if any match the entered token
+            $validToken = null;
+            foreach ($tokens as $token) {
+                // Check if the token is expired (based on created_at + expiry duration)
+                if (Carbon::parse($token->created_at)->add($web->codeExpire)->isPast()) {
+                    continue;
+                }
+
+                // Verify the token (hashed comparison)
+                if (Hash::check($input['code'], $token->token)) {
+                    $validToken = $token; // Store the matched token
+                    break; // Exit loop since we found a valid token
+                }
             }
 
-            // Verify the token
-            if (!Hash::check($input['code'], $codeExists->token)) {
+            // If no valid token was found, return an error
+            if (!$validToken) {
                 return $this->sendError('token.error', ['error' => 'Invalid token entered.']);
             }
 
@@ -292,6 +306,11 @@ class Register extends BaseController
             session()->forget(['pending_email_verification_user', 'pending_email_verification_expires_at']);
             return $this->sendError('error', ['error' => 'Internal Server error']);
         }
+    }
+    //verify with link
+    public function emailVerificationWithLink(Request $request)
+    {
+
     }
     //resend verification email
     public function resendVerificationMail(Request $request){

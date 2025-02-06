@@ -113,9 +113,17 @@ class Login extends BaseController
             if ($settings->emailNotification == 1) {
                 $this->notifyLogin($request, $user);
             }
-            $url = Cookie::get('redirect', route('mobile.marketplace.index', ['country' => strtolower($user->countryCode)]));
+
+            if (Cookie::has('redirect')){
+                $urlTo = Cookie::get('redirect');
+            }elseif($user->completedProfile!=1){
+                $urlTo = route('mobile.user.profile.settings.complete-profile');
+            }else{
+                $urlTo = route('mobile.marketplace.index', ['country' => strtolower($user->countryCode)]);
+            }
+
             Cookie::forget('redirect');
-            return $this->sendResponse(['redirectTo' => $url, 'user' => $user->email], "Login successful.");
+            return $this->sendResponse(['redirectTo' => $urlTo, 'user' => $user->email], "Login successful.");
 
         }catch (\Exception $exception){
             Log::alert($exception->getMessage());
@@ -232,7 +240,14 @@ class Login extends BaseController
             TwoFactor::where('user', $user->id)->delete();
 
             // Determine redirect location
-            $url = Cookie::has('redirect') ? Cookie::get('redirect') : route('mobile.marketplace.index', ['country' => strtolower($user->countryCode)]);
+            if (Cookie::has('redirect')){
+                $url = Cookie::get('redirect');
+            }elseif($user->completedProfile!=1){
+                $url = route('mobile.user.profile.settings.complete-profile');
+            }else{
+                $url = route('mobile.marketplace.index', ['country' => strtolower($user->countryCode)]);
+            }
+
             Cookie::forget('redirect');
 
             return $this->sendResponse(['redirectTo' => $url], 'Login successfully verified.');
