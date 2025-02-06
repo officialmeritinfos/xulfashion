@@ -54,7 +54,7 @@ class AdIndex extends Component
     {
         try {
             $ad = UserAd::where([
-                'id' => $id, 'user' => $this->user->id
+                'id' => $id,
             ])->first();
 
             //open a dialog to confirm action
@@ -76,7 +76,7 @@ class AdIndex extends Component
                 'position' => 'top-end',
                 'timer' => 5000,
                 'toast' => true,
-                'text' => 'An error occurred while creating an ad for merchant.s',
+                'text' => 'An error occurred while creating an ad for merchant',
                 'width' => '400',
             ]);
             return;
@@ -90,7 +90,7 @@ class AdIndex extends Component
 
         if ($id) {
             $ad = UserAd::where([
-                'id' => $id, 'user' => $this->user->id
+                'id' => $id
             ])->first();
 
             if ($ad) {
