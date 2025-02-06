@@ -113,7 +113,7 @@
                             <label>Your Store Logo <sup class="text-danger">*</sup></label>
                             <div class="file-upload">
                                 <input type="file" id="file" accept="image/*" onchange="previewImage(event)"
-                                wire:model.live.debounce.250ms="file">
+                                wire:model="file">
                                 <label for="file">
                                     <i class="fa fa-file-image-o"></i> Upload Logo
                                 </label>
