@@ -5,6 +5,7 @@ namespace App\Custom;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class GoogleUpload
 {
@@ -24,7 +25,7 @@ class GoogleUpload
         $bucket = $storage->bucket($storageBucketName);
         $image_path = $file->getRealPath();
         //rename the file
-        $fileName = $user->name.'-'.time().'.'.$file->extension();
+        $fileName = time().'.'.$file->extension();
 
         //open the file using fopen
         $fileSource = fopen($image_path, 'r');
@@ -76,4 +77,62 @@ class GoogleUpload
             Log::info($exception->getMessage());
         }
     }
+
+    public function uploadGoogleJob($filePath)
+    {
+
+        // Ensure $filePath is a valid file
+        if (!file_exists($filePath)) {
+            Log::error("File does not exist at: {$filePath}");
+            return [
+                'done' => false,
+                'error' => 'File not found.'
+            ];
+        }
+
+        // Get file extension
+        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        // Get Google Cloud credentials
+        $googleConfigFile = file_get_contents(private_path('xulfashion2.json'));
+        $storage = new StorageClient([
+            'keyFile' => json_decode($googleConfigFile, true)
+        ]);
+
+        // Get bucket name from config
+        $storageBucketName = config('googlecloud.storage_bucket');
+        $bucket = $storage->bucket($storageBucketName);
+
+        // Rename the file
+        $fileName = time() . '.' . $fileExtension;
+
+        // Open the file using fopen
+        $fileSource = fopen($filePath, 'r');
+
+        // Specify the path in Google Cloud Storage
+        $googleCloudStoragePath = 'profile-uploads/' . $fileName;
+
+        // Upload the file
+        $request = $bucket->upload($fileSource, [
+            'predefinedAcl' => 'publicRead',
+            'name' => $googleCloudStoragePath
+        ]);
+
+        if ($request) {
+            // Delete local file after successful upload
+            unlink($filePath);
+
+            return [
+                'done' => true,
+                'link' => 'https://storage.googleapis.com/xulfashion/profile-uploads/' . $fileName
+            ];
+        } else {
+            Log::error("Google Cloud upload failed.");
+            return [
+                'done' => false,
+                'error' => 'Upload failed.'
+            ];
+        }
+    }
+
 }

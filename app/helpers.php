@@ -584,7 +584,7 @@ if (!function_exists('completedProfileMobile')) {
                 return route($intendedRoute);
             } else {
                 session([
-                    'redirect'=>$intendedRoute
+                    'redirect'=>route($intendedRoute)
                 ]);
                 // Return the profile completion route if not completed
                 if (!$user->google_id){

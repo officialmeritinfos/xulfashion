@@ -129,17 +129,6 @@
                 </div>
             </div>
 
-            <div class="form-group d-block mb-3">
-                <label for="inputusernumber" class="form-label">
-                    Photos  <sup><i class="fa fa-info-circle" data-bs-toggle="tooltip"
-                                    title="Add up to {{$web->fileUploadAllowed}} images which represents this AD. If you have only one photo which had been used
-                                            as featured photo, please upload it again here."></i></sup><sup class="text-danger">*</sup>
-                </label>
-                <div class="form-input">
-                    <input type="file" class="form-control form-control-lg" id="inputusernumber" name="photos[]" multiple accept="image/*"/>
-                    <i class="fa fa-images"></i>
-                </div>
-            </div>
 
             <div class="form-group d-block mb-3">
                 <label for="inputname" class="form-label">

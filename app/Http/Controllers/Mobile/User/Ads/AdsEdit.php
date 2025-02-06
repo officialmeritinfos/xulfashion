@@ -74,13 +74,8 @@ class AdsEdit extends BaseController
                 'tags'=>['nullable'],
                 'tags.*'=>['nullable','string'],
                 'photos'=>['nullable','array','max:'.$web->fileUploadAllowed],
-                'photos.*'=>['nullable','image','mimes:jpeg,png,jpg,gif,svg','max:4096'],
                 'ad'=>['required','string',Rule::exists('user_ads','reference')->where('user',$user->id)],
             ],[
-                'photos.max'=>'You can only upload a maximum of '.$web->fileUploadAllowed.' images.',
-                'photos.*.image' => 'Each file must be an image.',
-                'photos.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg.',
-                'photos.*.max' => 'Each image may not be larger than 2MB.',
                 'industry.in'=>'Only Beauty and Fashion Industries are currently supported.',
             ],[
                 'negotiate'=>'Open to Negotiation',
@@ -112,17 +107,6 @@ class AdsEdit extends BaseController
                 'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
                 'industry'=>$input['industry'],
             ])){
-                //check if photos were uploaded
-                if ($request->file('photos')){
-                    foreach ($request->file('photos') as $index => $item) {
-                        $result = $this->google->uploadGoogle($item);
-                        $fileName = $result['link'];
-
-                        UserAdPhoto::create([
-                            'ad'=>$ad->id,'photo'=>$fileName
-                        ]);
-                    }
-                }
                 DB::commit();
                 $this->userNotification($user,'Ad Updated','Your ad was updated successfully and is pending review',$request->ip());
                 return $this->sendResponse([

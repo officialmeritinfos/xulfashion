@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mobile\User\Ads;
 use App\Custom\GoogleUpload;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Jobs\UploadAdPhotosJob;
 use App\Models\Country;
 use App\Models\GeneralSetting;
 use App\Models\ServiceType;
@@ -121,11 +122,18 @@ class AdsIndex extends BaseController
 
             $reference = $this->generateUniqueReference('user_ads','reference',16);
             //let us try to upload the image
+            $featuredPhoto = null;
             if ($request->hasFile('featuredPhoto')) {
                 //lets upload the address proof
                 $result = $this->google->uploadGoogle($request->file('featuredPhoto'));
+                if (!$result || empty($result['link'])) {
+                    Log::error('File upload failed: No link returned from Google Drive API');
+                    return $this->sendError('upload.error', ['error' => 'Image upload failed. Please try again.']);
+                }
                 $featuredPhoto  = $result['link'];
             }
+
+
 
             if ($request->industry=='fashion'){
                 $category = $request->fashionCategory;
@@ -138,7 +146,8 @@ class AdsIndex extends BaseController
                 'title'=>$input['title'],'description'=>$input['description'],
                 'companyName'=>$input['companyName'],'priceType'=>$input['priceType'],
                 'amount'=>($input['priceType']!=1)?$input['price']:0,'serviceType'=>$category,
-                'state'=>$input['location'],'tags'=>implode(',',$input['tags']),
+                'state'=>$input['location'],
+                'tags'=>!empty($input['tags']) ? implode(',', $input['tags']) : 'Quality Service',
                 'openToNegotiation'=>($input['priceType']!=1)?$input['negotiate']:2,'status'=>2,
                 'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
                 'industry'=>$input['industry'],
@@ -148,30 +157,33 @@ class AdsIndex extends BaseController
                     $user->phone = $input['phone'];
                     $user->save();
                 }
-                //check if photos were uploaded
-                if ($request->file('photos')){
-                    foreach ($request->file('photos') as $index => $item) {
-                        $result = $this->google->uploadGoogle($item);
-                        $fileName = $result['link'];
 
-                        UserAdPhoto::create([
-                            'ad'=>$ad->id,'photo'=>$fileName
-                        ]);
+                // Check if photos were uploaded - queued
+                if ($request->file('photos')) {
+                    $photoPaths = [];
+
+                    foreach ($request->file('photos') as $photo) {
+                        $path = $photo->store('temp_photos'); // Store in storage/app/temp_photos
+                        $photoPaths[] = $path;
                     }
+                    UploadAdPhotosJob::dispatch($ad->id, $photoPaths);
                 }
-                $this->userNotification($user,'Ad Created','Your ad was created successfully and is pending review',$request->ip());
+
                 DB::commit();
+
                 return $this->sendResponse([
                     'redirectTo'=>route('mobile.user.ads.index'),
                     'redirects'=>true
                 ],'Ad created successful. Redirecting soon ...');
             }
-        }catch (\Exception $exception){
+        }catch (\Throwable $exception){
             DB::rollBack();
             Log::info('Error in  ' . __METHOD__ . ' while adding new ad: ' . $exception->getMessage());
             return $this->sendError('server.error',[
                 'error'=>'A server error occurred while processing your request.'
             ]);
+        }finally {
+            DB::rollBack(); // Ensure rollback happens if commit was not reached
         }
     }
 }
