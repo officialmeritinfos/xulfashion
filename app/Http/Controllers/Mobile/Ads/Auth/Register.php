@@ -309,9 +309,71 @@ class Register extends BaseController
         }
     }
     //verify with link
-    public function emailVerificationWithLink(Request $request)
+    public function emailVerificationWithLink(Request $request,$email,$tokenWeb)
     {
+        try {
+            $web = GeneralSetting::find(1);
 
+            // Retrieve user ID from request
+           $user = User::where('email', $email)->first();
+           if (!$user) {
+               return redirect()->route('mobile.login')->with('error','User not found. Please register again.');
+           }
+
+            // Fetch the latest stored email verification token
+            $tokens = Email::where('user', $user->id)
+                ->orderBy('created_at', 'desc') // Order by latest first
+                ->get();
+
+            if ($tokens->isEmpty()) {
+                return redirect()->route('mobile.login')->with('error','Token not found. Please login to request a new one again.');
+            }
+
+            // Loop through the tokens and check if any match the entered token
+            $validToken = null;
+
+            foreach ($tokens as $token) {
+                // Check if the token is expired (based on created_at + expiry duration)
+                if (Carbon::parse($token->created_at)->add($web->codeExpire)->isPast()) {
+                    continue;
+                }
+
+                // Verify the token (hashed comparison)
+                if (Hash::check($tokenWeb, $token->token)) {
+                    $validToken = $token; // Store the matched token
+                    break; // Exit loop since we found a valid token
+                }
+            }
+
+            // If no valid token was found, return an error
+            if (!$validToken) {
+                return redirect()->route('mobile.login')->with('error','Invalid token. Please login to request a new one');
+            }
+
+            // Mark email as verified
+            $user->update([
+                'email_verified_at' => now(),
+                'loggedIn' => 1
+            ]);
+
+            // Authenticate user after successful verification
+            Auth::login($user);
+
+            // Cleanup session and delete old verification tokens
+            session()->forget(['pending_email_verification_user', 'pending_email_verification_expires_at']);
+            Email::where('user', $user->id)->delete();
+
+            // Determine redirect location
+            $urlTo = Cookie::has('redirect') ? Cookie::get('redirect') : route('mobile.user.profile.settings.complete-profile');
+            Cookie::forget('redirect');
+
+            return redirect()->to($urlTo)->with('success', 'Email successfully verified.');
+
+        }catch (\Exception $exception){
+            Log::alert('Email Verification Error: ' . $exception->getMessage());
+            session()->forget(['pending_email_verification_user', 'pending_email_verification_expires_at']);
+            return redirect()->route('mobile.login')->with('error', 'An error occurred, please try again later.');
+        }
     }
     //resend verification email
     public function resendVerificationMail(Request $request){

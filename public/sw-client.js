@@ -1,4 +1,4 @@
-let cacheName = 'xulfashion-client-v1.9.0.0.1';
+let cacheName = 'xulfashion-client-v1.41';
 let assetsToCache = [
     '', // Placeholder for the start URL to be received dynamically
     'mobile/css/style.css', // Main CSS for the client

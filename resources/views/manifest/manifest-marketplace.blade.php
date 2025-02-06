@@ -91,7 +91,7 @@
 "type": "image/png"
 }
 ],
-"orientation": "potrait",
+"orientation": "portrait",
 "prefer_related_applications": false,
 "dir": "ltr",
 "lang": "en",

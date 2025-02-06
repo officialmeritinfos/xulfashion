@@ -197,7 +197,7 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
                 ->name('email-verification');
             Route::post('register/email-verification/process', [Register::class, 'processEmailVerification'])
                 ->name('auth.email');
-            Route::get('register/email-verification/link/{token}/process', [Register::class, 'emailVerification'])
+            Route::get('register/email-verification/link/{email}/{token}/process', [Register::class, 'emailVerificationWithLink'])
                 ->name('email-verification.link.process');
             Route::post('register/email-verification/resend', [Register::class, 'resendVerificationMail'])
                 ->name('auth.email.resend');

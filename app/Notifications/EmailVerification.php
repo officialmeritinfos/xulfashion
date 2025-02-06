@@ -49,6 +49,8 @@ class EmailVerification extends Notification
         $web = GeneralSetting::find(1);
         $token = $this->generateToken('emails','token');
 
+        $url = route('mobile.email-verification.link.process',['email'=>$user->email,'token'=>$token]);
+
         Email::create([
             'user'          =>$user->id,
             'email'         =>$user->email,
@@ -64,6 +66,8 @@ class EmailVerification extends Notification
                         address on '.env('APP_NAME').' and enjoy unlimited features.')
                     ->line('<p style="text-align: center;"><b>'.$token.'</b></p>')
                     ->line('<p>Token is valid for '.$web->codeExpire.'</p>')
+                    ->line('<p>Alternatively, click the link below to verify your email if you have closed the page already.</p>')
+                    ->action('Verify your email', $url)
                     ->line('Thank you for using our choosing '.env('APP_NAME'));
     }
 
