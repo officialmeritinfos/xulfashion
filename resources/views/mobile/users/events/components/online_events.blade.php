@@ -321,7 +321,7 @@
                 })
             });
         </script>
-        <script src="{{asset('mobile/js/requests/profile-edit.js')}}"></script>
+        <script src="{{asset('mobile/js/requests/profile-edit.js?ver=1.0')}}"></script>
         <script>
             $(document).ready(function () {
                 // Function to fetch states based on country code
