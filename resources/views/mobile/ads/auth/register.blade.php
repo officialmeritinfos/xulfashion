@@ -104,6 +104,13 @@
                     <i class="iconsax icons" data-icon="mail"></i>
                 </div>
             </div>
+            <div class="form-group col-md-12">
+                <label for="inputemail" class="form-label">Phone Number</label>
+                <div class="form-input mb-4">
+                    <input type="tel" class="form-control" id="inputemail" placeholder="Enter Your Contact Number"  name="phoneNumber"/>
+                    <i class="iconsax icons" data-icon="mail"></i>
+                </div>
+            </div>
             <div class="form-group col-md-6 col-12">
                 <label for="inputPassword" class="form-label">Password</label>
                 <div class="form-input input-group">

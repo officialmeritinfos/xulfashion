@@ -92,13 +92,16 @@ class Register extends BaseController
                 'password_confirmation' => ['required', 'same:password'],
                 'g-recaptcha-response' => ['required', new ReCaptcha],
                 'referral' => ['nullable', 'string', 'exists:users,username'],
-                'country' => ['required',Rule::exists('countries','iso3')->where('status',1)]
+                'country' => ['required',Rule::exists('countries','iso3')->where('status',1)],
+                'phoneNumber' => ['required','string','unique:users,phone'],
             ], [
                 'email.unique' => 'User already exists with this email. Please login instead.',
                 'g-recaptcha-response.required'=>'Recaptcha must be passed first.',
                 'username.alpha_num'=>'Username must be only alphabets and numbers, no spaces.',
+                'phoneNumber.unique'=>'Account already exists with this phone number. Please login instead.',
             ], [
-                'g-recaptcha-response' => 'Recaptcha'
+                'g-recaptcha-response' => 'Recaptcha',
+                'phoneNumber'=>'Phone Number'
             ])->stopOnFirstFailure();
 
             if ($validator->fails()) {
@@ -136,7 +139,7 @@ class Register extends BaseController
                 'countryCode' => $country->iso3,
                 'mainCurrency' => $currency,
                 'registrationIp' => $request->ip(),
-                'referral' => $refBy,
+                'referral' => $refBy, 'phone' => $input['phoneNumber']
             ]);
 
             // Initialize User Settings
