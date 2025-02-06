@@ -129,7 +129,7 @@ class UserList extends Component
         ]);
     }
 
-    public function deleteAd($id)
+    public function deleteUser($id)
     {
         try {
             $ad = User::where([
