@@ -98,6 +98,8 @@ class InitializeStoreForm extends Component
     //create store
     public function processForm()
     {
+        $this->resetErrorBag();
+
         // 1. Validate form input data
         $this->validate([
             'name' => ['required', 'string', 'max:200'],
@@ -127,6 +129,9 @@ class InitializeStoreForm extends Component
 
             // 5. Upload the store logo to Google Drive (or any cloud service)
             $imageResult = googleUpload($this->file);
+            if (!$imageResult || empty($imageResult['link'])) {
+                $this->addError('form_error', 'There was an error uploading your store image');
+            }
             $logo = $imageResult['link'];  // Retrieve the uploaded image link
 
             // 6. Create the store record in the database
@@ -182,12 +187,6 @@ class InitializeStoreForm extends Component
 
                 $storeUrl = route('merchant.store',['subdomain'=>$store->slug]);
 
-                // 11. Reset form fields after successful submission
-                $this->reset([
-                    'name','city','verifyBusiness','returnPolicy','refundPolicy','supportPhone','supportEmail',
-                    'address','country','state','file','serviceType','description'
-                ]);
-
                 // 14. (Optional) Trigger email notification to the user
                 Mail::to($this->user->email)->queue(new StoreCreatedNotification(
                     $store->name,
@@ -206,7 +205,7 @@ class InitializeStoreForm extends Component
             DB::rollBack();
 
             // 16. Show error message to the user
-            session()->flash('error', 'An error occurred: ' . $exception->getMessage());
+            $this->addError('form_error', 'An error occurred: ' . $exception->getMessage());
 
             // 17. Log the error for debugging
             Log::error('Error creating store: ' . $exception->getMessage());

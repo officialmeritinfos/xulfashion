@@ -7,18 +7,23 @@
             <div class="card-body">
                 <form id="processForm" wire:submit.prevent="processForm">
                     @include('notifications')
+                    @if($errors->has('form_error'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('form_error') }}
+                        </div>
+                    @endif
                     <div class="row g-4">
                         <!-- Store Name -->
                         <div class="col-md-12">
                             <label for="inputTitle" class="form-label">Store Name <sup class="text-danger">*</sup></label>
-                            <input type="text" class="form-control" id="inputTitle" wire:model.live.debounce.250="name"
+                            <input type="text" class="form-control" id="inputTitle" wire:model.live.debounce.250ms="name"
                                    placeholder="e.g., Trendy Boutique" >
                             @error('name') <span class="error text-danger">{{ $message }}</span> @enderror
                         </div>
                         <div class="col-md-12">
                             <label for="inputService" class="form-label">Industry <sup class="text-danger">*</sup></label>
                             <select class="form-select selectize" id="inputService"
-                                    wire:model="industry" wire:change="fetchIndustryCategories">
+                                    wire:model.live.debounce.250ms="industry" wire:change="fetchIndustryCategories">
                                 <option value="">Select an option</option>
                                 <option value="fashion">Fashion</option>
                                 <option value="beauty">Beauty</option>
@@ -29,7 +34,7 @@
                         @if($showCategory)
                             <div class="col-md-12">
                                 <label for="inputCategory" class="form-label">Category <sup class="text-danger">*</sup></label>
-                                <select class="form-select selectize" id="inputCategory" wire:model="serviceType">
+                                <select class="form-select selectize" id="inputCategory" wire:model.live.debounce.250ms="serviceType">
                                     <option value="">Select an option</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
@@ -79,7 +84,7 @@
                         <!-- Support Phone -->
                         <div class="col-md-6">
                             <label for="inputPhone" class="form-label">Support Phone <sup class="text-danger">*</sup></label>
-                            <input type="tel" class="form-control" id="inputPhone" wire:model.live.debounce.250mx="supportPhone"
+                            <input type="tel" class="form-control" id="inputPhone" wire:model.live.debounce.250ms="supportPhone"
                                    placeholder="+1 800 000 0000" >
                             @error('supportPhone') <span class="error text-danger">{{ $message }}</span> @enderror
                         </div>
@@ -113,7 +118,7 @@
                             <label>Your Store Logo <sup class="text-danger">*</sup></label>
                             <div class="file-upload">
                                 <input type="file" id="file" accept="image/*" onchange="previewImage(event)"
-                                wire:model="file">
+                                wire:model.live.debounce.250ms="file">
                                 <label for="file">
                                     <i class="fa fa-file-image-o"></i> Upload Logo
                                 </label>
