@@ -95,7 +95,8 @@ class Register extends BaseController
                 'country' => ['required',Rule::exists('countries','iso3')->where('status',1)]
             ], [
                 'email.unique' => 'User already exists with this email. Please login instead.',
-                'g-recaptcha-response.required'=>'Recaptcha must be passed first.'
+                'g-recaptcha-response.required'=>'Recaptcha must be passed first.',
+                'username.alpha_num'=>'Username must be only alphabets and numbers, no spaces.',
             ], [
                 'g-recaptcha-response' => 'Recaptcha'
             ])->stopOnFirstFailure();
