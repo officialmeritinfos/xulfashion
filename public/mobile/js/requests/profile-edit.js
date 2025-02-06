@@ -5,15 +5,20 @@ const registerRequest=function (){
             e.preventDefault();
             var baseURL = $('#basicSettings').attr('action');
             var baseURLs='';
+            var formData = new FormData(this);
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
             $.ajax({
-                url: baseURL,
                 method: "POST",
-                data:$(this).serialize(),
+                url:baseURL,
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
                 dataType:"json",
                 beforeSend:function(){
                     $('.submit').attr('disabled', true);
