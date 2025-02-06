@@ -17,7 +17,7 @@
                                     <div class="col-md-12">
                                         <label for="inputService" class="form-label">Industry <sup class="text-danger">*</sup></label>
                                         <select class="form-select selectize" id="inputService"
-                                                wire:model="industry" wire:change="fetchIndustryCategories">
+                                                wire:model.live="industry" wire:change="fetchIndustryCategories">
                                             <option value="">Select an option</option>
                                             <option value="fashion">Fashion</option>
                                             <option value="beauty">Beauty</option>
