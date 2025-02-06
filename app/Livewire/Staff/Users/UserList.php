@@ -17,9 +17,13 @@ class UserList extends Component
     use WithPagination,LivewireAlert;
     #[Url]
     public $search = '';
+    #[Url]
     public $status = 'all';
+    #[Url]
     public $profileStatus = 'all';
+    #[Url]
     public $show = 10;
+    #[Url]
     public $duration = 'month'; // default duration
     public $customStartDate;
     public $customEndDate;
@@ -107,7 +111,7 @@ class UserList extends Component
                 $query->where('status', $this->status);
             })
             ->when($this->profileStatus != 'all', function($query) {
-                $query->where('status', $this->profileStatus);
+                $query->where('completedProfile', $this->profileStatus);
             })->latest()
             ->paginate($this->show);
 
