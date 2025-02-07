@@ -18,6 +18,10 @@ class Home extends BaseController
     //landing page
     public function landingPage()
     {
+        //check if the accessor is a mobile
+        if (checkIfAccessorIsMobile()){
+            return redirect()->route('mobile.app.base');
+        }
         $web = GeneralSetting::find(1);
         return view('company.home')->with([
             'pageName'      =>'Find the Best Tailors, Fashion Designers, Models & Fashion Stores in your area',

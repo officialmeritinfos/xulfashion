@@ -20,6 +20,24 @@
                         </div>
                     </div>
                 </li>
+                <li>
+                    <a href="{{ route('home.about') }}" class="pages" target="_blank">
+                        <h4>About {{ config('app.name') }}</h4>
+                        <i class="ri-arrow-drop-right-line"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ config('app.feature_request_url') }}" class="pages" target="_blank">
+                        <h4>Request a Feature</h4>
+                        <i class="ri-arrow-drop-right-line"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('mobile.legal.privacy-policy')}}" class="pages">
+                        <h4>Privacy Policy</h4>
+                        <i class="ri-arrow-drop-right-line"></i>
+                    </a>
+                </li>
                 @guest()
                     <li>
                         <a href="{{route('mobile.login')}}" class="pages">
@@ -42,18 +60,6 @@
                         </a>
                     </li>
                 @endauth
-                <li>
-                    <a href="{{ config('app.feature_request_url') }}" class="pages" target="_blank">
-                        <h4>Request a Feature</h4>
-                        <i class="ri-arrow-drop-right-line"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('mobile.legal.privacy-policy')}}" class="pages">
-                        <h4>Privacy Policy</h4>
-                        <i class="ri-arrow-drop-right-line"></i>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
