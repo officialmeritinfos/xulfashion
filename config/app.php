@@ -220,4 +220,5 @@ return [
     'about-xulfashion-video'=>'',
     'how-xulfashion-works-video'=>'',
     'how-xulfashion-booking-works-video'=>'',
+    'numberOfAdPerDay'=>10
 ];

@@ -36,6 +36,7 @@ class CreateUserAdsTable extends Migration
             $table->string('featuredImage', 200)->nullable();
             $table->integer('status')->default(2);
             $table->float('numberOfViews')->default(0);
+            $table->boolean('receivedBonus')->default(0);
             $table->timestamps();
             $table->integer('approvedBy')->nullable();
             $table->text('rejectReason')->nullable();

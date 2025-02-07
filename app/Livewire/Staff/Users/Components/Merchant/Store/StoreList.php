@@ -36,7 +36,7 @@ class StoreList extends Component
     public $country;
     public $showInitializeStoreForm=false;
     public $showVerifyBusinessForm=false;
-    public $showStoreDetail=false;
+    public $showStoreDetail=true;
     #[Validate]
     public $name;
     #[Validate]
@@ -83,7 +83,7 @@ class StoreList extends Component
         $this->showInitializeStoreForm= empty($this->store);
         $this->country=Country::where('iso3',$this->user->countryCode)->first();
         $this->staff = Auth::guard('staff')->user();
-        $this->showVerifyBusinessForm= !$this->showInitializeStoreForm && $this->store->isVerified==2;
+        $this->showVerifyBusinessForm= !$this->showInitializeStoreForm && !$this->showStoreDetail;
         if (!$this->showInitializeStoreForm && !empty($this->store)){
             $this->legalName = $this->store->name;
             $this->doingBusinessAs = $this->store->name;

@@ -102,8 +102,8 @@ class AdsIndex extends BaseController
                 'negotiate'=>['required','numeric','in:1,2,3'],
                 'tags'=>['nullable'],
                 'tags.*'=>['nullable','string'],
-                'photos'=>['nullable','array','max:'.$web->fileUploadAllowed],
-                'photos.*'=>['nullable','image','mimes:jpeg,png,jpg,gif,svg','max:4096'],
+                'photos'=>['required','array','max:'.$web->fileUploadAllowed],
+                'photos.*'=>['required','image','mimes:jpeg,png,jpg,gif,svg','max:4096'],
                 'phone'=>['nullable','numeric']
             ],[
                 'photos.max'=>'You can only upload a maximum of '.$web->fileUploadAllowed.' images.',
@@ -120,7 +120,12 @@ class AdsIndex extends BaseController
             }
             $input = $validator->validated();
 
-            $reference = $this->generateUniqueReference('user_ads','reference',16);
+            //check if merchant has posted up to the daily limit
+            if (has_reached_daily_ad_limit($user->id, config('app.numberOfAdPerDay'))){
+                return $this->sendError('ad.error', ['error' => 'You have reached the post limit of '.config('app.numberOfAdPerDay').' Ads per day.']);
+            }
+
+            $reference = $this->generateUniqueReference('user_ads','reference',8);
             //let us try to upload the image
             $featuredPhoto = null;
             if ($request->hasFile('featuredPhoto')) {
@@ -151,6 +156,7 @@ class AdsIndex extends BaseController
                 'openToNegotiation'=>($input['priceType']!=1)?$input['negotiate']:2,'status'=>2,
                 'featuredImage'=>$featuredPhoto,'currency'=>$user->mainCurrency,'country'=>$country->iso2,
                 'industry'=>$input['industry'],
+                'receivedBonus'=>0
             ]);
             if (!empty($ad)){
                 if (empty($user->phone)){

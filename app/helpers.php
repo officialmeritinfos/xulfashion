@@ -1346,3 +1346,13 @@ if (!function_exists('formatContactToWhatsapp')) {
     }
 }
 
+
+if (!function_exists('has_reached_daily_ad_limit')) {
+    function has_reached_daily_ad_limit($userId, $limit = 10)
+    {
+        $adsToday = \App\Models\UserAd::where('user', $userId)
+            ->whereDate('created_at', Carbon::today())
+            ->count();
+        return $adsToday >= $limit;
+    }
+}

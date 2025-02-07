@@ -292,31 +292,8 @@ class AdDetail extends Component
                 return;
             }
 
-            $dataUpdate = [
-                'status'=>1,
-                'rejectReason'=>$this->rejectReason,
-                'approvedBy'=>$staff->id,
-                'dateApproved'=>time()
-            ];
-
-            $message = "
-                Your Ad <b>".$this->ad->title."</b> with ID <b>".$this->ad->reference."</b> has been approved
-                and is running now on the platform.
-            ";
-            $ad->update($dataUpdate);
-
-            SystemStaffAction::create([
-                'staff' => $staff->id,
-                'action' => 'Approved Ad posting',
-                'isSuper' => $staff->role == 'superadmin' ? 1 : 2,
-                'model' => get_class($this->ad),
-                'model_id' => $this->ad->reference,
-            ]);
-            scheduleUserNotification($merchant->id,'AD approved','Your Ad '.$this->ad->title.' has been approved and is now active.',
-                route('mobile.user.ads.detail',['id'=>$this->ad->reference]));
-
             //credit the merchant for approved ads
-            if ($merchant->mainCurrency=='NGN' && $web->ngAdBonus!=0){
+            if ($merchant->mainCurrency=='NGN' && $web->ngAdBonus!=0 && $ad->receivedBonus!=1){
                 $newBalance = $web->ngAdBonus+$merchant->accountBalance;
                 $merchant->update([
                     'accountBalance' => $merchant->accountBalance + $web->ngAdBonus,
@@ -342,6 +319,31 @@ class AdDetail extends Component
                 );
                 $merchant->notify(new CustomNotificationNoLink($merchant->name,'You’ve Earned a Bonus! 🎉',$notificationMessage));
             }
+            //update ad
+            $ad->update([
+                'status'=>1,
+                'rejectReason'=>$this->rejectReason,
+                'approvedBy'=>$staff->id,
+                'dateApproved'=>time(),
+                'receivedBonus' => 1
+            ]);
+
+            $message = "
+                Your Ad <b>".$this->ad->title."</b> with ID <b>".$this->ad->reference."</b> has been approved
+                and is running now on the platform.
+            ";
+
+            SystemStaffAction::create([
+                'staff' => $staff->id,
+                'action' => 'Approved Ad posting',
+                'isSuper' => $staff->role == 'superadmin' ? 1 : 2,
+                'model' => get_class($this->ad),
+                'model_id' => $this->ad->reference,
+            ]);
+            scheduleUserNotification($merchant->id,'AD approved','Your Ad '.$this->ad->title.' has been approved and is now active.',
+                route('mobile.user.ads.detail',['id'=>$this->ad->reference]));
+
+
 
             DB::commit();
             $merchant->notify(new CustomNotificationNoLink($merchant->name,'Ad post approved',$message));
