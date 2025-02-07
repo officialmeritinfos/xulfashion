@@ -170,6 +170,11 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
+                                    <a class="nav-link" href="{{ route('mobile.app.base') }}" role="button"
+                                       data-bs-auto-close="outside" aria-expanded="false">Directory
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
                                     <a class="nav-link" href="{{ route('home.pricing') }}" role="button"
                                        data-bs-auto-close="outside" aria-expanded="false">Pricing
                                     </a>

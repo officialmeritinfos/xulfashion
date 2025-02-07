@@ -27,6 +27,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('home.pricing') }}" class="pages" target="_blank">
+                        <h4>Pricing</h4>
+                        <i class="ri-arrow-drop-right-line"></i>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ config('app.feature_request_url') }}" class="pages" target="_blank">
                         <h4>Request a Feature</h4>
                         <i class="ri-arrow-drop-right-line"></i>
