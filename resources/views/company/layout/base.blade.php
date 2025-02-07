@@ -153,6 +153,13 @@
                                         <a href="{{ route('home.index') }}" class="d-block"><img src="{{asset($web->logo)}}" alt="" style="width: 100px;"></a>
                                     </div>
                                 </li>
+                                @if(checkIfAccessorIsMobile())
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link" href="{{ route('mobile.app.base') }}" role="button"
+                                           data-bs-auto-close="outside" aria-expanded="false">Home
+                                        </a>
+                                    </li>
+                                @endif
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                        data-bs-auto-close="outside" aria-expanded="false">Solutions
@@ -169,11 +176,13 @@
                                         <li><a href="{{ route('home.solutions.academy') }}" class="dropdown-item"><span>Academy Solution</span></a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="{{ route('mobile.app.base') }}" role="button"
-                                       data-bs-auto-close="outside" aria-expanded="false">Directory
-                                    </a>
-                                </li>
+                                @if(!checkIfAccessorIsMobile())
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link" href="{{ route('mobile.app.base') }}" role="button"
+                                           data-bs-auto-close="outside" aria-expanded="false">Directory
+                                        </a>
+                                    </li>
+                                @endif
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="{{ route('home.pricing') }}" role="button"
                                        data-bs-auto-close="outside" aria-expanded="false">Pricing
