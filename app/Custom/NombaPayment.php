@@ -113,4 +113,17 @@ class NombaPayment
         return null;
     }
 
+    public function transferToExternalAccount($data)
+    {
+        $response = Http::withToken($this->accessToken)->withHeaders([
+            'accountId' => $this->accountId,
+        ])->post("{$this->url}transfers/bank",$data);
+
+        if ($response->ok()) {
+            return $response;
+        }
+        Log::error('Failed to transfer to external account', ['response' => $response->json()]);
+        return null;
+    }
+
 }

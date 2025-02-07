@@ -32,6 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:settle-event-payments-to-merchant-balance')->everyMinute();
         $schedule->command('queue:retry all')->everyMinute();
         $schedule->command('queue:work --stop-when-empty')->everyMinute();
+        $schedule->command('app:process-n-g-n-withdrawals')->everyMinute();
     }
 
     /**

@@ -66,7 +66,6 @@ class UploadAdPhotosJob implements ShouldQueue
 
                 // Save to database
                 $uploadedPhotos[] = ['ad' => $this->adId, 'photo' => $result['link']];
-                Log::info("Photo {$index} uploaded successfully for ad ID: {$this->adId}");
 
                 // Delete the temporary file after successful upload
                 Storage::delete($path);

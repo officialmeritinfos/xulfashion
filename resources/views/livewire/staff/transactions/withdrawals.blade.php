@@ -228,7 +228,7 @@
                                             @break
                                         @case(4)
                                             <span
-                                                class="bg-info-focus text-info-main px-24 py-4 rounded-pill fw-medium text-sm">Processing</span>
+                                                class="bg-info-focus text-info-main px-24 py-4 rounded-pill fw-medium text-sm">Sent/Processing</span>
                                             @break
                                         @default
                                             <span

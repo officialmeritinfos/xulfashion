@@ -30,6 +30,7 @@ class CreateUserWithdrawalsTable extends Migration
             $table->string('rate')->default(1);
             $table->string('convertedAmount')->default(0);
             $table->integer('paymentStatus')->default(2);
+            $table->integer('manualUpdate')->default(0);
             $table->integer('status')->default(2);
             $table->string('approvedBy', 100)->nullable();
             $table->string('timeUpdated', 100)->nullable();

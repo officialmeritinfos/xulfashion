@@ -17,10 +17,51 @@
 
                                 Cancel Withdrawal
                             </a>
+                            @if($withdrawal->manualUpdate==1)
+                                <a href="javascript:void(0)" class="btn btn-sm btn-primary radius-8 d-inline-flex align-items-center gap-1"
+                                   wire:click="toggleMarkPaidForm">
+                                    <iconify-icon icon="solar:check-circle-linear" class="text-xl"></iconify-icon>
+                                    Mark Payout as Paid
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @endif
                 <div class="card-body py-40">
+                    @if($showMarkPaid)
+                        <div class="row">
+                            <div class="col-md-12 mx-auto">
+                                <form wire:submit.prevent="markAsPaid" class="row g-3">
+                                    <div class="mb-2">
+                                        <p class="text-center text-primary">
+                                            You are about manually approving this payout. Are you sure this payout has been sent out already?
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-12 mt-3">
+                                        <label for="state" class="form-label">Payment Reference</label>
+                                        <input type="text" class="form-control" id="state" wire:model.live="paymentReference" >
+                                        @error('paymentReference') <span class="error text-danger">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <label for="state" class="form-label">Authorization Pin</label>
+                                        <input type="password" class="form-control" id="state" wire:model.live="accountPin" minlength="6" maxlength="6">
+                                        @error('accountPin') <span class="error text-danger">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-md-12 mt-5 text-center">
+                                        <button class="btn btn-outline-success text-sm btn-sm radius-8">
+                                            <span>
+                                                Approve Payout
+                                                <div wire:loading>
+                                                    <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                                                </div>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
                     @if($showApproveForm)
                         <div class="row">
                             <div class="col-md-12 mx-auto">
@@ -88,7 +129,7 @@
                         </div>
                     @endif
 
-                    @if(!$showApproveForm && !$showCancelForm)
+                    @if(!$showApproveForm && !$showCancelForm && !$showMarkPaid)
                         <div class="row justify-content-center" id="invoice">
                             <div class="col-lg-12">
                                 <div class="shadow-4 border radius-8">
@@ -170,6 +211,9 @@
                                                                     @break
                                                                 @case(2)
                                                                     <span class="badge bg-primary">Pending</span>
+                                                                    @break
+                                                                @case(4)
+                                                                    <span class="badge bg-info">Sent/Processing</span>
                                                                     @break
                                                                 @default
                                                                     <span class="badge bg-danger">Cancelled</span>

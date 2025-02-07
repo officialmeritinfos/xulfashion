@@ -79,6 +79,9 @@
                                             @case(2)
                                                 <span class="badge bg-primary">Pending</span>
                                                 @break
+                                            @case(4)
+                                                <span class="badge bg-info">Sent</span>
+                                                @break
                                             @default
                                                 <span class="badge bg-danger">Cancelled</span>
                                                 @break
@@ -123,7 +126,10 @@
                                     Completed
                                     @break
                                 @case(2)
-                                    Pending
+                                    Under Review
+                                    @break
+                                @case(4)
+                                    Sent
                                     @break
                                 @default
                                     Cancelled
@@ -191,7 +197,10 @@
                                 <i class="fa fa-check-circle me-1"></i> Completed
                                 @break
                             @case(2)
-                                <i class="fa fa-clock me-1"></i> Pending
+                                <i class="fa fa-clock me-1"></i> Under Review
+                                @break
+                            @case(4)
+                                <i class="fa fa-clock me-1"></i>  Sent
                                 @break
                             @default
                                 <i class="fa fa-times-circle me-1"></i> Cancelled

@@ -29,9 +29,11 @@ class Payouts extends Component
     public $withdrawal;
     public $showCancelForm=false;
     public $showApproveForm=false;
+    public $showMarkPaid=false;
 
     public $accountPin;
     public $notifyUser;
+    public $paymentReference;
 
     protected $listeners = [
         'payoutUpdated' => 'render',
@@ -55,6 +57,9 @@ class Payouts extends Component
         if ($this->showCancelForm){
             $this->showCancelForm=false;
         }
+        if ($this->showMarkPaid){
+            $this->showMarkPaid=false;
+        }
     }
     //toggle show cancel form
     public function toggleCancelForm()
@@ -62,6 +67,21 @@ class Payouts extends Component
         $this->showCancelForm = !$this->showCancelForm;
         if ($this->showApproveForm){
             $this->showApproveForm=false;
+        }
+
+        if ($this->showMarkPaid){
+            $this->showMarkPaid=false;
+        }
+    }
+    //toggle show cancel form
+    public function toggleMarkPaidForm()
+    {
+        $this->showMarkPaid = !$this->showMarkPaid;
+        if ($this->showApproveForm){
+            $this->showApproveForm=false;
+        }
+        if ($this->showCancelForm){
+            $this->showCancelForm=false;
         }
     }
     //submit approval form
@@ -139,15 +159,26 @@ class Payouts extends Component
                 'withdrawalRef' => $withdrawal->reference
             ])->first();
 
-            $withdrawal->status=1;
-            $withdrawal->approvedBy=$staff->id;
-            $withdrawal->save();
+            $withdrawal->update([
+                'status' => 4,
+                'approvedBy' => $staff->id,
+                'paymentStatus' => 4
+            ]);
 
-            $transaction->status=1;
+            $transaction->status=4;
             $transaction->save();
 
-            scheduleUserNotification($this->user->id,'Payout Processed',"Your payout has been processed and should arrive in your account soon.");
+            $merchant = User::where('id',$this->user->id)->first();
 
+            scheduleUserNotification($this->user->id,'Payout Processed',"Your payout has been sent and should arrive in your account soon.");
+
+            $message = "
+                Your payout has been successfully processed and is on its way. It should reflect in your account shortly,
+                depending on your bank’s processing time. If you don’t see it within the expected timeframe, please check
+                with your financial institution or reach out to our support team for assistance.
+            ";
+
+            $merchant->notify(new CustomNotificationNoLink($merchant->name,'Payout Successfully Processed',$message));
 
             SystemStaffAction::create([
                 'staff' => $staff->id,
@@ -325,6 +356,137 @@ class Payouts extends Component
                 'width' => '400',
             ]);
             Log::error('Error cancelling merchant payout: ' . $e->getMessage());
+        }
+    }
+    //mark as paid
+    public function markAsPaid()
+    {
+        $staff = Auth::guard('staff')->user();
+
+        if ($staff->cannot('update UserWithdrawal')) {
+
+            $this->alert('error', '', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+                'text' => 'You do not have permission to perform this action',
+                'width' => '400',
+            ]);
+            return;
+        }
+        $this->validate([
+            'accountPin' =>'required|string|max:6|min:6',
+            'paymentReference'=>'required|string'
+        ]);
+
+        try {
+            $hashed = Hash::check($this->accountPin,$staff->accountPin);
+            if (!$hashed){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Access Denied. Wrong authorization pin',
+                    'width' => '400',
+                ]);
+                return;
+            }
+            //begin transaction
+            DB::beginTransaction();
+
+            $withdrawal = UserWithdrawal::where([
+                'user'=>$this->user->id,
+                'reference' => $this->withdrawal->reference
+            ])->first();
+
+            if (empty($withdrawal)){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Payout not found',
+                    'width' => '400',
+                ]);
+                return;
+            }
+            if ($withdrawal->status==1){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Payout already approved',
+                    'width' => '400',
+                ]);
+                return;
+            }
+            if ($withdrawal->status ==3){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Payout already cancelled.',
+                    'width' => '400',
+                ]);
+                return;
+            }
+            if ($withdrawal->manualUpdate!=1){
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Payout does not need manual review',
+                    'width' => '400',
+                ]);
+                return;
+            }
+            $transaction = Transaction::where([
+                'user'=>$this->user->id,
+                'withdrawalRef' => $withdrawal->reference
+            ])->first();
+
+            $withdrawal->update([
+                'status' => 1,
+                'approvedBy' => $staff->id,
+                'paymentStatus' => 1,
+                'paymentReference' => $this->paymentReference
+            ]);
+
+            $transaction->status=1;
+            $transaction->save();
+
+            SystemStaffAction::create([
+                'staff' => $staff->id,
+                'action' => 'Merchant Payout Approval',
+                'isSuper' => $staff->role == 'superadmin' ? 1 : 2,
+                'model' => get_class($this->user).' / '.get_class($transaction).'/'.get_class($withdrawal),
+                'model_id' => $this->user->id,
+            ]);
+
+            DB::commit();
+
+            $this->alert('success', '', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+                'text' => 'Merchant payout successfully marked as paid.',
+                'width' => '400',
+            ]);
+            $this->dispatch('payoutUpdated');
+            $this->showApproveForm=false;
+            $this->showCancelForm=false;
+            $this->showMarkPaid=false;
+            $this->reset('accountPin','paymentReference');
+            return;
+        }catch (\Exception $e) {
+            DB::rollBack();
+            $this->alert('error', '', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+                'text' => 'An error occurred while marking payout as paid.',
+                'width' => '400',
+            ]);
+            Log::error('Error marking merchant payout as paid: ' . $e->getMessage());
         }
     }
     public function render()
