@@ -17,13 +17,11 @@
 
                                 Cancel Withdrawal
                             </a>
-                            @if($withdrawal->manualUpdate==1)
-                                <a href="javascript:void(0)" class="btn btn-sm btn-primary radius-8 d-inline-flex align-items-center gap-1"
-                                   wire:click="toggleMarkPaidForm">
-                                    <iconify-icon icon="solar:check-circle-linear" class="text-xl"></iconify-icon>
-                                    Mark Payout as Paid
-                                </a>
-                            @endif
+                            <a href="javascript:void(0)" class="btn btn-sm btn-primary radius-8 d-inline-flex align-items-center gap-1"
+                               wire:click="toggleMarkPaidForm">
+                                <iconify-icon icon="solar:check-circle-linear" class="text-xl"></iconify-icon>
+                                Mark Payout as Paid
+                            </a>
                         </div>
                     </div>
                 @endif

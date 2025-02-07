@@ -429,16 +429,6 @@ class Payouts extends Component
                 ]);
                 return;
             }
-            if ($withdrawal->manualUpdate!=1){
-                $this->alert('error', '', [
-                    'position' => 'top-end',
-                    'timer' => 5000,
-                    'toast' => true,
-                    'text' => 'Payout does not need manual review',
-                    'width' => '400',
-                ]);
-                return;
-            }
             $transaction = Transaction::where([
                 'user'=>$this->user->id,
                 'withdrawalRef' => $withdrawal->reference

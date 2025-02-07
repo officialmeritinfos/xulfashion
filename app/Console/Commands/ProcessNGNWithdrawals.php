@@ -44,81 +44,101 @@ class ProcessNGNWithdrawals extends Command
     public function handle()
     {
         $web = GeneralSetting::find(1);
+        if (!$web) {
+            Log::error('General settings not found.');
+            return;
+        }
 
         DB::beginTransaction();
         try {
+            // Fetch all pending NGN withdrawals
             $withdrawals = UserWithdrawal::where([
                 'toCurrency' => 'NGN',
                 'status' => 4,
                 'paymentStatus' => 4,
                 'type' => 'withdrawals'
-            ])->where('manualUpdate','!=',1)->get();
+            ])->where('manualUpdate', '!=', 1)->get();
 
-            if($withdrawals->count() > 0){
-                foreach($withdrawals as $withdrawal){
-                    $user = User::where('id', $withdrawal->user)->first();
-                    //ensure user is active before processing withdrawal
-                    if ($user->status==1){
-                        //fetch bank details
-                        $bank = UserBank::where([
-                            'user' => $withdrawal->user,'reference' => $withdrawal->paymentDetails
-                        ])->first();
-                        if ($bank){
-                            $transferData = [
-                                'amount' => $withdrawal->amountCredit,
-                                'accountNumber' => $bank->accountNumber,
-                                'accountName' => $bank->accountName,
-                                'bankCode'=>$bank->bank,
-                                'merchantTxRef'=>$withdrawal->reference,
-                                'senderName'=> $web->name,
-                                'narration'=>"Payout from {$web->name}"
-                            ];
-
-                            $gateway = new NombaPayment();
-
-                            //proceed to submitting
-                            $response = $gateway->transferToExternalAccount($transferData);
-
-                            if (!$response){
-                                //notify admin
-                                $admin = SystemStaff::where('role', 'superadmin')->first();
-                                if ($admin){
-                                    $message = "An error occurred while sending out payout for withdrawal {$withdrawal->reference}. Please look into this";
-                                    $admin->notify(new StaffCustomNotification($admin,$message,'Payout Error'));
-                                }
-                            }else{
-                                $response = $response->json();
-                                logger($response);
-                                if ($response['description']=='SUCCESS'){
-                                    //update the withdrawal with the details
-                                    $withdrawal->update([
-                                        'status' => 1,
-                                        'paymentStatus' => 1,
-                                        'paymentReference' => $response['data']['id'],
-                                        'timeUpdated' => time()
-                                    ]);
-                                    Transaction::where('withdrawalRef',$withdrawal->reference)->update([
-                                        'status' => 1,
-                                    ]);
-                                }else{
-                                    $withdrawal->update([
-                                        'manualUpdate'=>1
-                                    ]);
-                                    $message = "
-                                        The Payout with reference {$withdrawal->reference} did not process as it should, and needs
-                                        a manual review and update.
-                                    ";
-                                    //send mail to the finance department
-                                    $this->sendDepartmentMail('finance',$message,'Payout Needs manual review');
-                                }
-                            }
-                        }
-                    }
-                }
+            if ($withdrawals->isEmpty()) {
+                Log::info('No pending NGN withdrawals to process.');
+                DB::rollBack();
+                return;
             }
-        }catch (\Exception $exception){
+
+            foreach ($withdrawals as $withdrawal) {
+                $user = User::find($withdrawal->user);
+
+                // Ensure user exists and is active before processing withdrawal
+                if (!$user || $user->status != 1) {
+                    Log::warning("Skipping withdrawal {$withdrawal->reference}: User is inactive or not found.");
+                    continue;
+                }
+
+                // Fetch user's bank details
+                $bank = UserBank::where([
+                    'user' => $withdrawal->user,
+                    'reference' => $withdrawal->paymentDetails
+                ])->first();
+
+                if (!$bank) {
+                    Log::warning("Skipping withdrawal {$withdrawal->reference}: No valid bank details found.");
+                    continue;
+                }
+
+                $transferData = [
+                    'amount' => $withdrawal->amountCredit,
+                    'accountNumber' => $bank->accountNumber,
+                    'accountName' => $bank->accountName,
+                    'bankCode' => $bank->bank,
+                    'merchantTxRef' => time(),
+                    'senderName' => $web->name,
+                    'narration' => "Payout from {$web->name}"
+                ];
+
+                $gateway = new NombaPayment();
+                $response = $gateway->transferToExternalAccount($transferData);
+
+                if (!$response) {
+                    Log::error("Payout error: No response received for withdrawal {$withdrawal->reference}");
+                    $admin = SystemStaff::where('role', 'superadmin')->first();
+                    if ($admin) {
+                        $message = "An error occurred while sending out payout for withdrawal {$withdrawal->reference}. Please investigate.";
+                        $admin->notify(new StaffCustomNotification($admin, $message, 'Payout Error'));
+                    }
+                    continue;
+                }
+
+                $responseData = $response->json();
+
+                if (!isset($responseData['description']) || $responseData['description'] !== 'SUCCESS') {
+                    // Mark for manual review
+                    $withdrawal->update(['manualUpdate' => 1]);
+
+                    $message = "The Payout with reference {$withdrawal->reference} failed and requires manual review.";
+                    Log::warning($message);
+
+                    // Notify finance department
+                    $this->sendDepartmentMail('finance', $message, 'Payout Needs Manual Review');
+                    continue;
+                }
+
+                // Update withdrawal details
+                $withdrawal->update([
+                    'status' => 1,
+                    'paymentStatus' => 1,
+                    'paymentReference' => $responseData['data']['id'] ?? null,
+                    'timeUpdated' => time()
+                ]);
+
+                // Update transaction status
+                Transaction::where('withdrawalRef', $withdrawal->reference)->update(['status' => 1]);
+
+            }
+
+            DB::commit();
+        } catch (\Exception $exception) {
             DB::rollBack();
-            Log::info('Error processing withdrawal: '.$exception->getMessage());
+            Log::error('Error processing withdrawals: ' . $exception->getMessage());
         }
     }
 }

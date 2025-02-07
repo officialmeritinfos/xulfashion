@@ -140,6 +140,9 @@
                                         <th scope="col">Number of Views</th>
                                         <th scope="col">State</th>
                                         <th scope="col">Status</th>
+                                        @if($ad->status==4)
+                                            <th scope="col">Rejection Reason</th>
+                                        @endif
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -168,6 +171,11 @@
                                                     @break
                                             @endswitch
                                         </td>
+                                        @if($ad->status==4)
+                                            <td>
+                                                {{$ad->rejectReason}}
+                                            </td>
+                                        @endif
                                     </tr>
                                     </tbody>
                                 </table>
