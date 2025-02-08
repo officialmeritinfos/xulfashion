@@ -90,7 +90,7 @@ class ProcessNGNWithdrawals extends Command
                     'accountNumber' => $bank->accountNumber,
                     'accountName' => $bank->accountName,
                     'bankCode' => $bank->bank,
-                    'merchantTxRef' => time(),
+                    'merchantTxRef' => $withdrawal->reference,
                     'senderName' => $web->name,
                     'narration' => "Payout from {$web->name}"
                 ];
