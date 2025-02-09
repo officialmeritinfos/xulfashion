@@ -93,7 +93,7 @@ class Register extends BaseController
                 'g-recaptcha-response' => ['required', new ReCaptcha],
                 'referral' => ['nullable', 'string', 'exists:users,username'],
                 'country' => ['required',Rule::exists('countries','iso3')->where('status',1)],
-                'phoneNumber' => ['required','string','unique:users,phone'],
+                'phoneNumber' => ['required','numeric','unique:users,phone'],
             ], [
                 'email.unique' => 'User already exists with this email. Please login instead.',
                 'g-recaptcha-response.required'=>'Recaptcha must be passed first.',

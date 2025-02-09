@@ -167,6 +167,7 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
 
         //LEGAL PAGE
         Route::get('legal/privacy-policy',[LegalController::class,'privacyPolicy'])->name('legal.privacy-policy');
+        Route::get('legal/ads-policy',[LegalController::class,'adsPolicy'])->name('legal.ads-policy');
         Route::get('legal/delete-my-information',[LegalController::class,'deleteMyInformation'])->name('legal.delete-my-information');
 
 

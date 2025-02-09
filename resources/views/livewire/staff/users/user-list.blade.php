@@ -125,6 +125,7 @@
                     <option value="all">All</option>
                     <option value="1">Active</option>
                     <option value="2">Inactive</option>
+                    <option value="3">Suspended</option>
                 </select>
                 @can('create User')
                 <a href="{{ route('staff.users.new') }}" class="btn btn-sm btn-primary-600" wire:navigate><i

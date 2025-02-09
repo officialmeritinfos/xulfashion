@@ -5,9 +5,9 @@
     <section class="section-b-space mt-2">
         <div class="custom-container">
             <div class="terms-Conditions">
-                <p><strong>Effective Date:</strong> 03/09/2024</p>
+                <p><strong>Effective Date:</strong> 03/02/2025</p>
                 <p><strong>Entity Name:</strong> {{$siteName}} by XulTech Ltd</p>
-                <p><strong>Contact Email:</strong> {{$web->email}}</p>
+                <p><strong>Contact Email:</strong> {{$web->supportEmail}}</p>
 
                 <p>At {{$siteName}}, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and share your personal data when you access and use the {{$siteName}} app. By using the {{$siteName}} app, you agree to the collection and use of your information in accordance with this Privacy Policy.</p>
 

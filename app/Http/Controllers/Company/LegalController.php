@@ -37,6 +37,16 @@ class LegalController extends Controller
             'web'           =>$web
         ]);
     }
+    //general ads posting policy
+    public function adsPolicy()
+    {
+        $web = GeneralSetting::find(1);
+        return view('company.legal.ads-policy')->with([
+            'pageName'      =>'Ads Posting Policy',
+            'siteName'      =>$web->name,
+            'web'           =>$web
+        ]);
+    }
     //AML
     public function amlPolicy()
     {

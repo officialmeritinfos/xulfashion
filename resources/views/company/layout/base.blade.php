@@ -284,6 +284,7 @@
                                 <li><a href="{{ route('home.faq') }}1">Faq’s</a></li>
                                 <li><a href="{{ route('mobile.legal.privacy-policy') }}">Privacy Policy</a></li>
                                 <li><a href="{{ route('home.terms-and-conditions') }}">Terms</a></li>
+                                <li><a href="{{ route('home.ads-posting-policy') }}">Ads Policy</a></li>
                             </ul>
                         </div>
                     </div>

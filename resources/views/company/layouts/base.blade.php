@@ -150,7 +150,8 @@
                             <h3 class="f_title f_title_dark">Customer</h3>
                             <ul class="list-unstyled link_widget dark_link">
                                 <li><a href="{{route('home.terms-and-conditions')}}">Terms & Conditions</a></li>
-                                <li><a href="{{route('home.privacy-policy')}}">Privacy Policy</a></li>
+                                <li><a href="{{route('mobile.legal.privacy-policy')}}">Privacy Policy</a></li>
+                                <li><a href="{{route('home.ads-posting-policy')}}">Ads Posting Policy</a></li>
                             </ul>
                         </div>
                         <div class="f_widget f_social_widget">

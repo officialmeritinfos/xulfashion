@@ -10,7 +10,7 @@
                 <h1 class="blog_title_big">{{$pageName}}</h3>
                 <ul class="job_meta pt-3">
                     <li><a href="#"><img class="icon" src="{{asset('home/main/img/career/svg/house.svg')}}" alt="">
-                            Last Updated: 03, September, 2024
+                            Last Updated: 03, February, 2025
                         </a></li>
                 </ul>
             </div>

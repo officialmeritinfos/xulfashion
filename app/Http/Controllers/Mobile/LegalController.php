@@ -34,4 +34,15 @@ class LegalController extends BaseController
             'siteName'  =>$web->name
         ]);
     }
+
+    //ads policy
+    public function adsPolicy()
+    {
+        $web = GeneralSetting::find(1);
+        return view('mobile.legal.ads-policy')->with([
+            'web'       =>$web,
+            'pageName'  =>"Ads Posting Policy",
+            'siteName'  =>$web->name
+        ]);
+    }
 }
