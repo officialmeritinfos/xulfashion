@@ -184,6 +184,16 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <h4 class="signup pt-0">By clicking the Post Ad button, you agree to our
+                            <a href="{{ route('mobile.legal.ads-policy') }}"> Ads Posting Policy</a>.
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="text-center mb-5">
                 <button type="submit" class="btn btn-outline-primary mt-0 w-50 submit mb-3 btn-auto">Post Ad</button>

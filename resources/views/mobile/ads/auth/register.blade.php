@@ -149,6 +149,16 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <h4 class="signup pt-0">By clicking the sign-up button, you agree to our
+                            <a href="{{ route('home.terms-and-conditions') }}"> Terms and Conditions</a> as well
+                            as our <a href="{{ route('mobile.legal.privacy-policy') }}"> Privacy Policy</a>.
+                        </h4>
+                    </div>
+                </div>
+            </div>
 
             <div class="submit-btn">
                 <button class="btn auth-btn w-100 submit">Sign UP</button>
