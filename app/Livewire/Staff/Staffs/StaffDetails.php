@@ -113,7 +113,9 @@ class StaffDetails extends Component
     //resend verification mail
     public function resendVerificationMail()
     {
+        //staff
         $user = SystemStaff::where('id', $this->staffs->id)->first();
+        //logged-in staff
         $staff = $this->staff;
 
 
@@ -129,7 +131,7 @@ class StaffDetails extends Component
         }
 
 
-        $user->notify(new StaffWelcomeMail($staff,$this->web));
+        $user->notify(new StaffWelcomeMail($user,$this->web));
 
         SystemStaffAction::create([
             'staff'         =>$staff->id,
