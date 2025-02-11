@@ -66,6 +66,23 @@
                     <div class="card-body text-center">
                         <div class="row">
                             <div class="col mt-0">
+                                <h5 class="card-title">Pending Balance
+                                    <sup><i class="fa-solid fa-circle-info" data-bs-toggle="tooltip"
+                                            title="The total amount in your account balance but cannot be withdrawn due incomplete KYC"></i></sup>
+                                </h5>
+                            </div>
+                        </div>
+                        <h1 class="mt-1 mb-3" data-bs-toggle="tooltip" title="{{currencySign($user->mainCurrency)}}{{ number_format($user->pendingBalance,2) }}">
+                            {{currencySign($user->mainCurrency)}}{{ shorten_number($user->pendingBalance,2) }}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col mt-0">
                                 <h5 class="card-title">Referral Balance
                                     <sup><i class="fa-solid fa-circle-info" data-bs-toggle="tooltip"
                                             title="The total amount you have earned through your referrals. "></i></sup>
