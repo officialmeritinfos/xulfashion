@@ -44,6 +44,20 @@ class InitializeStoreForm extends Component
     {
         $this->user = auth()->user();
         $this->country = Country::where('iso3',$this->user->countryCode)->first();
+        $this->returnPolicy = "At [Store_name], customer satisfaction is our priority. If you're not completely happy with your purchase, we offer a straightforward return process. Items must be returned within [number] days from the date of delivery and should be unused, unworn, and in their original packaging (if applicable). A valid proof of purchase, such as a receipt or order confirmation, is required for all returns. However, certain items, including personalized, perishable, and hygiene-related products, are not eligible for returns.
+
+To initiate a return, please contact us via email/phone, and we will review your request. If approved, you will receive return instructions. The customer is responsible for return shipping costs unless the item is defective or incorrect. Once we receive the returned item, we will inspect it and process a refund, exchange, or store credit based on our policy. Refunds will be issued to the original payment method or as store credit, depending on the customer’s preference, and typically take 4 business days to process. Please note that shipping fees are non-refundable unless the item received was defective or incorrect.
+
+For exchanges, customers must request a replacement within 2 days of purchase. Exchanges are subject to product availability. If you receive a damaged, defective, or incorrect item, please reach out to us immediately with photos and a description of the issue, and we will arrange for a replacement or refund at no extra cost. Certain items, including personalized products, digital downloads, perishable goods, and intimate/hygiene-related items, cannot be returned.
+
+For any return-related inquiries, please contact [Store_name] at [Phone_Number], [Email]. We appreciate your business and look forward to serving you again.
+        ";
+        $this->refundPolicy = "At [Store_name], we are committed to ensuring a smooth and transparent refund process for our customers. If you are not satisfied with your purchase and meet our return eligibility criteria, you may request a refund. Refunds are issued only for items returned within 2 days of purchase in their original condition—unused, unworn, and in original packaging where applicable. A valid proof of purchase, such as a receipt or order confirmation, is required. Refunds are processed once we receive and inspect the returned item, and they are issued to the original payment method or as store credit, depending on customer preference. Please note that shipping fees are non-refundable, except in cases where the item received was defective, damaged, or incorrect.
+
+For orders that qualify for a refund, processing typically takes 5 business days after the return is received and approved. Customers requesting a refund due to an incorrect or defective item must report the issue within 2 days of delivery, providing clear photos and a description of the problem. If verified, we will offer a full refund or replacement at no additional cost. Refunds are not available for certain products, including personalized items, perishable goods, digital products, and intimate or hygiene-related items.
+
+For any refund-related inquiries or to request a refund, please contact [Store_name] at [Phone_Number], [Email]. We appreciate your trust in us and will do our best to resolve any issues promptly.
+        ";
     }
     public function placeholder()
     {
@@ -110,7 +124,7 @@ class InitializeStoreForm extends Component
             'address' => ['required', 'string'],
             'supportPhone' => ['required', 'string'],
             'supportEmail' => ['required', 'email'],
-            'file' => ['required', 'image', 'max:4096'],  // Max size in KB
+            'file' => ['required', 'image', 'max:7000'],  // Max size in KB
             'returnPolicy' => ['nullable', 'string'],
             'refundPolicy' => ['required', 'string'],
             'industry' => ['required','in:fashion,beauty']
@@ -135,8 +149,11 @@ class InitializeStoreForm extends Component
             $logo = $imageResult['link'];  // Retrieve the uploaded image link
 
             // 6. Create the store record in the database
-            $store = UserStore::create([
-                'user' => $this->user->id,
+            $store = UserStore::firstOrCreate(
+                [
+                    'user' => $this->user->id,
+                ],
+                [
                 'reference' => $reference,
                 'name' => $this->name,
                 'description' => $this->description,
@@ -151,8 +168,8 @@ class InitializeStoreForm extends Component
                 'email' => $this->supportEmail,
                 'phone' => $this->supportPhone,
                 'status' => 1,
-                'refundPolicy' => clean($this->refundPolicy),
-                'returnPolicy' => clean($this->returnPolicy),
+                'refundPolicy' => clean(str_replace(['[Store_name]','[Email]','[Phone_Number]'],[$this->name,$this->supportEmail,$this->supportPhone],$this->refundPolicy)),
+                'returnPolicy' => clean(str_replace(['[Store_name]','[Email]','[Phone_Number]'],[$this->name,$this->supportEmail,$this->supportPhone],$this->returnPolicy)),
                 'theme' => $theme->id,
                 'industry' => $this->industry,
             ]);

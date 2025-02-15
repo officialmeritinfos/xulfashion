@@ -2,6 +2,8 @@
 @section('content')
     @inject('injected','App\Custom\Regular')
     @push('css')
+        <!-- Lightbox2 CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
         <link rel="stylesheet" type="text/css" href="{{asset('mobile/css/vendors/swiper-bundle.min.css')}}" />
         <style>
 
@@ -74,7 +76,9 @@
                 <div class="swiper product-2">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            <img class="img-fluid product-img" src="{{empty($merchant->photo)?asset('dashboard/images/avatar1.png'):$merchant->photo}}" alt="p26" />
+                            <a href="{{empty($merchant->photo)?asset('dashboard/images/avatar1.png'):$merchant->photo}}" data-lightbox="image-1" class="back">
+                                <img class="img-fluid product-img" src="{{empty($merchant->photo)?asset('dashboard/images/avatar1.png'):$merchant->photo}}" alt="product-bg" />
+                            </a>
                         </div>
                     </div>
                     <div class="swiper-button-next">
@@ -426,6 +430,15 @@
                         }
                     });
                 });
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                lightbox.option({
+                    'resizeDuration': 200,
+                    'wrapAround': true
+                })
             });
         </script>
     @endpush

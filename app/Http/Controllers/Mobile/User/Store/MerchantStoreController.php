@@ -42,4 +42,22 @@ class MerchantStoreController extends Base
             'pageName' =>'Create Store',
         ]);
     }
+    //initialize store
+    public function editStore()
+    {
+        $web = GeneralSetting::find(1);
+        $user = Auth::user();
+        $store = UserStore::where('user',$user->id)->first();
+        if (!$store) {
+            return back()->with('error','Store not found. Please create one');
+        }
+
+        return view('mobile.users.store.edit')->with([
+            'web' => $web,
+            'user' => $user,
+            'siteName'=>$web->name,
+            'pageName' =>'Edit Store',
+            'store' => $store,
+        ]);
+    }
 }

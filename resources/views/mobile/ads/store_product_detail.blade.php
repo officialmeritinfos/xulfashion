@@ -1,6 +1,9 @@
 @extends('mobile.ads.layout.innerBaseProductDetail')
 @section('content')
-
+    @push('css')
+        <!-- Lightbox2 CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    @endpush
     <!-- product-image section start -->
     <section class="product2-image-section">
         <div class="custom-container">
@@ -9,11 +12,15 @@
                 <div class="swiper product-2">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide swiper-slide-active">
-                            <img class="img-fluid product-img active" src="{{$product->featuredImage}}" alt="{{$product->name}}" />
+                            <a href="{{$product->featuredImage}}" data-lightbox="image-1" class="back">
+                                <img class="img-fluid product-img active" src="{{$product->featuredImage}}" alt="{{$product->name}}" />
+                            </a>
                         </div>
                         @foreach($photos as $photo)
                             <div class="swiper-slide">
-                                <img class="img-fluid product-img" src="{{$photo->image}}" alt="p26" />
+                                <a href="{{$photo->image}}" data-lightbox="image-1" class="back">
+                                    <img class="img-fluid product-img" src="{{$photo->image}}" alt="p26" />
+                                </a>
                             </div>
                         @endforeach
                     </div>
@@ -146,6 +153,15 @@
                 $('#contact-number').on('click', function(){
                     $(this).text(phoneNumber);
                 });
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                lightbox.option({
+                    'resizeDuration': 200,
+                    'wrapAround': true
+                })
             });
         </script>
     @endpush

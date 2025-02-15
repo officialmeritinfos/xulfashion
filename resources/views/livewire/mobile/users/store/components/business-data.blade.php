@@ -9,6 +9,10 @@
                 <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3 bg-dark text-white">
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <h5 class="mb-0"><i class="fa fa-chart-bar me-2"></i> Store Statistics</h5>
+
+                        <a href="{{ route('mobile.user.store.edit') }}" title="Edit Store">
+                            <i class="fa fa-edit"></i>
+                        </a>
                     </div>
 
                     <div class="d-flex flex-wrap align-items-center gap-3">

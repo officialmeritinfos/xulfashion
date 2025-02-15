@@ -3,7 +3,7 @@
     <div class="main mt-2 mb-5">
         <div class="container-fluid text-center">
             <a href="{{completedProfileMobile('mobile.user.payments.merchant.index')}}" class="btn theme-btn w-100 mt-3 mb-3 btn-auto" role="button">
-                Merchant Dashboard
+                Wallet & Payouts
             </a>
         </div>
     </div>

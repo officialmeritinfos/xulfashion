@@ -14,6 +14,7 @@ use Google\Cloud\Storage\StorageClient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Intervention\Image\ImageManager;
 use Jenssegers\Agent\Agent;
 use Kreait\Firebase\Factory;
 
@@ -1354,5 +1355,87 @@ if (!function_exists('has_reached_daily_ad_limit')) {
             ->whereDate('created_at', Carbon::today())
             ->count();
         return $adsToday >= $limit;
+    }
+}
+
+if (!function_exists('watermark_image')) {
+    function watermark_image($imageUrl)
+    {
+        if (!$imageUrl) {
+            return asset('placeholder-image.jpg'); // Return default if image is missing
+        }
+
+        try {
+            // Generate a temporary file path
+            $tempFilePath = storage_path('app/temp_' . uniqid() . '.jpg'); // Default to JPG
+
+            // Download the image to a temporary file
+            $response = Http::sink($tempFilePath)->get($imageUrl);
+
+            if (!$response->successful()) {
+                Log::error("Image request failed: " . $response->status());
+                return asset('placeholder-image.jpg'); // Return placeholder if image is not found
+            }
+            // Ensure the file exists and is readable
+            if (!file_exists($tempFilePath) || filesize($tempFilePath) < 100) {
+                Log::error("Downloaded image is invalid or too small.");
+                return asset('placeholder-image.jpg');
+            }
+            // Verify the image format using the fileinfo extension
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $tempFilePath);
+            finfo_close($finfo);
+
+            if (!in_array($mimeType, ['image/jpeg', 'image/png', 'image/webp'])) {
+                Log::error("Unsupported image type detected: " . $mimeType);
+                return asset('placeholder-image.jpg');
+            }
+
+            // Log the file path and size for debugging
+            Log::info("Downloaded image path: " . $tempFilePath . " | Size: " . filesize($tempFilePath));
+
+
+            // Create an ImageManager instance
+            $manager = ImageManager::gd();
+
+            // Load the image from the local temporary file
+            try {
+                $image = $manager->read($tempFilePath);
+            } catch (\Exception $e) {
+                Log::error("Intervention Image failed to read the file: " . $e->getMessage());
+                return asset('placeholder-image.jpg');
+            }
+
+            // Add diagonal watermark text
+            $image->text(
+                'Xulfashion Product',
+                $image->width() / 4, // X position
+                $image->height() / 2, // Y position
+                function ($font) {
+                    $font->file(public_path('dashboard/fonts/times new roman.ttf')); // Ensure font file exists
+                    $font->size(40);
+                    $font->color([255, 255, 255, 0.5]); // White with transparency
+                    $font->align('center');
+                    $font->valign('middle');
+                    $font->angle(45); // Rotate diagonally
+                }
+            );
+
+            // Delete the temporary file after processing
+            @unlink($tempFilePath);
+
+
+            // Encode image using its original format
+            $base64Image = 'data:' . $mimeType . ';base64,' . base64_encode($image->encode('png')->toString());
+
+            // Delete the temporary file after processing
+            @unlink($tempFilePath);
+
+            return $base64Image;
+
+        } catch (\Exception $e) {
+            logger($e->getMessage());
+            return asset('placeholder-image.jpg'); // Return a default placeholder on error
+        }
     }
 }

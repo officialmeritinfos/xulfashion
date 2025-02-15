@@ -80,7 +80,7 @@
                                     <input type="password"
                                            class="form-control radius-8 @error('password_confirmation') is-invalid @enderror"
                                            id="password_confirmation" wire:model.blur="password_confirmation"
-                                           placeholder="Repeat Password">
+                                           placeholder="Enter Password">
                                     @error('password_confirmation') <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -90,7 +90,7 @@
                                             class="text-danger-600">*</span></label>
                                     <input type="password"
                                         class="form-control radius-8 @error('password') is-invalid @enderror"
-                                        id="password" wire:model.blur="password" placeholder="Enter Password">
+                                        id="password" wire:model.blur="password" placeholder="Repeate Password">
                                     @error('password') <span class="invalid-feedback">{{ $message }}</span> @enderror
                                 </div>
 

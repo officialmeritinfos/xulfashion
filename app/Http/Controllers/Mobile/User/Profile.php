@@ -56,7 +56,7 @@ class Profile extends BaseController
             $validator = Validator::make($request->all(),[
                 'name'                  =>['required','string'],
                 'phone'                 =>['required','string'],
-                'image'                 => ['nullable', 'image','max:1024'],
+                'image'                 => ['nullable', 'image','max:5000'],
 
             ])->stopOnFirstFailure();
             if ($validator->fails()) return $this->sendError('validation.error',['error'=>$validator->errors()->all()]);
@@ -173,7 +173,7 @@ class Profile extends BaseController
                 'address'               =>['required','string'],
                 'tutorKeywords'         =>['nullable'],
                 'tutorKeywords.*'       =>['nullable','string'],
-                'image'                 => ['required', 'image','max:5120'],
+                'image'                 => ['required', 'image','max:7000'],
                 'merchantType'          =>['required','numeric']
 
             ])->stopOnFirstFailure();
@@ -224,7 +224,7 @@ class Profile extends BaseController
                 'address'               =>['required','string'],
                 'tutorKeywords'         =>['nullable'],
                 'tutorKeywords.*'       =>['nullable','string'],
-                'image'                 => ['nullable', 'image','max:5120'],
+                'image'                 => ['nullable', 'image','max:7000'],
                 'merchantType'          =>['required','numeric'],
                 'name'                  => ['required', 'string'],
                 'username'              => ['required', 'alpha_num', Rule::unique('users','username')->ignore($user->id)],

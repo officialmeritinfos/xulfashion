@@ -51,7 +51,7 @@
                     <div class="product-box">
                         <div class="product-box-img">
                             <a href="{{route('mobile.marketplace.detail',['slug'=>textToSlug($recentAd->title),'id'=>$recentAd->reference])}}">
-                                <img class="img" src="{{$recentAd->featuredImage}}" alt="p1" />
+                                <img class="img" src="{{$recentAd->featuredImage}}" alt="p1" data-lightbox="recent" />
                             </a>
 
                             <div class="cart-box">
@@ -103,7 +103,7 @@
                     <div class="col-12">
                         <div class="horizontal-product-box">
                             <a href="{{route('mobile.marketplace.detail',['slug'=>textToSlug($ad->title),'id'=>$ad->reference])}}" class="horizontal-product-img">
-                                <img class="img-fluid img" src="{{$ad->featuredImage}}" alt="p3" />
+                                <img class="img-fluid img" src="{{$ad->featuredImage}}" alt="p3"  />
                             </a>
                             <div class="horizontal-product-details">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -269,5 +269,6 @@
             });
 
         </script>
+
     @endpush
 @endsection

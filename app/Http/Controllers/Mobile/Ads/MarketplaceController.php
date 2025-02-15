@@ -214,7 +214,6 @@ class MarketplaceController extends BaseController
         $user = User::where('reference',$id)->firstOrFail();
 
         $ads = UserAd::where([
-            'country'=>$country,
             'status'=>1,'user'=>$user->id
         ])->with('service')->orderBy('id','desc')->paginate(30);
 

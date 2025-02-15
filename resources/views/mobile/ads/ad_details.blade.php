@@ -2,6 +2,8 @@
 @section('content')
     @inject('injected','App\Custom\Regular')
     @push('css')
+        <!-- Lightbox2 CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
         <link rel="stylesheet" type="text/css" href="{{asset('mobile/css/vendors/swiper-bundle.min.css')}}" />
         <style>
 
@@ -69,12 +71,16 @@
     <section class="product2-image-section">
         <div class="custom-container">
             <div class="product2-img-slider">
-                <img class="img-fluid product2-bg" src="{{asset('mobile/images/background/product-img-bg.png')}}" alt="product-bg" />
+                <a href="{{ asset('mobile/images/background/product-img-bg.png') }}" data-lightbox="image-1" class="back">
+                    <img class="img-fluid product2-bg" src="{{ asset('mobile/images/background/product-img-bg.png') }}" alt="product-bg" />
+                </a>
                 <div class="swiper product-2">
                     <div class="swiper-wrapper">
                         @foreach($photos as $photo)
                         <div class="swiper-slide">
-                            <img class="img-fluid product-img" src="{{$photo->photo}}" alt="p26" />
+                            <a href="{{ $photo->photo }}" data-lightbox="image-1" class="back">
+                                <img class="img-fluid product-img" src="{{ $photo->photo }}" alt="p26" />
+                            </a>
                         </div>
                         @endforeach
                     </div>
@@ -477,6 +483,15 @@
                         }
                     });
                 });
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                lightbox.option({
+                    'resizeDuration': 200,
+                    'wrapAround': true
+                })
             });
         </script>
     @endpush

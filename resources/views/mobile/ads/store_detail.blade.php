@@ -1,6 +1,10 @@
 @extends('mobile.ads.layout.innerBaseProductDetail')
 @section('content')
     @inject('injected','App\Custom\Regular')
+    @push('css')
+        <!-- Lightbox2 CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    @endpush
 
     <!-- product-image section start -->
     <section class="product2-image-section">
@@ -10,7 +14,9 @@
                 <div class="swiper product-2">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            <img class="img-fluid product-img" src="{{$store->logo}}" alt="" />
+                            <a href="{{$store->logo}}" data-lightbox="image-1" class="back">
+                                <img class="img-fluid product-img" src="{{$store->logo}}" alt="product-bg" />
+                            </a>
                         </div>
                     </div>
                     <div class="swiper-button-next">
@@ -150,6 +156,64 @@
         </div>
     </section>
 
+    @if($ads->count()>0)
+        <!-- shop section start -->
+        <section class="section-b-space">
+            <div class="custom-container">
+                <div class="title">
+                    <h2>Products &  Services by {{$store->name}}</h2>
+                </div>
+                <div class="row g-3">
+                    @foreach($ads as  $index => $ad)
+                        <div class="col-6">
+                            <div class="product-box">
+                                <div class="product-box-img">
+                                    <a href=""{{route('mobile.marketplace.detail',['slug'=>textToSlug($ad->title),'id'=>$ad->reference])}}"> <img class="img" src="{{$ad->featuredImage}}" alt="p1" /></a>
+
+                                    <div class="cart-box">
+                                        <a href="{{route('mobile.marketplace.detail',['slug'=>textToSlug($ad->title),'id'=>$ad->reference])}}" class="cart-bag">
+                                            <i class="iconsax bag" data-icon="basket-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-box-detail">
+                                    <h4>{{$ad->title}}</h4>
+                                    <h5>{{$ad->service->name}}</h5>
+                                    <div class="d-flex justify-content-between gap-3">
+                                        <h5>By: {{$ad->companyName}}</h5>
+                                        <h3 class="text-end">
+                                            {{getStateFromIso2($ad->state,$country->iso2)->name}}
+                                        </h3>
+                                    </div>
+                                    <div class="bottom-panel">
+                                        <div class="price">
+                                            <h4>
+                                                @empty($ad->amount)
+                                                    Contact for Price
+                                                @else
+                                                    {{currencySign($ad->currency)}} {{number_format($ad->amount,2)}}
+                                                @endempty
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <div class="page-navigation">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+
+                                {{$ads->links()}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+
     @push('js')
         <!-- range-slider js -->
         <script src="{{asset('mobile/js/range-slider.js')}}"></script>
@@ -160,6 +224,15 @@
                 $('#contact-number').on('click', function(){
                     $(this).text(phoneNumber);
                 });
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                lightbox.option({
+                    'resizeDuration': 200,
+                    'wrapAround': true
+                })
             });
         </script>
     @endpush

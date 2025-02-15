@@ -9,6 +9,7 @@ use App\Models\GeneralSetting;
 use App\Models\ServiceType;
 use App\Models\State;
 use App\Models\Testimonial;
+use App\Models\User;
 use App\Models\UserAd;
 use App\Models\UserAdView;
 use App\Models\UserStore;
@@ -165,6 +166,12 @@ class StoreController extends BaseController
     {
         $web = GeneralSetting::find(1);
 
+        //check if the user has a country session and if not, return them back to the main page to choose a country
+        if (!$request->session()->has('country')){
+            return to_route('mobile.marketplace.index');
+        }
+        $country = $request->session()->get('country');
+
         $store = UserStore::where([
             'reference' => $id,'status' => 1
         ])->firstOrFail();
@@ -197,6 +204,12 @@ class StoreController extends BaseController
             ]);
         }
 
+        $user = User::where('id',$store->user)->first();
+
+        $ads = UserAd::where([
+            'status'=>1,'user'=>$user->id
+        ])->with('service')->orderBy('id','desc')->paginate(30);
+
         return view('mobile.ads.store_detail')->with([
             'web'           =>$web,
             'siteName'      =>$web->name,
@@ -205,7 +218,9 @@ class StoreController extends BaseController
             'catalogs'      =>UserStoreCatalogCategory::where([
                 'status' => 1,'store' => $store->id
             ])->get(),
-            'store'         =>$store
+            'store'         =>$store,
+            'ads'           =>$ads,
+            'country'       =>Country::where('iso2',$country)->first(),
         ]);
     }
 

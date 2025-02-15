@@ -396,6 +396,7 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //STORE FOLDER ROUTE
             Route::get('store/index',[MerchantStoreController::class,'landingPage'])->name('store.index');
             Route::get('store/initialize',[MerchantStoreController::class,'initializeStore'])->name('store.initialize');
+            Route::get('store/edit',[MerchantStoreController::class,'editStore'])->name('store.edit');
             //Store KYB
             Route::get('store/kyb',[StoreKYBController::class,'landingPage'])->name('store.verify');
 
