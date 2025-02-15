@@ -41,7 +41,7 @@ class PersonalVerification extends Component
     public $state;
     #[Validate('required|string|max:200')]
     public $address;
-    #[Validate('required|image|max:2048')]
+    #[Validate('required|image|max:6000')]
     public $addressProof;
 
 
