@@ -86,19 +86,20 @@
             </div>
         </div>
 
-        <!-- Store Newsletters -->
+        <!-- Store Settings -->
         <div class="col-12">
             <div class="card dashboard-card h-100">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <i class="fa fa-envelope icon-small text-primary"></i>
-                        <h5 class="mt-2">Store Newsletters</h5>
-                        <p>Keep your customers updated with newsletters.</p>
+                        <i class="fa fa-cog icon-small text-primary"></i>
+                        <h5 class="mt-2">Store Settings</h5>
+                        <p>Manage your store settings</p>
                     </div>
-                    <a href="{{ route('user.stores.newsletter') }}" class="btn btn-dark btn-auto">Manage Newsletters</a>
+                    <a href="{{ route('user.stores.edit.settings') }}" class="btn btn-dark btn-auto">Manage Settings</a>
                 </div>
             </div>
         </div>
+
 
         <!-- Store Verification -->
         <div class="col-12">
@@ -114,6 +115,20 @@
             </div>
         </div>
 
+
+        <!-- Store Newsletters -->
+        <div class="col-12">
+            <div class="card dashboard-card h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fa fa-envelope icon-small text-primary"></i>
+                        <h5 class="mt-2">Store Newsletters</h5>
+                        <p>Keep your customers updated with newsletters.</p>
+                    </div>
+                    <button class="btn btn-dark btn-auto" disabled>Coming soon</button>
+                </div>
+            </div>
+        </div>
         <!-- Store Team -->
         <div class="col-12">
             <div class="card dashboard-card h-100">
