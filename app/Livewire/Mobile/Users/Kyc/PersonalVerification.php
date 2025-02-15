@@ -31,9 +31,9 @@ class PersonalVerification extends Component
     public $docType;
     #[Validate('required|string|max:100')]
     public $idNumber;
-    #[Validate('required|image|max:2048')]
+    #[Validate('required|image|max:6000')]
     public $frontImage;
-    #[Validate('nullable|required_if:hasBack,true|image|max:2048')]
+    #[Validate('nullable|required_if:hasBack,true|image|max:6000')]
     public $backImage;
     #[Validate('required|exists:countries,iso3')]
     public $country;
