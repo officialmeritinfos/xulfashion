@@ -14,7 +14,7 @@
 
                 <div class="col-lg-6 col-sm-6">
                     <div class="add-new-orders">
-                        <button data-bs-toggle="modal" data-bs-target="#newCategory" class="new-orders">
+                        <button data-bs-toggle="modal" data-bs-target="#newCategory" class="new-orders back">
                             Add New Category
                             <i class="ri-add-circle-line"></i>
                         </button>

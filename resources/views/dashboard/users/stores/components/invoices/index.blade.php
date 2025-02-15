@@ -14,7 +14,7 @@
 
                 <div class="col-lg-6 col-sm-6">
                     <div class="add-new-orders">
-                        <a href="#newInvoice" data-bs-toggle="modal" class="new-orders">
+                        <a href="#newInvoice" data-bs-toggle="modal" class="new-orders back">
                             Add New Invoice
                             <i class="ri-add-circle-line"></i>
                         </a>
