@@ -651,6 +651,18 @@ if (!function_exists('adsInService')) {
         return \App\Models\UserAd::where('serviceType',$id)->count();
     }
 }
+if (!function_exists('activeAdsInService')) {
+    /**
+     * Get the number of ads within a specific service that are active
+     *
+     * @param int $id The ID of the service type.
+     * @return int The count of ads within the service.
+     */
+    function activeAdsInService($id)
+    {
+        return \App\Models\UserAd::where('serviceType',$id)->where('status',1)->count();
+    }
+}
 if (!function_exists('shortenText')) {
     /**
      * Shorten a given text to a specified word length.

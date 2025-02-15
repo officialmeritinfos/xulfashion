@@ -419,7 +419,40 @@ class MarketplaceController extends BaseController
             'iso3'          =>$request->session()->get('iso3'),
             'states'        =>State::where('country_code',$country)->orderBy('name','asc')->get(),
             'user'          =>Auth::user(),
-            'categories'    =>ServiceType::where('status',1)->get(),
+        ]);
+    }
+
+    //list the categories in an industry
+    public function categoriesList(Request $request)
+    {
+        $web = GeneralSetting::find(1);
+        //check if the user has a country session and if not, return them back to the main page to choose a country
+        if (!$request->session()->has('country')){
+            return to_route('mobile.marketplace.index');
+        }
+        $category = $request->get('category');
+        if (!$category){
+            return back()->with('error','Category is required');
+        }
+        if ($category!='fashion' && $category!='beauty'){
+            return back()->with('error','Unsupported category.');
+        }
+
+        $country = $request->session()->get('country');
+
+        $country = Country::where('iso2',$country)->first();
+
+        return view('mobile.ads.categories_list')->with([
+            'web'           =>$web,
+            'siteName'      =>$web->name,
+            'pageName'      =>"Categories in ".ucfirst($category),
+            'serviceTypes'  =>ServiceType::where('status',1)->get(),
+            'country'       =>$country,
+            'hasCountry'    =>$hasCountry=1,
+            'iso3'          =>$request->session()->get('iso3'),
+            'states'        =>State::where('country_code',$country)->orderBy('name','asc')->get(),
+            'user'          =>Auth::user(),
+            'categories'    =>ServiceType::where('status',1)->where('mainCategory',$category) ->get(),
         ]);
     }
 }

@@ -240,7 +240,7 @@
                 @endcan
 
                 @can('update User')
-                @if ($user->completedProfile==1)
+
                 <div class="card shadow mb-3">
                     <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
                         <div class="flex-grow-1 mb-3 mb-md-0">
@@ -258,7 +258,6 @@
                         </a>
                     </div>
                 </div>
-                @endif
                 @endcan
 
                 @can(['create UserVerification','update UserVerification'])

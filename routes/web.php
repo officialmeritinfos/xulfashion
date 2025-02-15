@@ -90,6 +90,8 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             ->name('app.base');//splash screen
         Route::get('/ads/categories',[MarketplaceController::class,'categories'])
             ->name('marketplace.categories');
+        Route::get('/ads/categories/list',[MarketplaceController::class,'categoriesList'])
+            ->name('marketplace.categories.list');
 
         Route::get('/ads/{country?}',[MarketplaceController::class,'landingPage'])
             ->name('marketplace.index');

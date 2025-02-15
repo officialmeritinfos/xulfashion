@@ -85,8 +85,6 @@
         <p>{!! nl2br(e($messageContent)) !!}</p>
 
         <p>If you have any questions, feel free to <a href="mailto:{{ $web->supportEmail }}">contact our support team</a>.</p>
-
-        <p>Best Regards,<br><strong>The {{ $web->name }} Team</strong></p>
     </div>
 
     <!-- Footer -->
