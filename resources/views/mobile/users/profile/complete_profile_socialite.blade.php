@@ -67,9 +67,10 @@
                         <option value="3" {{($user->merchantType=='3')?'selected':''}}>Manufacturer</option>
                         <option value="4" {{($user->merchantType=='4')?'selected':''}}>Model</option>
                         <option value="5" {{($user->merchantType=='5')?'selected':''}}>Fashion School</option>
-                        <option value="5" {{($user->merchantType=='6')?'selected':''}}>Beauty Specialist</option>
-                        <option value="5" {{($user->merchantType=='7')?'selected':''}}>Cosmetics Brand</option>
-                        <option value="5" {{($user->merchantType=='8')?'selected':''}}>Beauty School</option>
+                        <option value="6" {{($user->merchantType=='6')?'selected':''}}>Beauty Specialist</option>
+                        <option value="7" {{($user->merchantType=='7')?'selected':''}}>Cosmetics Brand</option>
+                        <option value="8" {{($user->merchantType=='8')?'selected':''}}>Beauty School</option>
+                        <option value="9" {{($user->merchantType=='9')?'selected':''}}>Event Organizer</option>
                     </select>
                     <i class="iconsax icons" data-icon="user-2"></i>
                 </div>

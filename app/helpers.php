@@ -495,6 +495,9 @@ if (!function_exists('merchantType')){
             case 8:
                 $text = 'Beauty School';
                 break;
+            case 9:
+                $text = 'Event Organizer';
+                break;
             default:
                 $text='Unknown';
                 break;
