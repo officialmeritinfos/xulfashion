@@ -61,9 +61,9 @@ class StoreController extends BaseController
 
         $web = GeneralSetting::find(1);
 
-        $pageName = 'Fashion stores';
+        $pageName = 'Beauty & Fashion Businesses';
         if ($hasCountry==1){
-            $pageName = 'Fashion Stores in '.$country->name;
+            $pageName = 'Beauty & Fashion Businesses in '.$country->name;
         }
 
         $stores = UserStore::where('country',$country->iso2)->where('status',1)->latest()->paginate(30);

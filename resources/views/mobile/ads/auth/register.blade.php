@@ -6,7 +6,7 @@
                 padding: 5px 10px;
                 border-radius: 4px;
                 margin-top: 5px;
-                margin-bottom: 2rem;
+                margin-bottom: 1rem;
             }
 
             .medium-password {
@@ -33,7 +33,7 @@
                 padding: 5px 10px;
                 border-radius: 4px;
                 margin-top: 5px;
-                margin-bottom: 2rem;
+                margin-bottom: 1rem;
             }
 
             .medium-passwords {
@@ -73,7 +73,7 @@
         <div class="custom-container row">
             <div class="form-group col-md-12">
                 <label for="inputusername" class="form-label">Country</label>
-                <div class="form-input mb-4">
+                <div class="form-input mb-2">
                     <select type="text" class="form-control" id="inputusername"  name="country">
                         <option value="">Select your country</option>
                         @foreach($countries as $country)
@@ -85,48 +85,47 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="inputusername" class="form-label">Full Name</label>
-                <div class="form-input mb-4">
+                <div class="form-input mb-2">
                     <input type="text" class="form-control" id="inputusername" placeholder="Enter Your Name"  name="name"/>
                     <i class="iconsax icons" data-icon="user-1"></i>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <label for="inputemail" class="form-label">Username</label>
-                <div class="form-input mb-4">
+                <div class="form-input mb-2">
                     <input type="text" class="form-control" id="inputemail" placeholder="Enter Your username"  name="username" />
                     <i class="iconsax icons" data-icon="user-2"></i>
                 </div>
             </div>
             <div class="form-group col-md-12">
                 <label for="inputemail" class="form-label">Email id</label>
-                <div class="form-input mb-4">
+                <div class="form-input mb-2">
                     <input type="email" class="form-control" id="inputemail" placeholder="Enter Your Email"  name="email"/>
                     <i class="iconsax icons" data-icon="mail"></i>
                 </div>
             </div>
             <div class="form-group col-md-12">
                 <label for="inputemail" class="form-label">Phone Number</label>
-                <div class="form-input mb-4">
+                <div class="form-input mb-2">
                     <input type="tel" class="form-control" id="inputemail" placeholder="Enter Your Contact Number"  name="phoneNumber"/>
                     <i class="iconsax icons" data-icon="mail"></i>
                 </div>
             </div>
             <div class="form-group col-md-6 col-12">
                 <label for="inputPassword" class="form-label">Password</label>
-                <div class="form-input input-group">
+                <div class="form-input ">
                     <input type="password" class="form-control" id="password" onkeyup="checkPasswordStrength();"
                            placeholder="Enter Your Password"  name="password"/>
-                    <span class="input-group-text" id="toggle-password-visibility"><i class="bx bx-show"></i></span>
+                    <i class="bx bx-show toggle-password-visibility"></i>
                 </div>
                 <div id="password-strength-status"></div>
             </div>
             <div class="form-group col-md-6 col-12">
-                <label for="inputPassword" class="form-label">Confirm Password</label>
-                <div class="form-input input-group">
+                <label for="passwords" class="form-label">Confirm Password</label>
+                <div class="form-input">
                     <input type="password" class="form-control" id="passwords" placeholder="Enter Your Password"
                            onkeyup="checkPasswordStrengths();"
                            name="password_confirmation"/>
-                    <span class="input-group-text" id="toggle-password-visibility"><i class="bx bx-show"></i></span>
                 </div>
                 <div id="password-strength-statuss"></div>
             </div>
@@ -234,29 +233,21 @@
             }
         }
         $(document).ready(function () {
-            $('#toggle-password-visibility').click(function () {
+            $('.toggle-password-visibility').click(function () {
                 let passwordInput = $('#password');
+                let passwordInput2 = $('#passwords');
                 let icon = $(this).find('i');
                 if (passwordInput.attr('type') === 'password') {
                     passwordInput.attr('type', 'text');
+                    passwordInput2.attr('type', 'text');
                     icon.removeClass('bx-show').addClass('bx-hide');
                 } else {
                     passwordInput.attr('type', 'password');
+                    passwordInput2.attr('type', 'password');
                     icon.removeClass('bx-hide').addClass('bx-show');
                 }
             });
 
-            $('#toggle-passwords-visibility').click(function () {
-                let passwordInput = $('#passwords');
-                let icon = $(this).find('i');
-                if (passwordInput.attr('type') === 'password') {
-                    passwordInput.attr('type', 'text');
-                    icon.removeClass('bx-show').addClass('bx-hide');
-                } else {
-                    passwordInput.attr('type', 'password');
-                    icon.removeClass('bx-hide').addClass('bx-show');
-                }
-            });
         });
     </script>
 @endpush

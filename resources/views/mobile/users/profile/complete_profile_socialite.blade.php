@@ -62,11 +62,14 @@
                 <div class="form-input mb-4 position-relative">
                     <select class="form-control form-control-lg" id="merchantType" name="merchantType">
                         <option value="">Select an Option</option>
-                        <option value="1" {{($user->merchantType=='1')?'selected':''}}>Retailer</option>
+                        <option value="1" {{($user->merchantType=='1')?'selected':''}}>Fashion Retailer</option>
                         <option value="2" {{($user->merchantType=='2')?'selected':''}}>Fashion Designer</option>
                         <option value="3" {{($user->merchantType=='3')?'selected':''}}>Manufacturer</option>
                         <option value="4" {{($user->merchantType=='4')?'selected':''}}>Model</option>
                         <option value="5" {{($user->merchantType=='5')?'selected':''}}>Fashion School</option>
+                        <option value="5" {{($user->merchantType=='6')?'selected':''}}>Beauty Specialist</option>
+                        <option value="5" {{($user->merchantType=='7')?'selected':''}}>Cosmetics Brand</option>
+                        <option value="5" {{($user->merchantType=='8')?'selected':''}}>Beauty School</option>
                     </select>
                     <i class="iconsax icons" data-icon="user-2"></i>
                 </div>

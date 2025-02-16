@@ -35,6 +35,7 @@ class CreateUserAdsTable extends Migration
             $table->integer('openToNegotiation')->default(2);
             $table->string('featuredImage', 200)->nullable();
             $table->integer('status')->default(2);
+            $table->boolean('shared')->default(0);
             $table->float('numberOfViews')->default(0);
             $table->boolean('receivedBonus')->default(0);
             $table->timestamps();
