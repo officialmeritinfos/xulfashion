@@ -144,8 +144,8 @@
                             <i class="iconsax icon" data-icon="teacher"></i>
                         </div>
                         <div class="profile-details">
-                            <h4>Fashion School</h4>
-                            <h5>Create and manage enrollments into your fashion school.</h5>
+                            <h4>School</h4>
+                            <h5>Host admissions, classes etc in your business</h5>
                         </div>
                     </a>
                 </li>
