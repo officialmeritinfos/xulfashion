@@ -145,7 +145,7 @@
                         </div>
                         <div class="profile-details">
                             <h4>School</h4>
-                            <h5>Host admissions, classes etc in your business</h5>
+                            <h5>Host admissions, classes, courses etc in your business</h5>
                         </div>
                     </a>
                 </li>
