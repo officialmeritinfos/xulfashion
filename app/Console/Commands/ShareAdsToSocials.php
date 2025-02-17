@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\ShareAdJob;
 use App\Models\UserAd;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ShareAdsToSocials extends Command
@@ -30,7 +31,11 @@ class ShareAdsToSocials extends Command
         $ads = UserAd::where([
             'status' => 1,
             'shared' => false
-        ])->latest()->limit(5)->get();
+        ])
+            ->where('created_at', '>=', Carbon::now()->subWeek())
+            ->latest()
+            ->limit(10)
+            ->get();
 
         if ($ads->isEmpty()){
             return;
@@ -42,8 +47,14 @@ class ShareAdsToSocials extends Command
                 'slug' => textToSlug($ad->title),
                 'id' => $ad->reference
             ]);
-            $message = "{$ad->title}\n{$ad->description}\nView here: {$adUrl}";
-            $imageUrl = $ad->featuredImage; // Use direct image link
+
+            $message = "**{$ad->title}**\n\n";
+            $message .= "{$ad->description}\n\n";
+            $message .= "📌 **Posted By:** {$ad->companyName}\n\n";
+            $message .= "🔗 View here: {$adUrl} (Copy & Paste)";
+
+            // Use direct image link
+            $imageUrl = $ad->featuredImage;
 
             // Generate hashtags directly from title & description
             $hashtags = $this->generateHashtags($ad->title, $ad->description);
