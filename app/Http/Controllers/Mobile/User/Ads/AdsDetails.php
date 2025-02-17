@@ -33,7 +33,10 @@ class AdsDetails extends BaseController
             ]);
         }
 
-        $adUrl = route('mobile.user.ads.detail',['id'=>$ad->reference]);
+        $adUrl = route('mobile.marketplace.detail', [
+            'slug' => textToSlug($ad->title),
+            'id' => $ad->reference
+        ]);
 
         // Generate raw share links
         $shareLinks = \Share::page($adUrl,"I just posted {$ad->title} on {$web->name}")
