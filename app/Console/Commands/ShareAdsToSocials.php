@@ -30,7 +30,7 @@ class ShareAdsToSocials extends Command
         $ads = UserAd::where([
             'status' => 1,
             'shared' => false
-        ])->latest()->limit(1)->get();
+        ])->latest()->limit(5)->get();
 
         if ($ads->isEmpty()){
             return;
