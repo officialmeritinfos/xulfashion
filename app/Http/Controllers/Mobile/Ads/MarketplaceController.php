@@ -216,7 +216,11 @@ class MarketplaceController extends BaseController
             'totalReviews'  => $totalRating,
             'ratingsCount'  => $ratingsCount,
             'reviews'       => $reviews,
-            'shareLinks'    => $shareLinks
+            'shareLinks'    => $shareLinks,
+            'title'         =>$ads->title,
+            'author'        =>$ads->companyName??$merchant->displayName,
+            'description'   => $ads->description,
+            'image'         =>$ads->featuredImage
         ]);
     }
     //ad merchant
@@ -268,7 +272,7 @@ class MarketplaceController extends BaseController
             ->whatsapp()
             ->getRawLinks();
 
-
+        $store = UserStore::where('user',$user->id)->first();
         return view('mobile.ads.merchant_detail')->with([
             'web'           =>$web,
             'siteName'      =>$web->name,
@@ -278,7 +282,7 @@ class MarketplaceController extends BaseController
             'hasCountry'    =>$hasCountry=1,
             'ads'           =>$ads,
             'iso3'          =>$request->session()->get('iso3'),
-            'store'         =>UserStore::where('user',$user->id)->first(),
+            'store'         =>$store,
             'merchant'      =>$user,
             'user'          =>Auth::user(),
             'averageRating' => $averageRating,
@@ -286,7 +290,11 @@ class MarketplaceController extends BaseController
             'totalReviews'  => $totalRating,
             'ratingsCount'  => $ratingsCount,
             'reviews'       => $reviews,
-            'shareLinks'    => $shareLinks
+            'shareLinks'    => $shareLinks,
+            'title'         =>$user->displayName??$user->name,
+            'author'        =>$user->displayName??$user->name,
+            'description'   => "Products & Services offered by ".$user->displayName??$user->name,
+            'image'         => $store->logo??$user->photo
         ]);
     }
     //ad by state

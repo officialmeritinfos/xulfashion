@@ -6,18 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <meta name="description" content="{{$siteName}}" />
+    <meta name="description" content="{{ $description??$siteName }}" />
     <meta name="keywords" content="{{$siteName}}" />
-    <meta name="author" content="{{$siteName}}" />
-    <link rel="manifest" href="{{asset($web->favicon)}}" />
-    <link rel="icon" href="{{asset($web->favicon)}}" type="image/x-icon" />
-    <title>{{$pageName}} || {{$siteName}}</title>
-    <link rel="apple-touch-icon" href="{{asset($web->favicon)}}" />
+    <meta name="author" content="{{ $author??$siteName }}" />
+    <link rel="manifest" href="{{ $image??asset($web->favicon) }}" />
+    <link rel="icon" href="{{ $image??asset($web->favicon) }}" type="image/x-icon" />
+    <title>{{ $title??$pageName }} on {{ $siteName }}</title>
+    <link rel="apple-touch-icon" href="{{ $image??asset($web->favicon) }}" />
     <meta name="theme-color" content="#122636" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="fuzzy" />
-    <meta name="msapplication-TileImage" content="{{asset($web->favicon)}}" />
+    <meta name="apple-mobile-web-app-title" content=" {{ $title??$pageName }} " />
+    <meta name="msapplication-TileImage" content="{{ $image??asset($web->favicon) }}" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     @include('genericCss')
@@ -52,7 +52,7 @@
             <a onclick="history.back()" class="back">
                 <i class="iconsax back-btn" data-icon="arrow-left"></i>
             </a>
-            <h3>{{$pageName}}</h3>
+            <h3>{{ $title??$pageName }}</h3>
         </div>
     </div>
 </header>

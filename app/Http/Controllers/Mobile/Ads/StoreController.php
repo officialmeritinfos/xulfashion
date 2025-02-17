@@ -230,7 +230,11 @@ class StoreController extends BaseController
             'store'         =>$store,
             'ads'           =>$ads,
             'country'       =>Country::where('iso2',$country)->first(),
-            'shareLinks'    =>$shareLinks
+            'shareLinks'    =>$shareLinks,
+            'title'         =>$store->name,
+            'author'        =>$user->displayName??$user->name,
+            'description'   =>$store->name." Catalogues,and listings on ".$web->name,
+            'image'         => $store->logo
         ]);
     }
 
