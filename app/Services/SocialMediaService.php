@@ -43,6 +43,13 @@ class SocialMediaService
             Log::error("Error posting to $platform: " . $e->getMessage());
         }
     }
+    private function postToFacebook($message, $imageUrl, $hashtags = []){
+
+        // Append hashtags to the message
+        $hashtagString = !empty($hashtags) ? "\n\n" . implode(' ', $hashtags) : '';
+        $fullCaption = $message . $hashtagString;
+
+    }
 
     private function postToInstagram($message, $imageUrl, $hashtags = [])
     {

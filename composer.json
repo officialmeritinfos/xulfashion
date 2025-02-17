@@ -13,6 +13,7 @@
         "cloudinary-labs/cloudinary-laravel": "^2.0",
         "google/cloud-storage": "^1.32",
         "guzzlehttp/guzzle": "^7.2",
+        "hamzahassanm/laravel-social-auto-post": "^1.0",
         "intervention/image": "^3.11",
         "jantinnerezo/livewire-alert": "^3.0",
         "jenssegers/agent": "^2.6",

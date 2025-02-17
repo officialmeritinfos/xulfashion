@@ -210,6 +210,15 @@ class StoreController extends BaseController
             'status'=>1,'user'=>$user->id
         ])->with('service')->orderBy('id','desc')->paginate(30);
 
+        $storeUrl = route('mobile.marketplace.store.detail',['id'=>$store->reference]);
+
+        // Generate raw share links
+        $shareLinks = \Share::page($storeUrl,"{$store->name} on {$web->name} ")
+            ->facebook()
+            ->twitter()
+            ->whatsapp()
+            ->getRawLinks();
+
         return view('mobile.ads.store_detail')->with([
             'web'           =>$web,
             'siteName'      =>$web->name,
@@ -221,6 +230,7 @@ class StoreController extends BaseController
             'store'         =>$store,
             'ads'           =>$ads,
             'country'       =>Country::where('iso2',$country)->first(),
+            'shareLinks'    =>$shareLinks
         ]);
     }
 

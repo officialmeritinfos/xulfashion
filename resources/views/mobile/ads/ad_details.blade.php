@@ -65,6 +65,91 @@
                 color: #fff
             }
         </style>
+        <style>
+            /* Floating Share Button - Improved Rectangular Design */
+            .floating-share-button {
+                position: fixed;
+                top: 50%; /* Lower Position - Middle of the Page */
+                left: 20px; /* Positioned to the Left */
+                z-index: 999;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                transform: translateY(-50%);
+            }
+
+            /* Main Share Button - Rectangular with New Color */
+            .share-main-btn {
+                background: #ff6600; /* Changed to Orange */
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 5px; /* Rectangular Shape */
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                transition: background 0.3s, transform 0.2s;
+            }
+
+            .share-main-btn:hover {
+                background: #cc5200; /* Darker Orange on Hover */
+                transform: scale(1.05);
+            }
+
+            /* Share Options - Hidden Initially */
+            .share-options {
+                display: none;
+                position: absolute;
+                top: 50px;
+                left: 0;
+                flex-direction: column;
+                gap: 10px;
+                background: white;
+                border-radius: 10px;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            }
+
+            .share-options.active {
+                display: flex;
+            }
+
+            /* Individual Social Share Buttons */
+            .share-options a {
+                width: 45px;
+                height: 45px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                color: white;
+                border-radius: 50%;
+                text-decoration: none;
+                transition: transform 0.2s;
+            }
+
+            /* Facebook */
+            .fb { background: #1877f2; }
+            .fb:hover { background: #0d5bbf; }
+
+            /* Twitter */
+            .tw { background: #1da1f2; }
+            .tw:hover { background: #0c85d0; }
+
+            /* WhatsApp */
+            .wa { background: #25d366; }
+            .wa:hover { background: #1ebc57; }
+
+            /* Instagram */
+            .ig { background: #e4405f; }
+            .ig:hover { background: #cc3751; }
+
+            .share-options a:hover {
+                transform: scale(1.1);
+            }
+
+        </style>
     @endpush
 
     <!-- product-image section start -->
@@ -159,6 +244,24 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!-- Floating Share Button -->
+        <div class="floating-share-button">
+            <button onclick="toggleShareOptions()" class="share-main-btn">
+                <i class="fas fa-share-alt"></i> Share
+            </button>
+
+            <div class="share-options" id="shareOptions">
+                @if(!empty($shareLinks['facebook']))
+                    <a href="{{ $shareLinks['facebook'] }}" target="_blank" class="back fb"><i class="fab fa-facebook-f"></i></a>
+                @endif
+                @if(!empty($shareLinks['twitter']))
+                    <a href="{{ $shareLinks['twitter'] }}" target="_blank" class="back tw"><i class="fab fa-twitter"></i></a>
+                @endif
+                @if(!empty($shareLinks['whatsapp']))
+                    <a href="{{ $shareLinks['whatsapp'] }}" target="_blank" class="back wa"><i class="fab fa-whatsapp"></i></a>
+                @endif
             </div>
         </div>
     </section>
@@ -494,5 +597,12 @@
                 })
             });
         </script>
+        <!-- JavaScript to Toggle Share Options -->
+        <script>
+            function toggleShareOptions() {
+                document.getElementById("shareOptions").classList.toggle("active");
+            }
+        </script>
+
     @endpush
 @endsection

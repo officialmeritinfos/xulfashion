@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05b49731d2d561f1bdfeb6cb5b8e5837",
+    "content-hash": "0f1972945932532dc57f7bb45c363948",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -2599,6 +2599,57 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
+        },
+        {
+            "name": "hamzahassanm/laravel-social-auto-post",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HamzaHassanM/laravel-social-auto-post.git",
+                "reference": "a81edcd33040939da8952eec77aec24e573d128e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HamzaHassanM/laravel-social-auto-post/zipball/a81edcd33040939da8952eec77aec24e573d128e",
+                "reference": "a81edcd33040939da8952eec77aec24e573d128e",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FaceBook": "HamzaHassanM\\LaravelSocialAutoPost\\Facades\\FaceBook",
+                        "Telegram": "HamzaHassanM\\LaravelSocialAutoPost\\Facades\\Telegram"
+                    },
+                    "providers": [
+                        "HamzaHassanM\\LaravelSocialAutoPost\\SocialShareServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "HamzaHassanM\\LaravelSocialAutoPost\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "HamzaHassanM",
+                    "email": "hamza.hassan.dev@gmail.com"
+                }
+            ],
+            "description": "Laravel social media auto post package",
+            "support": {
+                "issues": "https://github.com/HamzaHassanM/laravel-social-auto-post/issues",
+                "source": "https://github.com/HamzaHassanM/laravel-social-auto-post/tree/v1.0.0"
+            },
+            "time": "2024-09-04T21:06:48+00:00"
         },
         {
             "name": "intervention/gif",

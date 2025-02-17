@@ -178,7 +178,7 @@ class AdsIndex extends BaseController
                 DB::commit();
 
                 return $this->sendResponse([
-                    'redirectTo'=>route('mobile.user.ads.index'),
+                    'redirectTo'=>route('mobile.user.ads.detail',['id'=>$ad->reference]),
                     'redirects'=>true
                 ],'Ad created successful. Redirecting soon ...');
             }

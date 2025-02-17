@@ -94,7 +94,11 @@ class MarketplaceController extends BaseController
         ]);
     }
     //ad details
-    public function adDetails(Request $request,$slug, $id)
+
+    /**
+     * @throws \Throwable
+     */
+    public function adDetails(Request $request, $slug, $id)
     {
         $web = GeneralSetting::find(1);
 
@@ -180,6 +184,19 @@ class MarketplaceController extends BaseController
             ]);
         }
 
+        $adUrl = route('mobile.marketplace.detail', [
+            'slug' => textToSlug($ads->title),
+            'id' => $ads->reference
+        ]);
+
+        // Generate raw share links
+        $shareLinks = \Share::page($adUrl,"New listing on {$web->name}: {$ads->title}")
+            ->facebook()
+            ->twitter()
+            ->whatsapp()
+            ->getRawLinks();
+
+
         return view('mobile.ads.ad_details')->with([
             'web'           => $web,
             'siteName'      => $web->name,
@@ -199,6 +216,7 @@ class MarketplaceController extends BaseController
             'totalReviews'  => $totalRating,
             'ratingsCount'  => $ratingsCount,
             'reviews'       => $reviews,
+            'shareLinks'    => $shareLinks
         ]);
     }
     //ad merchant
@@ -241,6 +259,15 @@ class MarketplaceController extends BaseController
             ]);
         }
 
+        $merchantUrl = route('mobile.marketplace.merchant',['id'=>$user->reference]);
+
+        // Generate raw share links
+        $shareLinks = \Share::page($merchantUrl,"{$user->displayName} on {$web->name} ")
+            ->facebook()
+            ->twitter()
+            ->whatsapp()
+            ->getRawLinks();
+
 
         return view('mobile.ads.merchant_detail')->with([
             'web'           =>$web,
@@ -259,6 +286,7 @@ class MarketplaceController extends BaseController
             'totalReviews'  => $totalRating,
             'ratingsCount'  => $ratingsCount,
             'reviews'       => $reviews,
+            'shareLinks'    => $shareLinks
         ]);
     }
     //ad by state

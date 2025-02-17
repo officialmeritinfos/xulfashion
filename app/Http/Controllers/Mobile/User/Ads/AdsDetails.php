@@ -33,6 +33,15 @@ class AdsDetails extends BaseController
             ]);
         }
 
+        $adUrl = route('mobile.user.ads.detail',['id'=>$ad->reference]);
+
+        // Generate raw share links
+        $shareLinks = \Share::page($adUrl,"I just posted {$ad->title} on {$web->name}")
+            ->facebook()
+            ->twitter()
+            ->whatsapp()
+            ->getRawLinks();
+
         return view('mobile.users.ads.details')->with([
             'pageName'  =>'Ad: '.$ad->title,
             'web'       =>$web,
@@ -48,6 +57,7 @@ class AdsDetails extends BaseController
             'totalRatings'=>UserAdReview::where([
                 'merchant'=>$user->id,'status'=>1
             ])->count(),
+            'shareLinks'    =>$shareLinks
         ]);
     }
     //delete photo
