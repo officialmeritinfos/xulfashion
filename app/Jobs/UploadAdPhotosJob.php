@@ -39,7 +39,6 @@ class UploadAdPhotosJob implements ShouldQueue
 
         foreach ($this->photoPaths as $index => $path) {
             try {
-                Log::info("Processing photo {$index} for ad ID: {$this->adId}");
 
                 // Ensure the file exists before uploading
                 if (!Storage::exists($path)) {
@@ -80,7 +79,6 @@ class UploadAdPhotosJob implements ShouldQueue
         if (!empty($uploadedPhotos)) {
             try {
                 UserAdPhoto::insert($uploadedPhotos);
-                Log::info("All uploaded photos saved successfully for ad ID: {$this->adId}");
             } catch (\Exception $e) {
                 Log::error("Failed to save uploaded photos in DB for ad ID: {$this->adId} - " . $e->getMessage());
             }

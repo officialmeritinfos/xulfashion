@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Models\UserNotification;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class RunScheduledNotifications extends Command
 {
@@ -29,12 +30,29 @@ class RunScheduledNotifications extends Command
     {
         //fetch notifications
         $notifications = UserNotification::where('status','!=',1)->get();
-        if ($notifications->count()>0){
+        if ($notifications->count() > 0) {
             foreach ($notifications as $notification) {
-                $user = User::where('id',$notification->user)->first();
-                if (!empty($user)){
-                    sendPushNotification($user,$notification->title,$notification->content);
+                try {
+                    $user = User::find($notification->user);
+
+                    if (!$user) {
+                        throw new \Exception("User not found for Notification ID: {$notification->id}");
+                    }
+
+                    try {
+                        // Attempt to send push notification
+                        sendPushNotification($user, $notification->title, $notification->content);
+                    } catch (\Exception $pushError) {
+                        // Log push notification failure but continue
+                        Log::error("Error sending push notification for Notification ID {$notification->id}: " . $pushError->getMessage());
+                    }
+
+                    // Mark notification as sent
                     $notification->update(['status' => 1]);
+
+                } catch (\Exception $e) {
+                    // Log error and continue with the next notification
+                    Log::error("Error sending notification ID {$notification->id}: " . $e->getMessage());
                 }
             }
         }

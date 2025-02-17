@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:send-event-purchase-reminder')->everyTenMinutes();
         $schedule->command('app:settle-event-payments-to-merchant-balance')->everyMinute();
         $schedule->command('app:process-n-g-n-withdrawals')->everyMinute();
-        $schedule->command('app:share-ads-to-socials')->everyMinute()->withoutOverlapping();
+        $schedule->command('app:share-ads-to-socials')->everySixHours()->withoutOverlapping();
         $schedule->command('queue:retry all')->everyMinute();
         $schedule->command('queue:work --stop-when-empty')->everyMinute();
     }

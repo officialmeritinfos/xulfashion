@@ -60,7 +60,6 @@ class ProcessNGNWithdrawals extends Command
             ])->where('manualUpdate', '!=', 1)->get();
 
             if ($withdrawals->isEmpty()) {
-                Log::info('No pending NGN withdrawals to process.');
                 DB::rollBack();
                 return;
             }

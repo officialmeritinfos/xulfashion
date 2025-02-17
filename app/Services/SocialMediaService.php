@@ -13,7 +13,7 @@ use Spatie\Image\Image;
 
 class SocialMediaService
 {
-    protected array $platforms = ['instagram', 'twitter'];
+    protected array $platforms = ['instagram'];
 
     public function postToAllPlatforms($message, $imageUrl, $hashtags = [])
     {
@@ -41,96 +41,6 @@ class SocialMediaService
             }
         } catch (\Exception $e) {
             Log::error("Error posting to $platform: " . $e->getMessage());
-        }
-    }
-
-    private function postToFacebook($message, $imageUrl, $hashtags)
-    {
-
-
-        $pageId = env('FACEBOOK_PAGE_ID');
-        $accessToken = env('FACEBOOK_PAGE_ACCESS_TOKEN');
-
-        $fullMessage = $message . "\n\n" . implode(' ', $hashtags); // Append hashtags
-
-
-        $response = Http::post("https://graph.facebook.com/v22.0/{$pageId}/photos", [
-            'caption' => $fullMessage,
-            'url' => $imageUrl,
-            'access_token' => $accessToken,
-        ]);
-
-        if ($response->failed()) {
-            throw new \Exception("Facebook API Error: " . $response->body());
-        }
-
-        Log::info("Ad successfully posted to Facebook.");
-    }
-
-    private function postToTwitter($message, $imageUrl, $hashtags)
-    {
-        $twitter = new TwitterOAuth(
-            env('TWITTER_CONSUMER_KEY'),
-            env('TWITTER_CONSUMER_SECRET'),
-            env('TWITTER_ACCESS_TOKEN'),
-            env('TWITTER_ACCESS_SECRET')
-        );
-
-        // Append hashtags to the message
-        $fullMessage = $message . "\n\n" . implode(' ', $hashtags);
-
-        // Step 1: Ensure the 'public/twitter' folder exists
-        $folderPath = public_path('twitter');
-        if (!file_exists($folderPath)) {
-            mkdir($folderPath, 0777, true);
-        }
-
-        // Step 2: Download the image and save it in 'public/twitter/'
-        $filename = uniqid('twitter_') . '.jpg';
-        $imagePath = $folderPath . '/' . $filename;
-
-        try {
-            $response = Http::get($imageUrl);
-            if ($response->successful()) {
-                file_put_contents($imagePath, $response->body());
-            } else {
-                throw new \Exception("Failed to download image from URL.");
-            }
-        } catch (\Exception $e) {
-            Log::error("Error downloading image for Twitter: " . $e->getMessage());
-            return;
-        }
-
-        // Step 3: Validate the downloaded image
-        if (!file_exists($imagePath) || filesize($imagePath) == 0) {
-            Log::error("Downloaded image is invalid or empty: " . $imagePath);
-            return;
-        }
-
-        // Step 4: Upload the image to Twitter
-        $media = $twitter->upload('media/upload', ['media' => $imagePath]);
-
-        if (!isset($media->media_id_string)) {
-            Log::error("Error uploading image to Twitter: " . json_encode($media));
-            return;
-        }
-
-        // Step 5: Post the tweet with the uploaded media
-        $tweet = $twitter->post('statuses/update', [
-            'status' => $fullMessage,
-            'media_ids' => $media->media_id_string
-        ]);
-
-        if (isset($tweet->id)) {
-            Log::info("Tweet successfully posted.");
-        } else {
-            Log::error("Error posting to Twitter: " . json_encode($tweet));
-        }
-
-        // Step 6: Delete the image after posting
-        if (file_exists($imagePath)) {
-            unlink($imagePath);
-            Log::info("Deleted Twitter image: " . $imagePath);
         }
     }
 
