@@ -32,7 +32,7 @@ class ShareAdsToSocials extends Command
             'status' => 1,
             'shared' => false
         ])
-            ->where('created_at', '>=', Carbon::now()->subWeek())
+            ->where('created_at', '>=', Carbon::now()->subDay())
             ->latest()
             ->limit(10)
             ->get();
