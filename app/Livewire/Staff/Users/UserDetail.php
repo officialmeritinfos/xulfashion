@@ -9,7 +9,9 @@ use App\Models\User;
 use App\Notifications\EmailVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -21,6 +23,7 @@ class UserDetail extends Component
     public $userId;
     public $user;
     public $staff;
+    public $email;
 
     #[Validate('required|digits:6')]
     public $pin;
@@ -31,11 +34,14 @@ class UserDetail extends Component
     #[Validate('required|in:mail,push')]
     public $notificationType;
 
+    public $showEmailUpdate=false;
+
 
     public function mount($userId){
         $this->userId = $userId;
         $this->user = User::where('reference', $this->userId)->first();
         $this->staff = Auth::guard('staff')->user();
+        $this->email = $this->user->email;
     }
 
     public function render()
@@ -299,6 +305,75 @@ class UserDetail extends Component
                 ]);
             }
 
+        }catch (\Exception $exception){
+            $this->alert('error', '', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+                'text' => 'An error occurred while sending notification the merchant.',
+                'width' => '400',
+            ]);
+            logger($exception->getMessage());
+        }
+    }
+
+    public function toggleShowUpdateEmail()
+    {
+       if ($this->showEmailUpdate){
+           $this->showEmailUpdate = false;
+           return;
+       }else{
+           $this->showEmailUpdate = true;
+           return;
+       }
+    }
+
+    public function updateEmail()
+    {
+        $user = User::where('reference', $this->userId)->first();
+        $staff = $this->staff;
+
+
+        if (!$staff->can('update UserEmail')) {
+            $this->alert('error', '', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+                'text' => 'You do not have the permission to update user email',
+                'width' => '400',
+            ]);
+            return;
+        }
+
+        $this->validate([
+            'email' => ['required','email',Rule::unique('users','email')->ignore($this->user->id,'id')],
+        ]);
+        try {
+
+            $hashed = Hash::check($this->pin,$staff->accountPin);
+            if (!$hashed) {
+                $this->alert('error', '', [
+                    'position' => 'top-end',
+                    'timer' => 5000,
+                    'toast' => true,
+                    'text' => 'Invalid Account pin. Access denied.',
+                    'width' => '400',
+                ]);
+                return;
+            }
+
+            $user->update([
+                'email' => $this->email
+            ]);
+
+            $this->alert('success', '', [
+                'position' => 'top-end',
+                'timer' => 5000,
+                'toast' => true,
+                'text' => 'Email successfully updated.',
+                'width' => '400',
+            ]);
+            $this->showEmailUpdate = false;
         }catch (\Exception $exception){
             $this->alert('error', '', [
                 'position' => 'top-end',

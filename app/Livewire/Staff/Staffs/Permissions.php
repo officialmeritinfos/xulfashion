@@ -4,6 +4,7 @@ namespace App\Livewire\Staff\Staffs;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,7 +13,7 @@ use Spatie\Permission\Models\Role;
 
 class Permissions extends Component
 {
-    use WithPagination;
+    use WithPagination,LivewireAlert;
 
     public $staff;
 

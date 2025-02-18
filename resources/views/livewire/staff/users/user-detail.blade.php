@@ -125,7 +125,7 @@
                             <div class="col-md-12">
                                 {{-- Loading Spinner for Search --}}
                                 <div class="col-md-1 d-flex align-items-center">
-                                    <div wire:loading wire:target="verifyEmail,resendVerificationMail,remindAboutProfile,suspendUser,activateUser" class="spinner-border text-primary" role="status"
+                                    <div wire:loading wire:target="verifyEmail,resendVerificationMail,remindAboutProfile,suspendUser,activateUser,toggleShowUpdateEmail" class="spinner-border text-primary" role="status"
                                          style="width: 1.5rem; height: 1.5rem;">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
@@ -170,6 +170,46 @@
                                         Send Notification
                                     </button>
                                 </div>
+                            @if($showEmailUpdate)
+                                <div class="card mt-5 border border-top">
+                                    <div class="card-body">
+                                        <form wire:submit.prevent="updateEmail" class="row mb-5 mt-5">
+                                            <div class="mb-20 col-md-12">
+                                                <label for="email"
+                                                       class="form-label fw-semibold text-primary-light text-sm mb-8">Email <span
+                                                        class="text-danger-600">*</span></label>
+                                                <input type="email"
+                                                       class="form-control radius-8 @error('email') is-invalid @enderror" id="email"
+                                                       wire:model.blur="email" placeholder="Enter email address">
+                                                @error('email') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                            </div>
+                                            <div class="col-md-12 mb-20">
+                                                <label class="form-label">Account Pin</label>
+                                                <input type="password" wire:model.live.debounce.250ms="pin" minlength="6" maxlength="6"
+                                                       class="form-control" placeholder="*******">
+                                                @error('pin') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                                <button type="submit" class="btn btn-primary-600" wire:loading.attr="disabled">
+                                                    <span wire:loading.remove>Proceed</span>
+                                                    <span wire:loading>Processing...</span>
+                                                </button>
+                                                <button type="button" wire:click="toggleShowUpdateEmail" class="btn btn-secondary" wire:loading.attr="disabled">
+                                                    <span wire:loading.remove>Cancel</span>
+                                                    <span wire:loading>Processing...</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                            @can('update UserEmail')
+                                <div class="col-md-12">
+                                    <button class="btn btn-outline-primary" wire:click="toggleShowUpdateEmail" >
+                                        Update Email
+                                    </button>
+                                </div>
+                            @endcan
                         </div>
                     </div>
                 </div>
