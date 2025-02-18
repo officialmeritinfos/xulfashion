@@ -62,7 +62,7 @@ class AdsEdit extends BaseController
 
             $validator = Validator::make($request->all(),[
                 'location'=>['required','alpha',Rule::exists('states','iso2')->where('country_code',$country->iso2)],
-                'featuredPhoto'=>['nullable','image','max:4096'],
+                'featuredPhoto'=>['nullable','image','max:5120'],
                 'title'=>['required','string','max:200'],
                 'companyName'=>['nullable','string','max:150'],
                 'industry'=>['required','in:beauty,fashion'],

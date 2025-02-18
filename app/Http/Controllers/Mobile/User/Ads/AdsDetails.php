@@ -84,7 +84,7 @@ class AdsDetails extends BaseController
         $user = Auth::user();
 
         $request->validate([
-            'photos.*' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048'
+            'photos.*' => 'required|image|mimes:jpg,jpeg,png,gif|max:5120'
         ]);
 
         //check user owns ad

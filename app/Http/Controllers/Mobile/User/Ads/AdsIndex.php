@@ -90,7 +90,7 @@ class AdsIndex extends BaseController
 
             $validator = Validator::make($request->all(),[
                 'location'=>['required','alpha',Rule::exists('states','iso2')->where('country_code',$country->iso2)],
-                'featuredPhoto'=>['required','image','max:4096'],
+                'featuredPhoto'=>['required','image','max:5120'],
                 'title'=>['required','string','max:200'],
                 'companyName'=>['nullable','string','max:150'],
                 'industry'=>['required','in:beauty,fashion'],
@@ -103,13 +103,13 @@ class AdsIndex extends BaseController
                 'tags'=>['nullable'],
                 'tags.*'=>['nullable','string'],
                 'photos'=>['required','array','max:'.$web->fileUploadAllowed],
-                'photos.*'=>['required','image','mimes:jpeg,png,jpg,gif,svg','max:4096'],
+                'photos.*'=>['required','image','mimes:jpeg,png,jpg,gif,svg','max:5120'],
                 'phone'=>['nullable','numeric']
             ],[
                 'photos.max'=>'You can only upload a maximum of '.$web->fileUploadAllowed.' images.',
                 'photos.*.image' => 'Each file must be an image.',
                 'photos.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg.',
-                'photos.*.max' => 'Each image may not be larger than 2MB.',
+                'photos.*.max' => 'Each image may not be larger than 5MB.',
                 'industry.in'=>'Only Beauty and Fashion Industries are currently supported.',
             ],[
                 'negotiate'=>'Open to Negotiation',
