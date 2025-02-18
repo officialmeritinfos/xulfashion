@@ -25,12 +25,6 @@
                         <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
                         Add New Role
                     </button>
-                    <button type="button" class="btn btn-secondary text-sm btn-sm px-12 py-12 radius-8 d-flex align-items-center gap-2"
-                            wire:click="addNewPermission"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-                        Add New Permission
-                    </button>
                     <div wire:loading wire:target="search,perPage,addNewRole, addNewPermission"
                          class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;">
                         <span class="visually-hidden">Loading...</span>
@@ -89,7 +83,7 @@
                                         <button  wire:click="editRole({{ $role->id }})"
                                                  class="btn btn-outline-primary fw-medium d-flex justify-content-center align-items-center "
                                         ><iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
-                                            <span wire:loading.remove> Assign Role</span>
+                                            <span wire:loading.remove> Assign Permission</span>
                                             <span wire:loading>Please wait...</span>
                                         </button>
                                         <button  wire:click="deleteARole({{ $role->id }})"
