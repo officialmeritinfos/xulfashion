@@ -103,9 +103,7 @@ class SocialMediaService
 
                 $commentResult = $commentResponse->json();
 
-                if (isset($commentResult['id'])) {
-                    Log::info("Instagram comment posted: {$commentMessage}");
-                } else {
+                if (!isset($commentResult['id'])) {
                     Log::error("Error posting Instagram comment: " . json_encode($commentResult));
                 }
             }
