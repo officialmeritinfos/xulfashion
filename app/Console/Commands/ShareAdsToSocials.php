@@ -34,7 +34,7 @@ class ShareAdsToSocials extends Command
         ])
             ->where('created_at', '>=', Carbon::now()->subDay())
             ->latest()
-            ->limit(10)
+            ->limit(1)
             ->get();
 
         if ($ads->isEmpty()){
@@ -51,7 +51,6 @@ class ShareAdsToSocials extends Command
             $message = "**{$ad->title}**\n\n";
             $message .= "{$ad->description}\n\n";
             $message .= "📌 **Posted By:** {$ad->companyName}\n\n";
-            $message .= "🔗 View here: {$adUrl} (Copy & Paste)";
 
             // Use direct image link
             $imageUrl = $ad->featuredImage;
@@ -60,7 +59,7 @@ class ShareAdsToSocials extends Command
             $hashtags = $this->generateHashtags($ad->title, $ad->description);
 
             // Dispatch job to default queue
-            ShareAdJob::dispatch($message, $imageUrl, $hashtags);
+            ShareAdJob::dispatch($message, $imageUrl, $adUrl,$hashtags);
             // Mark as shared
             $ad->update(['shared' => true]);
         }

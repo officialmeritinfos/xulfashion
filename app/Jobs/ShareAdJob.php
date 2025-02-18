@@ -16,15 +16,17 @@ class ShareAdJob implements ShouldQueue
     protected $message;
     protected $imageUrl;
     protected $hashtags;
+    protected $postLink;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($message, $imageUrl,$hashtags = [])
+    public function __construct($message, $imageUrl,$postLink,$hashtags = [])
     {
         $this->message = $message;
         $this->imageUrl = $imageUrl;
         $this->hashtags = $hashtags;
+        $this->postLink = $postLink;
     }
 
     /**
@@ -32,6 +34,6 @@ class ShareAdJob implements ShouldQueue
      */
     public function handle(SocialMediaService $socialMediaService): void
     {
-        $socialMediaService->postToAllPlatforms($this->message, $this->imageUrl, $this->hashtags);
+        $socialMediaService->postToAllPlatforms($this->message, $this->imageUrl, $this->hashtags, $this->postLink);
     }
 }
