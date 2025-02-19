@@ -328,7 +328,7 @@ class StoreController extends BaseController
             $statement = $country->name;
         }
 
-        $pageText = empty($query)?'Fashion Stores ':$query;
+        $pageText = empty($query)?'Fashion & Beauty Stores ':$query;
 
         $pageName = $pageText.' in '.$statement;
 
