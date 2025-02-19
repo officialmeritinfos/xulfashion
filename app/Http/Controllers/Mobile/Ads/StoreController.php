@@ -242,7 +242,7 @@ class StoreController extends BaseController
     {
         $web = GeneralSetting::find(1);
         $countryIso = Cookie::get('hasAdsCountry');
-        logger("logging {$countryIso}");
+
         $country = Country::where('iso3', strtoupper($countryIso))->first();
         $category = $request->input('category');
         $query = $request->input('search');
@@ -288,7 +288,7 @@ class StoreController extends BaseController
     public function searchResult(Request $request)
     {
         $web = GeneralSetting::find(1);
-        $countryIso = Cache::get('hasAdsCountry');
+        $countryIso = Cookie::get('hasAdsCountry');
         $country = Country::where('iso3', strtoupper($countryIso))->first();
         $query = $request->input('search');
         $state = $request->input('state');
