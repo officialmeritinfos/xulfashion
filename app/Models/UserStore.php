@@ -18,6 +18,10 @@ class UserStore extends Model
     {
         return $this->belongsTo(Country::class, 'country', 'iso2');
     }
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user', 'id');
+    }
 
     public function state()
     {

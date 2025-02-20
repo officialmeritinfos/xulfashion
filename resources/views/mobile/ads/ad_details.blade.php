@@ -416,7 +416,7 @@
                         <div class="d-block">
                             <h6>Logo</h6>
                             <h6>
-                                <img  src="{{$store->logo}}" style="width: 70px;" alt="Image">
+                                <img  src="{{ $store->logo??$merchant->photo }}" style="width: 70px;" alt="Image">
                             </h6>
                         </div>
                     </div>
