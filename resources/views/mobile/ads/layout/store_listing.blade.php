@@ -4,7 +4,7 @@
         <div class="product-box">
             <div class="product-box-img">
                 <a href="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}">
-                    <img class="img" src="{{ $store->users->photo }}" alt="" /></a>
+                    <img class="img" src="{{ empty($store->logo)?$store->users->photo:$store->logo }}" alt="" /></a>
 
                 <div class="cart-box">
                     <a href="{{route('mobile.marketplace.store.detail',['id'=>$store->reference])}}" class="cart-bag">
