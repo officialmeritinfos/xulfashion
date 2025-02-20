@@ -100,7 +100,8 @@ class Login extends BaseController
                 session(['pending_2fa_user' => $user->id]);
                 session([
                     'pending_2fa_user' => encrypt($user->id),
-                    'pending_2fa_expires_at' => Carbon::now()->add($web->codeExpire)
+                    'pending_2fa_expires_at' => Carbon::now()->add($web->codeExpire),
+                    'remember' => $request->has('remember')
                 ]);
                 $user->notify(new TwoFactorAuthentication($user));
                 $user->update(['loggedIn' => 2]);
@@ -108,7 +109,7 @@ class Login extends BaseController
             }
 
             // Normal login (No 2FA)
-            Auth::login($user);
+            Auth::login($user,$request->has('remember'));
            $user->update(['loggedIn' => 1]);
             if ($settings->emailNotification == 1) {
                 $this->notifyLogin($request, $user);
@@ -230,7 +231,7 @@ class Login extends BaseController
             $user->save();
 
             // Authenticate the user now
-            Auth::login($user,true);
+            Auth::login($user,session('remember'));
 
             // Notify user of login
             $this->notifyLogin($request, $user);

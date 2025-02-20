@@ -72,7 +72,7 @@ class AddUser extends Component
                 'email'=>$this->email,
                 'username'=>$this->username,
                 'reference'=>$reference,
-                'password'=>bcrypt($this->password),
+                'password'=>Hash::make($this->password),
                 'country'=>$countryExists->name,
                 'countryCode'=>$countryExists->iso3,
                 'phone'=>$this->phone,

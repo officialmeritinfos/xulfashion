@@ -127,18 +127,29 @@ class StoreList extends Component
         DB::beginTransaction();
         try {
 
-            $reference = $this->generateUniqueReference('user_stores','reference',16);
+            $reference = $this->generateUniqueReference('user_stores','reference',8);
+            $merchant = User::where('reference',$this->user->reference)->first();
             //let us try to upload the image
             if ($this->logo) {
                 $google = new GoogleUpload();
 
                 //lets upload the address proof
                 $result = $google->uploadGoogle($this->logo);
+                if (!$result || empty($result['link'])) {
+                    logger($result);
+                    $this->alert('error', '', [
+                        'position' => 'top-end',
+                        'timer' => 5000,
+                        'toast' => true,
+                        'text' => 'There was an error uploading your store image.',
+                        'width' => '400',
+                    ]);
+                    return;
+                }
                 $logo  = $result['link'];
             }else{
-                $logo='';
+                $logo=$merchant->photo;
             }
-            $merchant = User::where('reference',$this->user->reference)->first();
 
             $slug = $this->generateUniqueSlug('user_stores',$this->name);
             $theme = StoreTheme::where('isDefault',1)->first();

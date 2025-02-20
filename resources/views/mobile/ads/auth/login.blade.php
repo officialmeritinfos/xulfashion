@@ -25,7 +25,7 @@
                 <label for="inputPassword" class="form-label">Password</label>
                 <div class="form-input">
                     <input type="password" class="form-control" id="inputPassword" placeholder="Enter Your Password" name="password"/>
-                    <i class="iconsax icons" data-icon="key"></i>
+                    <i class="bx bx-show toggle-password-visibility"></i>
                 </div>
             </div>
             <div class="option mt-3">
@@ -67,5 +67,21 @@
 
     @push('js')
         <script src="{{asset('requests/auth/login.js')}}"></script>
+        <script>
+            $(document).ready(function () {
+                $('.toggle-password-visibility').click(function () {
+                    let passwordInput = $('#inputPassword');
+                    let icon = $(this).find('i');
+                    if (passwordInput.attr('type') === 'password') {
+                        passwordInput.attr('type', 'text');
+                        icon.removeClass('bx-show').addClass('bx-hide');
+                    } else {
+                        passwordInput.attr('type', 'password');
+                        icon.removeClass('bx-hide').addClass('bx-show');
+                    }
+                });
+
+            });
+        </script>
     @endpush
 @endsection

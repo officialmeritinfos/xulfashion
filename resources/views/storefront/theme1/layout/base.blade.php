@@ -20,7 +20,7 @@
     <style>
         {!! $setting->customCSS !!}
     </style>
-    <title>{{$store->name}} - {{$pageName??'Your one stop fashion store'}}</title>
+    <title>{{ $pageName ?? "Your one-stop {$store->industry} store" }} - {{ $store->name }} </title>
     @include('storeFrontGenericCss')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
           integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
@@ -34,16 +34,16 @@
     <meta name="description" content="{{$store->description}}">
     <meta name="keywords" content="{{$web->keywords}}">
     <meta name="author" content="{{$store->name}}">
-    <meta property="og:title" content="{{$siteName}} - {{$pageName}}">
+    <meta property="og:title" content="{{$pageName}} - {{$store->name}}">
     <meta property="og:description" content="{{$store->description}}">
-    <meta property="og:image" content="{{asset($store->logo)}}">
+    <meta property="og:image" content="{{ $store->logo }}">
     <meta property="og:url" content="{{url('/')}}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{$store->name}}">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{$store->name}} - {{$pageName??'Your one stop fashion store'}}">
+    <meta name="twitter:title" content="{{ $pageName ?? "Your one-stop {$store->industry} store" }} - {{ $store->name }}">
     <meta name="twitter:description" content="{{$store->description}}">
-    <meta name="twitter:image" content="{{asset($store->logo)}}">
+    <meta name="twitter:image" content="{{ $store->logo }}">
     <meta name="twitter:site" content="@ {{$store->name}}">
     <meta name="twitter:creator" content="@ {{$store->name}}">
     <script type="application/ld+json">
@@ -56,7 +56,7 @@
           "sameAs": [
             "https://www.facebook.com/xulfashion",
             "https://www.twitter.com/xulfashion",
-            "https://www.instagram.com/getxulfashion"
+            "https://www.instagram.com/usexulfashion"
           ],
           "publisher": {
             "@type": "Organization",

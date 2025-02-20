@@ -100,7 +100,7 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <a href="{{ empty($store->logo)?$store->users->photo:$store->logo }}" data-lightbox="image-1" class="back">
-                                <img class="img-fluid product-img" src="{{ $store->logo??$store->users->photo }}" alt="product-bg" />
+                                <img class="img-fluid product-img" src="{{ empty($store->logo)?$store->users->photo:$store->logo }}" alt="product-bg" />
                             </a>
                         </div>
                     </div>
