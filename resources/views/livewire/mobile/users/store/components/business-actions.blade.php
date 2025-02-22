@@ -2,30 +2,31 @@
     <h3 class="text-center mb-4 text-muted">🛍️ Store Management Dashboard</h3>
 
     <div class="row g-4">
-        <!-- Store-front Theme -->
+
+        <!-- Store Catalog Category -->
         <div class="col-12">
             <div class="card dashboard-card h-100">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <i class="fa fa-paint-brush icon-small text-primary"></i>
-                        <h5 class="mt-2">Store-front Theme</h5>
-                        <p>Customize your store's appearance and branding.</p>
+                        <i class="fa fa-th-list icon-small text-primary"></i>
+                        <h5 class="mt-2">Store Catalog Categories</h5>
+                        <p>Manage product categories for your store</p>
                     </div>
-                    <a href="{{ route('user.stores.themes') }}" class="btn btn-primary btn-auto">Manage Theme</a>
+                    <a href="{{ route('mobile.user.store.catalog.categories') }}" class="btn btn-outline-primary btn-auto">Manage Categories</a>
                 </div>
             </div>
         </div>
 
-        <!-- Store Catalog -->
+        <!-- Store Catalog Products -->
         <div class="col-12">
             <div class="card dashboard-card h-100">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
                         <i class="fa fa-th-list icon-small text-success"></i>
-                        <h5 class="mt-2">Store Catalog</h5>
-                        <p>Manage products and categories for your store.</p>
+                        <h5 class="mt-2">Store Products</h5>
+                        <p>Manage products for your store</p>
                     </div>
-                    <a href="{{ route('user.stores.catalog') }}" class="btn btn-success btn-auto">Manage Catalog</a>
+                    <a href="{{ route('mobile.user.store.catalog.products') }}" class="btn btn-success btn-auto">Manage Products</a>
                 </div>
             </div>
         </div>
@@ -96,6 +97,20 @@
                         <p>Manage your store settings</p>
                     </div>
                     <a href="{{ route('user.stores.edit.settings') }}" class="btn btn-dark btn-auto">Manage Settings</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Store-front Theme -->
+        <div class="col-12">
+            <div class="card dashboard-card h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fa fa-paint-brush icon-small text-primary"></i>
+                        <h5 class="mt-2">Store-front Theme</h5>
+                        <p>Customize your store's appearance and branding.</p>
+                    </div>
+                    <a href="{{ route('user.stores.themes') }}" class="btn btn-primary btn-auto">Manage Theme</a>
                 </div>
             </div>
         </div>

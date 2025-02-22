@@ -104,7 +104,7 @@
         <!-- Recent Orders -->
         <div class="col-12">
             <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-dark">
+                <div class="card-header bg-dark text-white">
                     <h5 class="mb-0">Recent Orders</h5>
                 </div>
                 <div class="card-body scrollable-table-container">
@@ -143,7 +143,7 @@
         <!-- Recent Invoices -->
         <div class="col-12">
             <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-dark">
+                <div class="card-header bg-dark text-white">
                     <h5 class="mb-0">Recent Invoices(Recent 10)</h5>
                 </div>
                 <div class="card-body scrollable-table-container">

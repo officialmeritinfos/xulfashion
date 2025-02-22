@@ -89,7 +89,14 @@
                                     </td>
                                     <td>
                                         <i class="fa fa-arrow-circle-o-right"
-                                           wire:click="viewDetails('{{ $withdrawal->reference }}')" data-bs-toggle="offcanvas" data-bs-target="#withdrawalDetailsCanvas"></i>
+                                           wire:click="viewDetails('{{ $withdrawal->reference }}')" data-bs-toggle="offcanvas"
+                                           data-bs-target="#withdrawalDetailsCanvas"></i>
+                                        <i class="fa fa-arrow-circle-o-right"
+                                           wire:click="viewDetails('{{ $withdrawal->reference }}')" data-bs-toggle="offcanvas"
+                                           data-bs-target="#withdrawalDetailsCanvas"></i>
+                                        <i class="fa fa-arrow-circle-o-right"
+                                           wire:click="viewDetails('{{ $withdrawal->reference }}')" data-bs-toggle="offcanvas"
+                                           data-bs-target="#withdrawalDetailsCanvas"></i>
                                     </td>
                                 </tr>
                             @endforeach

@@ -17,12 +17,14 @@ class MerchantStoreController extends Base
         $web = GeneralSetting::find(1);
         $user = Auth::user();
 
+        $store = UserStore::where('user',$user->id)->first();
+
         return view('mobile.users.store.index')->with([
             'web' => $web,
             'user' => $user,
             'siteName'=>$web->name,
-            'pageName' =>'Your Stores',
-            'store' => UserStore::where('user',$user->id)->first(),
+            'pageName' => $store->name ?? 'New storefront',
+            'store' => $store,
         ]);
     }
     //initialize store

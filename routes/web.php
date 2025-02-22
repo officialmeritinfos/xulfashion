@@ -34,6 +34,8 @@ use App\Http\Controllers\Mobile\User\Payments\SettlementAccountController;
 use App\Http\Controllers\Mobile\User\Payments\SettlementAccountProcessorController;
 use App\Http\Controllers\Mobile\User\Profile;
 use App\Http\Controllers\Mobile\User\Reviews\ReviewController;
+use App\Http\Controllers\Mobile\User\Store\Actions\CategoryController;
+use App\Http\Controllers\Mobile\User\Store\Actions\ProductController;
 use App\Http\Controllers\Mobile\User\Store\MerchantStoreController;
 use App\Http\Controllers\Mobile\User\Store\StoreKYBController;
 use Illuminate\Support\Facades\Route;
@@ -395,26 +397,29 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             Route::post('payments/payout-method/send-otp',[BankFetchingController::class,'sendOTP'])->name('payments.payout-method.send-otp');
             Route::post('payments/payout-method/verify-otp',[BankFetchingController::class,'verifyOTP'])->name('payments.payout-method.verify-otp');
 
-            //STORE FOLDER ROUTE
-            Route::get('store/index',[MerchantStoreController::class,'landingPage'])->name('store.index');
-            Route::get('store/initialize',[MerchantStoreController::class,'initializeStore'])->name('store.initialize');
-            Route::get('store/edit',[MerchantStoreController::class,'editStore'])->name('store.edit');
-            //Store KYB
-            Route::get('store/kyb',[StoreKYBController::class,'landingPage'])->name('store.verify');
-
             //PROFILE PLACEHOLDERS
             Route::get('profile/coming-soon',[Profile::class,'comingSoon'])
                 ->name('coming.soon');
             //Account KYC
             Route::get('profile/user/kyc',[Profile::class,'userKyc'])->name('user.kyc');
-
             Route::get('profile/app/settings',[Profile::class,'settings'])
                 ->name('app.settings');
             Route::get('profile/help',[Profile::class,'helpCenter'])
                 ->name('help');
-
             //fetch categories in an industry
             Route::get('industry/categories',[Profile::class,'fetchIndustryCategory'])->name('industry.categories');
+
+            /*========================= STORE ACTION BUTTONS ROUTE ====================================*/
+            Route::get('store/index',[MerchantStoreController::class,'landingPage'])->name('store.index');
+            Route::get('store/initialize',[MerchantStoreController::class,'initializeStore'])->name('store.initialize');
+            Route::get('store/edit',[MerchantStoreController::class,'editStore'])->name('store.edit');
+            //Store KYB
+            Route::get('store/kyb',[StoreKYBController::class,'landingPage'])->name('store.verify');
+            //Category
+            Route::get('store/catalog/categories',[CategoryController::class,'landingPage'])->name('store.catalog.categories');
+            //Products
+            Route::get('store/catalog/products',[ProductController::class,'landingPage'])->name('store.catalog.products');
+
         });
 
 

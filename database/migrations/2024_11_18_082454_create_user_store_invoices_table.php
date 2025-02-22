@@ -36,6 +36,7 @@ class CreateUserStoreInvoicesTable extends Migration
             $table->string('channelPaymentId', 150)->nullable();
             $table->string('paymentMethod', 150)->nullable();
             $table->string('processorFee', 150)->default('0');
+            $table->boolean('isEscrow')->default(0);
             $table->integer('customerApproval')->default(2);
             $table->integer('merchantApproval')->default(2);
             $table->string('customerApprovalTime', 150)->nullable();
