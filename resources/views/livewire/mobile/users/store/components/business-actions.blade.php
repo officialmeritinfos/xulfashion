@@ -26,7 +26,7 @@
                         <h5 class="mt-2">Store Products</h5>
                         <p>Manage products for your store</p>
                     </div>
-                    <a href="{{ route('mobile.user.store.catalog.products') }}" class="btn btn-success btn-auto">Manage Products</a>
+                    <a href="{{ route('mobile.user.store.catalog.products') }}" class="btn btn-outline-success btn-auto">Manage Products</a>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
                     <div>
                         <i class="fa fa-file-pdf-o icon-small text-danger"></i>
                         <h5 class="mt-2">Store Invoices</h5>
-                        <p>Create and manage invoices for your clients.</p>
+                        <p>Issue and manage invoices for your clients.</p>
                     </div>
                     <a href="{{ route('user.stores.invoices') }}" class="btn btn-danger btn-auto">Manage Invoices</a>
                 </div>

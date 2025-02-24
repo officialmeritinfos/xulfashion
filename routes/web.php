@@ -35,7 +35,9 @@ use App\Http\Controllers\Mobile\User\Payments\SettlementAccountProcessorControll
 use App\Http\Controllers\Mobile\User\Profile;
 use App\Http\Controllers\Mobile\User\Reviews\ReviewController;
 use App\Http\Controllers\Mobile\User\Store\Actions\CategoryController;
-use App\Http\Controllers\Mobile\User\Store\Actions\ProductController;
+use App\Http\Controllers\Mobile\User\Store\Actions\Product\EditProduct;
+use App\Http\Controllers\Mobile\User\Store\Actions\Product\ProductDetail;
+use App\Http\Controllers\Mobile\User\Store\Actions\Product\ProductsIndex;
 use App\Http\Controllers\Mobile\User\Store\MerchantStoreController;
 use App\Http\Controllers\Mobile\User\Store\StoreKYBController;
 use Illuminate\Support\Facades\Route;
@@ -418,7 +420,17 @@ Route::prefix('mobile')->name('mobile.')->group(function (){
             //Category
             Route::get('store/catalog/categories',[CategoryController::class,'landingPage'])->name('store.catalog.categories');
             //Products
-            Route::get('store/catalog/products',[ProductController::class,'landingPage'])->name('store.catalog.products');
+            Route::get('store/catalog/products',[ProductsIndex::class,'landingPage'])->name('store.catalog.products');
+            Route::get('store/catalog/products/new',[ProductsIndex::class,'addProduct'])->name('store.catalog.products.new');
+            Route::post('store/catalog/products/new/process',[ProductsIndex::class,'processNewProduct'])->name('store.catalog.products.new.process');
+            //Edit Product
+            Route::get('store/catalog/products/{ref}/edit',[EditProduct::class,'index'])->name('store.catalog.products.edit');//edit product
+            Route::post('store/catalog/products/edit/{ref}/process',[EditProduct::class,'processEditProduct'])->name('store.catalog.products.edit.process');
+            //Product Detail
+            Route::get('store/catalog/product/{ref}/detail',[ProductDetail::class,'landingPage'])->name('store.catalog.products.detail');
+
+            //Invoices
+            Route::get('store/invoices',[ProductsIndex::class,'landingPage'])->name('store.invoices');
 
         });
 

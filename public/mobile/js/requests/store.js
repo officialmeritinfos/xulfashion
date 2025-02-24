@@ -48,6 +48,7 @@ const settingsRequests=function (){
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
+
                     // Re-enable form inputs and hide loading overlay
                     $("#basicSettings :input").prop("readonly", false);
 
@@ -60,6 +61,12 @@ const settingsRequests=function (){
                     }
                     toastr.error(jqXHR.responseJSON.data.error);
 
+                },
+                complete: function (){
+                    $("#basicSettings :input").prop("readonly", false);
+
+                    $('.submit').attr('disabled', false);
+                    $(".submit").LoadingOverlay("hide");
                 }
 
             });

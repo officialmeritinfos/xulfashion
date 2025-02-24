@@ -21,6 +21,7 @@ class CreateUserStoreProductsTable extends Migration
             $table->text('description');
             $table->string('featuredImage', 200);
             $table->string('amount', 150);
+            $table->string('comparePrice',150)->nullable();
             $table->string('currency', 150);
             $table->string('quantity', 100)->default('0');
             $table->mediumText('keyFeatures');
@@ -35,6 +36,8 @@ class CreateUserStoreProductsTable extends Migration
             $table->integer('highlighted')->default(2);
             $table->integer('numberOfOrder')->default(0);
             $table->string('numberOfViews', 100)->default('0');
+            $table->boolean('stockAlert')->default(0);
+            $table->string('alertQuantity',150)->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
             $table->string('deleted_at', 150)->nullable();

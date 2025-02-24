@@ -127,7 +127,11 @@
                 @switch($order->status)
                     @case(1) <span class="badge bg-success">Completed</span> @break
                     @case(2) <span class="badge bg-info">Pending</span> @break
-                    @default <span class="badge bg-danger">Cancelled</span>
+                    @case(3) <span class="badge bg-danger">Cancelled</span> @break
+                    @case(4) <span class="badge bg-primary">Processing</span> @break
+                    @case(5) <span class="badge bg-warning text-white">Incomplete</span> @break
+                    @case(6) <span class="badge bg-dark">In Escrow</span> @break
+                    @default <span class="badge bg-secondary">Under Review</span>
                 @endswitch
             </td>
             <td>

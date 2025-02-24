@@ -37,8 +37,18 @@ class UserStoreProduct extends Model
         return $this->hasMany(UserStoreProductColorVariation::class, 'product');
     }
 
-    public function category()
+    public function images()
+    {
+        return $this->hasMany(UserStoreProductImage::class, 'product');
+    }
+
+    public function productCategory()
     {
         return $this->belongsTo(UserStoreCatalogCategory::class, 'category');
+    }
+
+    public function stores()
+    {
+        return $this->belongsTo(UserStore::class, 'store');
     }
 }

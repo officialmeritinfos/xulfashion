@@ -105,7 +105,7 @@
     <div class="content">
         <p>Dear <span class="highlight">{{ $buyer->name }}</span>,</p>
         <p>
-            We noticed that you started purchasing tickets for <span class="highlight">[Event Name]</span>, but it seems you haven’t completed your payment yet.
+            We noticed that you started purchasing tickets for <span class="highlight">{{ $event->title }}</span>, but it seems you haven’t completed your payment yet.
         </p>
         <p>
             Your selected tickets are reserved for a limited time. Complete your payment to secure your spot and enjoy the event without any interruptions.
