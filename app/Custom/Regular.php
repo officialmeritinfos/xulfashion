@@ -50,7 +50,7 @@ class Regular
     }
 
     //fetch employer id
-    public function userById($id): User
+    public function userById($id)
     {
         return User::where('id',$id)->first();
     }
