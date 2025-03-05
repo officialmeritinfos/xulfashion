@@ -325,7 +325,8 @@ class AdDetail extends Component
                 'rejectReason'=>$this->rejectReason,
                 'approvedBy'=>$staff->id,
                 'dateApproved'=>time(),
-                'receivedBonus' => 1
+                'receivedBonus' => 1,
+                'shared'=>true
             ]);
 
             $message = "
