@@ -64,7 +64,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td>{{$option->userById($ad->user)->name??'N/A'}}</td>
+                                <td>{{$ad->users->name??'N/A'}}</td>
                                 <td>{{$ad->title}}</td>
                                 <td>{{$ad->reference}}</td>
                                 <td>

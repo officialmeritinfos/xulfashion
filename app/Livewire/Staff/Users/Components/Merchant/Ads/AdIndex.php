@@ -41,7 +41,7 @@ class AdIndex extends Component
             })
             ->when($this->searchStatus != 'all', function ($query) {
                 $query->where('status', $this->searchStatus);
-            })
+            })->with(['service','users'])
             ->latest()
             ->paginate($this->show);
 

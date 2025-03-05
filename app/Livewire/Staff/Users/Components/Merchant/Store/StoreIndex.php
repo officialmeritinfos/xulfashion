@@ -26,7 +26,7 @@ class StoreIndex extends Component
             })
             ->when($this->kycStatus != 'all', function($query) {
                 $query->where('isVerified', $this->kycStatus);
-            })->latest()
+            })->with(['users','serviceType'])->latest()
             ->paginate($this->show);
 
 

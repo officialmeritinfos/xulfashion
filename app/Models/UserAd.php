@@ -15,4 +15,9 @@ class UserAd extends Model
     {
         return $this->belongsTo(ServiceType::class,'serviceType');
     }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'user');
+    }
 }

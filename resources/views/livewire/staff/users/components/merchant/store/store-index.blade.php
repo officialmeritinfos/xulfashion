@@ -63,7 +63,7 @@
                                 </div>
                             </td>
                             <td>
-                                {{$option->userById($store->user)->name??'N/A'}}
+                                {{$store->users->name??'Deleted User'}}
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
