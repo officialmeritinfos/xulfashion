@@ -12,6 +12,9 @@
                         <option>20</option>
                         <option>50</option>
                         <option>100</option>
+                        <option>150</option>
+                        <option>200</option>
+                        <option>300</option>
                     </select>
                 </div>
                 <div class="icon-field">
@@ -99,7 +102,7 @@
                                     @endswitch
                                 </td>
                                 <td>
-                                    <a href="{{route('staff.users.ads.details',['id'=>$option->userById($ad->user)->reference,'ad'=>$ad->reference])}}"
+                                    <a href="{{route('staff.users.ads.details',['id'=>$ad->users->reference??'N/A','ad'=>$ad->reference])}}"
                                        class="w-32-px h-32-px bg-primary-light text-primary-600
                                     rounded-circle d-inline-flex align-items-center justify-content-center" wire:navigate>
                                         <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
