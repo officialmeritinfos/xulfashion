@@ -310,7 +310,7 @@
     }
 </style>
 
-<link rel="stylesheet" href="http://127.0.0.1:8000/dashboard/css/boxed-check.min.css">
+<link rel="stylesheet" href="{{ asset('dashboard/css/boxed-check.min.css') }}">
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
 <script>
     new ClipboardJS('.copy');
