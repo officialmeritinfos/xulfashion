@@ -169,7 +169,6 @@ class Profile extends BaseController
                 'bio'                   =>['required','string'],
                 'displayName'           =>['required','string'],
                 'gender'                =>['required','string','in:male,female,others'],
-                'dob'                   =>['required','date'],
                 'address'               =>['required','string'],
                 'tutorKeywords'         =>['nullable'],
                 'tutorKeywords.*'       =>['nullable','string'],
@@ -190,7 +189,7 @@ class Profile extends BaseController
                 'bio'=>$input['bio'], 'gender'=>$input['gender'],
                 'tutorKeywords'=>implode(',',$input['tutorKeywords']),
                 'activelyLookingForJob'=>1,
-                'completedProfile'=>1, 'dob'=>$input['dob'],
+                'completedProfile'=>1,
                 'displayName'=>$input['displayName'],
                 'address'=>$input['address'], 'accountType'=>1,'photo'=>$image,'merchantType' => $input['merchantType']
             ])){
@@ -220,7 +219,6 @@ class Profile extends BaseController
                 'bio'                   =>['required','string'],
                 'displayName'           =>['required','string'],
                 'gender'                =>['required','string','in:male,female,others'],
-                'dob'                   =>['required','date'],
                 'address'               =>['required','string'],
                 'tutorKeywords'         =>['nullable'],
                 'tutorKeywords.*'       =>['nullable','string'],
@@ -264,7 +262,7 @@ class Profile extends BaseController
                 'bio'=>$input['bio'], 'gender'=>$input['gender'],
                 'tutorKeywords'=>implode(',',$input['tutorKeywords']),
                 'activelyLookingForJob'=>1,
-                'completedProfile'=>1, 'dob'=>$input['dob'],
+                'completedProfile'=>1,
                 'displayName'=>$input['displayName'],
                 'address'=>$input['address'], 'accountType'=>1,'photo'=>$image,'merchantType' => $input['merchantType'],
                 'name' => $input['name'],'registrationIp' => $request->ip(),

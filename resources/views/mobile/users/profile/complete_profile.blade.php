@@ -75,13 +75,6 @@
             </div>
 
             <div class="form-group d-block mb-3">
-                <label for="inputusernumber" class="form-label">Date of Birth</label>
-                <div class="form-input">
-                    <input type="date" class="form-control" id="inputusernumber" value="{{$user->dob}}" name="dob"/>
-                    <i class="iconsax icons" data-icon="calendar-2"></i>
-                </div>
-            </div>
-            <div class="form-group d-block mb-3">
                 <label for="inputname" class="form-label">
                     Address <sup><i class="fa fa-info-circle" data-bs-toggle="tooltip"
                                                    title="Let us know your location, where you can be found etc"></i></sup>

@@ -29,7 +29,7 @@ class CompleteProfile extends Component
     public $displayName ;
     #[Validate('required|string|in:male,female,others')]
     public $gender ;
-    #[Validate('required|date')]
+    #[Validate('nullable|date')]
     public $dob ;
     #[Validate('required|string|max:255')]
     public $address;
