@@ -119,19 +119,16 @@
                     $('#password-strength-status').removeClass();
                     $('#password-strength-status').addClass('weak-password');
                     $('#password-strength-status').html("Weak (should be atleast 8 characters, alphabets, numbers and special characters )");
-                    $('.submit').attr('disabled', true);
                 } else {
                     if (password.match(number) && password.match(alphabets) && password.match(special_characters)) {
                         $('#password-strength-status').removeClass();
                         $('#password-strength-status').addClass('strong-password');
                         $('#password-strength-status').html("Strong password");
-                        $('.submit').attr('disabled', false);
                     }
                     else {
                         $('#password-strength-status').removeClass();
                         $('#password-strength-status').addClass('medium-password');
                         $('#password-strength-status').html("Medium (should include alphabets, numbers and special characters.)");
-                        $('.submit').attr('disabled', true);
                     }
                 }
             }
@@ -145,19 +142,16 @@
                     $('#password-strength-statuss').removeClass();
                     $('#password-strength-statuss').addClass('weak-password');
                     $('#password-strength-statuss').html("Weak (should be atleast 8 characters, alphabets, numbers and special characters )");
-                    $('.submit').attr('disabled', true);
                 } else {
                     if (password.match(number) && password.match(alphabets) && password.match(special_characters)) {
                         $('#password-strength-statuss').removeClass();
                         $('#password-strength-statuss').addClass('strong-password');
                         $('#password-strength-statuss').html("Strong password");
-                        $('.submit').attr('disabled', false);
                     }
                     else {
                         $('#password-strength-statuss').removeClass();
                         $('#password-strength-statuss').addClass('medium-password');
                         $('#password-strength-statuss').html("Medium (should include alphabets, numbers and special characters.)");
-                        $('.submit').attr('disabled', true);
                     }
                 }
             }
