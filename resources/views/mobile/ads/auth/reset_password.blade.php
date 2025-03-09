@@ -67,6 +67,7 @@
     </div>
 
     <form class="auth-form" id="recovery" method="post" action="{{route('mobile.auth.recovery')}}">
+        @csrf
         <div class="custom-container row">
             <div class="form-group">
                 <label for="inputusername" class="form-label">Code</label>

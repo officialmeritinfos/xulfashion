@@ -12,6 +12,7 @@
     </div>
 
     <form class="auth-form" id="login" method="post" action="{{route('mobile.login.process')}}">
+        @csrf
         <div class="custom-container">
             <div class="form-group">
                 <label for="inputusername" class="form-label">Email</label>

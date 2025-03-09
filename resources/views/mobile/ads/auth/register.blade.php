@@ -70,6 +70,7 @@
     </div>
 
     <form class="auth-form" id="registration" method="post" action="{{route('mobile.register.process')}}">
+        @csrf
         <div class="custom-container row">
             <div class="form-group col-md-12">
                 <label for="inputusername" class="form-label">Country</label>

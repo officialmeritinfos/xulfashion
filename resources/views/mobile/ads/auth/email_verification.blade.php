@@ -16,6 +16,7 @@
             <h4 class="otp-number mt-2">{{$user->email}}</h4>
         </div>
         <form class="auth-form" id="registration" method="post" action="{{route('mobile.auth.email')}}">
+            @csrf
             <div class="form-group col-md-12 col-12">
                 <label for="inputPassword" class="form-label">Verification OTP</label>
                 <div class="form-input input-group">

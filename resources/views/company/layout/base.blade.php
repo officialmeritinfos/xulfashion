@@ -70,7 +70,7 @@
 
     <!-- Fix Internet Explorer ______________________________________-->
     <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <script src="{{asset('home/mobile/vendor/html5shiv.js')}}"></script>
     <script src="{{asset('home/mobile/vendor/respond.js')}}"></script>
     <![endif]-->

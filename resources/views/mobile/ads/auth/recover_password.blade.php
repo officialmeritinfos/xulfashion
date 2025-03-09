@@ -12,6 +12,7 @@
     </div>
 
     <form class="auth-form" id="recovery" method="post" action="{{route('mobile.recover.process')}}">
+        @csrf
         <div class="custom-container">
             <div class="form-group">
                 <label for="inputusername" class="form-label">Email id</label>

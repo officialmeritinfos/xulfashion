@@ -511,6 +511,7 @@
         </div>
         <div class="offcanvas-body review-body">
             <form class="theme-form" id="basicSettings" action="{{route('mobile.user.reviews.new.process')}}" method="post">
+                @csrf
                 <div class="row">
                     <div class="col-md-12" style="display: none;">
                         <div class="form-group mt-3">
