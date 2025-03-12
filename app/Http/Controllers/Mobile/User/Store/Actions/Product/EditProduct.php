@@ -87,8 +87,8 @@ class EditProduct extends BaseController
                     Rule::exists('user_store_catalog_categories', 'id')->where('store', $store->id)
                 ],
                 'description' => ['required', 'string'],
-                'specifications' => ['required', 'string'],
-                'features' => ['required', 'string'],
+                'specifications' => ['nullable', 'string'],
+                'features' => ['nullable', 'string'],
                 'stockAlert' => ['nullable', 'numeric'],
                 'alertQuantity' => ['nullable', 'integer', 'min:0'],
             ],[],[
