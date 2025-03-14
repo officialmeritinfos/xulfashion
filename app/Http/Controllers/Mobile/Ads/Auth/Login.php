@@ -75,6 +75,11 @@ class Login extends BaseController
             $input = $validator->validated();
             $user = User::where('email', $input['email'])->first();
 
+            //check if they had set their password
+            if (empty($user->password)){
+                return $this->sendError('authentication.error', ['error' => 'Please use the Password reset to set your password.']);
+            }
+
             // Check if password is correct
             if (!Hash::check($input['password'], $user->password)) {
 
